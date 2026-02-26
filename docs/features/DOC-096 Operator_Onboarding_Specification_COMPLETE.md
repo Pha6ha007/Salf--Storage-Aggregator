@@ -68,7 +68,7 @@ This comprehensive specification defines the complete operator onboarding and ve
 
 ### [Section 6: API Layer онбординга и верификации](#6-api-слой-онбординга-и-верификации)
 - 6.1. Список и назначение эндпоинтов
-- 6.2. Детализация эндпоинтов (18+ endpoints)
+- 6.2. Details эндпоинтов (18+ endpoints)
 - 6.3. Examples JSON-запросов и ответов
 - 6.4. Единый формат ошибок
 - 6.5. Rate limiting
@@ -369,9 +369,9 @@ Verification level depends on operator risk profile. System uses multi-level ris
 - Простая форма регистрации (email, телефон, базовые реквизиты)
 - Document Upload через форму (регистрационные документы, реквизиты)
 - 100% ручная модерация администраторами
-- Базовая интеграция с AI Risk Engine (только scoring, без автоматических решений)
+- Базовая интеграция с AI Risk Engine (только scoring, без automaticallyх решений)
 - Время обработки: 24-48 часов
-- Простые автоматические проверки: формат email, уникальность, валидация ИНН
+- Простые automaticallyе проверки: формат email, уникальность, валидация ИНН
 
 **Ограничения:**
 - Не масштабируется при большом потоке операторов
@@ -387,7 +387,7 @@ Verification level depends on operator risk profile. System uses multi-level ris
 
 **Ключевые улучшения:**
 - **Автоматическое одобрение низкорисковых операторов**
-  - Операторы с risk score < 30 могут быть одобрены автоматически
+  - Операторы с risk score < 30 могут быть одобрены automatically
   - Проверка по базам данных налоговых служб (API FTA (Federal Tax Authority) России)
   
 - **Улучшенный AI Risk Engine**
@@ -395,7 +395,7 @@ Verification level depends on operator risk profile. System uses multi-level ris
   - Детекция дубликатов и связанных аккаунтов
   - Проверка IP, устройств, fingerprinting
 
-- **Расширенные автоматические проверки**
+- **Расширенные automaticallyе проверки**
   - TRN Verification/ОГРН по базам FTA (Federal Tax Authority)
   - Валидация БИК и банковских реквизитов
   - Проверка email/телефона на spam-листы
@@ -3485,786 +3485,790 @@ Each verification status shows a corresponding screen in the operator dashboard.
 ---
 # 5. UX Flow and Operator States
 
-## 5.1. Основной UX-flow онбординга (mermaid-диаграмма)
+## 5.1. Primary Onboarding UX Flow (Mermaid Diagram)
 
-Процесс онбординга оператора представляет собой последовательность шагов, каждый из которых критичен для успешной активации аккаунта.
+The operator onboarding process represents a sequence of steps, each critical to successful account activation.
 
-**Полный UX-flow:**
+**Complete UX Flow:**
 
 ```mermaid
 flowchart TD
-    A[Оператор попадает на landing page] --> B{Выбор действия}
-    B -->|Регистрация| C[Заполнение формы регистрации]
-    B -->|Уже есть аккаунт| Z[Вход в систему]
-    
-    C --> D[Валидация формы]
-    D -->|Ошибка| C
-    D -->|Успешно| E[Создание аккаунта в БД]
-    
-    E --> F[Автоматическая авторизация]
-    F --> G[Приветственный экран]
-    
-    G --> H[Profile Completion компании]
-    H --> I[Валидация данных профиля]
-    I -->|Ошибка| H
-    I -->|Успешно| J[Сохранение профиля]
-    
-    J --> K[Document Upload]
-    K --> L{Все документы загружены?}
-    L -->|Нет| K
-    L -->|Да| M[Проверка документов]
-    
-    M -->|Невалидные документы| K
-    M -->|Валидные документы| N[Кнопка "Отправить на проверку" активна]
-    
-    N --> O[Клик "Отправить на проверку"]
-    O --> P[Статус: pending_verification]
-    
-    P --> Q[Автоматические проверки]
+    A[Operator arrives at landing page] --> B{Select action}
+    B -->|Sign Up| C[Complete registration form]
+    B -->|Already have account| Z[Login to system]
+
+    C --> D[Form validation]
+    D -->|Error| C
+    D -->|Success| E[Create account in database]
+
+    E --> F[Automatic authorization]
+    F --> G[Welcome screen]
+
+    G --> H[Company profile completion]
+    H --> I[Profile data validation]
+    I -->|Error| H
+    I -->|Success| J[Save profile]
+
+    J --> K[Document upload]
+    K --> L{All documents uploaded?}
+    L -->|No| K
+    L -->|Yes| M[Document verification]
+
+    M -->|Invalid documents| K
+    M -->|Valid documents| N[Submit button activated]
+
+    N --> O[Click Submit for verification]
+    O --> P[Status: pending_verification]
+
+    P --> Q[Automated compliance checks]
     Q --> R[AI Risk Scoring]
-    R --> S[Заявка в очередь модерации]
-    
-    S --> T{Решение администратора}
-    T -->|Одобрить| U[Статус: active, verified]
-    T -->|Отклонить| V[Статус: rejected]
-    T -->|Запросить инфо| W[Статус: needs_more_info]
-    
-    W --> X[Оператор предоставляет доп.информацию]
+    R --> S[Application enters moderation queue]
+
+    S --> T{Admin decision}
+    T -->|Approve| U[Status: active, verified]
+    T -->|Reject| V[Status: rejected]
+    T -->|Request info| W[Status: needs_more_info]
+
+    W --> X[Operator provides additional information]
     X --> P
-    
-    U --> Y[Оператор может создавать склады]
-    V --> AA[Оператор может создать новую заявку]
+
+    U --> Y[Operator can create warehouses]
+    V --> AA[Operator can submit new application]
     AA --> H
-    
-    Y --> AB[End: Активный верифицированный оператор]
+
+    Y --> AB[End: Active verified operator]
 ```
 
 ---
 
-## 5.2. Подробные шаги: регистрация, заполнение профиля, загрузка документов, ожидание проверки, результат (approve / reject / запрос доп.данных)
+## 5.2. Detailed Steps: Registration, Profile Completion, Document Upload, Verification Waiting, Results (Approve / Reject / Request Additional Information)
 
-Детальное описание каждого шага UX-flow с экранами, действиями и переходами.
+Detailed description of each UX flow step with screens, actions, and transitions.
 
 ---
 
-### Шаг 1: Регистрация
+### Step 1: Registration
 
-**Цель:** Создать базовый аккаунт оператора в системе
+**Objective:** Create basic operator account in the system
 
-**Точка входа:**
-- Landing page → "Стать оператором"
-- Главная страница → "Для операторов"
-- Прямой переход: `/operator/signup`
+**Entry Points:**
+- Landing page → "Become an Operator"
+- Homepage → "For Operators"
+- Direct navigation: `/operator/signup`
 
-**Экран регистрации:**
+**Registration Screen:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│              🏢 Регистрация для операторов                 │
+│              🏢 Operator Registration                       │
 │                                                            │
-│  Начните принимать заявки от клиентов уже сегодня         │
+│  Start accepting customer inquiries today                  │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
 │  │ Email *                                              │ │
-│  │ ivan@skladbiz.ru                                     │ │
+│  │ ahmed@storagebiz.ae                                  │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Телефон *                                            │ │
-│  │ +7 (___) ___-__-__                                   │ │
+│  │ Phone Number *                                       │ │
+│  │ +971-4-XXX-XXXX                                      │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Пароль *                                             │ │
+│  │ Password *                                           │ │
 │  │ ••••••••••••                                         │ │
-│  │ 🔒 Минимум 8 символов                                │ │
+│  │ 🔒 Minimum 8 characters                              │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Подтвердите пароль *                                 │ │
+│  │ Confirm Password *                                   │ │
 │  │ ••••••••••••                                         │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Тип вашего бизнеса *                      ▼          │ │
-│  │ Legal Entity (LLC, FZE)                           │ │
+│  │ Business Type *                           ▼          │ │
+│  │ Legal Entity (LLC, FZE)                          │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ☑ Я согласен с Условиями использования и                 │
-│     Политикой конфиденциальности                          │
+│  ☑ I agree to the Terms of Service and                    │
+│     Privacy Policy                                        │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │              Зарегистрироваться                      │ │
+│  │              Sign Up                                 │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│               Уже есть аккаунт? Войти                     │
+│               Already have an account? Log In              │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Действия пользователя:**
-1. Заполняет все поля
-2. Отмечает чекбокс согласия с условиями
-3. Нажимает "Зарегистрироваться"
+**User Actions:**
+1. Fill all fields
+2. Check the terms and privacy policy agreement box
+3. Click "Sign Up"
 
-**Валидация:**
-- Email: формат, уникальность
-- Телефон: формат E.164, уникальность
-- Пароль: минимум 8 символов, сложность
-- Подтверждение пароля: совпадение
-- Тип бизнеса: обязательный выбор
-- Согласие: обязательная отметка
+**Validation:**
+- Email: format, uniqueness
+- Phone number: E.164 format, uniqueness
+- Password: minimum 8 characters, complexity requirements
+- Password confirmation: matching
+- Business type: mandatory selection
+- Agreement: mandatory checkbox
 
-**Результат:**
-- ✅ Успешно: аккаунт создан, оператор автоматически авторизован, редирект на приветственный экран
-- ❌ Ошибка: показывается сообщение об ошибке под соответствующим полем
+**Outcome:**
+- ✅ Success: account created, operator automatically authenticated, redirected to welcome screen
+- ❌ Error: error message displayed below the corresponding field
 
-**Время:** 2-3 минуты
+**Duration:** 2-3 minutes
 
 ---
 
-### Шаг 2: Приветственный экран
+### Step 2: Welcome Screen
 
-**Цель:** Ориентировать оператора, показать следующие шаги
+**Objective:** Orient the operator, display next steps
 
-**Экран:**
+**Screen:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│              🎉 Добро пожаловать, Иван!                    │
+│              🎉 Welcome, Ahmed!                            │
 │                                                            │
-│     Вы успешно зарегистрировались на платформе СкладОК.    │
-│     Чтобы начать получать заявки от клиентов, выполните:  │
+│     You have successfully registered on the StorageOK      │
+│     platform. To start receiving customer inquiries,       │
+│     please complete the following:                         │
 │                                                            │
 │   ┌──────────────────────────────────────────────────┐    │
-│   │  ✅ Шаг 1: Регистрация                           │    │
-│   │     Готово!                                      │    │
+│   │  ✅ Step 1: Registration                         │    │
+│   │     Complete!                                    │    │
 │   └──────────────────────────────────────────────────┘    │
 │                                                            │
 │   ┌──────────────────────────────────────────────────┐    │
-│   │  ⏺  Шаг 2: Заполните профиль компании           │    │
-│   │     Название, ИНН, адрес, реквизиты              │    │
-│   │     ⏱ ~5-10 минут                                 │    │
-│   │     ┌──────────────────────────────┐              │    │
-│   │     │ Заполнить профиль           │              │    │
-│   │     └──────────────────────────────┘              │    │
+│   │  ⏺  Step 2: Complete Company Profile            │    │
+│   │     Company name, TRN, address, bank details     │    │
+│   │     ⏱ ~5-10 minutes                               │    │
+│   │     ┌──────────────────────────────┐             │    │
+│   │     │ Complete Profile            │             │    │
+│   │     └──────────────────────────────┘             │    │
 │   └──────────────────────────────────────────────────┘    │
 │                                                            │
 │   ┌──────────────────────────────────────────────────┐    │
-│   │  ⏺  Шаг 3: Загрузите документы                  │    │
-│   │     ⏱ ~5 минут                                    │    │
+│   │  ⏺  Step 3: Upload Documents                     │    │
+│   │     ⏱ ~5 minutes                                  │    │
 │   └──────────────────────────────────────────────────┘    │
 │                                                            │
 │   ┌──────────────────────────────────────────────────┐    │
-│   │  ⏺  Шаг 4: Проверка (24-48 часов)               │    │
+│   │  ⏺  Step 4: Verification (24-48 hours)          │    │
 │   └──────────────────────────────────────────────────┘    │
 │                                                            │
 │                                                            │
-│              [Пропустить и изучить платформу]             │
+│              [Skip and Explore Platform]                  │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Действия пользователя:**
-- Нажимает "Заполнить профиль" → переход к Шагу 3
-- Нажимает "Пропустить" → переход в dashboard (может вернуться к заполнению позже)
+**User Actions:**
+- Click "Complete Profile" → proceeds to Step 3
+- Click "Skip" → navigate to dashboard (can return to profile completion later)
 
-**Время:** 10-30 секунд
+**Duration:** 10-30 seconds
 
 ---
 
-### Шаг 3: Profile Completion компании
+### Step 3: Company Profile Completion
 
-**Цель:** Собрать основную информацию о бизнесе оператора
+**Objective:** Collect primary business information
 
 **URL:** `/operator/profile/edit`
 
-**Экран (пример для юрлица):**
+**Screen (Example for Legal Entity):**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  [Логотип]   Профиль компании                  [Иван]     │
+│  [Logo]   Company Profile                    [Ahmed]       │
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
-│  Шаг 2 из 4: Заполните профиль компании                   │
+│  Step 2 of 4: Complete Company Profile                    │
 │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   │
 │                                                            │
-│  📋 Общая информация                                       │
+│  📋 General Information                                    │
 │                                                            │
-│  Название компании *                                       │
+│  Company Name *                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ StorageBiz LLC                                    │ │
+│  │ StorageBiz LLC                                       │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ИНН * [?]                                                 │
+│  TRN (Tax Registration Number) * [?]                      │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 7701234567                                           │ │
+│  │ 123456789012                                         │ │
 │  └──────────────────────────────────────────────────────┘ │
-│  ✅ ИНН корректен                                          │
+│  ✅ TRN valid                                              │
 │                                                            │
-│  ОГРН * [?]                                                │
+│  Trade License Number * [?]                               │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 1027700000000                                        │ │
-│  └──────────────────────────────────────────────────────┘ │
-│                                                            │
-│  КПП * [?]                                                 │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │ 770101001                                            │ │
+│  │ 1234567890123                                        │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────                 │
-│                                                            │
-│  📍 Адреса                                                 │
-│                                                            │
-│  Юридический адрес *                                       │
+│  License Department Code * [?]                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 123456, Dubai, Al Quoz, д. 1, офис 10        │ │
+│  │ 001234567                                            │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ☐ Фактический адрес совпадает с юридическим               │
+│  ─────────────────────────────────────────                │
 │                                                            │
-│  Фактический адрес                                         │
+│  📍 Addresses                                              │
+│                                                            │
+│  Legal Address *                                           │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 123456, Dubai, ул. Пушкина, д. 2                │ │
+│  │ Dubai, Al Quoz, Building 1, Office 10               │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────                 │
+│  ☐ Operating address same as legal address               │
 │                                                            │
-│  💰 Bank Details                                   │
-│                                                            │
-│  БИК банка * [?]                                           │
+│  Operating Address                                         │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 044525225                                            │ │
-│  └──────────────────────────────────────────────────────┘ │
-│  ✅ Банк: ПАО "Сбербанк России"                            │
-│                                                            │
-│  Расчетный счет * [?]                                      │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │ 40702810400000001234                                 │ │
+│  │ Dubai, Jebel Ali, Building 2                         │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  Корреспондентский счет (автозаполнение) *                 │
+│  ─────────────────────────────────────────                │
+│                                                            │
+│  💰 Bank Details                                           │
+│                                                            │
+│  SWIFT Code * [?]                                          │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ 30101810400000000225                                 │ │
+│  │ EMIRATES                                             │ │
+│  └──────────────────────────────────────────────────────┘ │
+│  ✅ Bank: Emirates NBD                                     │
+│                                                            │
+│  Bank Account Number * [?]                                │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ 001234567890123456                                   │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────                 │
-│                                                            │
-│  👤 Контактное лицо                                        │
-│                                                            │
-│  ФИО *                                                     │
+│  IBAN (auto-populated) *                                   │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Иванов Иван Иванович                                 │ │
+│  │ AE070030000001234567890123                           │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  Должность *                                               │
+│  ─────────────────────────────────────────                │
+│                                                            │
+│  👤 Primary Contact                                        │
+│                                                            │
+│  Full Name *                                               │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ Генеральный директор                                 │ │
+│  │ Ahmed Hassan Mohammed                                │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  Телефон *                                                 │
+│  Position *                                                │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │ +7 (495) 123-45-67                                   │ │
+│  │ General Manager                                      │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────                 │
+│  Phone Number *                                            │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ +971-4-123-4567                                      │ │
+│  └──────────────────────────────────────────────────────┘ │
+│                                                            │
+│  ─────────────────────────────────────────                │
 │                                                            │
 │  ┌────────────────────┐    ┌────────────────────┐         │
-│  │ Сохранить черновик │    │ Продолжить →       │         │
+│  │ Save Draft         │    │ Continue →         │         │
 │  └────────────────────┘    └────────────────────┘         │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Особенности UX:**
+**UX Features:**
 
-1. **Inline-валидация:**
-   - ИНН проверяется сразу при вводе (формат, контрольная сумма)
-   - При валидном ИНН показывается ✅ "ИНН корректен"
-   - При вводе БИК автоматически подтягивается название банка и корр.счет
+1. **Inline Validation:**
+   - TRN is validated immediately upon entry (format, checksum)
+   - Valid TRN displays ✅ "TRN valid"
+   - SWIFT Code automatically populates bank name and IBAN
 
-2. **Подсказки (tooltips):**
-   - Иконка [?] рядом с полем → при наведении показывается подсказка
-   - Пример: "ИНН [?]" → "Индивидуальный номер налогоплательщика. Для юрлиц: 10 цифр."
+2. **Tooltips:**
+   - [?] icon next to field → displays tooltip on hover
+   - Example: "TRN [?]" → "Tax Registration Number. For legal entities: 12 digits."
 
-3. **Автозаполнение:**
-   - Если оператор вводит БИК, система автоматически подтягивает корр.счет из справочника БИК
+3. **Auto-Population:**
+   - When operator enters SWIFT Code, system automatically retrieves IBAN from the banking directory
 
-4. **Сохранение черновика:**
-   - Оператор может сохранить незаконченный профиль и вернуться позже
+4. **Draft Saving:**
+   - Operator can save incomplete profile and return later
 
-**Действия пользователя:**
-- Заполняет все обязательные поля
-- Нажимает "Продолжить" → переход к Шагу 4
+**User Actions:**
+- Fill all required fields
+- Click "Continue" → proceeds to Step 4
 
-**Валидация:**
-- Все обязательные поля заполнены
-- ИНН, ОГРН, БИК в корректном формате
-- Расчетный счет соответствует БИК
+**Validation:**
+- All required fields completed
+- TRN, Trade License Number, and SWIFT Code in correct format
+- Bank account number matches SWIFT Code
 
-**Время:** 5-10 минут
+**Duration:** 5-10 minutes
 
 ---
 
-### Шаг 4: Document Upload
+### Step 4: Document Upload
 
-**Цель:** Получить юридические документы для верификации
+**Objective:** Obtain legal documents for verification
 
 **URL:** `/operator/documents`
 
-**Экран:**
+**Screen:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  [Логотип]   Document Upload                  [Иван]  │
+│  [Logo]   Document Upload                    [Ahmed]       │
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
-│  Шаг 3 из 4: Загрузите документы                          │
+│  Step 3 of 4: Upload Documents                            │
 │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░   │
 │                                                            │
-│  📄 Обязательные документы                                 │
+│  📄 Required Documents                                     │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │  1. Выписка из UAE Commercial Registry                          ☐      │ │
+│  │  1. UAE Commercial Registry Certificate    ☐         │ │
 │  │                                                      │ │
-│  │  [Выбрать файл]  📎                                  │ │
+│  │  [Select File]  📎                                  │ │
 │  │                                                      │ │
-│  │  Формат: PDF, JPG, PNG (макс 10 МБ)                 │ │
-│  │  Не старше 3 месяцев                                │ │
-│  │  📚 [Как получить выписку?]                          │ │
+│  │  Formats: PDF, JPG, PNG (max 10 MB)                 │ │
+│  │  Not older than 3 months                            │ │
+│  │  📚 [How to obtain certificate?]                    │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │  2. Справка о банковских реквизитах           ☐      │ │
+│  │  2. Bank Account Verification Letter       ☐         │ │
 │  │                                                      │ │
-│  │  [Выбрать файл]  📎                                  │ │
+│  │  [Select File]  📎                                  │ │
 │  │                                                      │ │
-│  │  Формат: PDF, JPG, PNG (макс 10 МБ)                 │ │
-│  │  Скан из банка или скриншот из банк-клиента         │ │
+│  │  Formats: PDF, JPG, PNG (max 10 MB)                 │ │
+│  │  Bank letterhead or bank app screenshot             │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────                 │
+│  ─────────────────────────────────────────                │
 │                                                            │
-│  📄 Дополнительные документы (по запросу)                  │
+│  📄 Additional Documents (Upon Request)                   │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │  3. Company Charter                            ☐      │ │
+│  │  3. Company Bylaws and Memorandum    ☐               │ │
 │  │                                                      │ │
-│  │  [Выбрать файл]  📎                                  │ │
+│  │  [Select File]  📎                                  │ │
 │  │                                                      │ │
-│  │  (Опционально, может потребоваться при проверке)    │ │
+│  │  (Optional, may be required during verification)    │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  ─────────────────────────────────────────────             │
+│  ─────────────────────────────────────────                │
 │                                                            │
-│  Прогресс: 0/2 обязательных документов загружено           │
+│  Progress: 0/2 required documents uploaded                │
 │                                                            │
 │  ┌────────────────────┐    ┌────────────────────┐         │
-│  │ Назад              │    │ Отправить на       │         │
-│  │                    │    │ проверку           │ (блок)  │
+│  │ Back               │    │ Submit for         │         │
+│  │                    │    │ Verification       │ (blocked)│
 │  └────────────────────┘    └────────────────────┘         │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Процесс загрузки файла:**
+**File Upload Process:**
 
-1. Оператор нажимает "Выбрать файл"
-2. Открывается file picker
-3. Оператор выбирает файл
-4. Система проверяет:
-   - Формат файла (PDF, JPG, PNG)
-   - Размер файла (<10 МБ)
-5. Если валидно:
-   - Файл загружается на сервер
-   - Показывается прогресс-бар загрузки
-   - После загрузки: ✅ "Файл загружен: egrul_2025.pdf (2.3 МБ)"
-   - Чекбокс ☐ меняется на ✅
-   - Прогресс обновляется: "1/2 обязательных документов загружено"
-6. Если невалидно:
-   - Показывается ошибка: "Формат файла не поддерживается" или "Файл превышает 10 МБ"
+1. Operator clicks "Select File"
+2. File picker opens
+3. Operator selects a file
+4. System checks:
+   - File format (PDF, JPG, PNG)
+   - File size (<10 MB)
+5. If valid:
+   - File uploads to server
+   - Progress bar displays
+   - After upload: ✅ "File uploaded: certificate_2025.pdf (2.3 MB)"
+   - Checkbox ☐ changes to ✅
+   - Progress updates: "1/2 required documents uploaded"
+6. If invalid:
+   - Error displayed: "File format not supported" or "File exceeds 10 MB"
 
-**После загрузки всех обязательных документов:**
+**After All Required Documents Uploaded:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │  ...                                                       │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │  1. Выписка из UAE Commercial Registry                          ✅      │ │
+│  │  1. UAE Commercial Registry Certificate    ✅         │ │
 │  │                                                      │ │
-│  │  ✅ egrul_2025.pdf (2.3 МБ)                          │ │
-│  │  [Удалить]                                           │ │
+│  │  ✅ certificate_2025.pdf (2.3 MB)                   │ │
+│  │  [Delete]                                           │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
-│  │  2. Справка о банковских реквизитах           ✅      │ │
+│  │  2. Bank Account Verification Letter       ✅         │ │
 │  │                                                      │ │
-│  │  ✅ bank_details.jpg (1.8 МБ)                        │ │
-│  │  [Удалить]                                           │ │
+│  │  ✅ bank_letter.jpg (1.8 MB)                        │ │
+│  │  [Delete]                                           │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
-│  Прогресс: 2/2 обязательных документов загружено ✅        │
+│  Progress: 2/2 required documents uploaded ✅             │
 │                                                            │
 │  ┌────────────────────┐    ┌────────────────────┐         │
-│  │ Назад              │    │ Отправить на       │         │
-│  │                    │    │ проверку           │ (актив) │
+│  │ Back               │    │ Submit for         │         │
+│  │                    │    │ Verification       │ (active) │
 │  └────────────────────┘    └────────────────────┘         │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Действия пользователя:**
-- Загружает все обязательные документы
-- Нажимает "Отправить на проверку" → переход к Шагу 5
+**User Actions:**
+- Upload all required documents
+- Click "Submit for Verification" → proceeds to Step 5
 
-**Время:** 5-10 минут (зависит от скорости интернета)
+**Duration:** 5-10 minutes (depends on internet speed)
 
 ---
 
-### Шаг 5: Подтверждение отправки
+### Step 5: Submission Confirmation
 
-**Цель:** Убедиться, что оператор готов отправить заявку
+**Objective:** Ensure operator is ready to submit application
 
-**Модальное окно:**
+**Modal Window:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
-│           Отправить заявку на проверку?                    │
+│           Submit Application for Verification?             │
 │                                                            │
-│  После отправки вы не сможете редактировать профиль        │
-│  и документы до завершения проверки.                       │
+│  After submission, you will not be able to edit your       │
+│  profile and documents until verification is completed.    │
 │                                                            │
-│  Обычно проверка занимает 24-48 часов (рабочие дни).       │
-│  Мы отправим вам уведомление по email, когда проверка      │
-│  будет завершена.                                          │
+│  Verification typically takes 24-48 hours (business days). │
+│  We will send you an email notification when verification  │
+│  is complete.                                              │
 │                                                            │
-│  ☑ Я подтверждаю, что все данные корректны                 │
+│  ☑ I confirm that all information is accurate              │
 │                                                            │
 │  ┌────────────────────┐    ┌────────────────────┐         │
-│  │ Отмена             │    │ Отправить          │         │
+│  │ Cancel             │    │ Submit             │         │
 │  └────────────────────┘    └────────────────────┘         │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Действия пользователя:**
-- Отмечает чекбокс подтверждения
-- Нажимает "Отправить" → заявка отправляется, переход к Шагу 6
+**User Actions:**
+- Check confirmation box
+- Click "Submit" → application submitted, proceeds to Step 6
 
-**Системные действия:**
-- Статус оператора: `draft` → `pending_verification`
-- Статус верификации: `not_submitted` → `in_review`
+**System Actions:**
+- Operator status: `draft` → `pending_verification`
+- Verification status: `not_submitted` → `in_review`
 - `submitted_at = NOW()`
-- Вызов автоматических проверок (ИНН, БИК, AI Risk Engine)
-- Создание задачи в очереди модерации
-- Отправка email оператору: "Ваша заявка принята"
-- Отправка уведомления администраторам
+- Trigger automated checks (TRN, SWIFT Code, AI Risk Engine)
+- Create task in moderation queue
+- Send confirmation email to operator: "Your application has been received"
+- Send notification to administrators
 
 ---
 
-### Шаг 6: Ожидание проверки
+### Step 6: Verification Waiting
 
-**Цель:** Информировать оператора о статусе проверки
+**Objective:** Inform operator of verification status
 
 **URL:** `/operator/dashboard`
 
-**Экран:**
+**Screen:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  [Логотип]   Dashboard                         [Иван]     │
+│  [Logo]   Dashboard                          [Ahmed]       │
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
-│           🔍 Ваша заявка на рассмотрении                   │
+│           🔍 Your Application Under Review                 │
 │                                                            │
 │  ┌──────────────────────────────────────────────────────┐ │
 │  │                                                      │ │
-│  │  Мы проверяем ваши документы и данные.              │ │
-│  │  Обычно проверка занимает 24-48 часов.              │ │
+│  │  We are reviewing your documents and information.    │ │
+│  │  Verification typically takes 24-48 hours.           │ │
 │  │                                                      │ │
-│  │  Статус: На проверке                                │ │
-│  │  Дата подачи: 9 декабря 2025, 15:30                 │ │
-│  │  Ожидаемая дата: 11 декабря 2025                    │ │
+│  │  Status: Under Review                               │ │
+│  │  Submission Date: December 9, 2025, 15:30           │ │
+│  │  Expected Completion: December 11, 2025             │ │
 │  │                                                      │ │
 │  │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░    │ │
-│  │  Этап 2/3: Проверка документов                      │ │
+│  │  Stage 2/3: Document Verification                   │ │
 │  │                                                      │ │
-│  │  Вы получите email, когда проверка будет завершена. │ │
+│  │  You will receive an email when verification is      │ │
+│  │  complete.                                           │ │
 │  │                                                      │ │
-│  │  [Связаться с поддержкой]                           │ │
+│  │  [Contact Support]                                  │ │
 │  │                                                      │ │
 │  └──────────────────────────────────────────────────────┘ │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Что происходит в фоне:**
-- Automated Checks (ИНН, ОГРН, БИК)
+**Background Process:**
+- Automated checks (TRN, Trade License Number, SWIFT Code)
 - AI Risk Scoring
-- Заявка попадает в очередь администратора
-- Администратор просматривает профиль и документы
-- Администратор принимает решение
+- Application enters administrator review queue
+- Administrator reviews profile and documents
+- Administrator makes decision
 
-**Время:** 24-48 часов
+**Duration:** 24-48 hours
 
 ---
 
-### Шаг 7: Результат проверки
+### Step 7: Verification Result
 
-**Вариант A: Одобрение**
+**Option A: Approval**
 
 **Email:**
 
 ```
-Тема: Поздравляем! Ваш аккаунт одобрен
+Subject: Congratulations! Your Account Approved
 
-Привет, Иван!
+Hello Ahmed,
 
-Отличные новости! Ваша заявка на платформе СкладОК одобрена.
+Great news! Your application on the StorageOK platform has been approved.
 
-Теперь вы можете:
-✅ Создавать склады и боксы
-✅ Получать заявки от клиентов
-✅ Управлять ценами и аналитикой
+You can now:
+✅ Create warehouses and storage units
+✅ Receive customer inquiries
+✅ Manage pricing and analytics
 
-👉 Перейти в личный кабинет: https://selfstorage.com/operator/dashboard
+👉 Go to your account: https://selfstorage.com/operator/dashboard
 
-Следующие шаги:
-1. Создайте первый склад
-2. Добавьте боксы и настройте цены
-3. Начните принимать заявки!
+Next steps:
+1. Create your first warehouse
+2. Add storage units and set pricing
+3. Start receiving customer inquiries!
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Экран в личном кабинете:**
+**Dashboard Screen:**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│           🎉 Поздравляем! Ваш аккаунт верифицирован        │
+│           🎉 Congratulations! Account Verified              │
 │                                                            │
-│  Ваша заявка одобрена. Теперь вы можете пользоваться      │
-│  всеми функциями платформы.                                │
+│  Your application has been approved. You can now use all   │
+│  features of the platform.                                 │
 │                                                            │
 │  ┌────────────────────────────────┐                        │
-│  │ Создать первый склад          │                        │
+│  │ Create First Warehouse         │                        │
 │  └────────────────────────────────┘                        │
 │                                                            │
-│  📚 [Инструкция по созданию склада]                        │
+│  📚 [Warehouse Creation Guide]                             │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-**Вариант B: Запрос дополнительной информации**
+**Option B: Request for Additional Information**
 
 **Email:**
 
 ```
-Тема: Требуется дополнительная информация
+Subject: Additional Information Required
 
-Привет, Иван!
+Hello Ahmed,
 
-Для завершения проверки вашей заявки нам нужна дополнительная информация:
+To complete verification of your application, we need additional information:
 
-📝 Запрос от администратора:
-"Предоставьте выписку из UAE Commercial Registry не старше 3 месяцев. Загруженная выписка датирована апрелем 2025 года."
+📝 Administrator Request:
+"Please provide a UAE Commercial Registry Certificate not older than 3 months.
+The uploaded certificate is dated April 2025."
 
-👉 Предоставить информацию: https://selfstorage.com/operator/dashboard
+👉 Provide Information: https://selfstorage.com/operator/dashboard
 
-После предоставления информации мы продолжим проверку.
+Once you provide this information, we will continue verification.
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Экран в личном кабинете:** (см. раздел 4.7)
+**Dashboard Screen:** (See section 4.7)
 
 ---
 
-**Вариант C: Отклонение**
+**Option C: Rejection**
 
 **Email:**
 
 ```
-Тема: Ваша заявка отклонена
+Subject: Application Status Update
 
-Привет, Иван!
+Hello Ahmed,
 
-К сожалению, мы не можем одобрить вашу заявку.
+Unfortunately, we are unable to approve your application at this time.
 
-Причина отклонения:
-"Компания с указанным ИНН не найдена в базе UAE Commercial Registry. Проверьте корректность ИНН и повторите попытку."
+Reason for Rejection:
+"Company with the specified TRN was not found in the UAE Commercial Registry.
+Please verify the TRN accuracy and try again."
 
-Если вы считаете, что произошла ошибка, свяжитесь с нашей поддержкой: support@selfstorage.com
+If you believe this is an error, please contact our support: support@selfstorage.ae
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Экран в личном кабинете:** (см. раздел 4.7)
+**Dashboard Screen:** (See section 4.7)
 
 ---
 
-## 5.3. Состояния оператора на уровне системы: draft, pending_verification, active, suspended, rejected
+## 5.3. Operator System States: Draft, Pending Verification, Active, Suspended, Rejected
 
-Подробное описание состояний оператора см. в разделе 2.5 (Основные статусы жизненного цикла оператора).
+Detailed description of operator states is provided in section 2.5 (Primary Operator Lifecycle Statuses).
 
-**Краткое резюме:**
+**Summary:**
 
-| Статус | Description | Доступные функции |
+| Status | Description | Available Functions |
 |--------|----------|------------------|
-| `draft` | Оператор зарегистрирован, но не отправил заявку | Profile Completion, загрузка документов |
-| `pending_verification` | Заявка under review | Только просмотр статуса |
-| `needs_more_info` | Требуется доп.информация | Загрузка доп.документов, редактирование |
-| `active` | Верифицирован и active | Полный доступ ко всем функциям |
-| `suspended` | Временно blocked | Только просмотр (read-only) |
-| `rejected` | Заявка отклонена | Просмотр причины, создание новой заявки |
-| `deactivated` | Аккаунт закрыт | Нет доступа |
+| `draft` | Operator registered but application not submitted | Profile completion, document upload |
+| `pending_verification` | Application under review | Status view only |
+| `needs_more_info` | Additional information required | Document upload, profile editing |
+| `active` | Verified and active | Full access to all features |
+| `suspended` | Temporarily blocked | Read-only access |
+| `rejected` | Application rejected | View rejection reason, submit new application |
+| `deactivated` | Account closed | No access |
 
 ---
 
-## 5.4. UX-обработка ошибок (некорректные данные, отсутствие документов и т.п.)
+## 5.4. Error Handling in UX (Invalid Data, Missing Documents, etc.)
 
-Правильная обработка ошибок критична для UX. Оператор должен всегда понимать, что пошло не так и как это исправить.
+Proper error handling is critical for user experience. The operator must always understand what went wrong and how to fix it.
 
-**Принципы обработки ошибок:**
+**Error Handling Principles:**
 
-1. **Конкретность**: сообщение об ошибке должно четко объяснять проблему
-2. **Локализация**: ошибка показывается рядом с проблемным полем
-3. **Конструктивность**: предлагается способ исправления
-4. **Дружелюбность**: тон сообщений дружелюбный, не обвиняющий
+1. **Specificity**: Error message clearly explains the problem
+2. **Localization**: Error appears next to the problematic field
+3. **Constructiveness**: Message provides a solution
+4. **Friendliness**: Tone is supportive, not accusatory
 
 ---
 
-### Типы ошибок и их обработка
+### Error Types and Handling
 
-**1. Ошибки валидации формы (при регистрации / заполнении профиля)**
+**1. Form Validation Errors (During Registration / Profile Completion)**
 
-**Пример: некорректный email**
+**Example: Invalid Email**
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │ Email *                                              │
-│ ivan@skladbiz                                        │
+│ ahmed@storagebiz                                     │
 └──────────────────────────────────────────────────────┘
-❌ Введите корректный email
+❌ Please enter a valid email address
 ```
 
-**Пример: ИНН с ошибкой**
+**Example: TRN Error**
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│ ИНН *                                                │
+│ TRN *                                                │
 │ 77012345                                             │
 └──────────────────────────────────────────────────────┘
-❌ ИНН должен содержать 10 или 12 цифр
+❌ TRN must contain 12 digits
 ```
 
-**Пример: пароли не совпадают**
+**Example: Passwords Don't Match**
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│ Подтвердите пароль *                                 │
+│ Confirm Password *                                   │
 │ ••••••••                                             │
 └──────────────────────────────────────────────────────┘
-❌ Пароли не совпадают
+❌ Passwords do not match
 ```
 
 ---
 
-**2. Ошибки при загрузке файлов**
+**2. File Upload Errors**
 
-**Пример: неподдерживаемый формат**
+**Example: Unsupported Format**
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  1. Выписка из UAE Commercial Registry                          ☐      │
+│  1. UAE Commercial Registry Certificate    ☐         │
 │                                                      │
-│  [Выбрать файл]  📎                                  │
+│  [Select File]  📎                                  │
 │                                                      │
-│  ❌ Ошибка: Неподдерживаемый формат файла            │
-│     Файл "document.docx" не может быть загружен.    │
-│     Поддерживаемые форматы: PDF, JPG, PNG           │
+│  ❌ Error: Unsupported file format                  │
+│     File "document.docx" cannot be uploaded.        │
+│     Supported formats: PDF, JPG, PNG                │
 └──────────────────────────────────────────────────────┘
 ```
 
-**Пример: файл слишком большой**
+**Example: File Too Large**
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  1. Выписка из UAE Commercial Registry                          ☐      │
+│  1. UAE Commercial Registry Certificate    ☐         │
 │                                                      │
-│  [Выбрать файл]  📎                                  │
+│  [Select File]  📎                                  │
 │                                                      │
-│  ❌ Ошибка: Файл превышает 10 МБ                     │
-│     Размер файла "egrul.pdf": 12.5 МБ               │
-│     Максимальный размер: 10 МБ                      │
-│     Попробуйте сжать файл или загрузить другой.    │
+│  ❌ Error: File exceeds 10 MB                       │
+│     File size "certificate.pdf": 12.5 MB            │
+│     Maximum size: 10 MB                             │
+│     Try compressing the file or uploading another.  │
 └──────────────────────────────────────────────────────┘
 ```
 
-**Пример: ошибка загрузки на сервер**
+**Example: Server Upload Error**
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  1. Выписка из UAE Commercial Registry                          ☐      │
+│  1. UAE Commercial Registry Certificate    ☐         │
 │                                                      │
-│  ❌ Ошибка загрузки файла                            │
-│     Не удалось загрузить файл на сервер.            │
-│     Проверьте интернет-соединение и попробуйте снова.│
+│  ❌ File Upload Error                               │
+│     Unable to upload file to server.                │
+│     Check your internet connection and try again.   │
 │                                                      │
-│  [Попробовать снова]                                │
+│  [Retry]                                            │
 └──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-**3. Ошибки при отправке на проверку**
+**3. Submission Errors**
 
-**Пример: не все обязательные поля заполнены**
+**Example: Required Fields Not Completed**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  ❌ Невозможно отправить заявку                            │
+│  ❌ Cannot Submit Application                              │
 │                                                            │
-│  Для отправки заявки необходимо:                           │
-│  • Заполнить все обязательные поля профиля                 │
-│  • Загрузить все обязательные документы (2/2)              │
+│  To submit your application, you must:                     │
+│  • Complete all required profile fields                    │
+│  • Upload all required documents (2/2)                     │
 │                                                            │
-│  Не заполнены поля:                                        │
-│  • Юридический адрес                                       │
-│  • БИК банка                                               │
+│  Missing Fields:                                           │
+│  • Legal Address                                           │
+│  • SWIFT Code                                              │
 │                                                            │
 │  ┌────────────────────────────────┐                        │
-│  │ Вернуться к заполнению        │                        │
+│  │ Return to Profile Completion   │                        │
 │  └────────────────────────────────┘                        │
 └────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-**4. Системные ошибки**
+**4. System Errors**
 
-**Пример: потеря соединения с сервером**
+**Example: Server Connection Lost**
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
-│              ⚠️ Ошибка соединения с сервером                │
+│              ⚠️ Server Connection Error                    │
 │                                                            │
-│  Не удалось связаться с сервером. Проверьте интернет-      │
-│  соединение и попробуйте снова.                            │
+│  Unable to connect to server. Please check your internet   │
+│  connection and try again.                                 │
 │                                                            │
-│  Если проблема сохраняется, свяжитесь с поддержкой:        │
-│  support@selfstorage.com                                   │
+│  If the problem persists, contact support:                │
+│  support@selfstorage.ae                                   │
 │                                                            │
 │  ┌────────────────────────────────┐                        │
-│  │ Попробовать снова             │                        │
+│  │ Try Again                      │                        │
 │  └────────────────────────────────┘                        │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
@@ -4272,29 +4276,29 @@ flowchart TD
 
 ---
 
-**5. Ошибки API (HTTP-коды)**
+**5. API Error Codes**
 
-| HTTP-код | Тип ошибки | Сообщение пользователю |
+| HTTP Code | Error Type | User Message |
 |----------|-----------|------------------------|
-| 400 Bad Request | Некорректные данные | "Проверьте правильность заполнения полей" |
-| 401 Unauthorized | Не авторизован | "Сессия истекла. Пожалуйста, войдите снова" |
-| 403 Forbidden | Нет прав доступа | "У вас нет прав на выполнение этого действия" |
-| 404 Not Found | Ресурс не найден | "Запрашиваемая страница не найдена" |
-| 409 Conflict | Конфликт (например, дубликат) | "Пользователь с таким email уже зарегистрирован" |
-| 422 Unprocessable Entity | Ошибка валидации | "Данные не прошли валидацию. Проверьте правильность заполнения" |
-| 429 Too Many Requests | Превышен лимит запросов | "Превышен лимит попыток. Попробуйте через 1 час" |
-| 500 Internal Server Error | Ошибка сервера | "Внутренняя ошибка сервера. Мы уже работаем над её устранением" |
+| 400 Bad Request | Invalid data | "Please verify your entries are correct" |
+| 401 Unauthorized | Not authenticated | "Session expired. Please log in again" |
+| 403 Forbidden | Access denied | "You do not have permission to perform this action" |
+| 404 Not Found | Resource not found | "The requested page was not found" |
+| 409 Conflict | Conflict (e.g., duplicate) | "A user with this email is already registered" |
+| 422 Unprocessable Entity | Validation error | "Data failed validation. Please check your entries" |
+| 429 Too Many Requests | Rate limit exceeded | "Too many attempts. Please try again in 1 hour" |
+| 500 Internal Server Error | Server error | "Server error. We are working to resolve this" |
 
 ---
 
-**6. Обработка ошибок в коде (Frontend)**
+**6. Frontend Error Handling Code**
 
 ```typescript
 async function handleSubmit() {
   try {
     setLoading(true);
     setError(null);
-    
+
     const response = await fetch('/api/v1/operators/submit', {
       method: 'POST',
       headers: {
@@ -4303,35 +4307,35 @@ async function handleSubmit() {
       },
       body: JSON.stringify(formData)
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
-      
-      // Обработка специфических ошибок
+
+      // Handle specific errors
       if (response.status === 422) {
-        // Ошибки валидации
+        // Validation errors
         setFieldErrors(errorData.error.details.fields);
       } else if (response.status === 409) {
-        // Конфликт (дубликат)
+        // Conflict (duplicate)
         setError(errorData.error.message);
       } else if (response.status === 429) {
         // Rate limit
-        setError(`Превышен лимит попыток. Попробуйте через ${errorData.error.details.retry_after / 60} минут`);
+        setError(`Too many attempts. Try again in ${errorData.error.details.retry_after / 60} minutes`);
       } else {
-        // Общая ошибка
-        setError('Произошла ошибка. Попробуйте позже.');
+        // General error
+        setError('An error occurred. Please try again later.');
       }
-      
+
       return;
     }
-    
+
     const data = await response.json();
-    // Успех
+    // Success
     router.push('/operator/dashboard');
-    
+
   } catch (error) {
-    // Ошибка сети или другая непредвиденная ошибка
-    setError('Не удалось связаться с сервером. Проверьте интернет-соединение.');
+    // Network error or other unexpected error
+    setError('Unable to connect to server. Check your internet connection.');
     console.error('Submission error:', error);
   } finally {
     setLoading(false);
@@ -4341,324 +4345,327 @@ async function handleSubmit() {
 
 ---
 
-## 5.5. Уведомления оператору (email/SMS/внутренние уведомления) по ключевым событиям
+## 5.5. Operator Notifications (Email/SMS/In-App) for Key Events
 
-Уведомления держат оператора в курсе статуса его заявки и важных событий.
+Notifications keep the operator informed of application status and important events.
 
-**Каналы уведомлений:**
-- **Email** (основной канал)
-- **Внутренние уведомления** в личном кабинете
-- **SMS** (опционально, для критических событий)
-- **Push-уведомления** (в будущем, для мобильного приложения)
+**Notification Channels:**
+- **Email** (primary channel)
+- **In-App Notifications** in personal account
+- **SMS** (optional, for critical events)
+- **Push Notifications** (future, for mobile app)
 
 ---
 
-### Ключевые события и уведомления
+### Key Events and Notifications
 
-**1. Регистрация оператора**
+**1. Operator Registration**
 
 **Email:**
 
-Тема: `Добро пожаловать на СкладОК!`
+Subject: `Welcome to StorageOK!`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-Спасибо за регистрацию на платформе СкладОК.
+Thank you for registering with StorageOK.
 
-Вы зарегистрировались как оператор склада. Чтобы начать принимать заявки от клиентов, необходимо:
+You have registered as a storage operator. To start receiving customer inquiries, you need to:
 
-1. Заполнить профиль компании
-2. Загрузить необходимые документы
-3. Дождаться проверки (обычно 24-48 часов)
+1. Complete your company profile
+2. Upload required documents
+3. Wait for verification (typically 24-48 hours)
 
-👉 Перейти в личный кабинет: https://selfstorage.com/operator/dashboard
+👉 Go to your account: https://selfstorage.com/operator/dashboard
 
-Если у вас возникнут вопросы, наша команда поддержки всегда готова помочь: support@selfstorage.com
+If you have any questions, our support team is ready to help: support@selfstorage.ae
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Внутреннее уведомление:**
+**In-App Notification:**
 
 ```
-🎉 Добро пожаловать на СкладОК!
-Завершите регистрацию, чтобы начать получать заявки от клиентов.
-[Заполнить профиль]
+🎉 Welcome to StorageOK!
+Complete registration to start receiving customer inquiries.
+[Complete Profile]
 ```
 
 ---
 
-**2. Заявка отправлена на проверку**
+**2. Application Submitted for Verification**
 
 **Email:**
 
-Тема: `Ваша заявка принята на проверку`
+Subject: `Your Application Received`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-Ваша заявка на верификацию успешно отправлена.
+Your application for verification has been successfully submitted.
 
-Статус: На проверке
-Дата подачи: 9 декабря 2025, 15:30
-Ожидаемая дата завершения: 11 декабря 2025
+Status: Under Review
+Submission Date: December 9, 2025, 15:30
+Expected Completion: December 11, 2025
 
-Обычно проверка занимает 24-48 часов (рабочие дни).
-Мы отправим вам уведомление, как только проверка будет завершена.
+Verification typically takes 24-48 hours (business days).
+We will send you a notification once verification is complete.
 
-👉 Отслеживать статус: https://selfstorage.com/operator/dashboard
+👉 Track Status: https://selfstorage.com/operator/dashboard
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Внутреннее уведомление:**
+**In-App Notification:**
 
 ```
-🔍 Ваша заявка на рассмотрении
-Ожидайте результат проверки в течение 24-48 часов.
+🔍 Your Application Under Review
+Please wait for verification results within 24-48 hours.
 ```
 
 ---
 
-**3. Запрос дополнительной информации**
+**3. Request for Additional Information**
 
 **Email:**
 
-Тема: `Требуется дополнительная информация`
+Subject: `Additional Information Required`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-Для завершения проверки вашей заявки нам нужна дополнительная информация.
+To complete verification of your application, we need additional information.
 
-📝 Запрос от администратора:
-"Предоставьте выписку из UAE Commercial Registry не старше 3 месяцев. Загруженная выписка датирована апрелем 2025 года."
+📝 Administrator Request:
+"Please provide a UAE Commercial Registry Certificate not older than 3 months.
+The uploaded certificate is dated April 2025."
 
-👉 Предоставить информацию: https://selfstorage.com/operator/dashboard
+👉 Provide Information: https://selfstorage.com/operator/dashboard
 
-После предоставления информации мы продолжим проверку.
+Once you provide this information, we will continue verification.
 
-Если у вас возникнут вопросы, свяжитесь с нами: support@selfstorage.com
+If you have questions, contact us: support@selfstorage.ae
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Внутреннее уведомление:**
+**In-App Notification:**
 
 ```
-⚠️ Требуется дополнительная информация
-Администратор запросил дополнительные документы.
-[Посмотреть запрос]
+⚠️ Additional Information Required
+Administrator requested additional documents.
+[View Request]
 ```
 
-**SMS (опционально):**
+**SMS (Optional):**
 
 ```
-СкладОК: Требуется дополнительная информация для завершения проверки. Подробнее: https://selfstorage.com/operator/dashboard
+StorageOK: Additional information needed to complete verification. Details: https://selfstorage.com/operator/dashboard
 ```
 
 ---
 
-**4. Заявка одобрена**
+**4. Application Approved**
 
 **Email:**
 
-Тема: `🎉 Поздравляем! Ваш аккаунт одобрен`
+Subject: `🎉 Congratulations! Your Account Approved`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-Отличные новости! Ваша заявка на платформе СкладОК одобрена.
+Great news! Your application with StorageOK has been approved.
 
-Теперь вы можете:
-✅ Создавать склады и боксы
-✅ Получать заявки от клиентов
-✅ Управлять ценами и аналитикой
+You can now:
+✅ Create warehouses and storage units
+✅ Receive customer inquiries
+✅ Manage pricing and analytics
 
-👉 Перейти в личный кабинет: https://selfstorage.com/operator/dashboard
+👉 Go to Your Account: https://selfstorage.com/operator/dashboard
 
-Следующие шаги:
-1. Создайте первый склад
-2. Добавьте боксы и настройте цены
-3. Начните принимать заявки!
+Next Steps:
+1. Create your first warehouse
+2. Add storage units and set pricing
+3. Start receiving customer inquiries!
 
-📚 Инструкция по созданию склада: https://selfstorage.com/help/create-warehouse
+📚 Warehouse Creation Guide: https://selfstorage.com/help/create-warehouse
 
-Если у вас возникнут вопросы, мы всегда рады помочь: support@selfstorage.com
+If you have questions, we are happy to help: support@selfstorage.ae
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Внутреннее уведомление:**
+**In-App Notification:**
 
 ```
-🎉 Ваш аккаунт верифицирован!
-Теперь вы можете создавать склады и получать заявки.
-[Создать первый склад]
+🎉 Your Account Verified!
+You can now create warehouses and receive customer inquiries.
+[Create First Warehouse]
 ```
 
-**SMS (опционально):**
+**SMS (Optional):**
 
 ```
-СкладОК: Поздравляем! Ваш аккаунт одобрен. Начните работу: https://selfstorage.com/operator/dashboard
+StorageOK: Congratulations! Your account approved. Start here: https://selfstorage.com/operator/dashboard
 ```
 
 ---
 
-**5. Заявка отклонена**
+**5. Application Rejected**
 
 **Email:**
 
-Тема: `Ваша заявка отклонена`
+Subject: `Application Status Update`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-К сожалению, мы не можем одобрить вашу заявку.
+Unfortunately, we are unable to approve your application at this time.
 
-Причина отклонения:
-"Компания с указанным ИНН не найдена в базе UAE Commercial Registry. Проверьте корректность ИНН и повторите попытку."
+Reason for Rejection:
+"Company with the specified TRN was not found in the UAE Commercial Registry.
+Please verify the TRN accuracy and try again."
 
-Дата отклонения: 10 декабря 2025, 16:00
+Rejection Date: December 10, 2025, 16:00
 
-Что делать дальше:
-• Проверьте правильность введенных данных
-• Если данные корректны, свяжитесь с поддержкой: support@selfstorage.com
-• Если ошибка была с вашей стороны, вы можете создать новую заявку с правильными данными
+What You Can Do:
+• Verify the accuracy of your information
+• If data is correct, contact support: support@selfstorage.ae
+• If you made an error, submit a new application with correct information
 
-👉 Посмотреть детали: https://selfstorage.com/operator/dashboard
+👉 View Details: https://selfstorage.com/operator/dashboard
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
-**Внутреннее уведомление:**
+**In-App Notification:**
 
 ```
-❌ Ваша заявка отклонена
-Причина: Компания не найдена в UAE Commercial Registry.
-[Посмотреть детали] [Создать новую заявку]
-```
-
----
-
-**6. Напоминание о незавершенной регистрации**
-
-**Email (через 24 часа после регистрации, если профиль не заполнен):**
-
-Тема: `Не забудьте завершить регистрацию`
-
-```
-Привет, Иван!
-
-Мы заметили, что вы начали регистрацию на СкладОК, но не завершили её.
-
-Чтобы начать получать заявки от клиентов, осталось:
-• Заполнить профиль компании
-• Загрузить необходимые документы
-• Отправить заявку на проверку
-
-👉 Продолжить регистрацию: https://selfstorage.com/operator/dashboard
-
-Если у вас возникли вопросы, мы готовы помочь: support@selfstorage.com
-
-С уважением,
-Команда СкладОК
+❌ Application Rejected
+Reason: Company not found in UAE Commercial Registry.
+[View Details] [Submit New Application]
 ```
 
 ---
 
-**7. Напоминание о предоставлении доп.информации**
+**6. Reminder: Incomplete Registration**
 
-**Email (через 3 дня после запроса, если информация не предоставлена):**
+**Email (24 hours after registration, if profile not completed):**
 
-Тема: `Напоминание: требуется дополнительная информация`
+Subject: `Don't Forget to Complete Registration`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-Мы ждем от вас дополнительную информацию для завершения проверки.
+We noticed you started registration with StorageOK but didn't complete it.
 
-Запрос от администратора:
-"Предоставьте выписку из UAE Commercial Registry не старше 3 месяцев."
+To start receiving customer inquiries, you need to:
+• Complete your company profile
+• Upload required documents
+• Submit your application for verification
 
-Дата запроса: 10 декабря 2025
+👉 Continue Registration: https://selfstorage.com/operator/dashboard
 
-👉 Предоставить информацию: https://selfstorage.com/operator/dashboard
+If you have questions, we're here to help: support@selfstorage.ae
 
-Если у вас возникли вопросы или проблемы с предоставлением информации, свяжитесь с нами: support@selfstorage.com
-
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
 ---
 
-**8. Автоматическое отклонение (через 30 дней без ответа)**
+**7. Reminder: Additional Information Pending**
+
+**Email (3 days after request, if information not provided):**
+
+Subject: `Reminder: Additional Information Required`
+
+```
+Hello Ahmed,
+
+We are waiting for your additional information to complete verification.
+
+Administrator Request:
+"Please provide a UAE Commercial Registry Certificate not older than 3 months."
+
+Request Date: December 10, 2025
+
+👉 Provide Information: https://selfstorage.com/operator/dashboard
+
+If you have questions or issues providing information, contact us: support@selfstorage.ae
+
+Best regards,
+StorageOK Team
+```
+
+---
+
+**8. Auto-Rejection (After 30 Days Without Response)**
 
 **Email:**
 
-Тема: `Ваша заявка автоматически отклонена`
+Subject: `Application Status Update`
 
 ```
-Привет, Иван!
+Hello Ahmed,
 
-К сожалению, ваша заявка была автоматически отклонена, так как мы не получили запрошенную информацию в течение 30 дней.
+Unfortunately, your application has been automatically rejected because we did not receive
+the requested information within 30 days.
 
-Если вы все еще заинтересованы в работе с нами, вы можете создать новую заявку.
+If you are still interested in working with us, you can submit a new application.
 
-👉 Создать новую заявку: https://selfstorage.com/operator/signup
+👉 Submit New Application: https://selfstorage.com/operator/signup
 
-С уважением,
-Команда СкладОК
+Best regards,
+StorageOK Team
 ```
 
 ---
 
-**Таблица уведомлений:**
+**Notification Summary Table:**
 
-| Событие | Email | Внутреннее | SMS | Push |
+| Event | Email | In-App | SMS | Push |
 |---------|-------|-----------|-----|------|
-| Регистрация | ✅ | ✅ | ❌ | ❌ |
-| Заявка отправлена | ✅ | ✅ | ❌ | ❌ |
-| Запрос доп.инфо | ✅ | ✅ | ⚠️ Опционально | ❌ |
-| Заявка одобрена | ✅ | ✅ | ⚠️ Опционально | ❌ |
-| Заявка отклонена | ✅ | ✅ | ❌ | ❌ |
-| Напоминание о незавершенной регистрации (24ч) | ✅ | ✅ | ❌ | ❌ |
-| Напоминание о доп.инфо (3 дня) | ✅ | ✅ | ❌ | ❌ |
-| Напоминание о доп.инфо (7 дней) | ✅ | ✅ | ❌ | ❌ |
-| Автоматическое отклонение (30 дней) | ✅ | ✅ | ❌ | ❌ |
+| Registration | ✅ | ✅ | ❌ | ❌ |
+| Application Submitted | ✅ | ✅ | ❌ | ❌ |
+| More Info Requested | ✅ | ✅ | ⚠️ Optional | ❌ |
+| Application Approved | ✅ | ✅ | ⚠️ Optional | ❌ |
+| Application Rejected | ✅ | ✅ | ❌ | ❌ |
+| Incomplete Registration Reminder (24h) | ✅ | ✅ | ❌ | ❌ |
+| More Info Reminder (3 days) | ✅ | ✅ | ❌ | ❌ |
+| More Info Reminder (7 days) | ✅ | ✅ | ❌ | ❌ |
+| Auto-Rejection (30 days) | ✅ | ✅ | ❌ | ❌ |
 
 ---
 
-**Настройки уведомлений:**
+**Notification Settings:**
 
-Оператор может управлять настройками уведомлений в личном кабинете:
+Operators can manage notification preferences in their account:
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  Настройки уведомлений                                     │
+│  Notification Settings                                     │
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
-│  📧 Email-уведомления                                      │
-│  ☑ Получать уведомления о статусе проверки                │
-│  ☑ Получать напоминания                                    │
-│  ☑ Получать новостную рассылку                             │
+│  📧 Email Notifications                                    │
+│  ☑ Receive notifications about verification status        │
+│  ☑ Receive reminder emails                                 │
+│  ☑ Receive newsletter                                      │
 │                                                            │
-│  📱 SMS-уведомления (опционально)                          │
-│  ☐ Получать SMS при одобрении заявки                       │
-│  ☐ Получать SMS при запросе доп.информации                 │
+│  📱 SMS Notifications (Optional)                           │
+│  ☐ Receive SMS when application approved                   │
+│  ☐ Receive SMS when more information requested             │
 │                                                            │
-│  🔔 Внутренние уведомления                                 │
-│  ☑ Показывать уведомления в личном кабинете                │
+│  🔔 In-App Notifications                                   │
+│  ☑ Show notifications in account                           │
 │                                                            │
 │  ┌────────────────────────────────┐                        │
-│  │ Сохранить                     │                        │
+│  │ Save                            │                        │
 │  └────────────────────────────────┘                        │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
@@ -4666,103 +4673,90 @@ async function handleSubmit() {
 
 ---
 
-**Конец Файла 2 (Разделы 4-5 полностью)**
-# Operator Onboarding & Verification Specification (MVP v1)
-
-**Document Version:** 1.0  
-**Date:** December 9, 2025  
-**Project:** Self-Storage Aggregator MVP  
-**Status:** Draft
-
----
-
-## Файл 3: Раздел 6
-
----
 
 # 6. Onboarding and Verification API Layer
 
-## 6.1. Список и назначение эндпоинтов (минимум)
+## 6.1. Endpoint Overview and Purposes
 
-API-слой обеспечивает взаимодействие между фронтендом (веб-интерфейс оператора) и бэкендом (бизнес-логика, БД) в процессе онбординга и верификации.
+The API layer facilitates interaction between the frontend (operator web interface) and backend (business logic, database) during the onboarding and verification process.
 
-**Базовый URL:** `https://api.selfstorage.com/api/v1`
+**Base URL:** `https://api.selfstorage.com/api/v1`
 
-**Аутентификация:** JWT Bearer Token (кроме регистрации и логина)
-
----
-
-### Группа 1: Регистрация и аутентификация
-
-| № | Эндпоинт | Метод | Description | Авторизация |
-|---|----------|-------|----------|-------------|
-| 1.1 | `/auth/register` | POST | Регистрация нового оператора | Нет |
-| 1.2 | `/auth/login` | POST | Вход в систему | Нет |
-| 1.3 | `/auth/refresh` | POST | Обновление access token | Refresh token |
-| 1.4 | `/auth/logout` | POST | Выход из системы | JWT |
+**Authentication:** JWT Bearer Token (except for registration and login)
 
 ---
 
-### Группа 2: Профиль оператора
+### Group 1: Registration and Authentication
 
-| № | Эндпоинт | Метод | Description | Авторизация |
-|---|----------|-------|----------|-------------|
-| 2.1 | `/operators/me` | GET | Получить профиль текущего оператора | JWT (operator) |
-| 2.2 | `/operators/me` | PUT | Обновить профиль оператора | JWT (operator) |
-| 2.3 | `/operators/me/status` | GET | Получить статус верификации | JWT (operator) |
-
----
-
-### Группа 3: Документы
-
-| № | Эндпоинт | Метод | Description | Авторизация |
-|---|----------|-------|----------|-------------|
-| 3.1 | `/operators/me/documents` | GET | Получить список загруженных документов | JWT (operator) |
-| 3.2 | `/operators/me/documents` | POST | Загрузить документ | JWT (operator) |
-| 3.3 | `/operators/me/documents/{id}` | DELETE | Удалить документ | JWT (operator) |
-| 3.4 | `/operators/me/documents/{id}/download` | GET | Скачать документ | JWT (operator) |
+| No. | Endpoint | Method | Description | Authorization |
+|---|----------|--------|----------|-------------|
+| 1.1 | `/auth/register` | POST | Register a new operator | None |
+| 1.2 | `/auth/login` | POST | User login | None |
+| 1.3 | `/auth/refresh` | POST | Refresh access token | Refresh token |
+| 1.4 | `/auth/logout` | POST | Logout from system | JWT |
 
 ---
 
-### Группа 4: Верификация
+### Group 2: Operator Profile
 
-| № | Эндпоинт | Метод | Description | Авторизация |
-|---|----------|-------|----------|-------------|
-| 4.1 | `/operators/me/submit` | POST | Отправить заявку на проверку | JWT (operator) |
-| 4.2 | `/operators/me/verification` | GET | Получить информацию о верификации | JWT (operator) |
-
----
-
-### Группа 5: Админские операции
-
-| № | Эндпоинт | Метод | Description | Авторизация |
-|---|----------|-------|----------|-------------|
-| 5.1 | `/admin/operators` | GET | Получить список операторов (с фильтрами) | JWT (admin) |
-| 5.2 | `/admin/operators/{id}` | GET | Получить детали оператора | JWT (admin) |
-| 5.3 | `/admin/operators/{id}/approve` | POST | Одобрить заявку оператора | JWT (admin) |
-| 5.4 | `/admin/operators/{id}/reject` | POST | Отклонить заявку оператора | JWT (admin) |
-| 5.5 | `/admin/operators/{id}/request-info` | POST | Запросить дополнительную информацию | JWT (admin) |
-| 5.6 | `/admin/operators/{id}/documents/{docId}` | GET | Просмотреть документ оператора | JWT (admin) |
-| 5.7 | `/admin/operators/{id}/audit-log` | GET | Получить audit log оператора | JWT (admin) |
+| No. | Endpoint | Method | Description | Authorization |
+|---|----------|--------|----------|-------------|
+| 2.1 | `/operators/me` | GET | Retrieve current operator profile | JWT (operator) |
+| 2.2 | `/operators/me` | PUT | Update operator profile | JWT (operator) |
+| 2.3 | `/operators/me/status` | GET | Retrieve verification status | JWT (operator) |
 
 ---
 
-## 6.2. Детализация эндпоинтов: HTTP-метод, путь, auth-требования (JWT, роль), поля request-body, валидация, структура response, возможные ошибки (400/401/403/404/409/422)
+### Group 3: Documents
+
+| No. | Endpoint | Method | Description | Authorization |
+|---|----------|--------|----------|-------------|
+| 3.1 | `/operators/me/documents` | GET | Retrieve list of uploaded documents | JWT (operator) |
+| 3.2 | `/operators/me/documents` | POST | Upload a document | JWT (operator) |
+| 3.3 | `/operators/me/documents/{id}` | DELETE | Delete a document | JWT (operator) |
+| 3.4 | `/operators/me/documents/{id}/download` | GET | Download a document | JWT (operator) |
 
 ---
 
-### 1.1. POST /auth/register — Регистрация оператора
+### Group 4: Verification
 
-**Description:** Создание нового аккаунта оператора.
+| No. | Endpoint | Method | Description | Authorization |
+|---|----------|--------|----------|-------------|
+| 4.1 | `/operators/me/submit` | POST | Submit application for review | JWT (operator) |
+| 4.2 | `/operators/me/verification` | GET | Retrieve verification information | JWT (operator) |
 
-**Авторизация:** Нет
+---
+
+### Group 5: Admin Operations
+
+| No. | Endpoint | Method | Description | Authorization |
+|---|----------|--------|----------|-------------|
+| 5.1 | `/admin/operators` | GET | Retrieve list of operators (with filters) | JWT (admin) |
+| 5.2 | `/admin/operators/{id}` | GET | Retrieve operator details | JWT (admin) |
+| 5.3 | `/admin/operators/{id}/approve` | POST | Approve operator application | JWT (admin) |
+| 5.4 | `/admin/operators/{id}/reject` | POST | Reject operator application | JWT (admin) |
+| 5.5 | `/admin/operators/{id}/request-info` | POST | Request additional information | JWT (admin) |
+| 5.6 | `/admin/operators/{id}/documents/{docId}` | GET | View operator document | JWT (admin) |
+| 5.7 | `/admin/operators/{id}/audit-log` | GET | Retrieve operator audit log | JWT (admin) |
+
+---
+
+## 6.2. Endpoint Details: HTTP Method, Path, Auth Requirements (JWT, Role), Request Body Fields, Validation, Response Structure, Possible Errors (400/401/403/404/409/422)
+
+---
+
+### 1.1. POST /auth/register — Operator Registration
+
+**Description:** Create a new operator account.
+
+**Authorization:** None
 
 **Request Body:**
 
 ```json
 {
-  "email": "ivan@skladbiz.ru",
-  "phone": "+74951234567",
+  "email": "ahmed@storagebiz.ae",
+  "phone": "+971-4-1234567",
   "password": "SecurePass123!",
   "password_confirmation": "SecurePass123!",
   "operator_type": "legal_entity",
@@ -4770,16 +4764,16 @@ API-слой обеспечивает взаимодействие между ф
 }
 ```
 
-**Валидация:**
+**Validation:**
 
-| Поле | Тип | Обязательно | Правила |
+| Field | Type | Required | Rules |
 |------|-----|-------------|---------|
-| email | string | ✅ | Email формат, уникальность |
-| phone | string | ✅ | E.164 формат, уникальность |
-| password | string | ✅ | Мин 8 символов, сложность |
-| password_confirmation | string | ✅ | Совпадает с password |
+| email | string | ✅ | Email format, uniqueness |
+| phone | string | ✅ | E.164 format, uniqueness |
+| password | string | ✅ | Minimum 8 characters, complexity required |
+| password_confirmation | string | ✅ | Must match password |
 | operator_type | enum | ✅ | `legal_entity`, `individual_entrepreneur`, `self_employed`, `individual` |
-| terms_accepted | boolean | ✅ | Должно быть true |
+| terms_accepted | boolean | ✅ | Must be true |
 
 **Response: 201 Created**
 
@@ -4789,8 +4783,8 @@ API-слой обеспечивает взаимодействие между ф
   "data": {
     "user": {
       "id": 123,
-      "email": "ivan@skladbiz.ru",
-      "phone": "+74951234567",
+      "email": "ahmed@storagebiz.ae",
+      "phone": "+971-4-1234567",
       "role": "operator",
       "created_at": "2025-12-09T15:30:00Z"
     },
@@ -4809,11 +4803,11 @@ API-слой обеспечивает взаимодействие между ф
       "expires_in": 900
     }
   },
-  "message": "Регистрация успешна. Проверьте email для подтверждения."
+  "message": "Registration successful. Please verify your email address."
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **400 Bad Request:**
 ```json
@@ -4821,12 +4815,12 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "validation_error",
-    "message": "Ошибка валидации данных",
+    "message": "Data validation error",
     "details": {
       "fields": [
         {
           "field": "email",
-          "message": "Некорректный формат email"
+          "message": "Invalid email format"
         }
       ]
     }
@@ -4840,9 +4834,9 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "email_already_exists",
-    "message": "Пользователь с таким email уже зарегистрирован",
+    "message": "A user with this email address is already registered",
     "details": {
-      "email": "ivan@skladbiz.ru"
+      "email": "ahmed@storagebiz.ae"
     }
   }
 }
@@ -4854,14 +4848,14 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "weak_password",
-    "message": "Пароль не соответствует требованиям безопасности",
+    "message": "Password does not meet security requirements",
     "details": {
       "requirements": [
-        "Минимум 8 символов",
-        "Минимум 1 заглавная буква",
-        "Минимум 1 строчная буква",
-        "Минимум 1 цифра",
-        "Минимум 1 спецсимвол"
+        "Minimum 8 characters",
+        "Minimum 1 uppercase letter",
+        "Minimum 1 lowercase letter",
+        "Minimum 1 digit",
+        "Minimum 1 special character"
       ]
     }
   }
@@ -4874,7 +4868,7 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "rate_limit_exceeded",
-    "message": "Превышен лимит регистраций. Попробуйте через 1 час.",
+    "message": "Registration limit exceeded. Please try again in 1 hour.",
     "details": {
       "limit": 3,
       "window": "1 hour",
@@ -4886,17 +4880,17 @@ API-слой обеспечивает взаимодействие между ф
 
 ---
 
-### 1.2. POST /auth/login — Вход в систему
+### 1.2. POST /auth/login — User Login
 
-**Description:** Аутентификация пользователя.
+**Description:** Authenticate a user.
 
-**Авторизация:** Нет
+**Authorization:** None
 
 **Request Body:**
 
 ```json
 {
-  "email": "ivan@skladbiz.ru",
+  "email": "ahmed@storagebiz.ae",
   "password": "SecurePass123!"
 }
 ```
@@ -4909,7 +4903,7 @@ API-слой обеспечивает взаимодействие между ф
   "data": {
     "user": {
       "id": 123,
-      "email": "ivan@skladbiz.ru",
+      "email": "ahmed@storagebiz.ae",
       "role": "operator"
     },
     "operator": {
@@ -4927,7 +4921,7 @@ API-слой обеспечивает взаимодействие между ф
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **401 Unauthorized:**
 ```json
@@ -4935,7 +4929,7 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "invalid_credentials",
-    "message": "Неверный email или пароль"
+    "message": "Invalid email or password"
   }
 }
 ```
@@ -4946,7 +4940,7 @@ API-слой обеспечивает взаимодействие между ф
   "success": false,
   "error": {
     "code": "rate_limit_exceeded",
-    "message": "Слишком много попыток входа. Попробуйте через 15 минут.",
+    "message": "Too many login attempts. Please try again in 15 minutes.",
     "details": {
       "retry_after": 900
     }
@@ -4956,11 +4950,11 @@ API-слой обеспечивает взаимодействие между ф
 
 ---
 
-### 2.1. GET /operators/me — Получить профиль оператора
+### 2.1. GET /operators/me — Retrieve Operator Profile
 
-**Description:** Получение полной информации о профиле текущего оператора.
+**Description:** Retrieve complete information about the current operator's profile.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
 **Headers:**
 ```
@@ -4980,36 +4974,36 @@ Authorization: Bearer <access_token>
     "is_verified": false,
     "verification_status": "not_submitted",
     "onboarding_progress": 40,
-    
+
     "company_info": {
-      "company_name": "ООО \"СкладБизнес\"",
-      "inn": "7701234567",
-      "ogrn": "1027700000000",
-      "kpp": "770101001",
-      "legal_address": "123456, Dubai, Al Quoz, д. 1, офис 10",
-      "actual_address": "123456, Dubai, ул. Пушкина, д. 2"
+      "company_name": "StorageBiz LLC",
+      "trn": "100123456789",
+      "trade_license_number": "102755202000001",
+      "branch_code": "001",
+      "legal_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE",
+      "actual_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE"
     },
-    
+
     "bank_details": {
-      "bik": "044525225",
-      "account_number": "40702810400000001234",
-      "correspondent_account": "30101810400000000225",
-      "bank_name": "ПАО \"Сбербанк России\""
+      "swift_code": "CBKUAEAD",
+      "account_number": "0123456789012345678901",
+      "correspondent_account": "3010164000000000225",
+      "bank_name": "Emirates NBD"
     },
-    
+
     "contact_person": {
-      "full_name": "Иванов Иван Иванович",
-      "position": "Генеральный директор",
-      "phone": "+74951234567",
-      "email": "ivan@skladbiz.ru"
+      "full_name": "Ahmed Mohammed Al Mazrouei",
+      "position": "General Manager",
+      "phone": "+971-50-1234567",
+      "email": "ahmed@storagebiz.ae"
     },
-    
+
     "risk_assessment": {
       "risk_score": null,
       "risk_level": null,
       "fraud_signals": []
     },
-    
+
     "timestamps": {
       "created_at": "2025-12-09T15:30:00Z",
       "updated_at": "2025-12-09T16:00:00Z",
@@ -5020,7 +5014,7 @@ Authorization: Bearer <access_token>
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **401 Unauthorized:**
 ```json
@@ -5028,7 +5022,7 @@ Authorization: Bearer <access_token>
   "success": false,
   "error": {
     "code": "unauthorized",
-    "message": "Требуется авторизация"
+    "message": "Authorization required"
   }
 }
 ```
@@ -5039,61 +5033,61 @@ Authorization: Bearer <access_token>
   "success": false,
   "error": {
     "code": "forbidden",
-    "message": "Недостаточно прав для выполнения операции"
+    "message": "Insufficient permissions to perform this operation"
   }
 }
 ```
 
 ---
 
-### 2.2. PUT /operators/me — Обновить профиль оператора
+### 2.2. PUT /operators/me — Update Operator Profile
 
-**Description:** Обновление данных профиля оператора.
+**Description:** Update operator profile data.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
-**Ограничение:** Доступно только в статусах `draft` и `needs_more_info`.
+**Restriction:** Available only in `draft` and `needs_more_info` statuses.
 
 **Request Body:**
 
 ```json
 {
   "company_info": {
-    "company_name": "ООО \"СкладБизнес\"",
-    "inn": "7701234567",
-    "ogrn": "1027700000000",
-    "kpp": "770101001",
-    "legal_address": "123456, Dubai, Al Quoz, д. 1, офис 10",
-    "actual_address": "123456, Dubai, ул. Пушкина, д. 2"
+    "company_name": "StorageBiz LLC",
+    "trn": "100123456789",
+    "trade_license_number": "102755202000001",
+    "branch_code": "001",
+    "legal_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE",
+    "actual_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE"
   },
   "bank_details": {
-    "bik": "044525225",
-    "account_number": "40702810400000001234",
-    "correspondent_account": "30101810400000000225",
-    "bank_name": "ПАО \"Сбербанк России\""
+    "swift_code": "CBKUAEAD",
+    "account_number": "0123456789012345678901",
+    "correspondent_account": "3010164000000000225",
+    "bank_name": "Emirates NBD"
   },
   "contact_person": {
-    "full_name": "Иванов Иван Иванович",
-    "position": "Генеральный директор",
-    "phone": "+74951234567",
-    "email": "ivan@skladbiz.ru"
+    "full_name": "Ahmed Mohammed Al Mazrouei",
+    "position": "General Manager",
+    "phone": "+971-50-1234567",
+    "email": "ahmed@storagebiz.ae"
   }
 }
 ```
 
-**Валидация:**
+**Validation:**
 
-| Поле | Тип | Обязательно | Правила |
+| Field | Type | Required | Rules |
 |------|-----|-------------|---------|
-| company_name | string | ✅ | 2-255 символов |
-| inn | string | ✅ | 10 или 12 цифр, контрольная сумма |
-| ogrn | string | ✅ | 13 или 15 цифр, контрольная сумма |
-| kpp | string | ✅ (для юрлиц) | 9 цифр |
-| legal_address | string | ✅ | 10-500 символов |
-| bik | string | ✅ | 9 цифр, существует в справочнике |
-| account_number | string | ✅ | 20 цифр |
-| full_name | string | ✅ | 5-100 символов |
-| phone | string | ✅ | E.164 формат |
+| company_name | string | ✅ | 2-255 characters |
+| trn | string | ✅ | 15 digits, checksum validation |
+| trade_license_number | string | ✅ | 18 digits, checksum validation |
+| branch_code | string | ✅ (for legal entities) | 3 digits |
+| legal_address | string | ✅ | 10-500 characters |
+| swift_code | string | ✅ | 8 digits, exists in directory |
+| account_number | string | ✅ | 23 digits |
+| full_name | string | ✅ | 5-100 characters |
+| phone | string | ✅ | E.164 format |
 
 **Response: 200 OK**
 
@@ -5104,12 +5098,12 @@ Authorization: Bearer <access_token>
     "id": 456,
     "onboarding_progress": 70,
     "updated_at": "2025-12-09T16:30:00Z",
-    "message": "Профиль успешно обновлен"
+    "message": "Profile updated successfully"
   }
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **400 Bad Request:**
 ```json
@@ -5117,12 +5111,12 @@ Authorization: Bearer <access_token>
   "success": false,
   "error": {
     "code": "validation_error",
-    "message": "Ошибка валидации данных",
+    "message": "Data validation error",
     "details": {
       "fields": [
         {
-          "field": "inn",
-          "message": "Некорректная контрольная сумма ИНН"
+          "field": "trn",
+          "message": "Invalid TRN checksum"
         }
       ]
     }
@@ -5136,7 +5130,7 @@ Authorization: Bearer <access_token>
   "success": false,
   "error": {
     "code": "cannot_edit_profile",
-    "message": "Невозможно редактировать профиль в статусе 'pending_verification'",
+    "message": "Cannot edit profile in 'pending_verification' status",
     "details": {
       "current_status": "pending_verification"
     }
@@ -5146,11 +5140,11 @@ Authorization: Bearer <access_token>
 
 ---
 
-### 2.3. GET /operators/me/status — Получить статус верификации
+### 2.3. GET /operators/me/status — Retrieve Verification Status
 
-**Description:** Получение текущего статуса верификации и прогресса онбординга.
+**Description:** Retrieve current verification status and onboarding progress.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
 **Response: 200 OK**
 
@@ -5164,16 +5158,16 @@ Authorization: Bearer <access_token>
     "onboarding_progress": 80,
     "submitted_at": "2025-12-09T17:00:00Z",
     "estimated_completion": "2025-12-11T17:00:00Z",
-    
+
     "next_steps": [
       {
         "step": "wait_for_review",
-        "title": "Ожидание проверки",
-        "description": "Ваша заявка на рассмотрении. Обычно проверка занимает 24-48 часов.",
+        "title": "Awaiting Review",
+        "description": "Your application is under review. Verification typically takes 24-48 hours.",
         "is_completed": false
       }
     ],
-    
+
     "checks": {
       "profile_completed": true,
       "documents_uploaded": true,
@@ -5186,11 +5180,11 @@ Authorization: Bearer <access_token>
 
 ---
 
-### 3.1. GET /operators/me/documents — Список документов
+### 3.1. GET /operators/me/documents — Document List
 
-**Description:** Получение списка загруженных документов оператора.
+**Description:** Retrieve list of uploaded operator documents.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
 **Response: 200 OK**
 
@@ -5201,9 +5195,9 @@ Authorization: Bearer <access_token>
     "documents": [
       {
         "id": 1,
-        "document_type": "egrul_extract",
-        "document_name": "Выписка из UAE Commercial Registry",
-        "file_name": "egrul_2025.pdf",
+        "document_type": "trade_license_extract",
+        "document_name": "UAE Commercial Registry Extract",
+        "file_name": "trade_license_2025.pdf",
         "file_size": 2457600,
         "file_type": "application/pdf",
         "status": "uploaded",
@@ -5212,7 +5206,7 @@ Authorization: Bearer <access_token>
       {
         "id": 2,
         "document_type": "bank_details",
-        "document_name": "Справка о банковских реквизитах",
+        "document_name": "Bank Account Details Certificate",
         "file_name": "bank_details.jpg",
         "file_size": 1887436,
         "file_type": "image/jpeg",
@@ -5222,14 +5216,14 @@ Authorization: Bearer <access_token>
     ],
     "required_documents": [
       {
-        "type": "egrul_extract",
-        "name": "Выписка из UAE Commercial Registry",
+        "type": "trade_license_extract",
+        "name": "UAE Commercial Registry Extract",
         "is_uploaded": true,
         "is_required": true
       },
       {
         "type": "bank_details",
-        "name": "Справка о банковских реквизитах",
+        "name": "Bank Account Details Certificate",
         "is_uploaded": true,
         "is_required": true
       },
@@ -5247,11 +5241,11 @@ Authorization: Bearer <access_token>
 
 ---
 
-### 3.2. POST /operators/me/documents — Загрузить документ
+### 3.2. POST /operators/me/documents — Upload Document
 
-**Description:** Загрузка нового документа.
+**Description:** Upload a new document.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
 **Content-Type:** `multipart/form-data`
 
@@ -5259,20 +5253,20 @@ Authorization: Bearer <access_token>
 
 ```
 file: [binary data]
-document_type: "egrul_extract"
+document_type: "trade_license_extract"
 ```
 
-**Параметры:**
+**Parameters:**
 
-| Параметр | Тип | Обязательно | Description |
+| Parameter | Type | Required | Description |
 |----------|-----|-------------|----------|
-| file | file | ✅ | Файл документа |
-| document_type | string | ✅ | Тип документа: `egrul_extract`, `bank_details`, `charter`, `passport`, etc. |
+| file | file | ✅ | Document file |
+| document_type | string | ✅ | Document type: `trade_license_extract`, `bank_details`, `charter`, `passport`, etc. |
 
-**Валидация:**
-- Формат файла: PDF, JPG, JPEG, PNG
-- Максимальный размер: 10 МБ
-- Файл не должен быть поврежден
+**Validation:**
+- File format: PDF, JPG, JPEG, PNG
+- Maximum file size: 10 MB
+- File must not be corrupted
 
 **Response: 201 Created**
 
@@ -5282,18 +5276,18 @@ document_type: "egrul_extract"
   "data": {
     "document": {
       "id": 3,
-      "document_type": "egrul_extract",
-      "file_name": "egrul_2025.pdf",
+      "document_type": "trade_license_extract",
+      "file_name": "trade_license_2025.pdf",
       "file_size": 2457600,
       "status": "uploaded",
       "uploaded_at": "2025-12-09T17:00:00Z"
     }
   },
-  "message": "Документ успешно загружен"
+  "message": "Document uploaded successfully"
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **400 Bad Request:**
 ```json
@@ -5301,7 +5295,7 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "invalid_file_format",
-    "message": "Неподдерживаемый формат файла",
+    "message": "Unsupported file format",
     "details": {
       "allowed_formats": ["PDF", "JPG", "JPEG", "PNG"],
       "provided_format": "DOCX"
@@ -5316,7 +5310,7 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "file_too_large",
-    "message": "Файл превышает максимальный размер",
+    "message": "File exceeds maximum size",
     "details": {
       "max_size": 10485760,
       "file_size": 12582912
@@ -5327,24 +5321,24 @@ document_type: "egrul_extract"
 
 ---
 
-### 3.3. DELETE /operators/me/documents/{id} — Удалить документ
+### 3.3. DELETE /operators/me/documents/{id} — Delete Document
 
-**Description:** Удаление загруженного документа.
+**Description:** Delete an uploaded document.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
-**Ограничение:** Доступно только в статусах `draft` и `needs_more_info`.
+**Restriction:** Available only in `draft` and `needs_more_info` statuses.
 
 **Response: 200 OK**
 
 ```json
 {
   "success": true,
-  "message": "Документ успешно удален"
+  "message": "Document deleted successfully"
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **404 Not Found:**
 ```json
@@ -5352,7 +5346,7 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "document_not_found",
-    "message": "Документ не найден"
+    "message": "Document not found"
   }
 }
 ```
@@ -5363,23 +5357,23 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "cannot_delete_document",
-    "message": "Невозможно удалить документ в статусе 'pending_verification'"
+    "message": "Cannot delete document in 'pending_verification' status"
   }
 }
 ```
 
 ---
 
-### 4.1. POST /operators/me/submit — Отправить заявку на проверку
+### 4.1. POST /operators/me/submit — Submit Application for Review
 
-**Description:** Отправка заявки на модерацию.
+**Description:** Submit application for moderation.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
-**Предусловия:**
-- Все обязательные поля профиля заполнены
-- Все обязательные документы загружены
-- Статус оператора: `draft`
+**Prerequisites:**
+- All required profile fields completed
+- All required documents uploaded
+- Operator status: `draft`
 
 **Request Body:**
 
@@ -5408,11 +5402,11 @@ document_type: "egrul_extract"
       "fraud_signals": []
     }
   },
-  "message": "Заявка успешно отправлена на проверку"
+  "message": "Application submitted successfully for review"
 }
 ```
 
-**Возможные ошибки:**
+**Possible Errors:**
 
 **400 Bad Request:**
 ```json
@@ -5420,14 +5414,14 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "incomplete_profile",
-    "message": "Профиль заполнен не полностью",
+    "message": "Profile is not fully completed",
     "details": {
       "missing_fields": [
         "legal_address",
-        "bik"
+        "swift_code"
       ],
       "missing_documents": [
-        "egrul_extract"
+        "trade_license_extract"
       ]
     }
   }
@@ -5440,7 +5434,7 @@ document_type: "egrul_extract"
   "success": false,
   "error": {
     "code": "invalid_status",
-    "message": "Невозможно отправить заявку в текущем статусе",
+    "message": "Cannot submit application in current status",
     "details": {
       "current_status": "pending_verification"
     }
@@ -5450,11 +5444,11 @@ document_type: "egrul_extract"
 
 ---
 
-### 4.2. GET /operators/me/verification — Информация о верификации
+### 4.2. GET /operators/me/verification — Verification Information
 
-**Description:** Получение детальной информации о процессе верификации.
+**Description:** Retrieve detailed verification process information.
 
-**Авторизация:** JWT (роль: operator)
+**Authorization:** JWT (role: operator)
 
 **Response: 200 OK**
 
@@ -5465,14 +5459,14 @@ document_type: "egrul_extract"
     "verification_status": "in_review",
     "submitted_at": "2025-12-09T17:30:00Z",
     "estimated_completion": "2025-12-11T17:30:00Z",
-    
+
     "risk_assessment": {
       "risk_score": 35,
       "risk_level": "medium",
       "fraud_signals": [],
       "assessed_at": "2025-12-09T17:30:15Z"
     },
-    
+
     "admin_actions": [
       {
         "action": "submitted_for_review",
@@ -5480,7 +5474,7 @@ document_type: "egrul_extract"
         "comment": null
       }
     ],
-    
+
     "requested_info": null,
     "rejection_reason": null
   }
@@ -5489,27 +5483,27 @@ document_type: "egrul_extract"
 
 ---
 
-### 5.1. GET /admin/operators — Список операторов
+### 5.1. GET /admin/operators — Operator List
 
-**Description:** Получение списка операторов с фильтрацией и пагинацией.
+**Description:** Retrieve list of operators with filtering and pagination.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Query Parameters:**
 
-| Параметр | Тип | Description | По умолчанию |
+| Parameter | Type | Description | Default |
 |----------|-----|----------|--------------|
-| status | string | Фильтр по статусу: `draft`, `pending_verification`, `active`, etc. | Все |
-| verification_status | string | Фильтр по статусу верификации | Все |
-| operator_type | string | Фильтр по типу оператора | Все |
-| risk_level | string | Фильтр по уровню риска: `low`, `medium`, `high` | Все |
-| search | string | Поиск по названию, ИНН, email | - |
-| page | integer | Номер страницы | 1 |
-| per_page | integer | Количество на странице (макс 100) | 20 |
-| sort_by | string | Сортировка: `created_at`, `submitted_at`, `risk_score` | created_at |
-| sort_order | string | Порядок: `asc`, `desc` | desc |
+| status | string | Filter by status: `draft`, `pending_verification`, `active`, etc. | All |
+| verification_status | string | Filter by verification status | All |
+| operator_type | string | Filter by operator type | All |
+| risk_level | string | Filter by risk level: `low`, `medium`, `high` | All |
+| search | string | Search by name, TRN, email | - |
+| page | integer | Page number | 1 |
+| per_page | integer | Items per page (max 100) | 20 |
+| sort_by | string | Sort by: `created_at`, `submitted_at`, `risk_score` | created_at |
+| sort_order | string | Order: `asc`, `desc` | desc |
 
-**Пример запроса:**
+**Example Request:**
 ```
 GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_page=20
 ```
@@ -5523,8 +5517,8 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
     "operators": [
       {
         "id": 456,
-        "company_name": "ООО \"СкладБизнес\"",
-        "inn": "7701234567",
+        "company_name": "StorageBiz LLC",
+        "trn": "100123456789",
         "operator_type": "legal_entity",
         "status": "pending_verification",
         "verification_status": "in_review",
@@ -5532,9 +5526,9 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "risk_level": "medium",
         "submitted_at": "2025-12-09T17:30:00Z",
         "contact_person": {
-          "full_name": "Иванов Иван Иванович",
-          "email": "ivan@skladbiz.ru",
-          "phone": "+74951234567"
+          "full_name": "Ahmed Mohammed Al Mazrouei",
+          "email": "ahmed@storagebiz.ae",
+          "phone": "+971-50-1234567"
         }
       }
     ],
@@ -5556,11 +5550,11 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
 
 ---
 
-### 5.2. GET /admin/operators/{id} — Детали оператора
+### 5.2. GET /admin/operators/{id} — Operator Details
 
-**Description:** Получение полной информации об операторе для модерации.
+**Description:** Retrieve complete operator information for moderation.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Response: 200 OK**
 
@@ -5575,35 +5569,35 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
       "status": "pending_verification",
       "verification_status": "in_review",
       "is_verified": false,
-      
+
       "company_info": {
-        "company_name": "ООО \"СкладБизнес\"",
-        "inn": "7701234567",
-        "ogrn": "1027700000000",
-        "kpp": "770101001",
-        "legal_address": "123456, Dubai, Al Quoz, д. 1, офис 10",
-        "actual_address": "123456, Dubai, ул. Пушкина, д. 2"
+        "company_name": "StorageBiz LLC",
+        "trn": "100123456789",
+        "trade_license_number": "102755202000001",
+        "branch_code": "001",
+        "legal_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE",
+        "actual_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE"
       },
-      
+
       "bank_details": {
-        "bik": "044525225",
-        "account_number": "40702810400000001234",
-        "correspondent_account": "30101810400000000225",
-        "bank_name": "ПАО \"Сбербанк России\""
+        "swift_code": "CBKUAEAD",
+        "account_number": "0123456789012345678901",
+        "correspondent_account": "3010164000000000225",
+        "bank_name": "Emirates NBD"
       },
-      
+
       "contact_person": {
-        "full_name": "Иванов Иван Иванович",
-        "position": "Генеральный директор",
-        "phone": "+74951234567",
-        "email": "ivan@skladbiz.ru"
+        "full_name": "Ahmed Mohammed Al Mazrouei",
+        "position": "General Manager",
+        "phone": "+971-50-1234567",
+        "email": "ahmed@storagebiz.ae"
       },
-      
+
       "documents": [
         {
           "id": 1,
-          "document_type": "egrul_extract",
-          "file_name": "egrul_2025.pdf",
+          "document_type": "trade_license_extract",
+          "file_name": "trade_license_2025.pdf",
           "file_size": 2457600,
           "uploaded_at": "2025-12-09T16:45:00Z",
           "download_url": "/admin/operators/456/documents/1"
@@ -5617,7 +5611,7 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
           "download_url": "/admin/operators/456/documents/2"
         }
       ],
-      
+
       "risk_assessment": {
         "risk_score": 35,
         "risk_level": "medium",
@@ -5625,20 +5619,20 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "recommendation": "manual_review",
         "assessed_at": "2025-12-09T17:30:15Z"
       },
-      
+
       "automatic_checks": {
-        "inn_valid": true,
-        "ogrn_valid": true,
-        "bik_valid": true,
+        "trn_valid": true,
+        "trade_license_valid": true,
+        "swift_code_valid": true,
         "email_reputation": "high",
         "phone_valid": true,
         "ip_check": {
-          "country": "RU",
+          "country": "AE",
           "is_vpn": false,
           "is_proxy": false
         }
       },
-      
+
       "onboarding_channel": "self_service",
       "submitted_at": "2025-12-09T17:30:00Z",
       "created_at": "2025-12-09T15:30:00Z",
@@ -5650,17 +5644,17 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
 
 ---
 
-### 5.3. POST /admin/operators/{id}/approve — Одобрить заявку
+### 5.3. POST /admin/operators/{id}/approve — Approve Application
 
-**Description:** Одобрение заявки оператора.
+**Description:** Approve operator application.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Request Body:**
 
 ```json
 {
-  "comment": "Все документы в порядке. Одобрено."
+  "comment": "All documents are in order. Approved."
 }
 ```
 
@@ -5679,28 +5673,28 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
       "verified_by": 789
     }
   },
-  "message": "Заявка оператора успешно одобрена"
+  "message": "Operator application approved successfully"
 }
 ```
 
 ---
 
-### 5.4. POST /admin/operators/{id}/reject — Отклонить заявку
+### 5.4. POST /admin/operators/{id}/reject — Reject Application
 
-**Description:** Отклонение заявки оператора.
+**Description:** Reject operator application.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Request Body:**
 
 ```json
 {
-  "reason": "Компания с указанным ИНН не найдена в базе UAE Commercial Registry. Проверьте корректность ИНН."
+  "reason": "The company with the provided TRN was not found in the UAE Commercial Registry. Please verify the TRN accuracy."
 }
 ```
 
-**Валидация:**
-- `reason` — обязательное поле, минимум 10 символов
+**Validation:**
+- `reason` — required field, minimum 10 characters
 
 **Response: 200 OK**
 
@@ -5714,26 +5708,26 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
       "verification_status": "rejected",
       "rejected_at": "2025-12-10T10:00:00Z",
       "rejected_by": 789,
-      "rejection_reason": "Компания с указанным ИНН не найдена в базе UAE Commercial Registry. Проверьте корректность ИНН."
+      "rejection_reason": "The company with the provided TRN was not found in the UAE Commercial Registry. Please verify the TRN accuracy."
     }
   },
-  "message": "Заявка оператора отклонена"
+  "message": "Operator application rejected"
 }
 ```
 
 ---
 
-### 5.5. POST /admin/operators/{id}/request-info — Запросить доп. информацию
+### 5.5. POST /admin/operators/{id}/request-info — Request Additional Information
 
-**Description:** Запрос дополнительной информации у оператора.
+**Description:** Request additional information from operator.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Request Body:**
 
 ```json
 {
-  "requested_info": "Предоставьте выписку из UAE Commercial Registry не старше 3 месяцев. Загруженная выписка датирована апрелем 2025 года."
+  "requested_info": "Please provide a UAE Commercial Registry extract no older than 3 months. The currently uploaded extract is dated April 2025."
 }
 ```
 
@@ -5747,12 +5741,12 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
       "id": 456,
       "status": "needs_more_info",
       "verification_status": "needs_more_info",
-      "requested_info": "Предоставьте выписку из UAE Commercial Registry не старше 3 месяцев. Загруженная выписка датирована апрелем 2025 года.",
+      "requested_info": "Please provide a UAE Commercial Registry extract no older than 3 months. The currently uploaded extract is dated April 2025.",
       "requested_at": "2025-12-10T10:00:00Z",
       "requested_by": 789
     }
   },
-  "message": "Запрос на дополнительную информацию отправлен оператору"
+  "message": "Additional information request sent to operator"
 }
 ```
 
@@ -5760,9 +5754,9 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
 
 ### 5.7. GET /admin/operators/{id}/audit-log — Audit Log
 
-**Description:** Получение истории действий по оператору.
+**Description:** Retrieve action history for an operator.
 
-**Авторизация:** JWT (роль: admin)
+**Authorization:** JWT (role: admin)
 
 **Response: 200 OK**
 
@@ -5778,7 +5772,7 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "actor_id": null,
         "timestamp": "2025-12-09T15:30:00Z",
         "details": {
-          "email": "ivan@skladbiz.ru",
+          "email": "ahmed@storagebiz.ae",
           "operator_type": "legal_entity"
         }
       },
@@ -5789,7 +5783,7 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "actor_id": 456,
         "timestamp": "2025-12-09T16:30:00Z",
         "details": {
-          "fields_updated": ["company_name", "inn", "legal_address"]
+          "fields_updated": ["company_name", "trn", "legal_address"]
         }
       },
       {
@@ -5799,8 +5793,8 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "actor_id": 456,
         "timestamp": "2025-12-09T16:45:00Z",
         "details": {
-          "document_type": "egrul_extract",
-          "file_name": "egrul_2025.pdf"
+          "document_type": "trade_license_extract",
+          "file_name": "trade_license_2025.pdf"
         }
       },
       {
@@ -5821,7 +5815,7 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
         "actor_id": 789,
         "timestamp": "2025-12-10T10:00:00Z",
         "details": {
-          "comment": "Все документы в порядке. Одобрено."
+          "comment": "All documents are in order. Approved."
         }
       }
     ]
@@ -5831,19 +5825,19 @@ GET /admin/operators?status=pending_verification&risk_level=medium&page=1&per_pa
 
 ---
 
-## 6.3. Examples JSON-запросов и ответов для ключевых сценариев
+## 6.3. Example JSON Requests and Responses for Key Scenarios
 
-### Сценарий 1: Регистрация оператора
+### Scenario 1: Operator Registration
 
-**Запрос:**
+**Request:**
 ```http
 POST /api/v1/auth/register HTTP/1.1
 Host: api.selfstorage.com
 Content-Type: application/json
 
 {
-  "email": "ivan@skladbiz.ru",
-  "phone": "+74951234567",
+  "email": "ahmed@storagebiz.ae",
+  "phone": "+971-4-1234567",
   "password": "SecurePass123!",
   "password_confirmation": "SecurePass123!",
   "operator_type": "legal_entity",
@@ -5851,7 +5845,7 @@ Content-Type: application/json
 }
 ```
 
-**Ответ (успех):**
+**Response (Success):**
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -5861,7 +5855,7 @@ Content-Type: application/json
   "data": {
     "user": {
       "id": 123,
-      "email": "ivan@skladbiz.ru",
+      "email": "ahmed@storagebiz.ae",
       "role": "operator"
     },
     "operator": {
@@ -5879,9 +5873,9 @@ Content-Type: application/json
 
 ---
 
-### Сценарий 2: Обновление профиля
+### Scenario 2: Update Profile
 
-**Запрос:**
+**Request:**
 ```http
 PUT /api/v1/operators/me HTTP/1.1
 Host: api.selfstorage.com
@@ -5890,25 +5884,25 @@ Content-Type: application/json
 
 {
   "company_info": {
-    "company_name": "ООО \"СкладБизнес\"",
-    "inn": "7701234567",
-    "ogrn": "1027700000000",
-    "kpp": "770101001",
-    "legal_address": "123456, Dubai, Al Quoz, д. 1, офис 10"
+    "company_name": "StorageBiz LLC",
+    "trn": "100123456789",
+    "trade_license_number": "102755202000001",
+    "branch_code": "001",
+    "legal_address": "Office 10, Building 1, Al Quoz Industrial Area, Dubai, UAE"
   },
   "bank_details": {
-    "bik": "044525225",
-    "account_number": "40702810400000001234"
+    "swift_code": "CBKUAEAD",
+    "account_number": "0123456789012345678901"
   },
   "contact_person": {
-    "full_name": "Иванов Иван Иванович",
-    "position": "Генеральный директор",
-    "phone": "+74951234567"
+    "full_name": "Ahmed Mohammed Al Mazrouei",
+    "position": "General Manager",
+    "phone": "+971-50-1234567"
   }
 }
 ```
 
-**Ответ (успех):**
+**Response (Success):**
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -5920,15 +5914,15 @@ Content-Type: application/json
     "onboarding_progress": 70,
     "updated_at": "2025-12-09T16:30:00Z"
   },
-  "message": "Профиль успешно обновлен"
+  "message": "Profile updated successfully"
 }
 ```
 
 ---
 
-### Сценарий 3: Загрузка документа
+### Scenario 3: Upload Document
 
-**Запрос:**
+**Request:**
 ```http
 POST /api/v1/operators/me/documents HTTP/1.1
 Host: api.selfstorage.com
@@ -5938,16 +5932,16 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="document_type"
 
-egrul_extract
+trade_license_extract
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="egrul_2025.pdf"
+Content-Disposition: form-data; name="file"; filename="trade_license_2025.pdf"
 Content-Type: application/pdf
 
 [binary data]
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 ```
 
-**Ответ (успех):**
+**Response (Success):**
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -5957,21 +5951,21 @@ Content-Type: application/json
   "data": {
     "document": {
       "id": 1,
-      "document_type": "egrul_extract",
-      "file_name": "egrul_2025.pdf",
+      "document_type": "trade_license_extract",
+      "file_name": "trade_license_2025.pdf",
       "file_size": 2457600,
       "uploaded_at": "2025-12-09T16:45:00Z"
     }
   },
-  "message": "Документ успешно загружен"
+  "message": "Document uploaded successfully"
 }
 ```
 
 ---
 
-### Сценарий 4: Отправка на проверку
+### Scenario 4: Submit for Review
 
-**Запрос:**
+**Request:**
 ```http
 POST /api/v1/operators/me/submit HTTP/1.1
 Host: api.selfstorage.com
@@ -5983,7 +5977,7 @@ Content-Type: application/json
 }
 ```
 
-**Ответ (успех):**
+**Response (Success):**
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -6001,15 +5995,15 @@ Content-Type: application/json
       "risk_level": "medium"
     }
   },
-  "message": "Заявка успешно отправлена на проверку"
+  "message": "Application submitted successfully for review"
 }
 ```
 
 ---
 
-### Сценарий 5: Одобрение администратором
+### Scenario 5: Admin Approval
 
-**Запрос:**
+**Request:**
 ```http
 POST /api/v1/admin/operators/456/approve HTTP/1.1
 Host: api.selfstorage.com
@@ -6017,11 +6011,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Content-Type: application/json
 
 {
-  "comment": "Все документы в порядке. Одобрено."
+  "comment": "All documents are in order. Approved."
 }
 ```
 
-**Ответ (успех):**
+**Response (Success):**
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -6037,26 +6031,26 @@ Content-Type: application/json
       "verified_at": "2025-12-10T10:00:00Z"
     }
   },
-  "message": "Заявка оператора успешно одобрена"
+  "message": "Operator application approved successfully"
 }
 ```
 
 ---
 
-## 6.4. Единый формат ошибок (связь с Error Handling Spec)
+## 6.4. Unified Error Format (Connection to Error Handling Spec)
 
-Все API-ошибки возвращаются в едином формате для упрощения обработки на клиенте.
+All API errors are returned in a unified format to simplify client-side error handling.
 
-**Структура ответа с ошибкой:**
+**Error Response Structure:**
 
 ```json
 {
   "success": false,
   "error": {
     "code": "error_code",
-    "message": "Человекочитаемое сообщение об ошибке",
+    "message": "Human-readable error message",
     "details": {
-      // Дополнительная информация (опционально)
+      // Additional information (optional)
     }
   }
 }
@@ -6064,110 +6058,110 @@ Content-Type: application/json
 
 ---
 
-### Стандартные HTTP-коды ошибок
+### Standard HTTP Error Codes
 
-| HTTP-код | Название | Использование |
+| HTTP Code | Name | Usage |
 |----------|---------|---------------|
-| 400 | Bad Request | Некорректный запрос (общие ошибки) |
-| 401 | Unauthorized | Требуется аутентификация или токен невалиден |
-| 403 | Forbidden | Недостаточно прав для выполнения операции |
-| 404 | Not Found | Ресурс не найден |
-| 409 | Conflict | Конфликт (например, email уже существует) |
-| 422 | Unprocessable Entity | Ошибки валидации |
-| 429 | Too Many Requests | Превышен лимит запросов (rate limiting) |
-| 500 | Internal Server Error | Внутренняя ошибка сервера |
-| 503 | Service Unavailable | Сервис временно недоступен |
+| 400 | Bad Request | Invalid request (general errors) |
+| 401 | Unauthorized | Authentication required or token invalid |
+| 403 | Forbidden | Insufficient permissions for operation |
+| 404 | Not Found | Resource not found |
+| 409 | Conflict | Conflict (e.g., email already exists) |
+| 422 | Unprocessable Entity | Validation errors |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 500 | Internal Server Error | Server-side error |
+| 503 | Service Unavailable | Service temporarily unavailable |
 
 ---
 
-### Examples ошибок
+### Error Examples
 
-**400 Bad Request — Общая ошибка запроса:**
+**400 Bad Request — General request error:**
 ```json
 {
   "success": false,
   "error": {
     "code": "bad_request",
-    "message": "Некорректный запрос"
+    "message": "Invalid request"
   }
 }
 ```
 
-**401 Unauthorized — Не авторизован:**
+**401 Unauthorized — Not authenticated:**
 ```json
 {
   "success": false,
   "error": {
     "code": "unauthorized",
-    "message": "Требуется авторизация"
+    "message": "Authorization required"
   }
 }
 ```
 
-**401 Unauthorized — Невалидный токен:**
+**401 Unauthorized — Invalid token:**
 ```json
 {
   "success": false,
   "error": {
     "code": "invalid_token",
-    "message": "Токен авторизации невалиден или истек"
+    "message": "Authorization token is invalid or expired"
   }
 }
 ```
 
-**403 Forbidden — Недостаточно прав:**
+**403 Forbidden — Insufficient permissions:**
 ```json
 {
   "success": false,
   "error": {
     "code": "forbidden",
-    "message": "Недостаточно прав для выполнения операции"
+    "message": "Insufficient permissions to perform this operation"
   }
 }
 ```
 
-**404 Not Found — Ресурс не найден:**
+**404 Not Found — Resource not found:**
 ```json
 {
   "success": false,
   "error": {
     "code": "not_found",
-    "message": "Запрашиваемый ресурс не найден"
+    "message": "Requested resource not found"
   }
 }
 ```
 
-**409 Conflict — Email уже существует:**
+**409 Conflict — Email already exists:**
 ```json
 {
   "success": false,
   "error": {
     "code": "email_already_exists",
-    "message": "Пользователь с таким email уже зарегистрирован",
+    "message": "A user with this email address is already registered",
     "details": {
-      "email": "ivan@skladbiz.ru"
+      "email": "ahmed@storagebiz.ae"
     }
   }
 }
 ```
 
-**422 Unprocessable Entity — Ошибки валидации:**
+**422 Unprocessable Entity — Validation errors:**
 ```json
 {
   "success": false,
   "error": {
     "code": "validation_error",
-    "message": "Ошибка валидации данных",
+    "message": "Data validation error",
     "details": {
       "fields": [
         {
-          "field": "inn",
-          "message": "ИНН должен содержать 10 или 12 цифр",
+          "field": "trn",
+          "message": "TRN must contain 15 digits",
           "value": "77012345"
         },
         {
           "field": "email",
-          "message": "Некорректный формат email",
+          "message": "Invalid email format",
           "value": "invalid-email"
         }
       ]
@@ -6182,7 +6176,7 @@ Content-Type: application/json
   "success": false,
   "error": {
     "code": "rate_limit_exceeded",
-    "message": "Превышен лимит запросов. Попробуйте позже.",
+    "message": "Request limit exceeded. Please try again later.",
     "details": {
       "limit": 100,
       "window": "1 hour",
@@ -6198,7 +6192,7 @@ Content-Type: application/json
   "success": false,
   "error": {
     "code": "internal_server_error",
-    "message": "Внутренняя ошибка сервера. Мы уже работаем над её устранением.",
+    "message": "Internal server error. We are working on resolving it.",
     "details": {
       "request_id": "req_abc123xyz"
     }
@@ -6208,76 +6202,76 @@ Content-Type: application/json
 
 ---
 
-### Коды ошибок (Error Codes)
+### Error Codes
 
-**Аутентификация и авторизация:**
-- `unauthorized` — Требуется авторизация
-- `invalid_token` — Невалидный токен
-- `token_expired` — Токен истек
-- `forbidden` — Недостаточно прав
-- `invalid_credentials` — Неверный email или пароль
+**Authentication and Authorization:**
+- `unauthorized` — Authorization required
+- `invalid_token` — Invalid token
+- `token_expired` — Token expired
+- `forbidden` — Insufficient permissions
+- `invalid_credentials` — Invalid email or password
 
-**Валидация:**
-- `validation_error` — Ошибка валидации (с деталями по полям)
-- `missing_field` — Отсутствует обязательное поле
-- `invalid_format` — Некорректный формат данных
+**Validation:**
+- `validation_error` — Validation error (with field details)
+- `missing_field` — Required field missing
+- `invalid_format` — Invalid data format
 
-**Конфликты:**
-- `email_already_exists` — Email уже зарегистрирован
-- `phone_already_exists` — Телефон уже зарегистрирован
-- `inn_already_exists` — ИНН уже зарегистрирован
+**Conflicts:**
+- `email_already_exists` — Email already registered
+- `phone_already_exists` — Phone number already registered
+- `trn_already_exists` — TRN already registered
 
-**Бизнес-логика:**
-- `incomplete_profile` — Профиль заполнен не полностью
-- `invalid_status` — Операция невозможна в текущем статусе
-- `cannot_edit_profile` — Невозможно редактировать профиль
-- `cannot_delete_document` — Невозможно удалить документ
+**Business Logic:**
+- `incomplete_profile` — Profile not fully completed
+- `invalid_status` — Operation impossible in current status
+- `cannot_edit_profile` — Cannot edit profile
+- `cannot_delete_document` — Cannot delete document
 
-**Файлы:**
-- `invalid_file_format` — Неподдерживаемый формат файла
-- `file_too_large` — Файл превышает максимальный размер
-- `file_corrupted` — Файл поврежден
+**Files:**
+- `invalid_file_format` — Unsupported file format
+- `file_too_large` — File exceeds maximum size
+- `file_corrupted` — File is corrupted
 
 **Rate Limiting:**
-- `rate_limit_exceeded` — Превышен лимит запросов
+- `rate_limit_exceeded` — Request limit exceeded
 
-**Системные:**
-- `internal_server_error` — Внутренняя ошибка сервера
-- `service_unavailable` — Сервис временно недоступен
-- `not_found` — Ресурс не найден
-
----
-
-## 6.5. Ограничения rate limiting для онбординговых операций (чтобы избежать злоупотреблений)
-
-Rate limiting защищает API от злоупотреблений, DDoS-атак и ботов.
-
-**Принципы rate limiting:**
-- Лимиты устанавливаются на уровне IP-адреса и/или пользователя
-- Используется алгоритм "sliding window" или "token bucket"
-- Лимиты более строгие для анонимных пользователей
-- Лимиты менее строгие для авторизованных операторов
+**System:**
+- `internal_server_error` — Internal server error
+- `service_unavailable` — Service temporarily unavailable
+- `not_found` — Resource not found
 
 ---
 
-### Rate Limits по эндпоинтам
+## 6.5. Rate Limiting Restrictions for Onboarding Operations (to Prevent Abuse)
 
-| Эндпоинт | Лимит (анонимный) | Лимит (авторизован) | Окно времени |
+Rate limiting protects the API from abuse, DDoS attacks, and bots.
+
+**Rate Limiting Principles:**
+- Limits are set at IP address and/or user level
+- "Sliding window" or "token bucket" algorithm is used
+- Stricter limits for anonymous users
+- More lenient limits for authenticated operators
+
+---
+
+### Rate Limits by Endpoint
+
+| Endpoint | Anonymous Limit | Authenticated Limit | Time Window |
 |----------|-------------------|---------------------|--------------|
-| `POST /auth/register` | 3 запроса | N/A | 1 час |
-| `POST /auth/login` | 5 попыток | N/A | 15 минут |
-| `POST /auth/refresh` | N/A | 10 запросов | 1 час |
-| `PUT /operators/me` | N/A | 20 запросов | 1 час |
-| `POST /operators/me/documents` | N/A | 10 запросов | 1 час |
-| `POST /operators/me/submit` | N/A | 3 запроса | 1 день |
-| `GET /operators/*` | N/A | 100 запросов | 1 час |
-| `POST /admin/*` | N/A | 200 запросов | 1 час |
+| `POST /auth/register` | 3 requests | N/A | 1 hour |
+| `POST /auth/login` | 5 attempts | N/A | 15 minutes |
+| `POST /auth/refresh` | N/A | 10 requests | 1 hour |
+| `PUT /operators/me` | N/A | 20 requests | 1 hour |
+| `POST /operators/me/documents` | N/A | 10 requests | 1 hour |
+| `POST /operators/me/submit` | N/A | 3 requests | 1 day |
+| `GET /operators/*` | N/A | 100 requests | 1 hour |
+| `POST /admin/*` | N/A | 200 requests | 1 hour |
 
 ---
 
-### Заголовки rate limiting
+### Rate Limiting Headers
 
-API возвращает заголовки с информацией о лимитах:
+The API returns headers with rate limit information:
 
 ```http
 X-RateLimit-Limit: 100
@@ -6285,15 +6279,15 @@ X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1670598000
 ```
 
-| Заголовок | Description |
+| Header | Description |
 |-----------|----------|
-| `X-RateLimit-Limit` | Максимальное количество запросов в окне |
-| `X-RateLimit-Remaining` | Оставшееся количество запросов |
-| `X-RateLimit-Reset` | Unix timestamp, когда лимит будет сброшен |
+| `X-RateLimit-Limit` | Maximum requests in window |
+| `X-RateLimit-Remaining` | Remaining requests in window |
+| `X-RateLimit-Reset` | Unix timestamp when limit resets |
 
 ---
 
-### Ответ при превышении лимита
+### Response When Limit Exceeded
 
 **HTTP 429 Too Many Requests:**
 
@@ -6309,7 +6303,7 @@ Content-Type: application/json
   "success": false,
   "error": {
     "code": "rate_limit_exceeded",
-    "message": "Превышен лимит регистраций. Попробуйте через 1 час.",
+    "message": "Registration limit exceeded. Please try again in 1 hour.",
     "details": {
       "limit": 3,
       "window": "1 hour",
@@ -6319,36 +6313,36 @@ Content-Type: application/json
 }
 ```
 
-**Заголовок `Retry-After`:**
-- Указывает, через сколько секунд можно повторить запрос
+**`Retry-After` Header:**
+- Indicates how many seconds until the request can be retried
 
 ---
 
-### Обработка rate limiting на клиенте
+### Client-Side Rate Limit Handling
 
-**JavaScript пример:**
+**JavaScript Example:**
 
 ```typescript
 async function makeRequest(url: string, options: RequestInit) {
   try {
     const response = await fetch(url, options);
-    
-    // Проверка rate limit
+
+    // Check rate limit
     if (response.status === 429) {
       const retryAfter = response.headers.get('Retry-After');
       const data = await response.json();
-      
+
       throw new RateLimitError(
         data.error.message,
         parseInt(retryAfter || '3600')
       );
     }
-    
+
     return await response.json();
   } catch (error) {
     if (error instanceof RateLimitError) {
       console.error(`Rate limit exceeded. Retry after ${error.retryAfter} seconds`);
-      // Можно показать пользователю таймер или сообщение
+      // Display timer or message to user
     }
     throw error;
   }
@@ -6357,105 +6351,89 @@ async function makeRequest(url: string, options: RequestInit) {
 
 ---
 
-### Исключения из rate limiting
+### Rate Limit Exceptions
 
-**Whitelist IP-адресов:**
-- Офисные IP платформы
-- IP sales-команды
-- Доверенные партнеры
+**IP Whitelist:**
+- Platform office IP addresses
+- Sales team IP addresses
+- Trusted partners
 
-**Повышенные лимиты:**
-- Операторы с историей (не новые)
-- Операторы, пришедшие через sales (канал: `sales_led`)
-
----
-
-### Мониторинг и алерты
-
-**Логирование:**
-- Все случаи превышения rate limit логируются
-- Анализ паттернов для выявления ботов
-
-**Алерты:**
-- Если один IP превышает лимит >10 раз/день → блокировка IP
-- Если множественные IP с одного диапазона → подозрение на DDoS
+**Higher Limits:**
+- Established operators (not new accounts)
+- Operators onboarded via sales channel (`sales_led`)
 
 ---
 
-**Конец Файла 3 (Раздел 6 полностью)**
+### Monitoring and Alerts
 
-# Operator Onboarding & Verification Specification (MVP v1)
+**Logging:**
+- All rate limit exceedances are logged
+- Pattern analysis for bot detection
 
-**Document Version:** 1.0  
-**Date:** December 9, 2025  
-**Project:** Self-Storage Aggregator MVP  
-**Status:** Draft
-
----
-
-## Файл 4: Разделы 7-8
+**Alerts:**
+- If single IP exceeds limit >10 times/day → IP blocking
+- Multiple IPs from same range → DDoS suspicion
 
 ---
+# 7. Risk Scoring / Fraud Engine Integration
 
-# 7. Risk Scoring / Fraud Engine Integration / Fraud Engine (если есть)
+## 7.1. Integration Objectives and AI/ML Benefits
 
-## 7.1. Цель интеграции, что даёт AI/ML
+The AI Risk Scoring module (Risk Scoring / Fraud Engine) helps automatically identify suspicious operators and reduces administrative workload by providing intelligent assessment capabilities.
 
-AI-модуль для оценки рисков (Risk Scoring / Fraud Engine) помогает автоматически выявлять подозрительных операторов и снижать нагрузку на администраторов.
+**Integration Objectives:**
 
-**Цели интеграции:**
+1. **Automated Risk Assessment**
+   - Real-time risk score calculation (0-100) upon application submission
+   - Risk level classification: low / medium / high
+   - Recommendation: auto-approve / manual review / auto-reject
 
-1. **Автоматическая оценка риска**
-   - Мгновенный расчет risk score (0-100) при подаче заявки
-   - Классификация по уровням риска: low / medium / high
-   - Рекомендация: auto-approve / manual review / auto-reject
+2. **Fraud Detection**
+   - Identification of fraudulent documents
+   - Detection of suspicious behavioral patterns
+   - Recognition of bot activities and automated registrations
 
-2. **Детекция фрода**
-   - Выявление поддельных документов
-   - Обнаружение подозрительных паттернов поведения
-   - Идентификация ботов и автоматизированных регистраций
-
-3. **Снижение нагрузки на модерацию**
-   - MVP: 100% ручная модерация
-   - v1.1+: 40-50% auto-approve для low-risk операторов
+3. **Moderation Workload Reduction**
+   - MVP: 100% manual moderation
+   - v1.1+: 40-50% auto-approve for low-risk operators
    - v2.0+: 70-80% auto-approve
 
-4. **Повышение качества операторов**
-   - Отсеивание мошенников на раннем этапе
-   - Снижение количества проблемных операторов на платформе
-   - Защита клиентов от недобросовестных операторов
+4. **Operator Quality Improvement**
+   - Early elimination of bad actors
+   - Reduced number of problematic operators on the platform
+   - Customer protection from unscrupulous operators
 
-5. **Continuous learning**
-   - Модель обучается на исторических данных
-   - Улучшение точности с каждым новым кейсом
-   - Адаптация к новым видам фрода
-
----
-
-**Что дает AI/ML:**
-
-| Преимущество | Description | Метрика |
-|--------------|----------|---------|
-| **Скорость** | Оценка риска за <1 секунду | Мгновенно |
-| **Масштабируемость** | Обработка тысяч заявок без увеличения команды | Неограничено |
-| **Консистентность** | Одинаковый подход ко всем заявкам | 100% |
-| **24/7 работа** | Круглосуточная оценка без выходных | 24/7 |
-| **Точность** | Высокая точность детекции фрода | 85-95% |
-| **Адаптивность** | Обучение на новых данных | Постоянно |
+5. **Continuous Machine Learning**
+   - Model learns from historical data
+   - Improved accuracy with each new case
+   - Adaptation to emerging fraud patterns
 
 ---
 
-## 7.2. Момент вызова fraud-проверки (после submit, триггеры)
+**AI/ML Advantages:**
 
-AI Risk Engine вызывается автоматически в ключевых точках онбординга.
+| Advantage | Description | Metric |
+|-----------|----------|---------|
+| **Speed** | Risk assessment in <1 second | Real-time |
+| **Scalability** | Process thousands of applications without team expansion | Unlimited |
+| **Consistency** | Uniform approach to all applications | 100% |
+| **24/7 Operation** | Continuous assessment without downtime | 24/7 |
+| **Accuracy** | High fraud detection accuracy | 85-95% |
+| **Adaptability** | Learning from new data | Continuous |
 
-**Основные триггеры:**
+---
 
-### 1. Сразу после отправки заявки (POST /operators/me/submit)
+## 7.2. Fraud Check Invocation Timing (post-submission, triggers)
 
-**Когда:** Оператор нажимает "Отправить на проверку"
+The AI Risk Engine is invoked automatically at critical onboarding touchpoints.
 
-**Что происходит:**
+**Primary Triggers:**
+
+### 1. Immediately After Application Submission (POST /operators/me/submit)
+
+**When:** Operator clicks "Submit for Review"
+
+**What Happens:**
 
 ```mermaid
 sequenceDiagram
@@ -6470,28 +6448,28 @@ sequenceDiagram
     O->>API: POST /operators/me/submit
     API->>VAL: Validate completeness
     VAL-->>API: ✅ Complete
-    
+
     API->>RISK: Calculate risk score
     Note over RISK: - Analyze profile data<br/>- Check documents<br/>- Behavioral analysis<br/>- Historical checks
     RISK-->>API: Risk Score: 35 (medium)
-    
+
     API->>DB: Update operator<br/>status: pending_verification<br/>risk_score: 35
-    
+
     API->>QUEUE: Add to moderation queue<br/>Priority: medium
-    
+
     API->>NOTIF: Send notification to operator
     API-->>O: 200 OK + Risk Score
 ```
 
-**Детали вызова:**
+**Call Details:**
 
 ```typescript
-// После успешной валидации в POST /operators/me/submit
+// After successful validation in POST /operators/me/submit
 async function submitForVerification(operatorId: number) {
-  // 1. Собираем данные для Risk Engine
+  // 1. Gather data for Risk Engine
   const operatorData = await getOperatorFullData(operatorId);
-  
-  // 2. Вызываем Risk Engine
+
+  // 2. Invoke Risk Engine
   const riskAssessment = await calculateRiskScore({
     operator_id: operatorId,
     operator_type: operatorData.operator_type,
@@ -6502,8 +6480,8 @@ async function submitForVerification(operatorId: number) {
     technical_data: operatorData.technical_data,
     historical_data: operatorData.historical_data
   });
-  
-  // 3. Сохраняем результат
+
+  // 3. Store result
   await db.operators.update(operatorId, {
     status: 'pending_verification',
     verification_status: 'in_review',
@@ -6512,52 +6490,52 @@ async function submitForVerification(operatorId: number) {
     fraud_signals: riskAssessment.fraud_signals,
     submitted_at: new Date()
   });
-  
-  // 4. Добавляем в очередь модерации
+
+  // 4. Add to moderation queue
   await moderationQueue.add({
     operator_id: operatorId,
     priority: getPriorityFromRiskLevel(riskAssessment.risk_level),
     risk_assessment: riskAssessment
   });
-  
-  // 5. Логируем
+
+  // 5. Log action
   await auditLog.create({
     action: 'submitted_for_review',
     operator_id: operatorId,
     risk_score: riskAssessment.risk_score,
     fraud_signals: riskAssessment.fraud_signals
   });
-  
+
   return riskAssessment;
 }
 ```
 
 ---
 
-### 2. При загрузке документов (опционально, в v1.1+)
+### 2. Upon Document Upload (Optional, v1.1+)
 
-**Когда:** Оператор загружает новый документ
+**When:** Operator uploads a new document
 
-**Что происходит:**
-- Документ анализируется на подлинность
-- Проверяется качество изображения
-- OCR для извлечения данных и сверки с профилем
+**What Happens:**
+- Document is analyzed for authenticity
+- Image quality is assessed
+- OCR extracts data and verifies against profile
 
-**Пример (v1.1+):**
+**Example (v1.1+):**
 
 ```typescript
 async function uploadDocument(operatorId: number, file: File, documentType: string) {
-  // 1. Загрузка файла
+  // 1. File upload
   const uploadedFile = await s3.upload(file);
-  
-  // 2. Анализ документа (опционально в v1.1+)
+
+  // 2. Document analysis (optional in v1.1+)
   const documentAnalysis = await riskEngine.analyzeDocument({
     file_url: uploadedFile.url,
     document_type: documentType,
     operator_id: operatorId
   });
-  
-  // 3. Сохранение
+
+  // 3. Storage
   await db.documents.create({
     operator_id: operatorId,
     document_type: documentType,
@@ -6566,64 +6544,64 @@ async function uploadDocument(operatorId: number, file: File, documentType: stri
     analysis: documentAnalysis,
     fraud_signals: documentAnalysis.fraud_signals || []
   });
-  
+
   return documentAnalysis;
 }
 ```
 
 ---
 
-### 3. При обновлении критических данных (например, изменение ИНН)
+### 3. On Critical Data Update (e.g., TRN Change)
 
-**Когда:** Оператор меняет ИНН, ОГРН, или другие критические поля
+**When:** Operator modifies TRN, Trade License Number, or other critical fields
 
-**Что происходит:**
-- Заново вызывается Risk Engine
-- Пересчитывается risk score
-- Если существенное изменение → статус меняется на `re_verification_required`
-
----
-
-### 4. Периодическая ре-верификация (в v2.0+)
-
-**Когда:** Раз в 6-12 месяцев для активных операторов
-
-**Что происходит:**
-- Проверка актуальности данных
-- Проверка в черных списках
-- Анализ поведения за период
-- При подозрениях → запрос обновленных документов
+**What Happens:**
+- Risk Engine is re-invoked
+- Risk score is recalculated
+- If significant change detected → status changes to `re_verification_required`
 
 ---
 
-## 7.3. Input-данные для модели: профиль, документы, поведенческие метрики, IP, device fingerprint и т.д.
+### 4. Periodic Re-Verification (v2.0+)
 
-Risk Engine анализирует множество данных из разных источников для максимально точной оценки.
+**When:** Every 6-12 months for active operators
 
-**Категории входных данных:**
+**What Happens:**
+- Verification of data currency
+- Blacklist check
+- Behavioral analysis for the period
+- Upon suspicion → request updated documentation
 
-### 1. Профильные данные (Company/Business Info)
+---
+
+## 7.3. Input Data for Model: Profile, Documents, Behavioral Metrics, IP, Device Fingerprint, etc.
+
+The Risk Engine analyzes multiple data sources for maximum assessment accuracy.
+
+**Data Input Categories:**
+
+### 1. Profile Data (Company/Business Info)
 
 ```typescript
 interface ProfileData {
   // Operator Type
   operator_type: 'legal_entity' | 'individual_entrepreneur' | 'self_employed' | 'individual';
-  
-  // Для юрлиц/ИП
+
+  // For legal entities/entrepreneurs
   company_name?: string;
-  inn: string;
-  ogrn?: string;
-  kpp?: string;
+  trn: string;
+  trade_license_number?: string;
+  license_code?: string;
   legal_address: string;
   actual_address?: string;
-  registration_date?: Date; // Извлекается из ОГРН
-  
-  // Банковские данные
-  bik: string;
+  registration_date?: Date; // Extracted from Trade License
+
+  // Bank Details
+  swift_code: string;
   account_number: string;
   bank_name: string;
-  
-  // Контактное лицо
+
+  // Contact Person
   contact_person: {
     full_name: string;
     position: string;
@@ -6633,16 +6611,16 @@ interface ProfileData {
 }
 ```
 
-**Что анализируется:**
-- Возраст компании (из ОГРН или даты регистрации)
-- Соответствие данных в профиле и документах
-- Массовый адрес регистрации
-- Подозрительное название компании
-- Банк из "серого списка"
+**Analysis Points:**
+- Company age (from Trade License or registration date)
+- Consistency of profile data with documents
+- Mass address registration
+- Suspicious company names
+- Bank from suspicious list
 
 ---
 
-### 2. Документы (Documents Data)
+### 2. Documents Data
 
 ```typescript
 interface DocumentData {
@@ -6652,16 +6630,16 @@ interface DocumentData {
     file_size: number;
     file_type: string;
     uploaded_at: Date;
-    
-    // Метаданные файла
+
+    // File Metadata
     metadata?: {
       creation_date?: Date;
       modification_date?: Date;
       author?: string;
       software?: string;
     };
-    
-    // Результаты анализа (v1.1+)
+
+    // Analysis Results (v1.1+)
     analysis?: {
       is_edited: boolean;
       quality_score: number; // 0-100
@@ -6672,64 +6650,64 @@ interface DocumentData {
 }
 ```
 
-**Что анализируется:**
-- Качество документов (размытость, обрезанность)
-- Следы редактирования
-- Метаданные файлов (дата создания, программа)
-- Соответствие типа документа заявленному типу оператора
-- Наличие всех обязательных документов
+**Analysis Points:**
+- Document quality (blur, cropping)
+- Signs of editing
+- File metadata (creation date, software)
+- Document type alignment with operator type
+- Presence of all required documents
 
 ---
 
-### 3. Поведенческие данные (Behavioral Data)
+### 3. Behavioral Data
 
 ```typescript
 interface BehavioralData {
-  // Заполнение формы
-  registration_duration: number; // Секунды от начала до отправки
-  form_fill_time: number; // Время активного заполнения
-  typing_speed: number; // Символов в секунду
-  copy_paste_count: number; // Количество полей, заполненных через copy-paste
-  corrections_count: number; // Количество исправлений
-  field_fill_pattern: string; // Порядок заполнения полей
-  
-  // Паузы и таймауты
-  longest_pause: number; // Самая длинная пауза в секундах
-  total_pauses: number; // Количество пауз >30 секунд
-  
-  // Навигация
-  page_views: number; // Количество просмотров страниц
-  back_button_clicks: number; // Клики "назад"
-  help_views: number; // Просмотры справки/подсказок
-  
-  // Документы
-  documents_upload_time: number; // Время загрузки всех документов
-  documents_retries: number; // Количество попыток загрузки
+  // Form Completion
+  registration_duration: number; // Seconds from start to submission
+  form_fill_time: number; // Active typing time
+  typing_speed: number; // Characters per second
+  copy_paste_count: number; // Fields filled via copy-paste
+  corrections_count: number; // Number of corrections
+  field_fill_pattern: string; // Order of field completion
+
+  // Pauses and Timeouts
+  longest_pause: number; // Longest pause in seconds
+  total_pauses: number; // Pauses longer than 30 seconds
+
+  // Navigation
+  page_views: number; // Number of page views
+  back_button_clicks: number; // Back button clicks
+  help_views: number; // Help/tooltip views
+
+  // Documents
+  documents_upload_time: number; // Time to upload all documents
+  documents_retries: number; // Upload attempt count
 }
 ```
 
-**Что анализируется:**
-- Слишком быстрое заполнение (<30 сек) → возможен бот
-- Все поля через copy-paste → подготовленные данные
-- Роботизированная скорость ввода → бот
-- Нет исправлений/опечаток → подозрительно
+**Analysis Points:**
+- Extremely fast completion (<30 seconds) → possible bot
+- All fields via copy-paste → pre-prepared data
+- Robotic typing speed → bot activity
+- No corrections/typos → suspicious
 
 ---
 
-### 4. Технические данные (Technical Data)
+### 4. Technical Data
 
 ```typescript
 interface TechnicalData {
-  // IP и геолокация
+  // IP and Geolocation
   ip_address: string;
   ip_country: string;
   ip_city?: string;
   is_vpn: boolean;
   is_proxy: boolean;
   is_tor: boolean;
-  ip_risk_score: number; // 0-100 от сервиса проверки IP
-  
-  // Устройство
+  ip_risk_score: number; // 0-100 from IP verification service
+
+  // Device
   user_agent: string;
   device_type: 'desktop' | 'mobile' | 'tablet';
   os: string;
@@ -6738,127 +6716,127 @@ interface TechnicalData {
   screen_resolution: string;
   timezone: string;
   language: string;
-  
+
   // Fingerprinting
-  device_fingerprint: string; // Уникальный ID устройства
+  device_fingerprint: string; // Unique device ID
   canvas_fingerprint?: string;
   webgl_fingerprint?: string;
-  
-  // Технические флаги
+
+  // Technical Flags
   javascript_enabled: boolean;
   cookies_enabled: boolean;
   do_not_track: boolean;
-  incognito_mode: boolean; // Определяется эвристически
-  headless_browser: boolean; // Автоматизация
+  incognito_mode: boolean; // Heuristically determined
+  headless_browser: boolean; // Automation detection
 }
 ```
 
-**Что анализируется:**
-- VPN/Proxy/Tor → повышенный риск
-- Несовпадение IP-страны с заявленной → флаг
-- Headless browser → вероятен бот
-- Device fingerprint дубликат → множественные аккаунты
-- Подозрительный User Agent → автоматизация
+**Analysis Points:**
+- VPN/Proxy/Tor usage → increased risk
+- IP country mismatch with claimed location → red flag
+- Headless browser → probable bot
+- Duplicate device fingerprint → multiple accounts
+- Suspicious User Agent → automation
 
 ---
 
-### 5. Исторические данные (Historical Data)
+### 5. Historical Data
 
 ```typescript
 interface HistoricalData {
-  // Попытки регистрации
+  // Registration Attempts
   previous_registrations_from_ip: number;
   previous_registrations_from_device: number;
   previous_registrations_from_email_domain: number;
-  
-  // Отклоненные заявки
-  rejected_operators_with_same_inn: number;
+
+  // Rejected Applications
+  rejected_operators_with_same_trn: number;
   rejected_operators_from_same_ip: number;
-  
-  // Черные списки
+
+  // Blacklists
   email_in_blacklist: boolean;
   phone_in_blacklist: boolean;
-  inn_in_blacklist: boolean;
+  trn_in_blacklist: boolean;
   ip_in_blacklist: boolean;
-  
-  // Временные паттерны
+
+  // Time Patterns
   registration_hour: number; // 0-23
-  registration_day_of_week: number; // 0-6 (0=Воскресенье)
-  time_since_last_registration_from_ip: number; // Минуты
+  registration_day_of_week: number; // 0-6
+  time_since_last_registration_from_ip: number; // Minutes
 }
 ```
 
-**Что анализируется:**
-- Множественные регистрации с одного IP/устройства → фрод
-- ИНН/Email в черном списке → автоматический отказ
-- Регистрация в нетипичное время (3-5 ночи) → подозрительно
-- Множественные попытки с одного IP → бот или фрод-ферма
+**Analysis Points:**
+- Multiple registrations from single IP/device → fraud
+- TRN/Email in blacklist → automatic rejection
+- Registration during unusual hours (3-5 AM) → suspicious
+- Multiple attempts from single IP → bot farm or fraud
 
 ---
 
-### 6. Внешние проверки (External Checks)
+### 6. External Checks
 
 ```typescript
 interface ExternalChecks {
   // FTA (Federal Tax Authority)
-  inn_valid: boolean;
-  inn_exists_in_fns: boolean;
+  trn_valid: boolean;
+  trn_exists_in_fta: boolean;
   company_status: 'active' | 'liquidated' | 'bankruptcy' | 'unknown';
   company_age_days: number;
-  
-  // БИК
-  bik_valid: boolean;
-  bik_exists: boolean;
+
+  // SWIFT Code
+  swift_code_valid: boolean;
+  swift_code_exists: boolean;
   bank_name_matches: boolean;
   bank_status: 'active' | 'closed';
-  
+
   // Email
   email_deliverable: boolean;
   email_reputation: 'high' | 'medium' | 'low';
   is_disposable_email: boolean;
-  
-  // Телефон
+
+  // Phone
   phone_valid: boolean;
   phone_type: 'mobile' | 'fixed-line' | 'voip';
   phone_carrier?: string;
-  
-  // Адрес
+
+  // Address
   address_exists: boolean;
   is_mass_address: boolean;
-  mass_address_count?: number; // Количество компаний на этом адресе
+  mass_address_count?: number; // Number of companies at this address
 }
 ```
 
-**Что анализируется:**
-- ИНН не найден в FTA (Federal Tax Authority) → фрод
-- Компания ликвидирована → отказ
-- Компания <3 месяцев → повышенный риск
-- Disposable email → фрод
-- VoIP телефон → подозрительно
-- Массовый адрес (>100 компаний) → высокий риск
+**Analysis Points:**
+- TRN not found in FTA → fraud
+- Liquidated company → rejection
+- Company <3 months old → elevated risk
+- Disposable email → fraud
+- VoIP phone → suspicious
+- Mass address (>100 companies) → high risk
 
 ---
 
 ## 7.4. Output: risk_score, risk_level, fraud_signals, recommendation
 
-Risk Engine возвращает структурированный результат оценки.
+The Risk Engine returns a structured assessment result.
 
-**Структура ответа:**
+**Response Structure:**
 
 ```typescript
 interface RiskAssessmentOutput {
-  // Основные метрики
+  // Primary Metrics
   risk_score: number; // 0-100
   risk_level: 'low' | 'medium' | 'high' | 'critical';
-  
-  // Обнаруженные сигналы фрода
+
+  // Detected Fraud Signals
   fraud_signals: string[]; // ['new_company', 'vpn_detected', ...]
-  
-  // Рекомендация
+
+  // Recommendation
   recommendation: 'auto_approve' | 'manual_review' | 'auto_reject';
-  confidence: number; // 0-1, уверенность модели
-  
-  // Детали по категориям
+  confidence: number; // 0-1, model confidence
+
+  // Category Scores
   category_scores: {
     profile: number; // 0-100
     documents: number; // 0-100
@@ -6866,11 +6844,11 @@ interface RiskAssessmentOutput {
     technical: number; // 0-100
     historical: number; // 0-100
   };
-  
-  // Объяснение (для администратора)
+
+  // Explanation (for administrator)
   explanation: string;
-  
-  // Метаданные
+
+  // Metadata
   model_version: string;
   assessed_at: Date;
   processing_time_ms: number;
@@ -6881,17 +6859,17 @@ interface RiskAssessmentOutput {
 
 ### 1. Risk Score (0-100)
 
-**Формула (упрощенная):**
+**Formula (Simplified):**
 
 ```
 Risk Score = Σ(Fraud Signal Weight)
 
-Где:
-- Каждый fraud signal имеет вес (0-100)
-- Risk Score = min(100, сумма всех весов)
+Where:
+- Each fraud signal has a weight (0-100)
+- Risk Score = min(100, sum of all weights)
 ```
 
-**Пример расчета:**
+**Calculation Example:**
 
 ```typescript
 const fraudSignals = [
@@ -6904,17 +6882,17 @@ const riskScore = Math.min(100, fraudSignals.reduce((sum, s) => sum + s.weight, 
 // riskScore = 45
 ```
 
-**Интерпретация:**
+**Interpretation:**
 
-| Risk Score | Значение |
+| Risk Score | Meaning |
 |------------|----------|
-| 0-30 | Low Risk (безопасный оператор) |
-| 31-70 | Medium Risk (требуется проверка) |
-| 71-100 | High Risk (вероятный фрод) |
+| 0-30 | Low Risk (Safe operator) |
+| 31-70 | Medium Risk (Requires review) |
+| 71-100 | High Risk (Probable fraud) |
 
 ---
 
-### 2. Risk Level (categorical)
+### 2. Risk Level (Categorical)
 
 ```typescript
 function getRiskLevel(riskScore: number): 'low' | 'medium' | 'high' | 'critical' {
@@ -6925,22 +6903,22 @@ function getRiskLevel(riskScore: number): 'low' | 'medium' | 'high' | 'critical'
 }
 ```
 
-**Использование:**
+**Usage:**
 
-| Risk Level | Цвет | Description | Действие |
+| Risk Level | Color | Description | Action |
 |------------|------|----------|----------|
-| `low` | 🟢 Зеленый | Безопасный оператор | Auto-approve (v1.1+) |
-| `medium` | 🟡 Желтый | Требуется проверка | Manual review |
-| `high` | 🟠 Оранжевый | Подозрительный | Manual review (углубленная) |
-| `critical` | 🔴 Красный | Критический риск | Auto-reject (опционально) |
+| `low` | Green | Safe operator | Auto-approve (v1.1+) |
+| `medium` | Yellow | Requires review | Manual review |
+| `high` | Orange | Suspicious | Manual review (detailed) |
+| `critical` | Red | Critical risk | Auto-reject (optional) |
 
 ---
 
-### 3. Fraud Signals (массив строк)
+### 3. Fraud Signals (String Array)
 
-Список обнаруженных подозрительных факторов.
+List of detected suspicious factors.
 
-**Examples fraud signals:**
+**Example Fraud Signals:**
 
 ```json
 {
@@ -6954,111 +6932,111 @@ function getRiskLevel(riskScore: number): 'low' | 'medium' | 'high' | 'critical'
 }
 ```
 
-**Категории сигналов:**
+**Signal Categories:**
 
-| Категория | Examples сигналов |
+| Category | Example Signals |
 |-----------|------------------|
-| Юридические | `new_company`, `mass_address`, `liquidated`, `bankruptcy` |
-| Поведенческие | `fast_fill`, `bot_behavior`, `no_corrections`, `copy_paste_all` |
-| Технические | `vpn_detected`, `tor_detected`, `headless_browser`, `duplicate_device` |
-| Контактные | `temp_email`, `voip_phone`, `email_blacklisted`, `phone_blacklisted` |
-| Документные | `document_edited`, `low_quality_docs`, `missing_required_docs` |
-| Исторические | `multiple_accounts`, `previous_rejection`, `inn_blacklisted` |
+| Legal | `new_company`, `mass_address`, `liquidated`, `bankruptcy` |
+| Behavioral | `fast_fill`, `bot_behavior`, `no_corrections`, `copy_paste_all` |
+| Technical | `vpn_detected`, `tor_detected`, `headless_browser`, `duplicate_device` |
+| Contact | `temp_email`, `voip_phone`, `email_blacklisted`, `phone_blacklisted` |
+| Document | `document_edited`, `low_quality_docs`, `missing_required_docs` |
+| Historical | `multiple_accounts`, `previous_rejection`, `trn_blacklisted` |
 
-**Полный список см. в разделе 4.5.**
+**See section 4.5 for complete list.**
 
 ---
 
-### 4. Recommendation (действие)
+### 4. Recommendation (Action)
 
 ```typescript
 type Recommendation = 'auto_approve' | 'manual_review' | 'auto_reject';
 ```
 
-**Логика определения:**
+**Determination Logic:**
 
 ```typescript
 function getRecommendation(riskScore: number, riskLevel: string, fraudSignals: string[]): Recommendation {
-  // Критические сигналы → auto-reject
-  const criticalSignals = ['liquidated', 'bankruptcy', 'email_blacklisted', 'inn_blacklisted'];
+  // Critical signals → auto-reject
+  const criticalSignals = ['liquidated', 'bankruptcy', 'email_blacklisted', 'trn_blacklisted'];
   const hasCriticalSignal = fraudSignals.some(s => criticalSignals.includes(s));
-  
+
   if (hasCriticalSignal || riskLevel === 'critical') {
-    return 'auto_reject'; // (опционально, в v1.1+)
+    return 'auto_reject'; // (optional, v1.1+)
   }
-  
-  // Низкий риск → auto-approve
+
+  // Low risk → auto-approve
   if (riskScore < 30 && riskLevel === 'low') {
-    return 'auto_approve'; // (в v1.1+)
+    return 'auto_approve'; // (v1.1+)
   }
-  
-  // Всё остальное → ручная проверка
+
+  // Everything else → manual review
   return 'manual_review';
 }
 ```
 
-**В MVP:**
-- `auto_approve` и `auto_reject` **отключены**
-- Все заявки идут на `manual_review`
-- Recommendation используется только для информирования администратора
+**In MVP:**
+- `auto_approve` and `auto_reject` are **disabled**
+- All applications proceed to `manual_review`
+- Recommendation is for administrator information only
 
-**В v1.1+:**
-- `auto_approve` для low-risk (40-50% заявок)
-- `manual_review` для medium/high-risk
-- `auto_reject` для critical (опционально)
+**In v1.1+:**
+- `auto_approve` for low-risk (40-50% of applications)
+- `manual_review` for medium/high-risk
+- `auto_reject` for critical (optional)
 
 ---
 
-### 5. Confidence (уверенность модели)
+### 5. Confidence (Model Confidence)
 
 ```typescript
 confidence: number; // 0-1
 ```
 
-**Что это:**
-- Насколько модель уверена в своей оценке
-- 0.0 = совсем не уверена
-- 1.0 = полностью уверена
+**Definition:**
+- How confident the model is in its assessment
+- 0.0 = not confident at all
+- 1.0 = completely confident
 
-**Использование:**
-- Если confidence < 0.5 → обязательная ручная проверка
-- Если confidence > 0.9 → можно доверять рекомендации
+**Usage:**
+- If confidence < 0.5 → mandatory manual review
+- If confidence > 0.9 → recommendation can be trusted
 
 ---
 
-### 6. Category Scores (баллы по категориям)
+### 6. Category Scores (Scores by Category)
 
 ```json
 {
   "category_scores": {
-    "profile": 25,      // Данные профиля
-    "documents": 10,    // Документы
-    "behavior": 30,     // Поведение
-    "technical": 15,    // Технические данные
-    "historical": 5     // Исторические данные
+    "profile": 25,      // Profile data
+    "documents": 10,    // Documents
+    "behavior": 30,     // Behavior
+    "technical": 15,    // Technical data
+    "historical": 5     // Historical data
   }
 }
 ```
 
-**Помогает администратору понять:**
-- Какая категория внесла наибольший вклад в risk score
-- На что обратить внимание при проверке
+**Helps Administrator Understand:**
+- Which category contributed most to risk score
+- Where to focus during verification
 
 ---
 
-### 7. Explanation (объяснение для администратора)
+### 7. Explanation (Administrator Explanation)
 
 ```json
 {
-  "explanation": "Средний уровень риска. Компания зарегистрирована менее 3 месяцев назад, обнаружено использование VPN, форма заполнена подозрительно быстро (45 секунд). Рекомендуется ручная проверка документов."
+  "explanation": "Medium risk level. Company registered less than 3 months ago, VPN usage detected, form completed suspiciously fast (45 seconds). Manual document verification recommended."
 }
 ```
 
-**Генерируется автоматически на основе fraud signals.**
+**Generated automatically based on fraud signals.**
 
 ---
 
-### Пример полного ответа:
+### Complete Response Example:
 
 ```json
 {
@@ -7071,7 +7049,7 @@ confidence: number; // 0-1
   ],
   "recommendation": "manual_review",
   "confidence": 0.78,
-  
+
   "category_scores": {
     "profile": 15,
     "documents": 5,
@@ -7079,9 +7057,9 @@ confidence: number; // 0-1
     "technical": 10,
     "historical": 0
   },
-  
-  "explanation": "Средний уровень риска. Компания зарегистрирована менее 3 месяцев назад (15 баллов), обнаружено использование VPN (10 баллов), форма заполнена подозрительно быстро - 45 секунд (20 баллов). Рекомендуется ручная проверка документов и звонок оператору для подтверждения намерений.",
-  
+
+  "explanation": "Medium risk level. Company registered less than 3 months ago (15 points), VPN usage detected (10 points), form completed suspiciously fast - 45 seconds (20 points). Manual document verification and operator confirmation call recommended.",
+
   "model_version": "1.0.2",
   "assessed_at": "2025-12-09T17:30:15Z",
   "processing_time_ms": 234
@@ -7090,90 +7068,91 @@ confidence: number; // 0-1
 
 ---
 
-## 7.5. Как результаты скоринга используются администратором при принятии решения
+## 7.5. How Scoring Results Are Used by Administrator in Decision Making
 
-Risk Engine предоставляет администратору ценную информацию для принятия взвешенного решения.
+The Risk Engine provides administrators with valuable information for informed decision-making.
 
-**Интеграция в админский интерфейс:**
+**Integration in Admin Interface:**
 
-### 1. В списке операторов на модерации
+### 1. In Operator Review List
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│  Операторы under review                    [Фильтры ▼]          │
+│  Operators Under Review                    [Filters ▼]          │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
-│  ID   Компания           Risk  Сигналы    Дата подачи  Действия│
+│  ID   Company           Risk  Signals    Date Submitted  Actions│
 │  ─────────────────────────────────────────────────────────────│
-│  456  StorageBiz LLC   🟡 45  3 сигнала  09.12 17:30  [→]   │
-│       ИНН: 7701234567                                          │
+│  456  StorageBiz LLC   🟡 45  3 signals  09.12 17:30  [→]   │
+│       TRN: 7701234567                                          │
 │                                                                │
-│  457  ИП Петров А.Б.      🟢 25  0 сигналов 09.12 18:00  [→]   │
-│       ИНН: 770123456789                                        │
+│  457  Ahmed Storage      🟢 25  0 signals 09.12 18:00  [→]   │
+│       TRN: 770123456789                                        │
 │                                                                │
-│  458  TestCompany LLC  🔴 85  8 сигналов 09.12 18:15  [→]   │
-│       ИНН: 7701234000                                          │
+│  458  TestCompany LLC  🔴 85  8 signals 09.12 18:15  [→]   │
+│       TRN: 7701234000                                          │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Сортировка по приоритету:**
-1. Critical (🔴) → сначала
+**Priority Sorting:**
+1. Critical (🔴) → first
 2. High (🟠)
 3. Medium (🟡)
-4. Low (🟢) → в конце
+4. Low (🟢) → last
 
 ---
 
-### 2. На странице детального просмотра оператора
+### 2. On Operator Detail Page
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│  Оператор #456: StorageBiz LLC                             │
+│  Operator #456: StorageBiz LLC                             │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
 │  🟡 Risk Score: 45 / 100 (Medium)                              │
-│  Рекомендация: Ручная проверка                                 │
-│  Уверенность модели: 78%                                       │
+│  Recommendation: Manual Review                                 │
+│  Model Confidence: 78%                                         │
 │                                                                │
 │  ─────────────────────────────────────────────────────────────│
 │                                                                │
-│  ⚠️ Обнаружено 3 фрод-сигнала:                                 │
+│  ⚠️ 3 Fraud Signals Detected:                                  │
 │                                                                │
-│  1. Новая компания (+15 баллов)                                │
-│     Компания зарегистрирована 2 месяца назад (ОГРН: 15.10.2025)│
+│  1. New Company (+15 points)                                   │
+│     Company registered 2 months ago (License: 15.10.2025)      │
 │                                                                │
-│  2. VPN обнаружен (+10 баллов)                                 │
-│     IP: 185.220.101.45 (NordVPN, Нидерланды)                   │
-│     Заявленная страна: Россия                                  │
+│  2. VPN Detected (+10 points)                                  │
+│     IP: 185.220.101.45 (NordVPN, Netherlands)                  │
+│     Claimed Country: UAE                                       │
 │                                                                │
-│  3. Быстрое заполнение формы (+20 баллов)                      │
-│     Форма заполнена за 45 секунд (норма: 5-10 минут)           │
-│     Подозрение на автоматизацию или подготовленные данные      │
-│                                                                │
-│  ─────────────────────────────────────────────────────────────│
-│                                                                │
-│  Баллы по категориям:                                          │
-│  Профиль:    ▓▓▓░░░░░░░ 15/100                                │
-│  Документы:  ▓░░░░░░░░░  5/100                                │
-│  Поведение:  ▓▓▓▓░░░░░░ 20/100                                │
-│  Технические:▓▓░░░░░░░░ 10/100                                │
-│  История:    ░░░░░░░░░░  0/100                                │
+│  3. Fast Form Completion (+20 points)                          │
+│     Form completed in 45 seconds (normal: 5-10 minutes)        │
+│     Possible automation or pre-prepared data                   │
 │                                                                │
 │  ─────────────────────────────────────────────────────────────│
 │                                                                │
-│  💡 Рекомендации:                                              │
-│  • Проверить документы на подлинность                          │
-│  • Позвонить оператору для подтверждения намерений             │
-│  • Уточнить причину использования VPN                          │
+│  Category Scores:                                              │
+│  Profile:     ▓▓▓░░░░░░░ 15/100                               │
+│  Documents:   ▓░░░░░░░░░  5/100                               │
+│  Behavior:    ▓▓▓▓░░░░░░ 20/100                               │
+│  Technical:   ▓▓░░░░░░░░ 10/100                               │
+│  Historical:  ░░░░░░░░░░  0/100                               │
 │                                                                │
 │  ─────────────────────────────────────────────────────────────│
 │                                                                │
-│  Профиль компании     Документы     История действий           │
+│  💡 Recommendations:                                           │
+│  • Verify document authenticity                                │
+│  • Call operator to confirm intentions                         │
+│  • Clarify reason for VPN usage                                │
+│                                                                │
+│  ─────────────────────────────────────────────────────────────│
+│                                                                │
+│  Company Profile     Documents     Activity History            │
 │                                                                │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
-│  │  Одобрить    │  │  Отклонить   │  │  Запросить   │        │
-│  │              │  │              │  │  доп.инфо    │        │
+│  │   Approve    │  │    Reject    │  │  Request     │        │
+│  │              │  │              │  │ Additional   │        │
+│  │              │  │              │  │   Info       │        │
 │  └──────────────┘  └──────────────┘  └──────────────┘        │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
@@ -7181,9 +7160,9 @@ Risk Engine предоставляет администратору ценную
 
 ---
 
-### 3. Как администратор использует информацию
+### 3. How Administrator Uses Information
 
-**Сценарий 1: Low Risk (🟢 0-30)**
+**Scenario 1: Low Risk (🟢 0-30)**
 
 ```
 Risk Score: 25
@@ -7191,17 +7170,17 @@ Fraud Signals: 0
 Recommendation: Auto-approve (v1.1+)
 ```
 
-**Действие администратора:**
-- **Быстрая проверка** (1-2 минуты)
-- Просмотр профиля и документов
-- Если всё в порядке → **Одобрить**
+**Administrator Action:**
+- **Quick review** (1-2 minutes)
+- Review profile and documents
+- If satisfactory → **Approve**
 
-**В v1.1+:**
-- Автоматическое одобрение без участия администратора
+**In v1.1+:**
+- Automatic approval without administrator intervention
 
 ---
 
-**Сценарий 2: Medium Risk (🟡 31-70)**
+**Scenario 2: Medium Risk (🟡 31-70)**
 
 ```
 Risk Score: 45
@@ -7209,36 +7188,36 @@ Fraud Signals: 3 (new_company, vpn_detected, fast_fill)
 Recommendation: Manual review
 ```
 
-**Действие администратора:**
-- **Стандартная проверка** (5-10 минут)
-- Тщательная проверка документов
-- Проверка данных в UAE Commercial Registry
-- **Звонок оператору** для подтверждения
-- Уточнение причин использования VPN
-- Решение: Одобрить / Запросить доп.инфо / Отклонить
+**Administrator Action:**
+- **Standard review** (5-10 minutes)
+- Thorough document verification
+- Check data in UAE Commercial Registry
+- **Call operator** for confirmation
+- Clarify VPN usage reasons
+- Decision: Approve / Request Additional Info / Reject
 
 ---
 
-**Сценарий 3: High Risk (🟠 71-90)**
+**Scenario 3: High Risk (🟠 71-90)**
 
 ```
 Risk Score: 82
 Fraud Signals: 6 (new_company, mass_address, vpn_detected, bot_behavior, duplicate_device, document_edited)
-Recommendation: Manual review (углубленная)
+Recommendation: Manual review (detailed)
 ```
 
-**Действие администратора:**
-- **Углубленная проверка** (15-30 минут)
-- Детальная проверка всех документов
-- Проверка адреса на картах
-- Проверка устройства (device fingerprint)
-- **Обязательный звонок** оператору
-- Возможно: запрос дополнительных документов
-- Вероятное решение: Отклонить или Запросить доп.инфо
+**Administrator Action:**
+- **Detailed review** (15-30 minutes)
+- Comprehensive document verification
+- Address verification via maps
+- Device fingerprint verification
+- **Mandatory operator call**
+- Possible: request additional documents
+- Likely decision: Reject or Request Additional Info
 
 ---
 
-**Сценарий 4: Critical Risk (🔴 91-100)**
+**Scenario 4: Critical Risk (🔴 91-100)**
 
 ```
 Risk Score: 95
@@ -7246,93 +7225,92 @@ Fraud Signals: 10+ (liquidated, email_blacklisted, document_edited, bot_behavior
 Recommendation: Auto-reject
 ```
 
-**Действие администратора:**
-- **Быстрый отказ** (1-2 минуты)
-- Проверка критических сигналов
-- Добавление в черный список
-- Решение: **Отклонить**
+**Administrator Action:**
+- **Quick rejection** (1-2 minutes)
+- Verify critical signals
+- Add to blacklist
+- Decision: **Reject**
 
-**В v1.1+:**
-- Возможно автоматическое отклонение
+**In v1.1+:**
+- Possible automatic rejection
 
 ---
 
-### 4. Статистика для администраторов
+### 4. Statistics for Administrators
 
-**Dashboard для модерации:**
+**Moderation Dashboard:**
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│  Статистика модерации                         Сегодня          │
+│  Moderation Statistics                         Today            │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
-│  Заявок under review: 24                                        │
+│  Applications Under Review: 24                                  │
 │                                                                │
-│  По уровням риска:                                             │
-│  🟢 Low:      8 заявок (33%)                                   │
-│  🟡 Medium:  12 заявок (50%)                                   │
-│  🟠 High:     3 заявки (13%)                                   │
-│  🔴 Critical: 1 заявка  (4%)                                   │
-│                                                                │
-│  ─────────────────────────────────────────────────────────────│
-│                                                                │
-│  Обработано сегодня: 45 заявок                                 │
-│  • Одобрено:       32 (71%)                                    │
-│  • Отклонено:       8 (18%)                                    │
-│  • Запрошено инфо:  5 (11%)                                    │
-│                                                                │
-│  Среднее время обработки: 8 минут                              │
+│  By Risk Level:                                                │
+│  🟢 Low:      8 applications (33%)                            │
+│  🟡 Medium:  12 applications (50%)                            │
+│  🟠 High:     3 applications (13%)                            │
+│  🔴 Critical: 1 application  (4%)                             │
 │                                                                │
 │  ─────────────────────────────────────────────────────────────│
 │                                                                │
-│  Топ-3 фрод-сигнала:                                           │
-│  1. new_company         (18 заявок)                            │
-│  2. vpn_detected        (12 заявок)                            │
-│  3. fast_fill           (9 заявок)                             │
+│  Processed Today: 45 applications                              │
+│  • Approved:       32 (71%)                                    │
+│  • Rejected:        8 (18%)                                    │
+│  • Additional Info Requested: 5 (11%)                          │
+│                                                                │
+│  Average Processing Time: 8 minutes                             │
+│                                                                │
+│  ─────────────────────────────────────────────────────────────│
+│                                                                │
+│  Top 3 Fraud Signals:                                          │
+│  1. new_company         (18 applications)                      │
+│  2. vpn_detected        (12 applications)                      │
+│  3. fast_fill           (9 applications)                       │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 5. Обучение модели на основе решений администратора
+### 5. Model Training Based on Administrator Decisions
 
 **Feedback Loop:**
 
 ```mermaid
 graph LR
-    A[Оператор подает заявку] --> B[Risk Engine оценивает]
-    B --> C[Администратор проверяет]
-    C --> D{Решение}
-    D -->|Одобрить| E[Одобрено]
-    D -->|Отклонить| F[Отклонено]
-    D -->|Запросить инфо| G[Доп.инфо]
-    
+    A[Operator Submits Application] --> B[Risk Engine Assesses]
+    B --> C[Administrator Reviews]
+    C --> D{Decision}
+    D -->|Approve| E[Approved]
+    D -->|Reject| F[Rejected]
+    D -->|Request Info| G[Additional Info]
+
     E --> H[Feedback: True Negative]
     F --> I[Feedback: True Positive]
-    
-    H --> J[Обучение модели]
+
+    H --> J[Model Training]
     I --> J
-    
-    J --> K[Улучшенная модель]
+
+    J --> K[Improved Model]
     K --> B
 ```
 
-**Как это работает:**
+**How It Works:**
 
-1. Администратор принимает решение (одобрить/отклонить)
-2. Решение сохраняется вместе с risk score и fraud signals
-3. Раз в месяц модель переобучается на новых данных
-4. Точность модели повышается
+1. Administrator makes decision (approve/reject)
+2. Decision is stored with risk score and fraud signals
+3. Model is retrained monthly on new data
+4. Model accuracy improves
 
-**Метрики для оценки модели:**
-- **Precision:** Сколько из "high risk" действительно были фродом
-- **Recall:** Сколько фродов модель поймала
-- **F1-Score:** Общая эффективность
-- **False Positive Rate:** Сколько хороших операторов rejected по ошибке
+**Model Evaluation Metrics:**
+- **Precision:** Percentage of high-risk cases that were actually fraud
+- **Recall:** Percentage of fraud cases caught by model
+- **F1-Score:** Overall effectiveness
+- **False Positive Rate:** Percentage of legitimate operators incorrectly rejected
 
 ---
-
 # 8. Admin Moderation and Operations
 
 ## 8.1. Роль администратора / модератора (RBAC)
@@ -7551,7 +7529,7 @@ graph LR
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│  ← Назад к списку                                              │
+│  ← Back к списку                                              │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
 │  📋 Проверка оператора #456                                    │
@@ -7922,7 +7900,7 @@ graph LR
 │  └──────────────────────────────────────────────────────────┘ │
 │                                                                │
 │  ┌────────────────────┐    ┌────────────────────┐            │
-│  │ Отмена             │    │ Отправить запрос   │            │
+│  │ Отмена             │    │ Submit запрос   │            │
 │  └────────────────────┘    └────────────────────┘            │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
@@ -8021,7 +7999,7 @@ async function approveOperator(operatorId: number, adminId: number, comment?: st
 
 Привет, Иван!
 
-Отличные новости! Ваша заявка одобрена.
+Отличные новости! Your application одобрена.
 
 Теперь вы можете:
 ✅ Создавать склады и боксы
@@ -8147,7 +8125,7 @@ async function rejectOperator(
 
 **Email оператору:**
 ```
-Тема: Ваша заявка отклонена
+Тема: Your application отклонена
 
 Привет, Иван!
 
@@ -8262,7 +8240,7 @@ async function requestMoreInfo(operatorId: number, adminId: number, requestedInf
 👉 Предоставить информацию: https://selfstorage.com/operator/dashboard
 
 Срок предоставления: 7 дней
-После 30 дней без ответа заявка будет автоматически отклонена.
+После 30 дней без ответа заявка будет automatically отклонена.
 
 С уважением,
 Команда СкладОК
@@ -8294,7 +8272,7 @@ async function requestMoreInfo(operatorId: number, adminId: number, requestedInf
 │  Выбрано: 5 операторов (все low-risk)                         │
 │                                                                │
 │  ┌──────────────────┐  ┌──────────────────┐                   │
-│  │ Одобрить все     │  │ Отменить выбор   │                   │
+│  │ Одобрить все     │  │ Cancel выбор   │                   │
 │  └──────────────────┘  └──────────────────┘                   │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
@@ -8653,7 +8631,7 @@ Fraud Signals: 10+
 │  ⚪ Каждый час                                                  │
 │                                                                │
 │  ┌────────────────────────────────┐                            │
-│  │ Сохранить                     │                            │
+│  │ Save                     │                            │
 │  └────────────────────────────────┘                            │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
@@ -9000,8 +8978,8 @@ function WarehouseActions() {
 
 **UI:**
 ```
-🔍 Ваша заявка на рассмотрении
-Ожидайте завершения проверки (24-48 часов)
+🔍 Your application на рассмотрении
+Please wait завершения проверки (24-48 часов)
 ```
 
 ---
@@ -9056,7 +9034,7 @@ function WarehouseActions() {
 - ❌ Просмотр финансов
 
 **Дополнительно:**
-- Все склады автоматически скрыты от клиентов
+- Все склады automatically скрыты от клиентов
 - Новые заявки не поступают
 - Активные бронирования продолжают работать (клиенты защищены)
 
@@ -9078,7 +9056,7 @@ function WarehouseActions() {
 
 **UI:**
 ```
-❌ Ваша заявка отклонена
+❌ Your application отклонена
 Причина: [текст]
 [Создать новую заявку]
 ```
@@ -9226,7 +9204,7 @@ Authorization: Bearer <token>
 
 **S3 Server-Side Encryption (SSE-S3):**
 - AES-256 шифрование
-- Ключи управляются автоматически S3-провайдером
+- Ключи управляются automatically S3-провайдером
 - Альтернатива: SSE-KMS (AWS Key Management Service)
 
 **Конфигурация S3:**
@@ -9474,7 +9452,7 @@ function decrypt(encryptedData: string): string {
 // Использование
 const bankAccount = '40702810400000001234';
 const encrypted = encrypt(bankAccount);
-// Сохранить encrypted в БД
+// Save encrypted в БД
 
 // При получении
 const decrypted = decrypt(encrypted);
@@ -9585,7 +9563,7 @@ async function deleteOperator(operatorId: number, reason: 'user_request' | 'admi
     // 2. Удалить документы из S3
     await deleteS3Documents(operatorId);
     
-    // 3. Сохранить минимум данных для compliance (180 дней)
+    // 3. Save минимум данных для compliance (180 дней)
     await trx.deleted_operators_archive.create({
       operator_id: operatorId,
       deletion_date: new Date(),
@@ -10036,7 +10014,7 @@ Email: dpo@selfstorage.com
 - Confidence модели > 0.8
 
 **Ожидаемый результат:**
-- 40-50% заявок одобряются автоматически
+- 40-50% заявок одобряются automatically
 - Снижение нагрузки на модераторов
 - Ускорение онбординга до 1-2 часов для low-risk
 
@@ -10346,7 +10324,7 @@ async function checkCompanyInFNS(inn: string): Promise<FNSCompanyInfo> {
 
 **Use case:**
 - Оператор проходит верификацию через Sumsub
-- Результат автоматически попадает в нашу систему
+- Результат automatically попадает в нашу систему
 - Снижение нагрузки на модераторов
 
 ---
@@ -10376,7 +10354,7 @@ async function checkCompanyInFNS(inn: string): Promise<FNSCompanyInfo> {
 
 **Use case:**
 - Оператор дает разрешение на доступ к банку
-- Мы автоматически получаем выписку и проверяем реквизиты
+- Мы automatically получаем выписку и проверяем реквизиты
 - Упрощение процесса, нет нужды загружать справку
 
 ---
@@ -10390,7 +10368,7 @@ async function checkCompanyInFNS(inn: string): Promise<FNSCompanyInfo> {
 
 **Workflow:**
 - Sales менеджер создает lead в CRM
-- Lead автоматически конвертируется в оператора
+- Lead automatically конвертируется в оператора
 - Приоритетная модерация
 
 ---
