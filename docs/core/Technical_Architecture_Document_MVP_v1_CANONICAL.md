@@ -857,7 +857,7 @@ Table: `ai_requests_log`
 // maps.service.ts
 async geocode(address: string): Promise<Coordinates> {
   try {
-    return await this.yandexMaps.geocode(address);
+    return await this.googleMaps.geocode(address);
   } catch (error) {
     // Fallback to Google
     return await this.googleMaps.geocode(address);

@@ -102,7 +102,7 @@ This document provides the **corrected** functional specification for the **Self
 - **Database:** PostgreSQL 14+ with PostGIS
 - **ORM:** TypeORM / Prisma
 - **Authentication:** JWT tokens (access: 15min, refresh: 7 days)
-- **File Storage:** S3-compatible (Yandex Object Storage)
+- **File Storage:** S3-compatible (AWS S3)
 - **Search:** PostgreSQL full-text search
 
 ### AI Integration (MVP v1)
@@ -112,7 +112,7 @@ This document provides the **corrected** functional specification for the **Self
 
 ### Infrastructure
 - **Hosting:** Cloud VPS or managed services
-- **CDN:** Cloudflare / Yandex CDN
+- **CDN:** Cloudflare / AWS CloudFront
 - **Monitoring:** Error tracking and performance monitoring
 
 ---
@@ -633,7 +633,7 @@ The map view provides a geographic visualization of warehouses.
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Map load | User navigates to map | Page loads | Shows Yandex Map centered on Moscow |
+| Map load | User navigates to map | Page loads | Shows Google Map centered on Dubai |
 | Markers | Warehouses exist | Map loaded | Shows markers for warehouses |
 | Clustering | Zoomed out | Many markers in area | Groups markers into clusters with count |
 | Marker click | Marker visible | Clicks marker | Shows popup with warehouse preview |

@@ -543,7 +543,7 @@ class MapsService {
   async geocode(address: string): Promise<Coordinates> {
     try {
       // Try Google Maps (primary)
-      return await this.yandexMapsClient.geocode(address);
+      return await this.googleMapsClient.geocode(address);
     } catch (error) {
       this.logger.warn('Google Maps failed, trying Google Maps', { error });
       
@@ -1892,7 +1892,7 @@ export class AIService {
 @Injectable()
 export class MapsService {
   constructor(
-    private yandexCircuit: CircuitBreaker,
+    private googleCircuit: CircuitBreaker,
     private googleCircuit: CircuitBreaker,
     private logger: Logger
   ) {}
@@ -1900,12 +1900,12 @@ export class MapsService {
   async geocode(address: string): Promise<Coordinates> {
     // Try Google Maps (primary)
     try {
-      return await this.yandexCircuit.execute(async () => {
-        return await this.yandexMapsClient.geocode(address);
+      return await this.googleCircuit.execute(async () => {
+        return await this.googleMapsClient.geocode(address);
       });
-    } catch (yandexError) {
+    } catch (googleError) {
       this.logger.warn('Google Maps failed, trying Google Maps', {
-        error: yandexError
+        error: googleError
       });
     }
     
@@ -2259,14 +2259,14 @@ export class AIService {
 ```typescript
 @Injectable()
 export class MapsService {
-  private yandexCircuit: CircuitBreaker;
+  private googleCircuit: CircuitBreaker;
   private googleCircuit: CircuitBreaker;
   
   async geocode(address: string): Promise<Coordinates> {
     // Try Google Maps first
     try {
-      return await this.yandexCircuit.execute(async () => {
-        return await this.yandexMapsClient.geocode(address);
+      return await this.googleCircuit.execute(async () => {
+        return await this.googleMapsClient.geocode(address);
       });
     } catch (error) {
       // Fallback to Google
@@ -2530,7 +2530,7 @@ Multi-provider fallback for external services.
 @Injectable()
 export class MapsService {
   private providers = [
-    { name: 'yandex', client: this.yandexClient, circuit: this.yandexCircuit },
+    { name: 'google', client: this.googleClient, circuit: this.googleCircuit },
     { name: 'google', client: this.googleClient, circuit: this.googleCircuit }
   ];
 

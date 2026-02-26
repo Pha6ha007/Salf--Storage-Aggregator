@@ -532,10 +532,10 @@ Each service identity has access ONLY to secrets it requires.
 
 | Service Identity | Allowed Secrets |
 |-----------------|----------------|
-| `svc-api-prod` | `DB_PASSWORD`, `REDIS_PASSWORD`, `JWT_SERVICE_SECRET`, `ANTHROPIC_API_KEY`, `YANDEX_MAPS_KEY`, `SENDGRID_API_KEY`, `COOKIE_SECRET` |
+| `svc-api-prod` | `DB_PASSWORD`, `REDIS_PASSWORD`, `JWT_SERVICE_SECRET`, `ANTHROPIC_API_KEY`, `GOOGLE_MAPS_KEY`, `SENDGRID_API_KEY`, `COOKIE_SECRET` |
 | `svc-worker-prod` | `DB_PASSWORD`, `REDIS_PASSWORD`, `ANTHROPIC_API_KEY`, `SENDGRID_API_KEY`, `TWILIO_AUTH_TOKEN` |
 | `svc-ai-client-prod` | `ANTHROPIC_API_KEY` only |
-| `svc-maps-client-prod` | `YANDEX_MAPS_KEY`, `GOOGLE_MAPS_KEY` |
+| `svc-maps-client-prod` | `GOOGLE_MAPS_KEY`, `GOOGLE_MAPS_KEY` |
 | `svc-notification-prod` | `SENDGRID_API_KEY`, `TWILIO_AUTH_TOKEN` |
 | `svc-health-monitor-prod` | `HEALTH_CHECK_TOKEN` (read-only) |
 | `svc-metrics-collector-prod` | `METRICS_TOKEN` (read-only) |
@@ -1178,7 +1178,7 @@ export class AiModule {}
       provide: 'MAPS_API_KEY',
       useFactory: async (secretsManager: SecretsManagerService) => {
         // Maps module only needs maps API key
-        return await secretsManager.get('YANDEX_MAPS_KEY');
+        return await secretsManager.get('GOOGLE_MAPS_KEY');
       },
       inject: [SecretsManagerService],
     },

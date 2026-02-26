@@ -266,7 +266,7 @@ logger.info('AI request completed', {
 
 // Maps API call
 logger.info('Geocoding successful', {
-  provider: 'yandex_maps',
+  provider: 'google_maps',
   address_length: 45,
   results_count: 5,
   duration_ms: 234,
@@ -1812,7 +1812,7 @@ $time_iso8601  # Встроенная переменная
   "trace_id": "trace_f3a5c8d1",
   "duration_ms": 234,
   "data": {
-    "api": "yandex_maps",
+    "api": "google_maps",
     "endpoint": "geocode",
     "address": "Dubai, Tverskaya 1",
     "results_count": 5,
@@ -2339,7 +2339,7 @@ async geocodeAddress(address: string) {
   const startTime = Date.now();
   
   try {
-    const response = await axios.get(YANDEX_MAPS_URL, { params: { address } });
+    const response = await axios.get(GOOGLE_MAPS_URL, { params: { address } });
     
     logger.info('Google Maps API success', {
       duration_ms: Date.now() - startTime,
