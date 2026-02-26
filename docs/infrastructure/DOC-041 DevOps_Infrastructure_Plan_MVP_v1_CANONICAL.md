@@ -709,7 +709,7 @@ The system MUST use a dedicated secrets management solution (illustrative exampl
 
 The system integrates with:
 - OpenAI API
-- Mapping providers (Yandex Maps, Google Maps, or equivalent)
+- Mapping providers (Google Maps, Google Maps, or equivalent)
 - Email provider (SendGrid or equivalent)
 - SMS provider (Twilio or equivalent)
 
@@ -757,7 +757,7 @@ All security configurations MUST comply with the Security Architecture specifica
 
 **Backup Storage:**
 
-- Primary: Object storage (illustrative: S3, Yandex Object Storage, GCS, or equivalent)
+- Primary: Object storage (illustrative: AWS S3, Google Cloud Storage, or equivalent)
 - Secondary: Long-term archive storage (illustrative: Glacier, or equivalent)
 
 **Backup Validation:**

@@ -315,7 +315,7 @@ Components are classified by criticality to guide DR prioritization:
 - **Justification:** Metrics rebuild over time; dashboards recreate from code
 - **Protection:** Configuration-as-code, dashboard JSON backups
 
-**CDN (Cloudflare/Yandex)**
+**CDN (Cloudflare/AWS CloudFront)**
 - **Contains:** Cached static assets
 - **Criticality:** Slight performance degradation; automatic cache repopulation
 - **Justification:** CDN provider manages redundancy
@@ -977,7 +977,7 @@ The following DR capabilities are **intentionally excluded** from MVP v1 and may
 
 ### Geo-Distributed Object Storage
 **Description:** Media files replicated to 3+ geographic regions.  
-**Rationale:** Current 2-provider setup (Yandex + AWS) provides adequate redundancy.  
+**Rationale:** Current 2-provider setup (AWS + Google Cloud) provides adequate redundancy.  
 **Future Consideration:** Post-MVP if serving global users (latency optimization).
 
 ### Blockchain-Based Audit Trail

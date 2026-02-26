@@ -74,7 +74,7 @@
 - Storage capacity limits
 
 **External Services:**
-- Yandex Maps API integration
+- Google Maps API integration
 - Email/SMS notification queues (background jobs)
 
 ### НЕ включено в MVP тестирование:
@@ -738,7 +738,7 @@ networks:
 | **Database** | Self-hosted PostgreSQL | Managed service (RDS/Cloud SQL) |
 | **Redis** | Single instance | Redis Cluster / Managed |
 | **AI Service** | Mocked responses | Real Claude API |
-| **Maps API** | Mocked responses | Real Yandex Maps API |
+| **Maps API** | Mocked responses | Real Google Maps API |
 | **CDN** | Not used | Cloudflare / CloudFront |
 | **SSL** | Self-signed | Let's Encrypt / Commercial |
 | **Backup** | Daily manual | Automated continuous |
@@ -755,7 +755,7 @@ networks:
 
 2. **External API Latency:**
    - AI API: Real Claude = 2-5s (vs mocked 2-5s) ✅ Similar
-   - Maps API: Real Yandex = 100-300ms (vs mocked 50ms) ⚠️ Slower
+   - Maps API: Real Google Maps API = 100-300ms (vs mocked 50ms) ⚠️ Slower
 
 3. **CDN:**
    - Static assets: 50-100ms faster (edge caching)
@@ -958,7 +958,7 @@ pg_restore -U test -d selfstorage_test -c test-db-clean.dump
 | Service | Test (Mocked) | Production (Real) | Difference |
 |---------|--------------|-------------------|------------|
 | **Claude AI API** | 2-5s fixed delay | 2-8s variable | Production more variable |
-| **Yandex Maps** | 50ms instant | 100-300ms | Production slower |
+| **Google Maps** | 50ms instant | 100-300ms | Production slower |
 | **Email (SendGrid)** | Instant mock | 100-500ms | Production slower |
 | **SMS (Twilio)** | Instant mock | 200-1000ms | Production slower |
 
@@ -4888,7 +4888,7 @@ async function queryData() {
 | Service | Test (Mocked) | Production (Real) | Difference |
 |---------|--------------|-------------------|------------|
 | Claude AI | 2-5s fixed | 2-8s variable | Production more variable |
-| Yandex Maps | 50ms instant | 100-300ms | Production slower |
+| Google Maps | 50ms instant | 100-300ms | Production slower |
 
 **Implication:** AI and Maps features will be slightly slower in production
 

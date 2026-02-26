@@ -156,7 +156,7 @@ Distributed Tracing в проекте Self-Storage Aggregator MVP обеспеч
 | **Backend Services** | Service-to-service calls | Warehouse → Box, Booking → Notification, Auth → User lookup |
 | **Database (PostgreSQL)** | SQL queries | SELECT warehouses, INSERT bookings, UPDATE box availability |
 | **Cache (Redis)** | Cache operations | GET cached search results, SET AI responses |
-| **External APIs** | Third-party calls | Yandex Maps geocoding, OpenAI API calls |
+| **External APIs** | Third-party calls | Google Maps geocoding, OpenAI API calls |
 
 **Что НЕ трейсим в MVP:**
 - Frontend client-side operations (browser-side tracing excluded)
