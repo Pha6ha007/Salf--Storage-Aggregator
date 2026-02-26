@@ -1336,7 +1336,7 @@ fi
 check_secret "DB_PASSWORD" 12
 check_secret "JWT_SECRET" 32
 check_secret "OPENAI_API_KEY" 20
-check_secret "YANDEX_MAPS_API_KEY" 20
+check_secret "GOOGLE_MAPS_API_KEY" 20
 check_secret "SENDGRID_API_KEY" 20
 check_secret "REDIS_PASSWORD" 12
 
@@ -1358,13 +1358,13 @@ fi
 
 # Test Google Maps
 echo -n "Testing Google Maps API... "
-YANDEX_RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null \
-    "https://geocode-maps.yandex.ru/1.x/?apikey=$YANDEX_MAPS_API_KEY&geocode=Москва&format=json" 2>/dev/null || echo "000")
+GOOGLE_MAPS_RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null \
+    "https://maps.googleapis.com/maps/api/geocode/json?apikey=$GOOGLE_MAPS_API_KEY&geocode=Москва&format=json" 2>/dev/null || echo "000")
 
-if [ "$YANDEX_RESPONSE" = "200" ]; then
+if [ "$GOOGLE_MAPS_RESPONSE" = "200" ]; then
     echo "✓"
 else
-    echo "⚠️  (HTTP $YANDEX_RESPONSE)"
+    echo "⚠️  (HTTP $GOOGLE_MAPS_RESPONSE)"
 fi
 
 echo ""
@@ -1497,7 +1497,7 @@ fi
 - [ ] DB_PASSWORD set (≥12 chars)
 - [ ] JWT_SECRET set (≥32 chars)
 - [ ] OPENAI_API_KEY valid and working
-- [ ] YANDEX_MAPS_API_KEY valid and working
+- [ ] GOOGLE_MAPS_API_KEY valid and working
 - [ ] SENDGRID_API_KEY set
 - [ ] REDIS_PASSWORD set
 - [ ] All API keys tested for connectivity
@@ -1604,7 +1604,7 @@ REDIS_DB=0
 
 # External Services (use test keys)
 OPENAI_API_KEY=your-openai-key-here
-YANDEX_MAPS_API_KEY=your-yandex-key-here
+GOOGLE_MAPS_API_KEY=your-google-maps-key-here
 SENDGRID_API_KEY=your-sendgrid-key-here
 
 # Feature flags
@@ -1702,7 +1702,7 @@ export async function seedDevelopment(dataSource: DataSource) {
       first_name: 'Test',
       last_name: 'User',
       role: 'user',
-      phone_number: '+79991234567',
+      phone_number: '+971501234567',
       email_verified: true,
     },
     {
@@ -1744,7 +1744,7 @@ export async function seedDevelopment(dataSource: DataSource) {
   const warehouses = [
     {
       name: 'Центральный склад',
-      address: 'ул. Тверская, 1, Москва',
+      address: 'ул. Тверская, 1, Dubai',
       city: 'Москва',
       latitude: 55.7558,
       longitude: 37.6173,
@@ -1754,7 +1754,7 @@ export async function seedDevelopment(dataSource: DataSource) {
     },
     {
       name: 'Складской комплекс Юг',
-      address: 'ул. Ленина, 50, Москва',
+      address: 'ул. Ленина, 50, Dubai',
       city: 'Москва',
       latitude: 55.7000,
       longitude: 37.6000,
@@ -2555,7 +2555,7 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - YANDEX_MAPS_API_KEY=${YANDEX_MAPS_API_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
     depends_on:
       - postgres
@@ -3199,7 +3199,7 @@ module.exports = {
   
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_YANDEX_MAPS_API_KEY: process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
   
   experimental: {
@@ -3333,9 +3333,9 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_YANDEX_MAPS_API_KEY
+ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_YANDEX_MAPS_API_KEY=$NEXT_PUBLIC_YANDEX_MAPS_API_KEY
+ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
 RUN npm run build
 
@@ -3393,7 +3393,7 @@ case $PLATFORM in
         echo "Building and deploying Docker image..."
         docker build -t selfstorage-frontend:latest \
             --build-arg NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-            --build-arg NEXT_PUBLIC_YANDEX_MAPS_API_KEY=$NEXT_PUBLIC_YANDEX_MAPS_API_KEY \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY \
             .
         
         # Push to registry
@@ -5131,7 +5131,7 @@ roles:
 ```yaml
 team_contacts:
   leadership:
-    - name: "Иван Петров"
+    - name: "Ahmed Al-Rashid"
       role: "Tech Lead"
       slack: "@ivan-petrov"
       email: "ivan.petrov@company.com"
@@ -5167,7 +5167,7 @@ ROLE=$1
 
 case $ROLE in
     tech-lead)
-        echo "Tech Lead: Иван Петров"
+        echo "Tech Lead: Ahmed Al-Rashid"
         echo "Phone: +7 999 123-45-67"
         echo "Slack: @ivan-petrov"
         ;;

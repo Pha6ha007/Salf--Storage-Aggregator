@@ -697,7 +697,7 @@
 - [ ] Old password invalidation после reset
 
 **☐ OAuth/Social Login**
-- [ ] Google/Yandex OAuth настроен (если применимо)
+- [ ] Google OAuth настроен (если применимо)
 - [ ] PKCE flow используется (RFC 7636)
 - [ ] State parameter валидируется (CSRF protection)
 - [ ] Redirect URI whitelist настроен
@@ -766,7 +766,7 @@
   - Никогда не используется дефолтное значение
 - [ ] API keys:
   - `ANTHROPIC_API_KEY=sk-ant-...`
-  - `YANDEX_MAPS_API_KEY=...`
+  - `GOOGLE_MAPS_API_KEY=...`
   - Ограничены по IP/domain где возможно
 - [ ] SMTP credentials:
   - `SMTP_USER`, `SMTP_PASSWORD`

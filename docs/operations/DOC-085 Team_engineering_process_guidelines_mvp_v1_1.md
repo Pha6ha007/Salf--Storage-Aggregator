@@ -164,7 +164,7 @@ The architecture should be simple enough to ship quickly but flexible enough to 
 **Examples of Owned Components:**
 - Backend API services (User Service, Booking Service, Warehouse Service, etc.)
 - Database schema for specific entities
-- External integrations (Yandex Maps, email providers)
+- External integrations (Google Maps, email providers)
 - Frontend feature areas (search, booking flow, operator dashboard)
 
 ## 3.2. Reviewers

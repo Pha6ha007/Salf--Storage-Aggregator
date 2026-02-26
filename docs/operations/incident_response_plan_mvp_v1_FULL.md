@@ -1062,8 +1062,8 @@ curl -I https://api.openai.com/v1/models
 # Email service (SendGrid)
 curl -I https://api.sendgrid.com/v3/alerts
 
-# Maps API (Yandex)
-curl -I https://geocode-maps.yandex.ru/1.x/
+# Maps API (Google)
+curl -I https://maps.googleapis.com/maps/api/geocode/json
 
 # DNS resolution
 dig selfstorage.com

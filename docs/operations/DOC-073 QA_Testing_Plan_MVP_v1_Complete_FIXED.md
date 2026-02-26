@@ -429,7 +429,7 @@ Expected Result: [What should happen]
    - Email: `newuser@test.com`
    - Password: `SecurePass123!`
    - Name: `Test User`
-   - Phone: `+79991234567`
+   - Phone: `+971501234567`
 3. Submit form
 
 **Expected Result:**

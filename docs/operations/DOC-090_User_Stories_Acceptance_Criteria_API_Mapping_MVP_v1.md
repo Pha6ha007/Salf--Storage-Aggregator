@@ -174,8 +174,8 @@ Story → Endpoint(s) → Request/Response → Errors
 {
   "email": "user@example.com",
   "password": "SecurePass123!",
-  "name": "Иван Петров",
-  "phone": "+79991234567"
+  "name": "Ahmed Al-Rashid",
+  "phone": "+971501234567"
 }
 ```
 
@@ -187,7 +187,7 @@ Story → Endpoint(s) → Request/Response → Errors
     "user": {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "email": "user@example.com",
-      "name": "Иван Петров",
+      "name": "Ahmed Al-Rashid",
       "role": "user"
     }
   },
@@ -256,7 +256,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict
     "user": {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "email": "user@example.com",
-      "name": "Иван Петров",
+      "name": "Ahmed Al-Rashid",
       "role": "user"
     }
   },
@@ -317,7 +317,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
     "user": {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "email": "user@example.com",
-      "name": "Иван Петров",
+      "name": "Ahmed Al-Rashid",
       "role": "user"
     }
   },
@@ -575,7 +575,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
     "operator": {
       "id": "bb0e8400-e29b-41d4-a716-446655440006",
       "company_name": "СкладОК ООО",
-      "phone": "+79991234567"
+      "phone": "+971501234567"
     }
   },
   "meta": {
@@ -606,7 +606,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 
 | ID | Scenario | Given | When | Then |
 |----|----------|-------|------|------|
-| AC-01 | Load map | User navigates to map view | Page loads | Yandex Map displayed centered on Moscow with warehouse markers |
+| AC-01 | Load map | User navigates to map view | Page loads | Google Map displayed centered on Moscow with warehouse markers |
 | AC-02 | Cluster markers | Many warehouses in small area, zoomed out | Map loaded | Markers grouped into clusters showing count |
 | AC-03 | Click marker | Single warehouse marker visible | User clicks marker | Popup shows warehouse name, rating, min price, "View Details" link |
 | AC-04 | Navigate to details | Popup displayed | User clicks "View Details" | Redirected to warehouse details page |
@@ -694,7 +694,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 {
   "name": "СкладОК Выхино",
   "description": "Современный складской комплекс с круглосуточным доступом",
-  "address": "ул. Ташкентская, 1, Москва",
+  "address": "ул. Ташкентская, 1, Dubai",
   "latitude": 55.7123,
   "longitude": 37.8234,
   "amenities": ["24_7_access", "climate_control", "security"],
@@ -1267,9 +1267,9 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 {
   "company_name": "СкладОК ООО",
   "tax_id": "7707123456",
-  "legal_address": "г. Москва, ул. Примерная, д. 1",
+  "legal_address": "Dubai, ул. Примерная, д. 1",
   "billing_email": "billing@skladok.ru",
-  "support_phone": "+79991234567",
+  "support_phone": "+971501234567",
   "support_email": "support@skladok.ru"
 }
 ```
@@ -1593,7 +1593,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 ```json
 {
   "name": "Мария Иванова",
-  "phone": "+79991234567",
+  "phone": "+971501234567",
   "email": "maria@example.com",
   "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
   "preferred_box_size": "M",
