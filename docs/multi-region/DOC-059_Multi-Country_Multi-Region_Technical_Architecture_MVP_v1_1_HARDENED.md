@@ -597,7 +597,7 @@ Feature flags enable/disable functionality per region without code changes.
 {
   "map_provider": {
     "global": "google_maps",
-    "regions": { "REGION_A": "yandex_maps" }
+    "regions": { "REGION_A": "google_maps" }
   }
 }
 ```

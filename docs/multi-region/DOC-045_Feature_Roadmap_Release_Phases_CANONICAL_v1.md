@@ -1157,7 +1157,7 @@ GET /api/v1/payments/:id/status
 
 1. **Маршруты до склада (если будут добавлены):**
    - Расчёт пешком, на авто, общественным транспортом
-   - Интеграция с Yandex.Maps Routing API
+   - Интеграция с Google Maps Routing API
 
 2. **Слои карты (если будут внедрены):**
    - Станции метро
@@ -1165,7 +1165,7 @@ GET /api/v1/payments/:id/status
    - Пробки в реальном времени
 
 3. **Street View (если будет интегрирован):**
-   - Yandex Панорамы фасада склада
+   - Google Street View of facility exterior
 
 ---
 
