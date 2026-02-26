@@ -3040,7 +3040,7 @@ All rate limit configurations MUST pass validation before deployment:
 - Role hierarchy maintained (Guest < User < Operator < Admin)
 - Limits reasonable relative to system capacity
 - No accidentally permissive configurations
-- External API limits respected (Yandex, Claude quotas)
+- External API limits respected (Google Maps, Claude quotas)
 
 **Safety Validation:**
 - No limits that would impact >X% of users (configurable threshold)

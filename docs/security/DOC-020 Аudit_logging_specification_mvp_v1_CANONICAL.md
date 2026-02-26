@@ -94,7 +94,7 @@ confidentiality: Internal
 7. **Data Retention & Legal Requirements**
    - 7.1. Retention Policy
    - 7.2. Legal Hold Procedures
-   - 7.3. Compliance Requirements (152-ФЗ)
+   - 7.3. Compliance Requirements (UAE PDPL (Federal Decree-Law No. 45/2021))
    - 7.4. Data Destruction
 
 8. **Access Control Requirements**
@@ -109,7 +109,7 @@ confidentiality: Internal
    - 9.4. External Systems (Future)
 
 10. **Compliance & Regulatory Mapping**
-    - 10.1. 152-ФЗ Requirements
+    - 10.1. UAE PDPL (Federal Decree-Law No. 45/2021) Requirements
     - 10.2. GOST R 57580.1-2017
     - 10.3. Audit Trail for Compliance Evidence
 
@@ -128,7 +128,7 @@ This document defines **WHAT audit events** must be logged and **WHEN** they mus
 
 Audit logging enables:
 - **Security investigations** — tracking unauthorized access attempts and suspicious activities
-- **Compliance evidence** — demonstrating adherence to 152-ФЗ and other regulations
+- **Compliance evidence** — demonstrating adherence to UAE PDPL (Federal Decree-Law No. 45/2021) and other regulations
 - **Incident response support** — providing forensic data for security incident analysis
 - **Operational accountability** — documenting critical business actions for non-repudiation
 
@@ -149,7 +149,7 @@ Audit logging enables:
 ✅ **Event Prioritization** — MUST vs SHOULD log events  
 ✅ **Retention Requirements** — How long audit logs must be kept  
 ✅ **Access Control** — Who can view audit logs  
-✅ **Compliance Mapping** — Alignment with 152-ФЗ and GOST R 57580.1-2017  
+✅ **Compliance Mapping** — Alignment with UAE PDPL (Federal Decree-Law No. 45/2021) and GOST R 57580.1-2017  
 ✅ **Invariants** — Core properties audit logs must maintain (immutability, integrity)  
 
 **Use Cases Supported:**
@@ -259,8 +259,8 @@ These principles guide all audit logging decisions in MVP v1.
 **Requirements:**
 - PII (Personally Identifiable Information) MUST NOT be included in audit logs unless required for compliance
 - Sensitive fields (passwords, payment card numbers, passport data) MUST NEVER be logged
-- User identifiers (user_id) are logged, but NOT email, phone number, or full name (unless required by 152-ФЗ)
-- IP addresses MAY be logged for security purposes (as per 152-ФЗ requirements)
+- User identifiers (user_id) are logged, but NOT email, phone number, or full name (unless required by UAE PDPL (Federal Decree-Law No. 45/2021))
+- IP addresses MAY be logged for security purposes (as per UAE PDPL (Federal Decree-Law No. 45/2021) requirements)
 
 **Compliant vs Non-Compliant Examples:**
 
@@ -358,7 +358,7 @@ These are the **fundamental properties** that ALL audit logs MUST satisfy in MVP
 **MVP v1 Retention Periods:**
 - **Hot storage (PostgreSQL):** 90 days minimum
 - **Warm storage (archival):** 1 year
-- **Cold storage (long-term):** 3 years total (as per 152-ФЗ)
+- **Cold storage (long-term):** 3 years total (as per UAE PDPL (Federal Decree-Law No. 45/2021))
 
 **Legal Hold Exception:**
 - Audit logs related to active investigations, litigation, or regulatory inquiries MUST be retained beyond standard periods
@@ -854,7 +854,7 @@ The following audit events MUST be available for querying:
 |-------------|----------|---------|-------------|
 | **Hot Storage** | 90 days | Active investigations, compliance queries | Immediate (< 1 second) |
 | **Warm Storage** | 1 year (total) | Historical analysis, audits | Fast (< 10 seconds) |
-| **Cold Storage** | 3 years (total) | Long-term compliance (152-ФЗ) | Delayed (< 4 hours) |
+| **Cold Storage** | 3 years (total) | Long-term compliance (UAE PDPL (Federal Decree-Law No. 45/2021)) | Delayed (< 4 hours) |
 
 **Automatic Transition:**
 - After 90 days, audit logs transition from hot to warm storage
@@ -887,9 +887,9 @@ The following audit events MUST be available for querying:
 
 ---
 
-## 7.3. Compliance Requirements (152-ФЗ)
+## 7.3. Compliance Requirements (UAE PDPL (Federal Decree-Law No. 45/2021))
 
-**152-ФЗ (Russian Personal Data Law) Requirements:**
+**UAE PDPL (Federal Decree-Law No. 45/2021) (UAEn Personal Data Law) Requirements:**
 
 **Audit logs MUST:**
 - Document all access to personal data (PII)
@@ -897,7 +897,7 @@ The following audit events MUST be available for querying:
 - Provide logs to regulatory authorities upon request
 - Demonstrate secure handling of personal data
 
-**Specific Events Required by 152-ФЗ:**
+**Specific Events Required by UAE PDPL (Federal Decree-Law No. 45/2021):**
 - `user.profile_created` — When personal data is first collected
 - `user.profile_updated` — When personal data is modified
 - `user.profile_deleted` — When personal data is deleted (GDPR-style "right to be forgotten")
@@ -1079,9 +1079,9 @@ This section defines **WHERE** audit logging must be integrated (WHAT components
 
 # 10. Compliance & Regulatory Mapping
 
-## 10.1. 152-ФЗ Requirements
+## 10.1. UAE PDPL (Federal Decree-Law No. 45/2021) Requirements
 
-**152-ФЗ (Federal Law on Personal Data, Russia) requires:**
+**UAE PDPL (Federal Decree-Law No. 45/2021) (Federal Law on Personal Data, UAE) requires:**
 
 1. **Audit trail for personal data access:**
    - Every access to personal data MUST be logged
@@ -1101,7 +1101,7 @@ This section defines **WHERE** audit logging must be integrated (WHAT components
 
 **Compliance Mapping:**
 
-| 152-ФЗ Requirement | DOC-020 Section |
+| UAE PDPL (Federal Decree-Law No. 45/2021) Requirement | DOC-020 Section |
 |-------------------|-----------------|
 | Audit trail for PII access | Section 5.1 (Authentication Events), Section 8.3 (Meta-Audit) |
 | 3-year retention | Section 7.1 (Retention Policy) |
@@ -1113,7 +1113,7 @@ This section defines **WHERE** audit logging must be integrated (WHAT components
 
 ## 10.2. GOST R 57580.1-2017
 
-**GOST R 57580.1-2017 (Russian standard for information security) requires:**
+**GOST R 57580.1-2017 (UAEn standard for information security) requires:**
 
 1. **Non-repudiation mechanisms:**
    - Actions by users and operators MUST be traceable
@@ -1188,7 +1188,7 @@ timestamp,event_type,actor_id,actor_type,resource_type,resource_id,action,status
 
 **Immutability** — The property of audit logs being unchangeable (append-only).
 
-**PII (Personally Identifiable Information)** — Personal data subject to protection under 152-ФЗ (e.g., email, phone number, passport data).
+**PII (Personally Identifiable Information)** — Personal data subject to protection under UAE PDPL (Federal Decree-Law No. 45/2021) (e.g., email, phone number, passport data).
 
 **Retention Policy** — Rules governing how long audit logs are kept before deletion.
 

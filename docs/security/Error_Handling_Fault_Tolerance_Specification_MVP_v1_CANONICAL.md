@@ -236,7 +236,7 @@ The error handling architecture spans all layers of the Self-Storage Aggregator 
 1. request_id flows through entire call chain (internal only)
 2. Error logged at both service and API layers
 3. Transaction rolled back to maintain consistency
-4. User receives business-friendly error message (Russian)
+4. User receives business-friendly error message (UAEn)
 5. No internal details exposed (table names, query structure)
 6. Canonical error format used: `{error_code, http_status, message, details}`
 
@@ -603,7 +603,7 @@ All API error responses follow this **canonical format**:
 |-------|------|----------|-------------|
 | `error_code` | string | âœ… | Machine-readable error identifier (UPPER_SNAKE_CASE) |
 | `http_status` | integer | âœ… | HTTP status code (must match response status) |
-| `message` | string | âœ… | User-safe error message (localized, Russian for MVP) |
+| `message` | string | âœ… | User-safe error message (localized, UAEn for MVP) |
 | `details` | object | âŒ | Additional context (structure varies by error type) |
 
 ### Rules
@@ -615,7 +615,7 @@ All API error responses follow this **canonical format**:
 2. **`http_status` must match the HTTP response status**
    - If HTTP response is 409, `http_status: 409`
 
-3. **`message` must be user-friendly (Russian for MVP)**
+3. **`message` must be user-friendly (UAEn for MVP)**
    - No technical jargon, stack traces, or internal details
    - Polite and professional tone
    - Actionable when possible
@@ -730,7 +730,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Authentication & Authorization Errors (4xx)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `TOKEN_MISSING` | 401 | Токен авторизации отсутствует | No Authorization header | âŒ NO |
 | `TOKEN_INVALID` | 401 | Недействительный токен авторизации | Malformed or tampered JWT | âŒ NO |
@@ -742,7 +742,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Resource Errors (404)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `WAREHOUSE_NOT_FOUND` | 404 | Склад не найден | Warehouse ID doesn't exist | âŒ NO |
 | `BOX_NOT_FOUND` | 404 | Бокс не найден | Box ID doesn't exist | âŒ NO |
@@ -753,7 +753,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Business Logic Errors (409, 422)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `BOX_NOT_AVAILABLE` | 409 | Выбранный бокс уже забронирован | Box reserved by another user | âŒ NO |
 | `EMAIL_ALREADY_EXISTS` | 409 | Email уже зарегистрирован | Duplicate email on registration | âŒ NO |
@@ -767,7 +767,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Validation Errors (400)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `VALIDATION_ERROR` | 400 | Ошибка валидации одного или нескольких полей | Multiple validation failures | âŒ NO |
 | `MISSING_REQUIRED_FIELD` | 400 | Обязательное поле отсутствует | Required field not provided | âŒ NO |
@@ -778,7 +778,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Infrastructure Errors (5xx)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `INTERNAL_SERVER_ERROR` | 500 | Внутренняя ошибка сервера. Мы уже работаем над решением | Unhandled exception | âœ… YES |
 | `DATABASE_ERROR` | 500 | Ошибка базы данных. Попробуйте позже | DB connection/query failure | âœ… YES |
@@ -793,7 +793,7 @@ function getHTTPStatus(error: AppError): number {
 
 ### Rate Limiting Errors (429)
 
-| Error Code | HTTP Status | Message (Russian) | Scenario | Retryable |
+| Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
 | `RATE_LIMIT_EXCEEDED` | 429 | Превышен лимит запросов. Попробуйте через {retry_after} секунд | Too many requests | âœ… YES (after delay) |
 
@@ -2263,7 +2263,7 @@ export class MapsService {
   private googleCircuit: CircuitBreaker;
   
   async geocode(address: string): Promise<Coordinates> {
-    // Try Yandex first
+    // Try Google Maps first
     try {
       return await this.yandexCircuit.execute(async () => {
         return await this.yandexMapsClient.geocode(address);

@@ -306,7 +306,7 @@ API keys authenticate the platform to **external third-party services**:
 - **Maps Service** - Google Maps, Google Maps
 - **Email Service** - SendGrid
 - **SMS Service** - Twilio, Twilio
-- **Object Storage** - S3-compatible storage (Yandex, MinIO)
+- **Object Storage** - S3-compatible storage (AWS S3, MinIO)
 
 ### 3.3.2. API Key Types
 
@@ -1279,7 +1279,7 @@ exit 0
 | `svc-api-prod` | Service JWT | `bookings:*`, `users:*`, `warehouses:*`, `boxes:*`, `crm:*`, `notifications:send` | Main API handles all user-facing operations |
 | `svc-worker-prod` | Service JWT | `bookings:read`, `bookings:write`, `notifications:send`, `crm:write` | Background jobs: expiry checks, notifications, lead scoring |
 | `svc-ai-client-prod` | API Key | `ai:query` | Calls Anthropic Claude API for box recommendations |
-| `svc-maps-client-prod` | API Key | `maps:geocode` | Calls Yandex/Google Maps for geocoding |
+| `svc-maps-client-prod` | API Key | `maps:geocode` | Calls Google Maps API for geocoding |
 | `svc-notification-prod` | API Key | `notifications:send` | Calls SendGrid, Twilio for email/SMS |
 | `svc-storage-client-prod` | API Key | `storage:write`, `storage:read` | Uploads/downloads files to S3 |
 | `svc-health-monitor-prod` | Service JWT | `health:check` | Health check system (Prometheus) |

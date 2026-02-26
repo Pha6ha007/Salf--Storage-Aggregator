@@ -624,7 +624,7 @@ Security norms and expectations vary by region; scoring may require regional ada
 - **Operator capabilities:** Resource constraints vary by region (e.g., small rural operators vs. large urban facilities)
 
 **Rollout Strategy (Conceptual):**
-1. **Pilot region:** Test scoring in one geographic area first (e.g., Moscow)
+1. **Pilot region:** Test scoring in one geographic area first (e.g., Dubai)
 2. **Iterate:** Adjust weights, thresholds, and signal definitions based on pilot learnings
 3. **Expand:** Roll out to additional regions with localized adjustments
 4. **Monitor:** Continuously track regional performance and user/operator feedback
