@@ -499,7 +499,7 @@ function generateTitle(params: PageTitleParams): string {
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "ул. Ташкентская, 23",
-    "addressLocality": "Москва",
+    "addressLocality": "Dubai",
     "addressCountry": "RU"
   },
   "geo": {

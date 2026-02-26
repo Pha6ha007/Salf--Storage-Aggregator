@@ -844,7 +844,7 @@ Illustrative example (specifications):
 - 200+ GB SSD storage
 - 1 Gbps network
 
-Providers (illustrative): Hetzner, DigitalOcean, Linode, AWS EC2, GCP Compute Engine, or equivalent.
+Providers (illustrative): DigitalOcean, DigitalOcean, Linode, AWS EC2, GCP Compute Engine, or equivalent.
 
 **Service Distribution:**
 

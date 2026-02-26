@@ -553,7 +553,7 @@ Fills form:
     Status: closed
     Reason: customer_booked
     Booking ID: [uuid]
-    Notes: "Booked box M, 3 months, 15,000₽"
+    Notes: "Booked box M, 3 months, 15,000AED "
     ↓
 Saves
     ↓
@@ -591,7 +591,7 @@ notes: "Customer found alternative solution"
 **Example note:**
 ```
 "Called customer 2pm. Interested in M box starting Dec 20. 
-Quoted 5000₽/month. Will call back tomorrow to confirm."
+Quoted 5000AED /month. Will call back tomorrow to confirm."
 ```
 
 ---

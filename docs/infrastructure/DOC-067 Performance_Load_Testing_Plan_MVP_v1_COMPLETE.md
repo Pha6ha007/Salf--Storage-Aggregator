@@ -844,9 +844,9 @@ async function generateTestData() {
   
   // 2. Generate Warehouses
   const cities = [
-    { name: 'Москва', lat: 55.7558, lon: 37.6173, count: 200 },
-    { name: 'Санкт-Петербург', lat: 59.9311, lon: 30.3609, count: 125 },
-    { name: 'Казань', lat: 55.7964, lon: 49.1089, count: 75 },
+    { name: 'Dubai', lat: 55.7558, lon: 37.6173, count: 200 },
+    { name: 'Abu Dhabi', lat: 59.9311, lon: 30.3609, count: 125 },
+    { name: 'Sharjah', lat: 55.7964, lon: 49.1089, count: 75 },
     // ... more cities
   ];
   
@@ -1210,7 +1210,7 @@ export const options = {
 
 const BASE_URL = __ENV.API_URL || 'http://localhost:3000';
 
-const cities = ['Москва', 'Санкт-Петербург', 'Казань'];
+const cities = ['Dubai', 'Abu Dhabi', 'Sharjah'];
 
 export default function () {
   // User journey simulation
@@ -1362,7 +1362,7 @@ export default function () {
   // Peak behavior: faster, more focused
   
   // Quick search
-  http.get(`${BASE_URL}/api/v1/warehouses/search?city=Москва&radius=5000`);
+  http.get(`${BASE_URL}/api/v1/warehouses/search?city=Dubai&radius=5000`);
   sleep(randomIntBetween(1, 3)); // Shorter think time
   
   // Quick warehouse view
@@ -1704,7 +1704,7 @@ iptables -A OUTPUT -p tcp --dport 5432 -j DROP
 ### Endpoints to Test
 
 ✅ `GET /health` — Health check  
-✅ `GET /warehouses/search?city=Москва` — Search  
+✅ `GET /warehouses/search?city=Dubai` — Search  
 ✅ `GET /warehouses/1` — Warehouse details  
 ✅ `GET /warehouses/1/boxes` — Box listing  
 ✅ `POST /auth/login` — Authentication  
@@ -1745,7 +1745,7 @@ export default function () {
     
     // 2. Search
     group('Search', () => {
-      const res = http.get(`${BASE_URL}/api/v1/warehouses/search?city=Москва&radius=5000`);
+      const res = http.get(`${BASE_URL}/api/v1/warehouses/search?city=Dubai&radius=5000`);
       check(res, {
         'search: status 200': (r) => r.status === 200,
         'search: has data': (r) => JSON.parse(r.body).data.length > 0,
@@ -1929,7 +1929,7 @@ export const options = {
 
 const BASE_URL = __ENV.API_URL || 'http://localhost:3000';
 
-const cities = ['Москва', 'Санкт-Петербург', 'Казань', 'Новосибирск'];
+const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Новосибирск'];
 
 export default function () {
   // Weighted scenario selection
@@ -2182,7 +2182,7 @@ const BASE_URL = __ENV.API_URL || 'http://localhost:3000';
 
 export default function () {
   // Aggressive load pattern
-  const res = http.get(`${BASE_URL}/api/v1/warehouses/search?city=Москва`);
+  const res = http.get(`${BASE_URL}/api/v1/warehouses/search?city=Dubai`);
   
   const success = check(res, {
     'status not 500': (r) => r.status !== 500,
@@ -2436,9 +2436,9 @@ load-tests/
 export const BASE_URL = __ENV.API_URL || 'http://localhost:3000';
 
 export const CITIES = [
-  'Москва',
-  'Санкт-Петербург',
-  'Казань',
+  'Dubai',
+  'Abu Dhabi',
+  'Sharjah',
   'Новосибирск',
   'Екатеринбург',
 ];
@@ -2492,7 +2492,7 @@ export function checkStandardResponse(response, name) {
 }
 
 export function getRandomCity() {
-  const cities = ['Москва', 'Санкт-Петербург', 'Казань'];
+  const cities = ['Dubai', 'Abu Dhabi', 'Sharjah'];
   return cities[Math.floor(Math.random() * cities.length)];
 }
 
@@ -2836,7 +2836,7 @@ import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 export default function () {
   // Search
-  http.get(`${BASE_URL}/api/v1/warehouses/search?city=Москва`);
+  http.get(`${BASE_URL}/api/v1/warehouses/search?city=Dubai`);
   sleep(randomIntBetween(3, 7)); // User reads results
   
   // View details

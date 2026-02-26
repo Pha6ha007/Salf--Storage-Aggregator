@@ -710,7 +710,7 @@ Admins can review, approve, reject, and manage operator accounts.
       "email": "operator@example.com",
       "name": "Ahmed Al-Mansouri",
       "phone": "+971501234567",
-      "company_name": "ООО СкладОК",
+      "company_name": "StorageOK LLC",
       "company_inn": "7701234567",
       "status": "approved",
       "verification_status": "verified",
@@ -767,9 +767,9 @@ Admins can review, approve, reject, and manage operator accounts.
     "email": "operator@example.com",
     "name": "Ahmed Al-Mansouri",
     "phone": "+971501234567",
-    "company_name": "ООО СкладОК",
+    "company_name": "StorageOK LLC",
     "company_inn": "7701234567",
-    "company_legal_form": "ООО",
+    "company_legal_form": "LLC",
     "company_registration_number": "1234567890123",
     "bank_account": {
       "account_number": "40702810100000012345",
@@ -824,7 +824,7 @@ Admins can review, approve, reject, and manage operator accounts.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `company_legal_form` | string | Legal form (ООО, ИП, АО, etc.) |
+| `company_legal_form` | string | Legal form (LLC, FZE, FZCO, etc.) |
 | `company_registration_number` | string | OGRN/OGRNIP |
 | `bank_account` | object | Bank account details |
 | `documents` | array | Uploaded verification documents |
@@ -1028,7 +1028,7 @@ Admins can view, moderate, and manage warehouses and boxes.
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "operator_id": "660e8400-e29b-41d4-a716-446655440001",
-      "operator_name": "ООО СкладОК",
+      "operator_name": "StorageOK LLC",
       "name": "СкладОК Выхино",
       "address": "Dubai, ул. Ферганская, 10",
       "status": "published",
@@ -1072,7 +1072,7 @@ Admins can view, moderate, and manage warehouses and boxes.
     "operator": {
       "id": "660e8400-e29b-41d4-a716-446655440001",
       "name": "Ahmed Al-Mansouri",
-      "company_name": "ООО СкладОК",
+      "company_name": "StorageOK LLC",
       "email": "operator@example.com",
       "phone": "+971501234567",
       "status": "approved"
@@ -1333,7 +1333,7 @@ Admins can view, search, and manage bookings (including cancellations).
       },
       "operator": {
         "id": "operator-uuid",
-        "name": "ООО СкладОК"
+        "name": "StorageOK LLC"
       },
       "warehouse": {
         "id": "warehouse-uuid",
@@ -1389,7 +1389,7 @@ Admins can view, search, and manage bookings (including cancellations).
     },
     "operator": {
       "id": "operator-uuid",
-      "name": "ООО СкладОК",
+      "name": "StorageOK LLC",
       "contact_email": "operator@example.com"
     },
     "warehouse": {
@@ -1737,7 +1737,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
       "warehouse": {
         "id": "warehouse-uuid",
         "name": "СкладОК Выхино",
-        "operator_name": "ООО СкладОК"
+        "operator_name": "StorageOK LLC"
       },
       "booking_id": "booking-uuid",
       "rating": 5,
@@ -1783,7 +1783,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
     "warehouse": {
       "id": "warehouse-uuid",
       "name": "СкладОК Выхино",
-      "operator_name": "ООО СкладОК"
+      "operator_name": "StorageOK LLC"
     },
     "booking": {
       "id": "booking-uuid",
@@ -1973,7 +1973,7 @@ Admins can view all CRM leads across all operators for support and oversight.
       },
       "operator": {
         "id": "operator-uuid",
-        "name": "ООО СкладОК"
+        "name": "StorageOK LLC"
       },
       "preferred_box_size": "M",
       "status": "contacted",
@@ -2016,7 +2016,7 @@ Admins can view all CRM leads across all operators for support and oversight.
     },
     "operator": {
       "id": "operator-uuid",
-      "name": "ООО СкладОК",
+      "name": "StorageOK LLC",
       "contact_email": "operator@example.com"
     },
     "preferred_box_size": "M",

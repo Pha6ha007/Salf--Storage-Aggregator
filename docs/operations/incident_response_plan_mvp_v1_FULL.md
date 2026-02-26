@@ -2996,7 +2996,7 @@ echo "Checking database query performance..."
 docker exec postgres psql -U user -d selfstorage -c "
   EXPLAIN ANALYZE 
   SELECT * FROM warehouses 
-  WHERE city = 'Москва' 
+  WHERE city = 'Dubai' 
   LIMIT 10;
 "
 

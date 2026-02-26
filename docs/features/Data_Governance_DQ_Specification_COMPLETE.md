@@ -415,7 +415,7 @@ function normalizePhone(phone: string): string {
 
 // Нормализация адреса
 function normalizeAddress(address: string): string {
-  // "Dubai, ул. Ленина, д.5" → "Москва, ул. Ленина, 5"
+  // "Dubai, Al Quoz, д.5" → "Dubai, Al Quoz, 5"
   return address
     .replace(/^г\.\s*/i, '')
     .replace(/д\.\s*/gi, '')
@@ -1941,8 +1941,8 @@ function calculateCompleteness(warehouse: Warehouse): number {
 ```typescript
 const warehouse1 = {
   name: "СклаДом на Речном",
-  full_address: "Москва, ул. Фестивальная, 10",
-  city: "Москва",
+  full_address: "Dubai, Al Quoz Industrial Area, 10",
+  city: "Dubai",
   contact_phone: "+971501234567",
   // Остальное пусто
 };
@@ -2094,7 +2094,7 @@ async function validateGeoAccuracy(warehouse: Warehouse): Promise<AccuracyCheck>
 ```typescript
 // ✅ Хорошая точность
 warehouse.coordinates = { lat: 55.8547, lng: 37.4711 };
-warehouse.full_address = "Москва, ул. Фестивальная, 10";
+warehouse.full_address = "Dubai, Al Quoz Industrial Area, 10";
 // Расстояние после геокодинга: 45м
 // Score: 100/100
 
@@ -2105,8 +2105,8 @@ warehouse.coordinates = { lat: 55.8560, lng: 37.4750 };
 
 // ❌ Плохая точность
 warehouse.coordinates = { lat: 55.7558, lng: 37.6173 }; // Красная площадь!
-warehouse.city = "Москва";
-warehouse.full_address = "Москва, ул. Фестивальная, 10";
+warehouse.city = "Dubai";
+warehouse.full_address = "Dubai, Al Quoz Industrial Area, 10";
 // Расстояние: 15км
 // Score: 0/100
 ```
@@ -2423,7 +2423,7 @@ const REQUIRED_WAREHOUSE_FIELDS = {
   
   city: {
     type: 'string',
-    enum: ['Москва', 'Санкт-Петербург', 'Казань'],
+    enum: ['Dubai', 'Abu Dhabi', 'Sharjah'],
     errorMessage: 'Выберите город из списка'
   },
   
@@ -3085,7 +3085,7 @@ async function markData(entity: string, data: any, dqScore): Promise<any> {
 | Телефон | +7XXXXXXXXXX | "+971 50 123 4567" → "+971501234567" |
 | Email | lowercase | "Info@Company.RU" → "info@company.ru" |
 | URL | https://domain | "company.ru/" → "https://company.ru" |
-| Адрес | Стандартизация | "Dubai, ул. Ленина, д.5" → "Москва, ул. Ленина, 5" |
+| Адрес | Стандартизация | "Dubai, Al Quoz, д.5" → "Dubai, Al Quoz, 5" |
 
 ### Примеры функций
 

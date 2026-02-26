@@ -638,7 +638,7 @@ Expected Result: [What should happen]
 
 **Steps:**
 1. Navigate to home page
-2. Enter location: "Москва, Выхино"
+2. Enter location: "Dubai, Al Quoz"
 3. Click "Search"
 
 **Expected Result:**
@@ -1152,7 +1152,7 @@ Expected Result: [What should happen]
 
 **Steps:**
 1. User visits homepage
-2. Enters location "Москва, Центр"
+2. Enters location "Dubai, Downtown"
 3. Views search results
 4. Applies filters (price: 5000-8000, climate control)
 5. Clicks warehouse card
@@ -1542,7 +1542,7 @@ export const handlers = [
         {
           id: 101,
           name: 'СкладОК Выхино',
-          city: 'Москва',
+          city: 'Dubai',
           price_from: 2500
         }
       ],
@@ -1676,7 +1676,7 @@ SMOKE-003: Login
 - Duration: < 1 sec
 
 SMOKE-004: Search Warehouses
-- GET /api/v1/warehouses?city=Москва
+- GET /api/v1/warehouses?city=Dubai
 - Expected: 200 OK, results returned
 - Duration: < 2 sec
 
@@ -1893,7 +1893,7 @@ PERF-004: Soak Test
     {
       "id": 101,
       "name": "СкладОК Выхино",
-      "city": "Москва",
+      "city": "Dubai",
       "district": "Выхино",
       "price_from": 2500,
       "rating": 4.7,
@@ -1902,7 +1902,7 @@ PERF-004: Soak Test
     {
       "id": 102,
       "name": "Хранилище Центр",
-      "city": "Москва",
+      "city": "Dubai",
       "district": "Центр",
       "price_from": 8000,
       "rating": 4.9
@@ -1915,10 +1915,10 @@ PERF-004: Soak Test
 
 | ID | Warehouse | Size | Price | Available |
 |----|-----------|------|-------|-----------|
-| 501 | 101 | S (2.25м²) | 2500₽ | 10/20 |
-| 502 | 101 | M (6м²) | 5000₽ | 5/15 |
-| 503 | 101 | L (12м²) | 8000₽ | 0/10 |
-| 504 | 101 | XL (20м²) | 12000₽ | 2/5 |
+| 501 | 101 | S (2.25м²) | 2500AED  | 10/20 |
+| 502 | 101 | M (6м²) | 5000AED  | 5/15 |
+| 503 | 101 | L (12м²) | 8000AED  | 0/10 |
+| 504 | 101 | XL (20м²) | 12000AED  | 2/5 |
 
 ---
 

@@ -3176,7 +3176,7 @@ function BookingForm() {
 **Диаграмма потока данных:**
 
 ```
-URL (/search?city=Москва&price_min=3000)
+URL (/search?city=Dubai&price_min=3000)
   ↓
 Filter Store (Zustand) - синхронизация при загрузке
   ↓
@@ -9688,7 +9688,7 @@ export function useRateLimitedMutation<T>(
 └──────┬───────────┘
        │
        │ 3. GET /api/v1/warehouses
-       │    ?city=Москва&price_max=10000
+       │    ?city=Dubai&price_max=10000
        │
        ▼
 ┌──────────────────┐

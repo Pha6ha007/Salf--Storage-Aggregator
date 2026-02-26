@@ -281,7 +281,7 @@ This document describes **conceptual API patterns** for the AI Chat Assistant. T
 **Potential AI Functionality (if fully implemented):**
 1. **Determine context** → operator, topic=pricing, location=Moscow center
 2. **Retrieve data**:
-   - Median price p50 for 6 m² boxes in center: 4200₽/month
+   - Median price p50 for 6 m² boxes in center: 4200AED /month
    - Pricing guidelines from documentation
    - Competitor pricing data
 3. **Generate structured response** with recommendations
@@ -501,7 +501,7 @@ The AI Chat Assistant can be built with **modular components** that clearly sepa
 3. **Entity Extraction (optional NER):**
    - Location: "Moscow", "m. Tverskaya", "CAO"
    - Box Size: "6 m²", "large box", "XL"
-   - Price: "3000 rubles", "up to 5000₽"
+   - Price: "3000 rubles", "up to 5000AED "
    - Duration: "3 months", "six months", "for summer"
    - Features: "climate control", "24/7 access"
 
@@ -768,7 +768,7 @@ user_message = f"""
 {{
   "warehouse_id": 42,
   "name": "СклаДом на Ленинском",
-  "location": "Москва, Ленинский проспект 52",
+  "location": "Dubai, Sheikh Zayed Road",
   "available_boxes": [
     {{"size": "L", "area_m2": 15, "price": 3500, "available": 3}}
   ],
@@ -795,7 +795,7 @@ response = claude_api.generate(
 
 📦 "СклаДом на Ленинском"
 - Размер: L (15 м²)
-- Цена: 3500₽/мес
+- Цена: 3500AED /мес
 - Доступно: 3 бокса
 - Рейтинг: 4.8/5
 
@@ -1459,8 +1459,8 @@ def extract_entities_simple(query):
     """
     entities = {}
     
-    # Extract price (examples: "3000 dirhamй", "до 5000₽")
-    price_match = re.search(r'(\d+)\s*(рубл|₽|руб)', query)
+    # Extract price (examples: "3000 dirhamй", "до 5000AED ")
+    price_match = re.search(r'(\d+)\s*(рубл|AED |руб)', query)
     if price_match:
         entities['price'] = int(price_match.group(1))
     
@@ -1676,8 +1676,8 @@ def select_top_docs(retrieved_docs, max_tokens=4000):
 Для хранения мебели рекомендую бокс размером L (12-15 м²).
 
 Подходящие склады в вашем районе:
-1. "СклаДом" — 3500₽/мес, рейтинг 4.8
-2. "МойСклад" — 3200₽/мес, рейтинг 4.6
+1. "СклаДом" — 3500AED /мес, рейтинг 4.8
+2. "МойСклад" — 3200AED /мес, рейтинг 4.6
 
 Источники: [warehouse_catalog, pricing_data]
 ```

@@ -312,7 +312,7 @@ This runbook references specific platforms and vendors for **illustrative purpos
 
 - **Vercel** - Example frontend deployment platform (Section 5.2)
 - **Railway** - Example managed infrastructure provider (Sections 1.2, 5.2)
-- **Hetzner** - Example VPS provider (Section 1.2)
+- **DigitalOcean** - Example VPS provider (Section 1.2)
 - **SendGrid** - Example email service (Section 1.2)
 
 **Critical Understanding:**  
@@ -581,10 +581,10 @@ This runbook provides comprehensive procedures to **reduce risk and support grow
 - Цель: Live пользовательский сервис
 - Доступ: Tech Lead + DevOps
 - Деплой: Manual approval required
-- База: Production PostgreSQL (Railway/Hetzner)
+- База: Production PostgreSQL (Railway/DigitalOcean)
 - URL: https://api.selfstorage.com
 
-> **Note:** Railway and Hetzner are illustrative examples. Production database can be hosted on any provider that meets performance and reliability requirements. All procedures in this runbook apply regardless of infrastructure provider.
+> **Note:** Railway and DigitalOcean are illustrative examples. Production database can be hosted on any provider that meets performance and reliability requirements. All procedures in this runbook apply regardless of infrastructure provider.
 
 ### Исключения
 
@@ -1359,7 +1359,7 @@ fi
 # Test Google Maps
 echo -n "Testing Google Maps API... "
 GOOGLE_MAPS_RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null \
-    "https://maps.googleapis.com/maps/api/geocode/json?apikey=$GOOGLE_MAPS_API_KEY&geocode=Москва&format=json" 2>/dev/null || echo "000")
+    "https://maps.googleapis.com/maps/api/geocode/json?apikey=$GOOGLE_MAPS_API_KEY&geocode=Москва&address=Dubai&geocode=Москва&address=Dubai&geocode=Москва&address=Dubai&geocode=Москва&format=json" 2>/dev/null || echo "000")
 
 if [ "$GOOGLE_MAPS_RESPONSE" = "200" ]; then
     echo "✓"
@@ -1745,7 +1745,7 @@ export async function seedDevelopment(dataSource: DataSource) {
     {
       name: 'Центральный склад',
       address: 'ул. Тверская, 1, Dubai',
-      city: 'Москва',
+      city: 'Dubai',
       latitude: 55.7558,
       longitude: 37.6173,
       description: 'Современный склад в центре Москвы',
@@ -1755,7 +1755,7 @@ export async function seedDevelopment(dataSource: DataSource) {
     {
       name: 'Складской комплекс Юг',
       address: 'ул. Ленина, 50, Dubai',
-      city: 'Москва',
+      city: 'Dubai',
       latitude: 55.7000,
       longitude: 37.6000,
       description: 'Большой складской комплекс на юге',

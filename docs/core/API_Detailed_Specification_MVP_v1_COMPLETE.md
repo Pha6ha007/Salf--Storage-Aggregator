@@ -1573,7 +1573,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "password_confirmation": "SecureOperator123!",
   "name": "Raj Patel",
   "phone": "+97145551234",
-  "company_name": "ООО СкладОК",
+  "company_name": "StorageOK LLC",
   "inn": "7704123456",
   "agree_to_terms": true,
   "agree_to_privacy": true
@@ -1610,7 +1610,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
       "name": "Raj Patel",
       "phone": "+97145551234",
       "role": "operator",
-      "company_name": "ООО СкладОК",
+      "company_name": "StorageOK LLC",
       "inn": "7704123456",
       "onboarding_status": "pending",
       "account_status": "pending_verification",
@@ -1752,7 +1752,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "onboarding_status": "completed",
     "account_status": "active",
     "company_info": {
-      "company_name": "ООО СкладОК",
+      "company_name": "StorageOK LLC",
       "inn": "7704123456",
       "kpp": "770401001",
       "ogrn": "1234567890123",
@@ -3452,7 +3452,7 @@ This section defines all data schemas, validation rules, and constraints used ac
   "onboarding_status": "completed",
   "account_status": "active",
   "company_info": {
-    "company_name": "ООО СкладОК",
+    "company_name": "StorageOK LLC",
     "inn": "7704123456",
     "kpp": "770401001",
     "ogrn": "1234567890123"

@@ -574,7 +574,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
     ],
     "operator": {
       "id": "bb0e8400-e29b-41d4-a716-446655440006",
-      "company_name": "СкладОК ООО",
+      "company_name": "StorageOK LLC",
       "phone": "+971501234567"
     }
   },
@@ -1265,7 +1265,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 **Request Body:**
 ```json
 {
-  "company_name": "СкладОК ООО",
+  "company_name": "StorageOK LLC",
   "tax_id": "7707123456",
   "legal_address": "Dubai, ул. Примерная, д. 1",
   "billing_email": "billing@skladok.ru",
@@ -1281,7 +1281,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "data": {
     "id": "cc0e8400-e29b-41d4-a716-446655440007",
     "user_id": "bb0e8400-e29b-41d4-a716-446655440006",
-    "company_name": "СкладОК ООО",
+    "company_name": "StorageOK LLC",
     "is_verified": false,
     "created_at": "2025-12-16T14:30:00Z"
   },

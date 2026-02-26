@@ -2836,7 +2836,7 @@ describe('BookingForm', () => {
 // Критичные сценарии
 test('процесс бронирования', async ({ page }) => {
   await page.goto('/');
-  await page.fill('[placeholder="Город"]', 'Москва');
+  await page.fill('[placeholder="Город"]', 'Dubai');
   await page.click('button:has-text("Найти")');
   await page.click('[data-testid="warehouse-card"]:first-child');
   await page.click('button:has-text("Забронировать")');

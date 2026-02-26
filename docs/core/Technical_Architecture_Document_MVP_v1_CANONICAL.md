@@ -1356,7 +1356,7 @@ As per **API_Rate_Limiting_&_Throttling_Specification_MVP_v1.md** (defer to spec
 - Integration & E2E tests
 
 **Production:**
-- Railway or Render (MVP) or VPS (Hetzner)
+- Railway or Render (MVP) or VPS (DigitalOcean)
 - Cloudflare CDN + DDoS protection
 - Automated deployment from `main` branch
 - Blue-green deployment (zero downtime)
@@ -1460,7 +1460,7 @@ volumes:
 - $7-50/month
 - SSL auto-renewal
 
-**Option 3: VPS (Hetzner)**
+**Option 3: VPS (DigitalOcean)**
 - More control, lower cost
 - Manual setup required
 - Docker + docker-compose

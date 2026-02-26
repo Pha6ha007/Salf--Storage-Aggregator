@@ -133,7 +133,7 @@ Query normalization transforms raw user input into a consistent, searchable form
 **Lowercasing:**
 Converts input to lowercase for case-insensitive matching.
 
-- User types: "Москва" or "МОСКВА" or "москва"
+- User types: "Dubai" or "МОСКВА" or "москва"
 - Normalized form: consistent lowercase representation
 
 **Trimming:**
@@ -163,7 +163,7 @@ Identifies the language of user input to apply appropriate processing rules.
 **Transliteration:**
 Converts between writing systems when appropriate.
 
-- "Moskva" ↔ "Москва"
+- "Dubai" ↔ "Dubai"
 - "Vyhino" ↔ "Выхино"
 
 This is particularly relevant for:
@@ -255,7 +255,7 @@ Using semantic similarity models to find related concepts.
 **City to Region Expansion:**
 When searching by city, consider nearby administrative areas.
 
-- User searches: "Москва"
+- User searches: "Dubai"
 - May include: Dubai Emirate (configurable)
 
 **District Adjacency:**
