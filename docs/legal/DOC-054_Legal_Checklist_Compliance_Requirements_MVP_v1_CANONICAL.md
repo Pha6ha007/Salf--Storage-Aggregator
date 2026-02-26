@@ -53,9 +53,9 @@ This document defines the **legal and compliance requirements** that MUST be sat
 
 | Parameter | Value |
 |-----------|-------|
-| **Primary Jurisdiction** | Russian Federation |
+| **Primary Jurisdiction** | United Arab Emirates |
 | **Applicable Law** | Federal Law No. 152-FZ (Personal Data) |
-| **Geographic Scope** | MVP v1 operates in Russia only |
+| **Geographic Scope** | MVP v1 operates in UAE only |
 | **Future Expansion** | Multi-country architecture defined in DOC-059; legal extensions handled separately |
 
 **Note:** This document does NOT define multi-country compliance logic. Regional expansion requires separate legal assessment and documentation updates.
@@ -84,10 +84,10 @@ The platform MUST publish and maintain the following legal documents:
 
 | Document | Purpose | Acceptance Method | Language |
 |----------|---------|------------------|----------|
-| **Terms of Service (ToS)** | Defines platform usage rules, rights, obligations | Explicit checkbox during registration | Russian (required) |
-| **Privacy Policy** | Describes personal data processing practices | Reference during registration | Russian (required) |
-| **Cookie Policy** | Explains cookie usage and tracking | Cookie banner on first visit | Russian (required) |
-| **Data Processing Agreement (DPA)** | Contract for storage operators as data processors | Signed during operator onboarding | Russian (required) |
+| **Terms of Service (ToS)** | Defines platform usage rules, rights, obligations | Explicit checkbox during registration | English (required) |
+| **Privacy Policy** | Describes personal data processing practices | Reference during registration | English (required) |
+| **Cookie Policy** | Explains cookie usage and tracking | Cookie banner on first visit | English (required) |
+| **Data Processing Agreement (DPA)** | Contract for storage operators as data processors | Signed during operator onboarding | English (required) |
 
 ### 1.2. Terms of Service — Required Sections
 
@@ -100,7 +100,7 @@ The platform MUST publish and maintain the following legal documents:
 - Limitation of liability
 - Intellectual property
 - Dispute resolution
-- Governing law (Russian Federation)
+- Governing law (United Arab Emirates)
 - Amendment procedures
 
 ### 1.3. Privacy Policy — Required Sections
@@ -264,7 +264,7 @@ When transmitting personal data to storage operators, the platform MUST:
 |----------|------------------|----------------------------------|----------|
 | **Essential** | No | Yes | session_id, auth_token, csrf_token |
 | **Functional** | No | No | map_view_preference, filter_settings |
-| **Analytics** | Yes | No | Yandex.Metrika, Google Analytics |
+| **Analytics** | Yes | No | Google Analytics |
 | **Marketing** | Yes | No | Retargeting pixels, ad tracking |
 
 ### 4.2. Cookie Banner Requirements
@@ -446,11 +446,11 @@ The following are explicitly OUT OF SCOPE for MVP v1:
 ### 8.1. Out of MVP v1 Scope
 
 - **Automated legal enforcement systems** — No API for legal document acceptance tracking
-- **Dynamic jurisdiction switching** — Single jurisdiction only (Russia)
+- **Dynamic jurisdiction switching** — Single jurisdiction only (UAE)
 - **Real-time compliance monitoring** — Manual compliance checks only
 - **Legal analytics dashboard** — No automated compliance metrics
 - **Advanced consent orchestration** — Basic cookie banner only
-- **Multi-language legal documents** — Russian only
+- **Multi-language legal documents** — English only
 - **Granular cookie category controls** — Accept all / Reject all for non-essential
 - **Automated data subject request handling** — Manual process via support
 - **Advanced anonymization techniques** — Basic anonymization only

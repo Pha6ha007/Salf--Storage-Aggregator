@@ -326,7 +326,7 @@ Code moved to Appendix with clear warnings:
 
 **Masking patterns overview (see Security & Compliance Plan for code):**
 - Email: john.doe@example.com → j***e@e*****e.com
-- Phone: +79991234567 → +7999***4567
+- Phone: +971501234567 → +7999***4567
 [examples only, no implementation]
 ```
 
@@ -460,8 +460,8 @@ Code moved to Appendix with clear warnings:
 **Covers:**
 - ✅ Public legal documents (Terms, Privacy Policy, Cookie Policy, DPA)
 - ✅ Personal data categories and legal classification
-- ✅ Legal bases for processing (GDPR Art. 6, 152-ФЗ)
-- ✅ User rights under GDPR/152-ФЗ
+- ✅ Legal bases for processing (GDPR Art. 6, UAE PDPL (Federal Decree-Law No. 45/2021))
+- ✅ User rights under GDPR/UAE PDPL (Federal Decree-Law No. 45/2021)
 - ✅ Compliance obligations (DPO, breach notification, etc.)
 - ✅ Legal framing for retention periods
 - ✅ Cookie consent requirements (legal)
@@ -751,7 +751,7 @@ For third-party integrations:
 ### **Quick Reference:**
 
 ```
-For GDPR/152-ФЗ compliance:
+For GDPR/UAE PDPL (Federal Decree-Law No. 45/2021) compliance:
 ☐ PII categories: Legal Checklist § 5.1 + Database Spec § 10.1
 ☐ Legal bases: Legal Checklist § 2.2
 ☐ User rights: Legal Checklist § 2.4
@@ -1234,11 +1234,11 @@ See Legal Checklist § 7.6 for triggers.
 
 See Legal Checklist § 2.3 for details.
 
-### **Q: What's the difference between GDPR and 152-ФЗ?**
+### **Q: What's the difference between GDPR and UAE PDPL (Federal Decree-Law No. 45/2021)?**
 
 **A:** For MVP purposes, we comply with both. Key differences:
 - GDPR: 72-hour breach notification, €20M fines
-- 152-ФЗ: Роскомнадзор registration required
+- UAE PDPL (Federal Decree-Law No. 45/2021): TDRA (Telecommunications Роскомнадзор Digital Government Regulatory Authority) registration required
 
 Legal Checklist addresses both. Security Plan implements technical requirements.
 
