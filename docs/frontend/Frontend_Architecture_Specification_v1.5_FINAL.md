@@ -361,7 +361,7 @@ module.exports = {
   compress: true,
   
   images: {
-    domains: ['cdn.storagecompare.ae', 'storage.yandexcloud.net'],
+    domains: ['cdn.storagecompare.ae', 's3.me-south-1.amazonaws.com'],
     formats: ['image/avif', 'image/webp'],
   },
   
@@ -650,14 +650,14 @@ const bookingSchema = z.object({
 #### Google Maps API 2.1 (основной)
 
 ```bash
-npm install @pbe/react-yandex-maps
+npm install @react-google-maps/api
 ```
 
 **Конфигурация:**
 
 ```typescript
-export const YANDEX_MAPS_CONFIG = {
-  apikey: process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY,
+export const GOOGLE_MAPS_CONFIG = {
+  apikey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   lang: 'ru_RU',
   version: '2.1',
 };
@@ -8151,13 +8151,13 @@ function updateMarkers(map, warehouses) {
 **Implementation:**
 
 ```typescript
-function YandexMapProvider({ children }) {
+function GoogleMapProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://api-maps.yandex.ru/2.1/?apikey=${API_KEY}&lang=ru_RU`;
+    script.src = `https://maps.googleapis.com/maps/api/2.1/?apikey=${API_KEY}&lang=ru_RU`;
     script.async = true;
     
     script.onload = () => {
@@ -8199,12 +8199,12 @@ function YandexMapProvider({ children }) {
 
 ```typescript
 function useMapProvider() {
-  const [provider, setProvider] = useState<'yandex' | '2gis' | null>(null);
+  const [provider, setProvider] = useState<'google' | '2gis' | null>(null);
   
   useEffect(() => {
     // Try Google Maps first
-    loadYandexMaps()
-      .then(() => setProvider('yandex'))
+    loadGoogleMaps()
+      .then(() => setProvider('google'))
       .catch(() => {
         console.warn('Google Maps failed, trying 2GIS');
         load2GISMaps()
@@ -8355,45 +8355,45 @@ function SearchPage() {
 #### 12.1.1. Подключение и конфигурация
 
 ```bash
-npm install @pbe/react-yandex-maps
+npm install @react-google-maps/api
 ```
 
 ```typescript
-// lib/maps/yandex-config.ts
-export const YANDEX_MAPS_CONFIG = {
-  apikey: process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY,
+// lib/maps/google-maps-config.ts
+export const GOOGLE_MAPS_CONFIG = {
+  apikey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   lang: 'ru_RU',
   version: '2.1',
   coordorder: 'latlong' as const,
   load: 'package.full', // или указать конкретные модули
 };
 
-export const DEFAULT_MAP_CENTER: [number, number] = [55.751244, 37.618423]; // Москва
+export const DEFAULT_MAP_CENTER: [number, number] = [55.751244, 37.618423]; // Dubai
 export const DEFAULT_MAP_ZOOM = 10;
 
 // Настройки для разных типов карт
 export const MAP_TYPES = {
-  default: 'yandex#map',
-  satellite: 'yandex#satellite',
-  hybrid: 'yandex#hybrid',
+  default: 'roadmap',
+  satellite: 'satellite',
+  hybrid: 'hybrid',
 };
 ```
 
 
-#### 12.1.2. YMaps Provider
+#### 12.1.2. GoogleMap Provider
 
 ```typescript
 // app/providers.tsx
 'use client';
 
-import { YMaps } from '@pbe/react-yandex-maps';
-import { YANDEX_MAPS_CONFIG } from '@/lib/maps/yandex-config';
+import { GoogleMap } from '@react-google-maps/api';
+import { GOOGLE_MAPS_CONFIG } from '@/lib/maps/google-maps-config';
 
 export function MapsProvider({ children }: { children: React.ReactNode }) {
   return (
-    <YMaps query={YANDEX_MAPS_CONFIG}>
+    <GoogleMap query={GOOGLE_MAPS_CONFIG}>
       {children}
-    </YMaps>
+    </GoogleMap>
   );
 }
 
@@ -8420,8 +8420,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 // modules/map/components/BaseMap.tsx
 'use client';
 
-import { Map } from '@pbe/react-yandex-maps';
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from '@/lib/maps/yandex-config';
+import { Map } from '@react-google-maps/api';
+import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from '@/lib/maps/google-maps-config';
 
 interface BaseMapProps {
   center?: [number, number];
@@ -8473,7 +8473,7 @@ export function BaseMap({
 // modules/map/components/WarehouseMarker.tsx
 'use client';
 
-import { Placemark } from '@pbe/react-yandex-maps';
+import { Placemark } from '@react-google-maps/api';
 import type { Warehouse } from '@/types/warehouse.types';
 
 interface WarehouseMarkerProps {
@@ -8553,7 +8553,7 @@ export function WarehouseMarker({
 // modules/map/components/WarehouseMapWithClustering.tsx
 'use client';
 
-import { Clusterer } from '@pbe/react-yandex-maps';
+import { Clusterer } from '@react-google-maps/api';
 import { BaseMap } from './BaseMap';
 import { WarehouseMarker } from './WarehouseMarker';
 import type { Warehouse } from '@/types/warehouse.types';
@@ -8743,10 +8743,10 @@ interface GeocodeResult {
 export async function geocodeAddress(address: string): Promise<GeocodeResult | null> {
   try {
     const response = await axios.get(
-      `https://geocode-maps.yandex.ru/1.x/`,
+      `https://maps.googleapis.com/maps/api/geocode/1.x/`,
       {
         params: {
-          apikey: process.env.NEXT_PUBLIC_YANDEX_GEOCODER_API_KEY,
+          apikey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
           format: 'json',
           geocode: address,
           lang: 'ru_RU',
@@ -8779,10 +8779,10 @@ export async function reverseGeocode(
 ): Promise<string | null> {
   try {
     const response = await axios.get(
-      `https://geocode-maps.yandex.ru/1.x/`,
+      `https://maps.googleapis.com/maps/api/geocode/1.x/`,
       {
         params: {
-          apikey: process.env.NEXT_PUBLIC_YANDEX_GEOCODER_API_KEY,
+          apikey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
           format: 'json',
           geocode: `${longitude},${latitude}`,
           lang: 'ru_RU',
@@ -8840,16 +8840,16 @@ function SearchBar() {
 
 ```typescript
 // lib/maps/map-provider.ts
-export type MapProvider = 'yandex' | '2gis';
+export type MapProvider = 'google' | '2gis';
 
 export function useMapProvider(): MapProvider {
-  const [provider, setProvider] = useState<MapProvider>('yandex');
+  const [provider, setProvider] = useState<MapProvider>('google');
   
   useEffect(() => {
     // Проверяем доступность Google Maps
-    const checkYandexMaps = async () => {
+    const checkGoogleMaps = async () => {
       try {
-        const response = await fetch('https://api-maps.yandex.ru/2.1/?lang=ru_RU', {
+        const response = await fetch('https://maps.googleapis.com/maps/api/2.1/?lang=ru_RU', {
           method: 'HEAD',
         });
         
@@ -8863,7 +8863,7 @@ export function useMapProvider(): MapProvider {
       }
     };
     
-    checkYandexMaps();
+    checkGoogleMaps();
   }, []);
   
   return provider;
@@ -8940,7 +8940,7 @@ export function InteractiveWarehouseMap() {
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useYMaps } from '@pbe/react-yandex-maps';
+import { useLoadScript } from '@react-google-maps/api';
 import { BaseMap } from './BaseMap';
 
 interface RouteMapProps {
@@ -8950,7 +8950,7 @@ interface RouteMapProps {
 }
 
 export function RouteMap({ from, to, onRouteCalculated }: RouteMapProps) {
-  const ymaps = useYMaps(['route']);
+  const ymaps = useLoadScript(['route']);
   const mapRef = useRef<any>(null);
   const routeRef = useRef<any>(null);
   
@@ -9381,11 +9381,11 @@ export function middleware(request: NextRequest) {
   // Content Security Policy
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://api-maps.yandex.ru;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com/maps/api;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data: https: blob:;
     font-src 'self' data:;
-    connect-src 'self' https://api.storagecompare.ae https://api-maps.yandex.ru;
+    connect-src 'self' https://api.storagecompare.ae https://maps.googleapis.com/maps/api;
     frame-src 'self';
     object-src 'none';
     base-uri 'self';

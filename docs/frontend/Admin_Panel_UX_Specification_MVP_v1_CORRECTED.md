@@ -373,7 +373,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌──────┬──────────────┬─────────────┬─────────┬──────────┐│
 │  │ ID   │ Name         │ Email       │ Role    │ Status   ││
 │  ├──────┼──────────────┼─────────────┼─────────┼──────────┤│
-│  │ 1234 │ Иван Петров  │ ivan@...    │ user    │ ●Active  ││
+│  │ 1234 │ Ahmed Al-Rashid  │ ivan@...    │ user    │ ●Active  ││
 │  │ 1235 │ Мария Иванова│ maria@...   │ operator│ ●Active  ││
 │  │ 1236 │ Петр Сидоров │ petr@...    │ user    │ ●Blocked ││
 │  └──────┴──────────────┴─────────────┴─────────┴──────────┘│
@@ -399,13 +399,13 @@ The admin panel is organized into 8 primary modules (UI perspective):
 **UI Layout:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ User Details: Иван Петров                   [Block] [Delete]│
+│ User Details: Ahmed Al-Rashid                   [Block] [Delete]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  Basic Information                                            │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ ID: 1234                                                 ││
-│  │ Name: Иван Петров                                        ││
+│  │ Name: Ahmed Al-Rashid                                        ││
 │  │ Email: ivan@example.com       ✓ Verified                ││
 │  │ Phone: +7 916 123-45-67                                 ││
 │  │ Role: user                                               ││
@@ -485,7 +485,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ Company Name: СкладОК                                    ││
 │  │ Tax ID (INN): 7707123456                                ││
-│  │ Legal Address: Москва, ул. Примерная, 10                ││
+│  │ Legal Address: Dubai, ул. Примерная, 10                ││
 │  │ Contact Email: info@skladok.ru                          ││
 │  │ Contact Phone: +7 495 123-45-67                         ││
 │  └─────────────────────────────────────────────────────────┘│
@@ -596,7 +596,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  Basic Information                                            │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ Name: Склад Выхино                                       ││
-│  │ Address: Москва, ул. Ферганская, 10                     ││
+│  │ Address: Dubai, ул. Ферганская, 10                     ││
 │  │ Operator: СкладОК (ID: 5011)         ✓ Verified         ││
 │  │ Description: [Full description text]                     ││
 │  └─────────────────────────────────────────────────────────┘│
@@ -728,7 +728,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │                                                               │
 │  Customer                                                     │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Name: Иван Петров                                        ││
+│  │ Name: Ahmed Al-Rashid                                        ││
 │  │ Email: ivan@example.com                                  ││
 │  │ Phone: +7 916 123-45-67                                 ││
 │  └─────────────────────────────────────────────────────────┘│
@@ -807,7 +807,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │                                                               │
 │  Status: 🔴 New                                               │
 │                                                               │
-│  From: Иван Петров (ivan@example.com, +7 916 123-45-67)     │
+│  From: Ahmed Al-Rashid (ivan@example.com, +7 916 123-45-67)     │
 │  Created: 2025-12-15 10:30                                   │
 │  Warehouse: Склад Выхино (W101)                              │
 │                                                               │

@@ -219,7 +219,7 @@ frontend/
 │   │   │   └── ai.api.ts
 │   │   │
 │   │   └── maps/
-│   │       └── yandexMaps.ts         # Google Maps SDK wrapper
+│   │       └── googleMaps.ts         # Google Maps SDK wrapper
 │   │
 │   ├── lib/                           # Утилиты и хелперы
 │   │   ├── utils.ts                  # Общие утилиты
@@ -804,7 +804,7 @@ interface MapState {
 }
 
 export const useMapStore = create<MapState>((set) => ({
-  center: [55.751244, 37.618423], // Москва
+  center: [55.751244, 37.618423], // Dubai
   zoom: 10,
   bounds: null,
   selectedWarehouseId: null,
@@ -1295,7 +1295,7 @@ export interface PaginatedResponse<T> {
 ```
 src/
 ├── services/maps/
-│   ├── yandexMaps.ts          # Google Maps SDK wrapper
+│   ├── googleMaps.ts          # Google Maps SDK wrapper
 │   ├── googleMaps.ts          # Google Maps SDK wrapper (резерв)
 │   └── mapProvider.ts         # Абстракция над картами
 │
@@ -1314,14 +1314,14 @@ src/
 ### Google Maps SDK Wrapper
 
 ```typescript
-// services/maps/yandexMaps.ts
+// services/maps/googleMaps.ts
 declare global {
   interface Window {
     ymaps: any;
   }
 }
 
-export class YandexMapsService {
+export class GoogleMapsService {
   private map: any = null;
   private clusterer: any = null;
   private markers: Map<number, any> = new Map();
@@ -1470,11 +1470,11 @@ export class YandexMapsService {
 ```typescript
 // hooks/useMap.ts
 import { useEffect, useRef, useState } from 'react';
-import { YandexMapsService } from '@/services/maps/yandexMaps';
+import { GoogleMapsService } from '@/services/maps/googleMaps';
 import { useMapStore } from '@/stores/mapStore';
 
 export function useMap(containerId: string) {
-  const mapServiceRef = useRef<YandexMapsService | null>(null);
+  const mapServiceRef = useRef<GoogleMapsService | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   
   const { center, zoom, setBounds, selectWarehouse } = useMapStore();
@@ -1482,7 +1482,7 @@ export function useMap(containerId: string) {
   useEffect(() => {
     const initMap = async () => {
       try {
-        const mapService = new YandexMapsService();
+        const mapService = new GoogleMapsService();
         await mapService.init(containerId, center, zoom);
 
         // Подписка на изменение bounds
@@ -2081,7 +2081,7 @@ export function RegisterForm() {
 
       <Input
         label="Телефон"
-        placeholder="+79991234567"
+        placeholder="+971501234567"
         {...register('phone')}
         error={errors.phone?.message}
       />
@@ -2504,10 +2504,10 @@ module.exports = {
 
 ```typescript
 // Подключение Google Maps
-export function loadYandexMapsScript(apiKey: string): Promise<void> {
+export function loadGoogleMapsScript(apiKey: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = `https://api-maps.yandex.ru/2.1/?apikey=${apiKey}&lang=ru_RU`;
+    script.src = `https://maps.googleapis.com/maps/api/2.1/?apikey=${apiKey}&lang=ru_RU`;
     script.async = true;
     script.onload = () => resolve();
     document.head.appendChild(script);
@@ -2621,7 +2621,7 @@ webpack: (config) => {
   config.optimization.splitChunks = {
     cacheGroups: {
       maps: {
-        test: /[\\/]node_modules[\\/](ymaps|@yandex)/,
+        test: /[\\/]node_modules[\\/](@googlemaps)/,
         name: 'maps',
         chunks: 'all',
       },
@@ -2975,7 +2975,7 @@ export function useMapLoader() {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsVisible(true);
-        loadYandexMapsScript();
+        loadGoogleMapsScript();
       }
     });
     

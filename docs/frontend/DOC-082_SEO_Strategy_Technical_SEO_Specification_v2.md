@@ -837,7 +837,7 @@ This document extends and references the following canonical documents:
 **Status:** DOC-075 and DOC-076 may or may not exist as supporting documents for internal search ranking.
 
 **If These Documents Exist:**
-- DOC-082 focuses on organic search (Google, Yandex)
+- DOC-082 focuses on organic search (Google)
 - DOC-075/076 focus on internal platform search
 - Both should align on quality signals where applicable
 
@@ -849,7 +849,7 @@ This document extends and references the following canonical documents:
 **Relationship:** SEO performance tracking should integrate with platform analytics.
 
 **Required Integration:**
-- Track organic traffic sources (referrer: google.com, yandex.ru)
+- Track organic traffic sources (referrer: google.com)
 - Measure conversion rates from organic traffic
 - Monitor Core Web Vitals via analytics
 - Track engagement metrics (bounce rate, dwell time)
