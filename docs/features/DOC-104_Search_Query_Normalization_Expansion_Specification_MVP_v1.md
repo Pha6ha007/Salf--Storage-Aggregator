@@ -256,7 +256,7 @@ Using semantic similarity models to find related concepts.
 When searching by city, consider nearby administrative areas.
 
 - User searches: "Москва"
-- May include: Московская область (configurable)
+- May include: Dubai Emirate (configurable)
 
 **District Adjacency:**
 When no results in specified district, consider neighboring districts.

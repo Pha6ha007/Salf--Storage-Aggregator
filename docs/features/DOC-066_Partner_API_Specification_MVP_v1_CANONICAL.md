@@ -631,7 +631,7 @@ Submit a booking inquiry (lead) on behalf of an end user. This creates a lead in
   "customer": {
     "name": "Ivan Petrov",
     "email": "ivan.petrov@example.com",
-    "phone": "+79991234567"
+    "phone": "+971501234567"
   },
   "preferred_move_in_date": "2025-12-20",
   "duration_months": 3,
@@ -675,7 +675,7 @@ Submit a booking inquiry (lead) on behalf of an end user. This creates a lead in
     "customer": {
       "name": "Ivan Petrov",
       "email": "ivan.petrov@example.com",
-      "phone": "+79991234567"
+      "phone": "+971501234567"
     },
     "preferred_move_in_date": "2025-12-20",
     "duration_months": 3,

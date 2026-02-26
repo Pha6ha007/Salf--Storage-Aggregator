@@ -214,7 +214,7 @@
 
 **External Services:**
 - SendGrid / Mailgun (Email)
-- Twilio / SMSC (SMS)
+- Twilio + WhatsApp Business API (SMS)
 - OpenAI GPT-4 (AI recommendations)
 - Firebase (Push notifications - v2)
 
@@ -527,7 +527,7 @@ User Action          Operator Action       System Action
 |---------|-------------------|
 | **Создание заявки** | ✅ Расширенная форма + AI-помощник |
 | **Резервация бокса** | ✅ Hard reservation с таймером (15 минут) |
-| **Оплата** | ✅ Онлайн (Yandex.Kassa, Tinkoff, карты) |
+| **Оплата** | ✅ Онлайн (Stripe, Tinkoff, карты) |
 | **Подтверждение** | ✅ Instant booking (без участия оператора) |
 | **Уведомления** | ✅ Multi-channel (Email, SMS, Push, Telegram) |
 | **AI-функции** | ✅ Advanced (Fraud Detection, Dynamic Pricing) |
@@ -877,7 +877,7 @@ POST /api/v1/boxes/501/check-availability
 
 **Технологии:**
 - Email: SendGrid / Mailgun / AWS SES
-- SMS: Twilio / SMSC.ru
+- SMS: Twilio + WhatsApp Business API.ru
 - Push: Firebase Cloud Messaging
 - Queue: RabbitMQ для async processing
 
@@ -911,7 +911,7 @@ POST /api/v1/notifications/send
   "recipient": {
     "user_id": 123,
     "email": "user@example.com",
-    "phone": "+79991234567"
+    "phone": "+971501234567"
   },
   "channels": ["email", "sms"],
   "data": {
@@ -1004,7 +1004,7 @@ Booking Service → AI Service (async via queue)
 Интеграция с платежными шлюзами для онлайн-оплаты.
 
 **Providers:**
-- Yandex.Kassa
+- Stripe
 - Tinkoff Acquiring
 - Stripe (для международных платежей)
 
@@ -1020,10 +1020,10 @@ Booking Service → AI Service (async via queue)
 ```
 1. User confirms booking
 2. Booking Service → Payment Service: create payment
-3. Payment Service → Yandex.Kassa: init payment
+3. Payment Service → Stripe: init payment
 4. User redirected to payment page
 5. User pays
-6. Yandex.Kassa → Payment Service: webhook (payment success)
+6. Stripe → Payment Service: webhook (payment success)
 7. Payment Service → Booking Service: update status to 'active'
 8. Booking Service → User: send confirmation
 ```
@@ -1096,7 +1096,7 @@ sequenceDiagram
         N->>U: Email: "Заявка создана"
         N->>U: SMS: "Заявка #BK-20251211-1001"
         N->>OP: Push: "Новая заявка на складе"
-        N->>OP: Email: "Новая заявка от Иван Петров"
+        N->>OP: Email: "Новая заявка от Ahmed Al-Rashid"
     end
     
     %% User sees success
@@ -1112,7 +1112,7 @@ sequenceDiagram
     B-->>OP: Full booking details
     
     %% Operator contacts user
-    Note over OP: Operator calls user<br/>+79991234567
+    Note over OP: Operator calls user<br/>+971501234567
     
     OP->>B: PATCH /bookings/1001<br/>{status: "contacted"}
     B->>DB: UPDATE status
@@ -1388,9 +1388,9 @@ def confirm_booking(booking_id, operator_id):
 | Service | Purpose | Provider | Criticality |
 |---------|---------|----------|-------------|
 | Email | Уведомления | SendGrid / Mailgun | High |
-| SMS | Уведомления | Twilio / SMSC | High |
-| Maps | Геолокация, отображение | Google Maps / Yandex Maps | Medium |
-| Payment | Онлайн-оплата (v2) | Yandex.Kassa / Tinkoff | Critical (v2) |
+| SMS | Уведомления | Twilio + WhatsApp Business API | High |
+| Maps | Геолокация, отображение | Google Maps / Google Maps | Medium |
+| Payment | Онлайн-оплата (v2) | Stripe / Tinkoff | Critical (v2) |
 | AI/ML | Scoring, recommendations | OpenAI / Custom ML | Medium |
 | Analytics | Метрики, tracking | Google Analytics / Mixpanel | Low |
 
@@ -1646,7 +1646,7 @@ ON DELETE RESTRICT;  -- Prevent box deletion if has bookings
 │                                                              │
 │  🏠 Найдите идеальный склад для хранения                    │
 │                                                              │
-│  [📍 Москва ▼]  [💰 Любая цена ▼]  [📦 Размер бокса ▼]    │
+│  [📍 Dubai ▼]  [💰 Любая цена ▼]  [📦 Размер бокса ▼]    │
 │                                                              │
 │  ☑️ Климат-контроль   ☑️ Круглосуточный доступ             │
 │  ☑️ Видеонаблюдение   ☐ Первый этаж                        │
@@ -1706,7 +1706,7 @@ GET /api/v1/warehouses?
 │                                                              │
 │  ┌──────────────────┐  СкладОК Выхино         ⭐ 4.8 (124) │
 │  │                  │                                        │
-│  │   [Фото галерея] │  📍 Москва, Рязанский пр-т, 75к2     │
+│  │   [Фото галерея] │  📍 Dubai, Рязанский пр-т, 75к2     │
 │  │   [  6 фото   ]  │  🚇 м. Выхино (5 мин), Рязанский пр-т│
 │  │                  │  🕐 Доступ 24/7                       │
 │  └──────────────────┘  ☎️ +7 (495) 123-45-67              │
@@ -1871,10 +1871,10 @@ startCountdown(expiresAt);
 │  📋 КОНТАКТНАЯ ИНФОРМАЦИЯ                                    │
 │                                                               │
 │  Имя *                                                        │
-│  [Иван Петров___________________________________]            │
+│  [Ahmed Al-Rashid___________________________________]            │
 │                                                               │
 │  Телефон *                                                    │
-│  [+7 (999) 123-45-67____________________________]            │
+│  [+971 50 123 4567____________________________]            │
 │  💡 Оператор свяжется с вами для подтверждения              │
 │                                                               │
 │  Email (необязательно)                                        │
@@ -1939,8 +1939,8 @@ startCountdown(expiresAt);
 
 | Поле | Тип | Обязательно | Валидация | Подсказка |
 |------|-----|-------------|-----------|-----------|
-| `user_name` | text | ✅ | 2-100 символов | "Иван Петров" |
-| `user_phone` | tel | ✅ | +7XXXXXXXXXX | "+7 (999) 123-45-67" |
+| `user_name` | text | ✅ | 2-100 символов | "Ahmed Al-Rashid" |
+| `user_phone` | tel | ✅ | +7XXXXXXXXXX | "+971 50 123 4567" |
 | `user_email` | email | ❌ | RFC 5322 | "ivan@example.com" |
 | `start_date` | date | ✅ | >= today, <= today+90 | Дата начала аренды |
 | `duration_months` | number | ✅ | 1-24 | Количество месяцев |
@@ -2138,7 +2138,7 @@ const submitBooking = async (formData) => {
 
 Номер заявки:     BK-20251211-0042
 Склад:            СкладОК Выхино
-Адрес:            Москва, Рязанский пр-т, 75к2
+Адрес:            Dubai, Рязанский пр-т, 75к2
 Бокс:             M (5 м²)
 Дата начала:      15.12.2025
 Срок аренды:      6 месяцев
@@ -2148,7 +2148,7 @@ const submitBooking = async (formData) => {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Оператор склада рассмотрит вашу заявку в течение 24 часов и свяжется 
-с вами по телефону +7 (999) 123-45-67.
+с вами по телефону +971 50 123 4567.
 
 Вы можете отслеживать статус заявки в личном кабинете:
 https://selfstorage-aggregator.ru/bookings/BK-20251211-0042
@@ -2665,7 +2665,7 @@ else:
 │  │ └─────────────────────────┘ │  │ [________________]               ││
 │  │                             │  │                                  ││
 │  │ ВАШЕ БРОНИРОВАНИЕ          │  │ Телефон *                        ││
-│  │                             │  │ [+7 (999) 123-45-67]            ││
+│  │                             │  │ [+971 50 123 4567]            ││
 │  │ СкладОК Выхино             │  │                                  ││
 │  │ 📍 Рязанский пр-т, 75к2    │  │ Email                            ││
 │  │                             │  │ [________________]               ││
@@ -2729,10 +2729,10 @@ else:
 │ 📋 КОНТАКТЫ                          │
 │                                       │
 │ Имя *                                 │
-│ [Иван Петров____________]            │
+│ [Ahmed Al-Rashid____________]            │
 │                                       │
 │ Телефон *                             │
-│ [+7 (999) 123-45-67_____]            │
+│ [+971 50 123 4567_____]            │
 │                                       │
 │ Email                                 │
 │ [ivan@example.com_______]            │
@@ -2893,7 +2893,7 @@ booking.user_email = request_data.get('user_email')  # Optional
 ```python
 def check_rate_limit(phone: str):
     # Normalize phone
-    normalized = normalize_phone(phone)  # +79991234567
+    normalized = normalize_phone(phone)  # +971501234567
     
     # Check 1 hour limit
     key_hour = f"rate_limit:phone:hour:{normalized}"
@@ -3159,8 +3159,8 @@ def normalize_phone(phone: str) -> str:
     return f"+{digits}"
 
 # Example
-normalize_phone("+7 (999) 123-45-67")  # → "+79991234567"
-normalize_phone("8 999 123 45 67")      # → "+79991234567"
+normalize_phone("+971 50 123 4567")  # → "+971501234567"
+normalize_phone("8 999 123 45 67")      # → "+971501234567"
 ```
 
 ---
@@ -4338,8 +4338,8 @@ X-Request-ID: req_abc123 (optional, for idempotency)
   "box_id": 501,
   "start_date": "2025-12-15",
   "duration_months": 6,
-  "user_name": "Иван Петров",
-  "user_phone": "+79991234567",
+  "user_name": "Ahmed Al-Rashid",
+  "user_phone": "+971501234567",
   "user_email": "ivan@example.com",
   "user_comment": "Хочу хранить мебель на время ремонта. Есть ли возможность доставки?",
   "contact_preferences": {
@@ -4391,8 +4391,8 @@ X-Request-ID: req_abc123 (optional, for idempotency)
       },
       "status": "new",
       "contact_info": {
-        "name": "Иван Петров",
-        "phone": "+79991234567",
+        "name": "Ahmed Al-Rashid",
+        "phone": "+971501234567",
         "email": "ivan@example.com"
       },
       "user_comment": "Хочу хранить мебель на время ремонта. Есть ли возможность доставки?",
@@ -4708,7 +4708,7 @@ def create_booking():
     "message": "Внутренняя ошибка сервера",
     "details": {
       "error_id": "ERR_20251211_143000",
-      "support_email": "support@selfstorage.ru"
+      "support_email": "support@storagecompare.ae"
     }
   }
 }
@@ -4776,8 +4776,8 @@ Authorization: Bearer <token> (required)
       },
       "status": "in_progress",
       "contact_info": {
-        "name": "Иван Петров",
-        "phone": "+79991234567",
+        "name": "Ahmed Al-Rashid",
+        "phone": "+971501234567",
         "email": "ivan@example.com"
       },
       "user_comment": "Хочу хранить мебель на время ремонта",
@@ -5219,8 +5219,8 @@ GET /api/v1/operator/bookings?sort=updated_at_desc
         "lead_score": 85,
         "priority": "high",
         "customer": {
-          "name": "Иван Петров",
-          "phone": "+79991234567",
+          "name": "Ahmed Al-Rashid",
+          "phone": "+971501234567",
           "email": "ivan@example.com"
         },
         "warehouse": {
@@ -5429,8 +5429,8 @@ def confirm_booking(id):
         "id": 456,
         "name": "Мария Смирнова"
       },
-      "contract_url": "https://cdn.selfstorage.ru/contracts/BK-20251211-0042.pdf",
-      "invoice_url": "https://cdn.selfstorage.ru/invoices/BK-20251211-0042.pdf",
+      "contract_url": "https://cdn.storagecompare.ae/contracts/BK-20251211-0042.pdf",
+      "invoice_url": "https://cdn.storagecompare.ae/invoices/BK-20251211-0042.pdf",
       "updated_at": "2025-12-11T16:45:00Z"
     },
     "message": "Бронирование подтверждено"
@@ -6010,7 +6010,7 @@ Comprehensive error handling для всех booking endpoints.
     "message": "Внутренняя ошибка сервера",
     "details": {
       "error_id": "ERR_20251211_173045",
-      "support_email": "support@selfstorage.ru",
+      "support_email": "support@storagecompare.ae",
       "support_phone": "+7 (800) 555-35-35"
     }
   },
@@ -6219,7 +6219,7 @@ def generate_booking_token(booking):
     return token
 
 # Email contains link like:
-# https://selfstorage.ru/bookings/track?token=eyJhbGc...
+# https://storagecompare.ae/bookings/track?token=eyJhbGc...
 ```
 
 ---
@@ -6247,12 +6247,12 @@ def generate_booking_token(booking):
 │                                                                   │
 │  🔔 ТРЕБУЮТ ВНИМАНИЯ (2)                                         │
 │                                                                   │
-│  ⚠️ BK-20251211-0039 - Иван Петров                              │
+│  ⚠️ BK-20251211-0039 - Ahmed Al-Rashid                              │
 │     Создана 6 часов назад | Lead Score: 85 🔥                   │
 │     Бокс M (5м²) | 28 800₽ | Начало: 15.12.2025                │
 │     [Связаться] [Подробнее]                                      │
 │                                                                   │
-│  ⚠️ BK-20251211-0035 - Ольга Иванова                            │
+│  ⚠️ BK-20251211-0035 - Noura Abdullah                            │
 │     Создана 8 часов назад | Lead Score: 72                      │
 │     Бокс S (2м²) | 9 600₽ | Начало: 14.12.2025                 │
 │     [Связаться] [Подробнее]                                      │
@@ -6266,7 +6266,7 @@ def generate_booking_token(booking):
 │  Сортировка: [Lead Score (высокий → низкий) ▼]                  │
 │                                                                   │
 │  ┌──────────────────────────────────────────────────────────┐   │
-│  │ BK-20251211-0042 | Иван Петров | +7(999)123-45-67       │   │
+│  │ BK-20251211-0042 | Ahmed Al-Rashid | +7(999)123-45-67       │   │
 │  │ Бокс M (5м²) | 28 800₽ | Начало: 15.12.2025              │   │
 │  │ 🔥 Lead Score: 85 | ⏰ 2 часа назад | 📱 Не прочитано     │   │
 │  │ [📞 Позвонить] [✅ Одобрить] [❌ Отклонить] [👁️ Открыть] │   │
@@ -6506,7 +6506,7 @@ def get_booking_priority(lead_score):
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│ 🔥 85 | BK-20251211-0042 | Иван Петров             │  ← High priority
+│ 🔥 85 | BK-20251211-0042 | Ahmed Al-Rashid             │  ← High priority
 │ ⚡ 72 | BK-20251211-0041 | Ольга Смирнова          │  ← Medium
 │ 📌 45 | BK-20251211-0040 | Петр Сидоров            │  ← Low
 └──────────────────────────────────────────────────────┘
@@ -6650,7 +6650,7 @@ Subject: Напоминание: Заявка BK-20251211-0042 ожидает о
 Заявка BK-20251211-0042 ожидает вашего ответа уже 4 часа.
 
 Детали заявки:
-• Клиент: Иван Петров (+7 999 123-45-67)
+• Клиент: Ahmed Al-Rashid (+7 999 123-45-67)
 • Бокс: M (5 м²)
 • Сумма: 28 800 ₽
 • Lead Score: 85 🔥
@@ -6807,7 +6807,7 @@ Accept: text/csv
 
 ```csv
 Timestamp,Activity,Actor,Details
-2025-12-11 14:30:00,Заявка создана,Система,Пользователь: Иван Петров
+2025-12-11 14:30:00,Заявка создана,Система,Пользователь: Ahmed Al-Rashid
 2025-12-11 15:00:00,Назначен оператор,Система,Оператор: Мария Смирнова
 2025-12-11 15:15:00,Статус изменён,Мария Смирнова,new → in_progress
 2025-12-11 15:30:00,Телефонный звонок,Мария Смирнова,Длительность: 3 мин
@@ -6843,7 +6843,7 @@ Subject: Заявка #BK-20251211-0042 создана ✅
 
 Номер заявки:     BK-20251211-0042
 Склад:            СкладОК Выхино
-Адрес:            Москва, Рязанский пр-т, 75к2
+Адрес:            Dubai, Рязанский пр-т, 75к2
 Бокс:             M (5 м², 2.5×2×2.5)
 Дата начала:      15.12.2025
 Срок аренды:      6 месяцев
@@ -6857,13 +6857,13 @@ Subject: Заявка #BK-20251211-0042 создана ✅
    в течение 24 часов
 
 2️⃣ Мы свяжемся с вами по телефону
-   +7 (999) 123-45-67
+   +971 50 123 4567
 
 3️⃣ После подтверждения вам будут отправлены
    реквизиты для оплаты
 
 Отследить статус заявки:
-https://selfstorage.ru/bookings/BK-20251211-0042
+https://storagecompare.ae/bookings/BK-20251211-0042
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 КОНТАКТЫ СКЛАДА
@@ -6910,7 +6910,7 @@ Subject: Ваша заявка в обработке
 
 Мы свяжемся с вами в ближайшее время.
 
-Статус заявки: https://selfstorage.ru/bookings/BK-20251211-0042
+Статус заявки: https://storagecompare.ae/bookings/BK-20251211-0042
 ```
 
 ---
@@ -6961,7 +6961,7 @@ Subject: Бронирование подтверждено! 🎉
 
 3️⃣ ВЪЕЗД
    15.12.2025 с 09:00 до 21:00
-   Адрес: Москва, Рязанский пр-т, 75к2
+   Адрес: Dubai, Рязанский пр-т, 75к2
    Контакт: Мария Смирнова, +7 (495) 123-45-68
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -7088,8 +7088,8 @@ Subject: Новая заявка #BK-20251211-0042 | Lead Score: 85 🔥
 
 Номер:            BK-20251211-0042
 Lead Score:       85 🔥 (Высокий приоритет)
-Клиент:           Иван Петров
-Телефон:          +7 (999) 123-45-67
+Клиент:           Ahmed Al-Rashid
+Телефон:          +971 50 123 4567
 Email:            ivan@example.com
 
 Бокс:             M (5 м²)
@@ -7122,7 +7122,7 @@ Email:            ivan@example.com
 
 ```
 🔥 Новая высокоприоритетная заявка! 
-BK-0042, Иван Петров, 28800₽, Score: 85. 
+BK-0042, Ahmed Al-Rashid, 28800₽, Score: 85. 
 Откройте: https://op.st/bk/042
 ```
 
@@ -7147,7 +7147,7 @@ Subject: Заявка отменена клиентом
 
 Клиент отменил заявку #BK-20251211-0042.
 
-Клиент: Иван Петров
+Клиент: Ahmed Al-Rashid
 Причина: Нашёл другой вариант
 
 Заявка закрыта автоматически.
@@ -7171,23 +7171,23 @@ Subject: Заявка отменена клиентом
 EMAIL_SETTINGS = {
     'provider': 'sendgrid',
     'api_key': settings.SENDGRID_API_KEY,
-    'from_email': 'noreply@selfstorage.ru',
+    'from_email': 'noreply@storagecompare.ae',
     'from_name': 'Агрегатор складов',
-    'reply_to': 'support@selfstorage.ru'
+    'reply_to': 'support@storagecompare.ae'
 }
 ```
 
 ---
 
-#### 8.4.2. SMS (Twilio/SMSC)
+#### 8.4.2. SMS (Twilio)
 
 **Configuration:**
 
 ```python
 SMS_SETTINGS = {
-    'provider': 'smsc',
-    'login': settings.SMSC_LOGIN,
-    'password': settings.SMSC_PASSWORD,
+    'provider': 'twilio',
+    'login': settings.TWILIO_ACCOUNT_SID,
+    'password': settings.TWILIO_AUTH_TOKEN,
     'sender': 'SKLADOK'
 }
 ```
@@ -8464,7 +8464,7 @@ def send_sms(phone: str, message: str):
 
 # Usage
 try:
-    send_sms("+79991234567", "Your code: 1234")
+    send_sms("+971501234567", "Your code: 1234")
 except CircuitBreakerError:
     logger.error("SMS provider circuit open - too many failures")
     # Queue for retry later
@@ -8631,7 +8631,7 @@ async def send_notification_with_fallback(user_id: int, message: str):
 ├──────────────────────────────────────────────────────────┤
 │                                                           │
 │ Заявка: BK-20251211-0042                                 │
-│ Клиент: Иван Петров (+7 999 123-45-67)                  │
+│ Клиент: Ahmed Al-Rashid (+7 999 123-45-67)                  │
 │                                                           │
 │ Уведомление: Подтверждение бронирования                  │
 │ Статус: ❌ Не доставлено (3 попытки)                     │
@@ -8977,7 +8977,7 @@ def suspend_user_account(user_id: int, reason: str, duration: int = None):
         data={
             'reason': reason,
             'duration': duration,
-            'appeal_email': 'appeals@selfstorage.ru'
+            'appeal_email': 'appeals@storagecompare.ae'
         }
     )
     
@@ -9610,10 +9610,10 @@ def detect_unusual_activity():
 
 ```python
 VALID_PHONE_FORMATS = [
-    r'^\+7\d{10}$',           # +79991234567
+    r'^\+7\d{10}$',           # +971501234567
     r'^8\d{10}$',             # 89991234567
     r'^7\d{10}$',             # 79991234567
-    r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',  # +7 (999) 123-45-67
+    r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',  # +971 50 123 4567
     r'^8 \(\d{3}\) \d{3}-\d{2}-\d{2}$',    # 8 (999) 123-45-67
 ]
 
@@ -9704,9 +9704,9 @@ def normalize_phone(phone: str) -> str:
     return digits
 
 # Examples
-normalize_phone("+7 (999) 123-45-67")  # → "+79991234567"
-normalize_phone("8 999 123 45 67")      # → "+79991234567"
-normalize_phone("79991234567")          # → "+79991234567"
+normalize_phone("+971 50 123 4567")  # → "+971501234567"
+normalize_phone("8 999 123 45 67")      # → "+971501234567"
+normalize_phone("79991234567")          # → "+971501234567"
 ```
 
 ---
@@ -11245,7 +11245,7 @@ class BookingUser(HttpUser):
             "start_date": "2025-12-15",
             "duration_months": 6,
             "user_name": "Test User",
-            "user_phone": "+79991234567"
+            "user_phone": "+971501234567"
         })
 ```
 
@@ -11278,7 +11278,7 @@ class BookingUser(HttpUser):
 
 ```bash
 # Locust command
-locust -f load_test.py --host=https://api.selfstorage.ru --users=5000 --spawn-rate=100
+locust -f load_test.py --host=https://api.storagecompare.ae --users=5000 --spawn-rate=100
 ```
 
 **Monitor:**
@@ -11543,7 +11543,7 @@ if not data.get('terms_accepted'):
     return error_response({
         'code': 'terms_not_accepted',
         'message': 'Необходимо принять условия использования',
-        'terms_url': 'https://selfstorage.ru/terms'
+        'terms_url': 'https://storagecompare.ae/terms'
     }, 400)
 
 # Log acceptance
@@ -11803,7 +11803,7 @@ def export_data_portable():
 - Cache: Redis
 - Queue: Celery/Redis Queue
 - Email: SendGrid
-- SMS: Twilio/SMSC
+- SMS: Twilio
 
 ---
 
@@ -11850,7 +11850,7 @@ def export_data_portable():
 **Major Features (7-12 months):**
 
 ✅ **Online Payment Integration:**
-- Yandex.Kassa / Tinkoff
+- Stripe / Tinkoff
 - Card payments
 - Instant booking after payment
 - Automated receipts (54-ФЗ)

@@ -521,7 +521,7 @@ query = "Мне нужен бокс 6 кв м в центре до 4к руб н
 
 # Simplified Output
 {
-  "normalized_query": "мне нужен бокс 6 квадратных метров в центре до 4000 рублей на 3 месяца",
+  "normalized_query": "мне нужен бокс 6 квадратных метров в центре до 4000 dirhamй на 3 месяца",
   "intent": "SEARCH_BOX",
   "confidence": 0.92,
   "entities": {
@@ -750,7 +750,7 @@ system_prompt = f"""
 
 КОНТЕКСТ ЗАПРОСА:
 Роль пользователя: user
-Локация: Москва, ЦАО
+Локация: Dubai, ЦАО
 Тип запроса: SEARCH_BOX
 """
 
@@ -1459,7 +1459,7 @@ def extract_entities_simple(query):
     """
     entities = {}
     
-    # Extract price (examples: "3000 рублей", "до 5000₽")
+    # Extract price (examples: "3000 dirhamй", "до 5000₽")
     price_match = re.search(r'(\d+)\s*(рубл|₽|руб)', query)
     if price_match:
         entities['price'] = int(price_match.group(1))

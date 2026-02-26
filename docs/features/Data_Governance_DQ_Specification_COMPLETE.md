@@ -409,13 +409,13 @@ CONSTRAINT chk_price CHECK (price_per_month > 0)
 ```typescript
 // Нормализация телефона
 function normalizePhone(phone: string): string {
-  // "+7 (999) 123-45-67" → "+79991234567"
+  // "+971 50 123 4567" → "+971501234567"
   return phone.replace(/[^\d+]/g, '');
 }
 
 // Нормализация адреса
 function normalizeAddress(address: string): string {
-  // "г. Москва, ул. Ленина, д.5" → "Москва, ул. Ленина, 5"
+  // "Dubai, ул. Ленина, д.5" → "Москва, ул. Ленина, 5"
   return address
     .replace(/^г\.\s*/i, '')
     .replace(/д\.\s*/gi, '')
@@ -1943,7 +1943,7 @@ const warehouse1 = {
   name: "СклаДом на Речном",
   full_address: "Москва, ул. Фестивальная, 10",
   city: "Москва",
-  contact_phone: "+79991234567",
+  contact_phone: "+971501234567",
   // Остальное пусто
 };
 
@@ -3082,10 +3082,10 @@ async function markData(entity: string, data: any, dqScore): Promise<any> {
 
 | Тип данных | Преобразование | Пример |
 |------------|----------------|--------|
-| Телефон | +7XXXXXXXXXX | "+7 (999) 123-45-67" → "+79991234567" |
+| Телефон | +7XXXXXXXXXX | "+971 50 123 4567" → "+971501234567" |
 | Email | lowercase | "Info@Company.RU" → "info@company.ru" |
 | URL | https://domain | "company.ru/" → "https://company.ru" |
-| Адрес | Стандартизация | "г. Москва, ул. Ленина, д.5" → "Москва, ул. Ленина, 5" |
+| Адрес | Стандартизация | "Dubai, ул. Ленина, д.5" → "Москва, ул. Ленина, 5" |
 
 ### Примеры функций
 
@@ -4962,7 +4962,7 @@ graph LR
 
 **Технологии:**
 - Bull Queue + Redis для асинхронной обработки
-- Yandex Geocoder API для геокодинга
+- Google Geocoding API for geocoding
 - PostgreSQL для хранения DQ Score history
 
 **✅ Расширенные метрики (Week 2-4)**

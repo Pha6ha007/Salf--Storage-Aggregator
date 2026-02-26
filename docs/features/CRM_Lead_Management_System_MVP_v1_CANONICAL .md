@@ -299,8 +299,8 @@ POST /api/v1/crm/leads
 
 ```json
 {
-  "name": "Иван Петров",
-  "phone": "+79991234567",
+  "name": "Ahmed Al-Rashid",
+  "phone": "+971501234567",
   "email": "ivan@example.com",
   "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
   "preferred_box_size": "M"
@@ -313,8 +313,8 @@ POST /api/v1/crm/leads
 {
   "data": {
     "id": "110e8400-e29b-41d4-a716-446655440011",
-    "name": "Иван Петров",
-    "phone": "+79991234567",
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
     "email": "ivan@example.com",
     "status": "new",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -358,8 +358,8 @@ GET /api/v1/crm/leads
   "data": [
     {
       "id": "110e8400-e29b-41d4-a716-446655440011",
-      "name": "Иван Петров",
-      "phone": "+79991234567",
+      "name": "Ahmed Al-Rashid",
+      "phone": "+971501234567",
       "email": "ivan@example.com",
       "status": "new",
       "is_spam": false,
@@ -394,8 +394,8 @@ GET /api/v1/crm/leads/{id}
 {
   "data": {
     "id": "110e8400-e29b-41d4-a716-446655440011",
-    "name": "Иван Петров",
-    "phone": "+79991234567",
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
     "email": "ivan@example.com",
     "status": "closed",
     "closed_reason": "customer_booked",
@@ -616,7 +616,7 @@ Quoted 5000₽/month. Will call back tomorrow to confirm."
 ├─────────────────────────────────────────────────────────────┤
 │ Name          Phone          Status        Created         │
 ├─────────────────────────────────────────────────────────────┤
-│ Иван Петров   +7999...       new           14:30          │
+│ Ahmed Al-Rashid   +7999...       new           14:30          │
 │ Мария Сидо... +7985...       contacted     12:15          │
 │ Петр Иванов   +7916...       in_progress   11:45          │
 └─────────────────────────────────────────────────────────────┘
@@ -639,8 +639,8 @@ Quoted 5000₽/month. Will call back tomorrow to confirm."
 ┌─────────────────────────────────────────────────────────┐
 │ Lead Details                                            │
 ├─────────────────────────────────────────────────────────┤
-│ Name: Иван Петров                                       │
-│ Phone: +7 (999) 123-45-67                               │
+│ Name: Ahmed Al-Rashid                                       │
+│ Phone: +971 50 123 4567                               │
 │ Email: ivan@example.com                                 │
 │ Warehouse: СкладОК Выхино                               │
 │ Box Size: M (6 m²)                                      │
@@ -704,7 +704,7 @@ Quoted 5000₽/month. Will call back tomorrow to confirm."
 
 **Content:**
 ```
-New lead from Иван Петров
+New lead from Ahmed Al-Rashid
 Phone: +7999...
 Warehouse: СкладОК Выхино
 Box: M (6 m²)

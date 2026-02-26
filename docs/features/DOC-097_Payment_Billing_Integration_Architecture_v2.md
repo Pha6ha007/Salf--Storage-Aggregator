@@ -1071,7 +1071,7 @@ Platform operates in multiple countries with different currencies.
 ### 8.2.1. Regional Provider Preferences
 
 **Russia:**
-- Stripe (formerly Yandex.Kassa)
+- Stripe
 - Sberbank Online
 - SBP (Fast Payment System)
 
