@@ -254,7 +254,7 @@ Controllers → Services → Repositories → Database
   - `google-maps.client.ts` - Fallback provider
 - `integrations/notifications/` - Multi-channel notifications
   - `email.service.ts` - SendGrid integration
-  - `sms.service.ts` - Twilio/SMSC integration
+  - `sms.service.ts` - Twilio integration
 - `integrations/storage/` - File storage
   - `s3.client.ts` - S3-compatible storage
 
@@ -833,7 +833,7 @@ Table: `ai_requests_log`
 - ❌ Description Generation
 - ❌ Chat Hints
 
-## 5.2. Maps Integration (Yandex + Google Maps)
+## 5.2. Maps Integration (Google Maps API)
 
 **Module Location:** `src/integrations/maps/`
 
@@ -846,8 +846,8 @@ Table: `ai_requests_log`
 - Reverse geocoding (coordinates → address)
 - Distance calculation
 
-**Google Maps Advantages for Russia:**
-- Better coverage for Russian cities
+**Google Maps Advantages for UAE:**
+- Excellent coverage for UAE cities
 - More accurate addresses
 - Better POI data
 - Free tier: 25,000 requests/day
@@ -876,7 +876,7 @@ async geocode(address: string): Promise<Coordinates> {
 
 **Channels:**
 - Email (SendGrid)
-- SMS (Twilio for international, Twilio for Russia)
+- SMS (Twilio + WhatsApp Business API)
 
 **Email Templates (MVP):**
 - Booking confirmation

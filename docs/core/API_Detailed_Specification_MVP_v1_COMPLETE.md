@@ -170,7 +170,7 @@ Development:  http://localhost:3000/v1
 - `snake_case` for all property names
 - ISO 8601 format for dates/times: `YYYY-MM-DDTHH:mm:ssZ`
 - Boolean fields prefixed: `is_*`, `has_*`, `can_*`
-- Monetary values: integers in kopecks (RUB) or minor currency units
+- Monetary values: integers in fils (AED) or minor currency units
 - IDs: always integers, never strings (except booking_number, which is string)
 
 #### Versioning Strategy
@@ -521,11 +521,11 @@ X-Request-ID: req_reg_20251130_001 (optional)
 
 ```json
 {
-  "email": "ivan.petrov@example.com",
+  "email": "ahmed.alrashid@example.com",
   "password": "SecurePass123!",
   "password_confirmation": "SecurePass123!",
-  "name": "Иван Петров",
-  "phone": "+79991234567",
+  "name": "Ahmed Al-Rashid",
+  "phone": "+971501234567",
   "role": "user",
   "agree_to_terms": true,
   "agree_to_privacy": true
@@ -539,7 +539,7 @@ X-Request-ID: req_reg_20251130_001 (optional)
 | `email` | string | ✅ | Email format, max 255 chars, unique | User email address |
 | `password` | string | ✅ | Min 8 chars, max 128 chars, complexity rules | User password |
 | `password_confirmation` | string | ✅ | Must match `password` | Password confirmation |
-| `name` | string | ✅ | Min 2 chars, max 100 chars | Full name (Cyrillic or Latin) |
+| `name` | string | ✅ | Min 2 chars, max 100 chars | Full name |
 | `phone` | string | ✅ | E.164 format, unique | Phone number with country code |
 | `role` | string | ❌ | Enum: `user`, `operator` | Account type (default: `user`) |
 | `agree_to_terms` | boolean | ✅ | Must be `true` | Terms of service acceptance |
@@ -557,8 +557,8 @@ X-Request-ID: req_reg_20251130_001 (optional)
 **Phone Format:**
 
 ```
-Valid:   +79991234567, +74951234567
-Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
+Valid:   +971501234567, +97145551234
+Invalid: 971501234567, 971501234567, +971 50 123 4567
 ```
 
 ---
@@ -573,9 +573,9 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
   "data": {
     "user": {
       "id": 123,
-      "email": "ivan.petrov@example.com",
-      "name": "Иван Петров",
-      "phone": "+79991234567",
+      "email": "ahmed.alrashid@example.com",
+      "name": "Ahmed Al-Rashid",
+      "phone": "+971501234567",
       "role": "user",
       "is_email_verified": false,
       "is_phone_verified": false,
@@ -617,7 +617,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
         "Пароль должен содержать хотя бы одну заглавную букву"
       ],
       "phone": [
-        "Номер телефона должен быть в формате E.164 (+79991234567)"
+        "Номер телефона должен быть в формате E.164 (+971501234567)"
       ]
     }
   }
@@ -634,7 +634,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
     "message": "Пользователь с таким email уже зарегистрирован",
     "details": {
       "field": "email",
-      "value": "ivan.petrov@example.com"
+      "value": "ahmed.alrashid@example.com"
     }
   }
 }
@@ -650,7 +650,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
     "message": "Пользователь с таким номером телефона уже зарегистрирован",
     "details": {
       "field": "phone",
-      "value": "+79991234567"
+      "value": "+971501234567"
     }
   }
 }
@@ -680,7 +680,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
 
 ```json
 {
-  "email": "ivan.petrov@example.com",
+  "email": "ahmed.alrashid@example.com",
   "password": "SecurePass123!"
 }
 ```
@@ -697,9 +697,9 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
   "data": {
     "user": {
       "id": 123,
-      "email": "ivan.petrov@example.com",
-      "name": "Иван Петров",
-      "phone": "+79991234567",
+      "email": "ahmed.alrashid@example.com",
+      "name": "Ahmed Al-Rashid",
+      "phone": "+971501234567",
       "role": "user",
       "is_email_verified": true,
       "is_phone_verified": true,
@@ -786,7 +786,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
 
 ```json
 {
-  "email": "ivan.petrov@example.com"
+  "email": "ahmed.alrashid@example.com"
 }
 ```
 
@@ -797,7 +797,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
   "success": true,
   "data": {
     "message": "Если пользователь с таким email существует, на него отправлена ссылка для сброса пароля",
-    "email": "ivan.petrov@example.com"
+    "email": "ahmed.alrashid@example.com"
   }
 }
 ```
@@ -852,7 +852,7 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
     "message": "Email успешно подтвержден",
     "user": {
       "id": 123,
-      "email": "ivan.petrov@example.com",
+      "email": "ahmed.alrashid@example.com",
       "is_email_verified": true
     }
   }
@@ -871,8 +871,8 @@ Invalid: 89991234567, 79991234567, +7 (999) 123-45-67
 {
   "success": true,
   "data": {
-    "message": "Письмо с подтверждением отправлено на ivan.petrov@example.com",
-    "email": "ivan.petrov@example.com"
+    "message": "Письмо с подтверждением отправлено на ahmed.alrashid@example.com",
+    "email": "ahmed.alrashid@example.com"
   }
 }
 ```
@@ -926,9 +926,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "success": true,
   "data": {
     "id": 123,
-    "email": "ivan.petrov@example.com",
-    "name": "Иван Петров",
-    "phone": "+79991234567",
+    "email": "ahmed.alrashid@example.com",
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
     "role": "user",
     "avatar": "https://cdn.storagecompare.ae/avatars/123.jpg",
     "is_email_verified": true,
@@ -937,7 +937,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
     "updated_at": "2025-11-30T14:30:00Z",
     "settings": {
       "language": "ru",
-      "currency": "RUB",
+      "currency": "AED",
       "notifications": {
         "email": true,
         "sms": false,
@@ -987,7 +987,7 @@ Content-Type: application/json
 
 ```json
 {
-  "name": "Иван Александрович Петров",
+  "name": "Ahmed Al-Rashid",
   "phone": "+79991234568",
   "avatar": "https://cdn.storagecompare.ae/avatars/new-avatar.jpg"
 }
@@ -1012,8 +1012,8 @@ Content-Type: application/json
   "success": true,
   "data": {
     "id": 123,
-    "email": "ivan.petrov@example.com",
-    "name": "Иван Александрович Петров",
+    "email": "ahmed.alrashid@example.com",
+    "name": "Ahmed Al-Rashid",
     "phone": "+79991234568",
     "role": "user",
     "avatar": "https://cdn.storagecompare.ae/avatars/new-avatar.jpg",
@@ -1106,7 +1106,7 @@ Content-Type: application/json
   "success": true,
   "data": {
     "language": "ru",
-    "currency": "RUB",
+    "currency": "AED",
     "timezone": "Asia/Dubai",
     "notifications": {
       "email": {
@@ -1216,8 +1216,8 @@ Content-Type: application/json
         "id": 101,
         "name": "СкладОК Выхино",
         "address": {
-          "full_address": "Москва, ул. Ташкентская, 23",
-          "city": "Москва"
+          "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+          "city": "Dubai"
         },
         "photo": "https://cdn.storagecompare.ae/warehouses/101/main.jpg"
       },
@@ -1290,8 +1290,8 @@ Content-Type: application/json
       "name": "СкладОК Выхино",
       "description": "Современный складской комплекс с климат-контролем",
       "address": {
-        "full_address": "Москва, ул. Ташкентская, 23",
-        "city": "Москва",
+        "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+        "city": "Dubai",
         "district": "Выхино-Жулебино",
         "metro_station": "Выхино"
       },
@@ -1299,7 +1299,7 @@ Content-Type: application/json
         "lat": 55.714521,
         "lon": 37.816830
       },
-      "phone": "+74951234567",
+      "phone": "+97145551234",
       "email": "vyhino@skladok.ru",
       "photos": [
         "https://cdn.storagecompare.ae/warehouses/101/main.jpg"
@@ -1392,8 +1392,8 @@ Content-Type: application/json
         "name": "СкладОК Выхино",
         "description": "Современный складской комплекс с климат-контролем",
         "address": {
-          "full_address": "Москва, ул. Ташкентская, 23",
-          "city": "Москва",
+          "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+          "city": "Dubai",
           "district": "Выхино-Жулебино"
         },
         "coordinates": {
@@ -1571,8 +1571,8 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "email": "operator@skladok.ru",
   "password": "SecureOperator123!",
   "password_confirmation": "SecureOperator123!",
-  "name": "Сергей Владимирович Иванов",
-  "phone": "+74951234567",
+  "name": "Raj Patel",
+  "phone": "+97145551234",
   "company_name": "ООО СкладОК",
   "inn": "7704123456",
   "agree_to_terms": true,
@@ -1607,8 +1607,8 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "operator": {
       "id": 456,
       "email": "operator@skladok.ru",
-      "name": "Сергей Владимирович Иванов",
-      "phone": "+74951234567",
+      "name": "Raj Patel",
+      "phone": "+97145551234",
       "role": "operator",
       "company_name": "ООО СкладОК",
       "inn": "7704123456",
@@ -1661,9 +1661,9 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "registration_date": "2020-05-15",
     "kpp": "770401001",
     "ogrn": "1234567890123",
-    "legal_address": "Москва, ул. Ленина, 10, офис 5",
-    "actual_address": "Москва, ул. Ташкентская, 23",
-    "director_name": "Петров Петр Петрович",
+    "legal_address": "Dubai, Building 12, Office 5, Business Bay",
+    "actual_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+    "director_name": "Mohammed Al-Maktoum",
     "website": "https://skladok.ru"
   },
   "bank_details": {
@@ -1673,10 +1673,10 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "correspondent_account": "30101810400000000225"
   },
   "contact_person": {
-    "name": "Сергей Владимирович Иванов",
+    "name": "Raj Patel",
     "position": "Директор по развитию",
     "email": "s.ivanov@skladok.ru",
-    "phone": "+74951234567"
+    "phone": "+97145551234"
   },
   "documents": [
     {
@@ -1743,8 +1743,8 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "data": {
     "id": 456,
     "email": "operator@skladok.ru",
-    "name": "Сергей Владимирович Иванов",
-    "phone": "+74951234567",
+    "name": "Raj Patel",
+    "phone": "+97145551234",
     "role": "operator",
     "avatar": "https://cdn.storagecompare.ae/avatars/456.jpg",
     "is_email_verified": true,
@@ -1758,9 +1758,9 @@ Operator API endpoints allow warehouse operators to register, manage their profi
       "ogrn": "1234567890123",
       "legal_form": "ooo",
       "registration_date": "2020-05-15",
-      "legal_address": "Москва, ул. Ленина, 10, офис 5",
-      "actual_address": "Москва, ул. Ташкентская, 23",
-      "director_name": "Петров Петр Петрович",
+      "legal_address": "Dubai, Building 12, Office 5, Business Bay",
+      "actual_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+      "director_name": "Mohammed Al-Maktoum",
       "website": "https://skladok.ru"
     },
     "bank_details": {
@@ -1803,12 +1803,12 @@ Operator API endpoints allow warehouse operators to register, manage their profi
 
 ```json
 {
-  "name": "Сергей Владимирович Иванов",
+  "name": "Raj Patel",
   "phone": "+74951234568",
   "avatar": "https://cdn.storagecompare.ae/avatars/new-456.jpg",
   "company_info": {
     "website": "https://new-skladok.ru",
-    "actual_address": "Москва, ул. Ташкентская, 25"
+    "actual_address": "Dubai, ул. Ташкентская, 25"
   },
   "contact_person": {
     "email": "new.email@skladok.ru",
@@ -1828,12 +1828,12 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "success": true,
   "data": {
     "id": 456,
-    "name": "Сергей Владимирович Иванов",
+    "name": "Raj Patel",
     "phone": "+74951234568",
     "is_phone_verified": false,
     "company_info": {
       "website": "https://new-skladok.ru",
-      "actual_address": "Москва, ул. Ташкентская, 25"
+      "actual_address": "Dubai, ул. Ташкентская, 25"
     },
     "updated_at": "2025-11-30T21:15:00Z"
   },
@@ -2012,7 +2012,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     },
     "revenue": {
       "total": 4350000,
-      "currency": "RUB",
+      "currency": "AED",
       "by_month": [
         {
           "month": "2025-11",
@@ -2073,8 +2073,8 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
 | `lat` | float | ❌ | - | Latitude for geo search |
 | `lon` | float | ❌ | - | Longitude for geo search |
 | `radius` | integer | ❌ | 5000 | Search radius in meters (max: 50000) |
-| `price_min` | integer | ❌ | 0 | Minimum price per month (RUB) |
-| `price_max` | integer | ❌ | - | Maximum price per month (RUB) |
+| `price_min` | integer | ❌ | 0 | Minimum price per month (AED) |
+| `price_max` | integer | ❌ | - | Maximum price per month (AED) |
 | `size` | string | ❌ | - | Box sizes (comma-separated): `S,M,L,XL` |
 | `climate_control` | boolean | ❌ | - | Has climate control |
 | `cctv` | boolean | ❌ | - | Has CCTV |
@@ -2099,8 +2099,8 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
       "name": "СкладОК Выхино",
       "description": "Современный складской комплекс с климат-контролем",
       "address": {
-        "full_address": "Москва, ул. Ташкентская, 23",
-        "city": "Москва",
+        "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+        "city": "Dubai",
         "district": "Выхино-Жулебино",
         "metro_station": "Выхино"
       },
@@ -2155,15 +2155,15 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
     "description": "Современный складской комплекс",
     "long_description": "Полное описание...",
     "address": {
-      "full_address": "Москва, ул. Ташкентская, 23",
-      "city": "Москва"
+      "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+      "city": "Dubai"
     },
     "coordinates": {
       "lat": 55.714521,
       "lon": 37.816830
     },
     "contacts": {
-      "phone": "+74951234567",
+      "phone": "+97145551234",
       "email": "vyhino@skladok.ru"
     },
     "rating": 4.8,
@@ -2242,8 +2242,8 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
   "name": "СкладОК Новокосино",
   "description": "Современный складской комплекс",
   "address": {
-    "full_address": "Москва, ул. Новокосинская, 15",
-    "city": "Москва"
+    "full_address": "Dubai, ул. Новокосинская, 15",
+    "city": "Dubai"
   },
   "coordinates": {
     "lat": 55.745123,
@@ -2482,9 +2482,9 @@ Bookings API handles the complete booking lifecycle.
   "start_date": "2025-12-15",
   "duration_months": 3,
   "contact": {
-    "name": "Иван Петров",
-    "phone": "+79991234567",
-    "email": "ivan.petrov@example.com"
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
+    "email": "ahmed.alrashid@example.com"
   }
 }
 ```
@@ -2608,7 +2608,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
       "warehouse_id": 101,
       "user": {
         "id": 123,
-        "name": "Иван П.",
+        "name": "Ahmed A.",
         "verified_user": true
       },
       "booking": {
@@ -2901,7 +2901,7 @@ AI Core API provides AI-powered features including box recommendations, price an
   "storage_purpose": "renovation",
   "duration_months": 3,
   "location": {
-    "city": "Москва",
+    "city": "Dubai",
     "district": "Выхино"
   },
   "budget": {
@@ -3085,7 +3085,7 @@ AI Core API provides AI-powered features including box recommendations, price an
   "message": "Какой размер бокса мне нужен?",
   "conversation_id": null,
   "context": {
-    "location": "Москва"
+    "location": "Dubai"
   }
 }
 ```
@@ -3283,7 +3283,7 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
 
 ```json
 {
-  "address": "Москва, ул. Ташкентская, 23"
+  "address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3"
 }
 ```
 
@@ -3297,15 +3297,15 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
 {
   "success": true,
   "data": {
-    "input_address": "Москва, ул. Ташкентская, 23",
+    "input_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
     "coordinates": {
       "lat": 55.714521,
       "lon": 37.816830
     },
-    "formatted_address": "Россия, Москва, улица Ташкентская, 23",
+    "formatted_address": "Россия, Dubai, улица Ташкентская, 23",
     "components": {
       "country": "Россия",
-      "city": "Москва",
+      "city": "Dubai",
       "street": "улица Ташкентская",
       "house_number": "23"
     },
@@ -3351,10 +3351,10 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
       "lat": 55.714521,
       "lon": 37.816830
     },
-    "address": "Россия, Москва, улица Ташкентская, 23",
+    "address": "Россия, Dubai, улица Ташкентская, 23",
     "components": {
       "country": "Россия",
-      "city": "Москва",
+      "city": "Dubai",
       "street": "улица Ташкентская",
       "metro_station": "Выхино",
       "metro_distance": 850
@@ -3383,8 +3383,8 @@ This section defines all data schemas, validation rules, and constraints used ac
 {
   "id": 123,
   "email": "user@example.com",
-  "name": "Иван Петров",
-  "phone": "+79991234567",
+  "name": "Ahmed Al-Rashid",
+  "phone": "+971501234567",
   "role": "user",
   "avatar": "https://cdn.storagecompare.ae/avatars/123.jpg",
   "is_email_verified": true,
@@ -3446,8 +3446,8 @@ This section defines all data schemas, validation rules, and constraints used ac
 {
   "id": 456,
   "email": "operator@skladok.ru",
-  "name": "Сергей Иванов",
-  "phone": "+74951234567",
+  "name": "Raj Patel",
+  "phone": "+97145551234",
   "role": "operator",
   "onboarding_status": "completed",
   "account_status": "active",
@@ -3482,8 +3482,8 @@ This section defines all data schemas, validation rules, and constraints used ac
   "name": "СкладОК Выхино",
   "description": "Современный складской комплекс",
   "address": {
-    "full_address": "Москва, ул. Ташкентская, 23",
-    "city": "Москва"
+    "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
+    "city": "Dubai"
   },
   "coordinates": {
     "lat": 55.714521,
@@ -3561,7 +3561,7 @@ This section defines all data schemas, validation rules, and constraints used ac
 | `dimensions.height` | integer | ✅ | Min 100, max 500 | Height (cm) |
 | `area` | float | 🔒 | Auto-calculated | Area (m²) |
 | `volume` | float | 🔒 | Auto-calculated | Volume (m³) |
-| `price_per_month` | integer | ✅ | Min 1000, max 100000 | Price (RUB) |
+| `price_per_month` | integer | ✅ | Min 1000, max 100000 | Price (AED) |
 | `total_quantity` | integer | ✅ | Min 1, max 1000 | Total boxes |
 | `available_quantity` | integer | 🔒 | Auto-calculated | Available |
 
@@ -3842,7 +3842,7 @@ X-RateLimit-Reset: 1701350100
 
 | Operator | Format | Example |
 |----------|--------|---------|
-| Equality | `field=value` | `city=Москва` |
+| Equality | `field=value` | `city=Dubai` |
 | Min | `field_min=value` | `price_min=3000` |
 | Max | `field_max=value` | `price_max=10000` |
 | List | `field=val1,val2` | `size=S,M,L` |

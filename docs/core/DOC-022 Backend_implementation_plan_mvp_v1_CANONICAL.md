@@ -668,7 +668,7 @@ export class BoxRecommendationService {
 
 **In MVP v1:**
 - ✅ Email notifications (SendGrid)
-- ✅ SMS notifications (Twilio/SMSC)
+- ✅ SMS notifications (Twilio + WhatsApp Business API)
 
 **NOT in MVP v1:**
 - ❌ Telegram notifications — OUT OF SCOPE
@@ -693,7 +693,7 @@ export class BoxRecommendationService {
 
 ### MVP Scope
 
-- Geocoding addresses (Yandex Maps primary, Google Maps fallback)
+- Geocoding addresses (Google Maps API)
 - Reverse geocoding
 - Caching geocoding results (24h TTL per config)
 
@@ -818,10 +818,10 @@ export class BoxRecommendationService {
 | Service | Purpose | Provider |
 |---------|---------|----------|
 | AI | Box recommendation | Anthropic Claude API |
-| Maps | Geocoding | Yandex Maps (primary), Google Maps (fallback) |
+| Maps | Geocoding | Google Maps API |
 | Email | Notifications | SendGrid |
-| SMS | Notifications | Twilio / SMSC |
-| Storage | File uploads | S3-compatible (Yandex Object Storage) |
+| SMS | Notifications | Twilio + WhatsApp Business API |
+| Storage | File uploads | S3-compatible (AWS S3) |
 
 ---
 
@@ -1002,7 +1002,7 @@ Per MVP Scope Enforcement (§top):
 ## A.4. Payment Integration (v1.1+)
 
 **Planned for post-MVP:**
-- Payment gateway (Yookassa / Stripe)
+- Payment gateway (Stripe)
 - Automated billing
 - Refund handling
 

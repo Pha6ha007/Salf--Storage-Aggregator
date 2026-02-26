@@ -428,8 +428,8 @@ Admins can view, search, and manage user accounts.
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "email": "user@example.com",
-      "name": "Иван Петров",
-      "phone": "+79991234567",
+      "name": "Ahmed Al-Rashid",
+      "phone": "+971501234567",
       "role": "user",
       "status": "active",
       "email_verified": true,
@@ -495,8 +495,8 @@ Admins can view, search, and manage user accounts.
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "email": "user@example.com",
-    "name": "Иван Петров",
-    "phone": "+79991234567",
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
     "role": "user",
     "status": "active",
     "email_verified": true,
@@ -708,8 +708,8 @@ Admins can review, approve, reject, and manage operator accounts.
       "id": "660e8400-e29b-41d4-a716-446655440001",
       "user_id": "550e8400-e29b-41d4-a716-446655440000",
       "email": "operator@example.com",
-      "name": "Сергей Иванов",
-      "phone": "+79991234567",
+      "name": "Ahmed Al-Mansouri",
+      "phone": "+971501234567",
       "company_name": "ООО СкладОК",
       "company_inn": "7701234567",
       "status": "approved",
@@ -765,8 +765,8 @@ Admins can review, approve, reject, and manage operator accounts.
     "id": "660e8400-e29b-41d4-a716-446655440001",
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "email": "operator@example.com",
-    "name": "Сергей Иванов",
-    "phone": "+79991234567",
+    "name": "Ahmed Al-Mansouri",
+    "phone": "+971501234567",
     "company_name": "ООО СкладОК",
     "company_inn": "7701234567",
     "company_legal_form": "ООО",
@@ -1030,7 +1030,7 @@ Admins can view, moderate, and manage warehouses and boxes.
       "operator_id": "660e8400-e29b-41d4-a716-446655440001",
       "operator_name": "ООО СкладОК",
       "name": "СкладОК Выхино",
-      "address": "Москва, ул. Ферганская, 10",
+      "address": "Dubai, ул. Ферганская, 10",
       "status": "published",
       "rating": 4.7,
       "reviews_count": 45,
@@ -1071,15 +1071,15 @@ Admins can view, moderate, and manage warehouses and boxes.
     "operator_id": "660e8400-e29b-41d4-a716-446655440001",
     "operator": {
       "id": "660e8400-e29b-41d4-a716-446655440001",
-      "name": "Сергей Иванов",
+      "name": "Ahmed Al-Mansouri",
       "company_name": "ООО СкладОК",
       "email": "operator@example.com",
-      "phone": "+79991234567",
+      "phone": "+971501234567",
       "status": "approved"
     },
     "name": "СкладОК Выхино",
     "description": "Современный склад с климат-контролем...",
-    "address": "Москва, ул. Ферганская, 10",
+    "address": "Dubai, ул. Ферганская, 10",
     "latitude": 55.6992,
     "longitude": 37.8089,
     "status": "published",
@@ -1328,7 +1328,7 @@ Admins can view, search, and manage bookings (including cancellations).
       "reference_number": "BK-2025-00123",
       "user": {
         "id": "user-uuid",
-        "name": "Иван Петров",
+        "name": "Ahmed Al-Rashid",
         "email": "ivan@example.com"
       },
       "operator": {
@@ -1383,9 +1383,9 @@ Admins can view, search, and manage bookings (including cancellations).
     "reference_number": "BK-2025-00123",
     "user": {
       "id": "user-uuid",
-      "name": "Иван Петров",
+      "name": "Ahmed Al-Rashid",
       "email": "ivan@example.com",
-      "phone": "+79991234567"
+      "phone": "+971501234567"
     },
     "operator": {
       "id": "operator-uuid",
@@ -1395,7 +1395,7 @@ Admins can view, search, and manage bookings (including cancellations).
     "warehouse": {
       "id": "warehouse-uuid",
       "name": "СкладОК Выхино",
-      "address": "Москва, ул. Ферганская, 10"
+      "address": "Dubai, ул. Ферганская, 10"
     },
     "box": {
       "id": "box-uuid",
@@ -1413,8 +1413,8 @@ Admins can view, search, and manage bookings (including cancellations).
     "monthly_price": 5000,
     "price_total": 15000,
     "deposit": 5000,
-    "contact_name": "Иван Петров",
-    "contact_phone": "+79991234567",
+    "contact_name": "Ahmed Al-Rashid",
+    "contact_phone": "+971501234567",
     "contact_email": "ivan@example.com",
     "notes": "Нужна помощь с погрузкой",
     "special_requests": null,
@@ -1581,7 +1581,7 @@ Admins can view payment and transaction data for reconciliation and support.
       "booking_id": "booking-uuid",
       "user_id": "user-uuid",
       "amount": 15000,
-      "currency": "RUB",
+      "currency": "AED",
       "payment_method": "bank_card",
       "status": "completed",
       "provider": "stripe",
@@ -1625,11 +1625,11 @@ Admins can view payment and transaction data for reconciliation and support.
     "booking": {
       "id": "booking-uuid",
       "reference_number": "BK-2025-00123",
-      "user_name": "Иван Петров"
+      "user_name": "Ahmed Al-Rashid"
     },
     "user_id": "user-uuid",
     "amount": 15000,
-    "currency": "RUB",
+    "currency": "AED",
     "payment_method": "bank_card",
     "card_last4": "4242",
     "status": "completed",
@@ -1731,7 +1731,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
       "id": "review-uuid-1",
       "user": {
         "id": "user-uuid",
-        "name": "Иван П.",
+        "name": "Ahmed A.",
         "email": "ivan@example.com"
       },
       "warehouse": {
@@ -1776,7 +1776,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
     "id": "review-uuid-1",
     "user": {
       "id": "user-uuid",
-      "name": "Иван Петров",
+      "name": "Ahmed Al-Rashid",
       "email": "ivan@example.com",
       "total_reviews": 3
     },
@@ -1964,8 +1964,8 @@ Admins can view all CRM leads across all operators for support and oversight.
   "data": [
     {
       "id": "110e8400-e29b-41d4-a716-446655440011",
-      "name": "Иван Петров",
-      "phone": "+79991234567",
+      "name": "Ahmed Al-Rashid",
+      "phone": "+971501234567",
       "email": "ivan@example.com",
       "warehouse": {
         "id": "warehouse-uuid",
@@ -2006,13 +2006,13 @@ Admins can view all CRM leads across all operators for support and oversight.
 {
   "data": {
     "id": "110e8400-e29b-41d4-a716-446655440011",
-    "name": "Иван Петров",
-    "phone": "+79991234567",
+    "name": "Ahmed Al-Rashid",
+    "phone": "+971501234567",
     "email": "ivan@example.com",
     "warehouse": {
       "id": "warehouse-uuid",
       "name": "СкладОК Выхино",
-      "address": "Москва, ул. Ферганская, 10"
+      "address": "Dubai, ул. Ферганская, 10"
     },
     "operator": {
       "id": "operator-uuid",
@@ -2430,7 +2430,7 @@ GET /api/v1/admin/users?sort=created_at&order=desc
 |-------|------|----------|-------------|
 | `error_code` | string | ✅ | Machine-readable error code |
 | `http_status` | integer | ✅ | HTTP status code |
-| `message` | string | ✅ | Human-readable error message (Russian) |
+| `message` | string | ✅ | Human-readable error message (English) |
 | `details` | object | ❌ | Additional error context |
 
 ## 8.3. Error Handling Guidelines

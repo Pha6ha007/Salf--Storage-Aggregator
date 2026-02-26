@@ -440,10 +440,10 @@ This section defines what **MUST** be included in MVP v1.
 
 ### 4.1.6. Geographic and Language Scope
 
-- **Initial Market:** Russia (Russian Federation)
-- **Language:** Russian only for MVP
-- **Currency:** Russian Ruble (RUB)
-- **Address Format:** Russian address standards
+- **Initial Market:** UAE (United Arab Emirates)
+- **Language:** English only for MVP
+- **Currency:** UAE Dirham (AED)
+- **Address Format:** UAE address standards
 - **Maps Integration:** Google Maps (primary)
 
 ## 4.2. Explicitly Out of Scope
@@ -1415,13 +1415,13 @@ The system supports manual lead lifecycle management for operators. Operators ca
 ### 8.1.2. Geographic Limitations
 
 **Initial Market:**
-- Russia only for MVP
-- Russian language only
-- Russian address formats and conventions
+- UAE only for MVP
+- English language only
+- UAE address formats and conventions
 - Map service integration required
 
 **Currency and Pricing:**
-- All prices in Russian Rubles (RUB)
+- All prices in UAE Dirhams (AED)
 - No currency conversion needed
 
 **Expansion Plans:**
@@ -1538,7 +1538,7 @@ The system supports manual lead lifecycle management for operators. Operators ca
 - If assumption fails: Re-evaluate operator value proposition
 
 **Assumption 3: Competitive Landscape Favorable**
-- No dominant competitor in Russian self-storage aggregation
+- Growing market for self-storage aggregation in UAE
 - Market fragmented enough for new entrant
 - If assumption fails: Differentiate or focus on niche
 
@@ -1697,7 +1697,7 @@ The system supports manual lead lifecycle management for operators. Operators ca
 
 **Principle 1: User-Facing Quality**
 - UI is visually consistent and professional
-- Text is free of spelling and grammar errors (Russian)
+- Text is free of spelling and grammar errors (English)
 - Images and media load correctly
 - No broken links or 404 errors on public pages
 
@@ -1881,7 +1881,7 @@ The system supports manual lead lifecycle management for operators. Operators ca
 ### 10.3.2. Regulatory Risks
 
 **Risk 1: Data Protection Compliance**
-- **Description:** GDPR or Russian data protection laws may have stricter requirements than anticipated
+- **Description:** UAE PDPL (Personal Data Protection Law) may have stricter requirements than anticipated
 - **Impact:** Legal liability, need for extensive compliance work
 - **Mitigation:** Legal consultation, implement privacy by design
 - **Contingency:** Enhance privacy controls, engage legal counsel

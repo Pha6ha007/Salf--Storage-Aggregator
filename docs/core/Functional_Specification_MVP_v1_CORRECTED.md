@@ -301,7 +301,7 @@ The home page is the main entry point for users to discover self-storage options
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Location search | User on home page | Types "Москва, Выхино" in search | Autocomplete shows matching locations |
+| Location search | User on home page | Types "Dubai, Выхино" in search | Autocomplete shows matching locations |
 | Search submission | Location selected | Clicks "Найти" button | Redirects to catalog with location filter |
 | Empty search | User on home page | Clicks search without input | Shows validation message |
 
@@ -440,7 +440,7 @@ Response (200 OK):
       "id": 101,
       "name": "СкладОК Выхино",
       "slug": "skladok-vyhino",
-      "address": "Москва, ул. Ферганская, 10",
+      "address": "Dubai, ул. Ферганская, 10",
       "rating": 4.7,
       "review_count": 45,
       "min_price": 2500,
@@ -744,7 +744,7 @@ Request:
   "box_id": 501,
   "start_date": "2025-02-01",
   "duration_months": 3,
-  "contact_name": "Иван Петров",
+  "contact_name": "Ahmed Al-Rashid",
   "contact_phone": "+79161234567",
   "contact_email": "ivan@example.com",
   "notes": "Планирую привезти вещи в выходные"
