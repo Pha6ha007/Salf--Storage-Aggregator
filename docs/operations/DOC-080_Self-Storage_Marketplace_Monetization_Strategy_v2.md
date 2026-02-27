@@ -597,7 +597,7 @@ Marketplace commission structures, data pricing, and advertising models may face
 
 - **Antitrust / Competition Law:** If platform becomes dominant, commission rates or preferential placement may be challenged
 - **Consumer Protection:** Sponsored listings require clear disclosure per advertising regulations
-- **Data Privacy (GDPR / 152-ФЗ):** Selling aggregated data or insights must comply with data processing laws
+- **Data Privacy (GDPR / Federal Law 152-FZ):** Selling aggregated data or insights must comply with data processing laws
 - **Tax Compliance:** Commission or subscription revenue may trigger complex tax obligations across jurisdictions
 
 **Mitigation:**
@@ -780,7 +780,7 @@ Any monetization involving payments or financial data must comply with **DOC-078
 - Payment data must be encrypted per DOC-078 standards
 - Billing information is classified as PII and handled accordingly
 - Fraud detection aligns with security monitoring in DOC-078
-- Compliance with GDPR/152-ФЗ when processing financial transactions
+- Compliance with GDPR/Federal Law 152-FZ when processing financial transactions
 
 **Status:** DOC-078 provides security framework for monetization features.
 

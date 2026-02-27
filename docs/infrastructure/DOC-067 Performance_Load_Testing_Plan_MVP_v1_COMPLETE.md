@@ -14,38 +14,38 @@
 
 # 1. Introduction & Goals
 
-## 1.1. Назначение документа
+## 1.1. Document Purpose
 
-Этот документ описывает стратегию, методологию и процедуры нагрузочного тестирования для MVP v1 платформы Self-Storage Aggregator. Документ предназначен для:
+This document describes the strategy, methodology, and procedures for load testing for MVP v1 of the Self-Storage Aggregator platform. The document is intended for:
 
-- **DevOps команды** — настройка тестового окружения и мониторинга
-- **QA команды** — выполнение тестов и анализ результатов
-- **Backend команды** — оптимизация производительности на основе результатов
-- **Product Owner** — понимание capacity limits и scaling roadmap
+- **DevOps Team** — Setting up test environment and monitoring
+- **QA Team** — Executing tests and analyzing results
+- **Backend Team** — Performance optimization based on results
+- **Product Owner** — Understanding capacity limits and scaling roadmap
 
-## 1.2. Цели нагрузочного тестирования
+## 1.2. Load Testing Goals
 
-### Основные цели:
+### Main Goals:
 
-1. **Валидация производительности** — Подтверждение соответствия SLA/SLO требованиям
-2. **Определение пределов системы** — Выявление maximum capacity и breaking points
-3. **Выявление bottlenecks** — Обнаружение узких мест в архитектуре
-4. **Обеспечение стабильности** — Проверка надёжности при длительной нагрузке
-5. **Планирование capacity** — Данные для масштабирования и роста
+1. **Performance Validation** — Confirming compliance with SLA/SLO requirements
+2. **System Limits Determination** — Identifying maximum capacity and breaking points
+3. **Bottleneck Identification** — Discovering architectural bottlenecks
+4. **Stability Assurance** — Verifying reliability under sustained load
+5. **Capacity Planning** — Data for scaling and growth
 
-### Конкретные задачи:
+### Specific Tasks:
 
-✅ Проверить соответствие API endpoints целевым latency SLO (p95 < 500ms)  
-✅ Определить maximum sustainable load (concurrent users, RPS)  
-✅ Выявить memory leaks и resource exhaustion issues  
-✅ Протестировать graceful degradation при перегрузке  
-✅ Валидировать database query performance под нагрузкой  
-✅ Проверить работу caching strategy  
-✅ Оценить impact external services (AI API, Maps API)
+✅ Verify API endpoints meet target latency SLO (p95 < 500ms)
+✅ Determine maximum sustainable load (concurrent users, RPS)
+✅ Identify memory leaks and resource exhaustion issues
+✅ Test graceful degradation under overload
+✅ Validate database query performance under load
+✅ Verify caching strategy effectiveness  
+✅ Assess impact of external services (AI API, Maps API)
 
-## 1.3. Область охвата
+## 1.3. Scope
 
-### Включено в тестирование:
+### Included in Testing:
 
 **Backend API:**
 - REST API endpoints (search, catalog, details, boxes, bookings)
@@ -77,7 +77,7 @@
 - Google Maps API integration
 - Email/SMS notification queues (background jobs)
 
-### НЕ включено в MVP тестирование:
+### NOT Included in MVP Testing:
 
 ❌ Frontend performance (React rendering, bundle size)  
 ❌ End-to-end UI testing (Selenium, Playwright)  
@@ -92,9 +92,9 @@
 
 ## 1.4. MVP Acceptance Criteria
 
-Система считается готовой к production, если:
+System is considered production-ready if:
 
-### Критические требования (Must Pass):
+### Critical Requirements (Must Pass):
 
 | Criteria | Target | Measurement |
 |----------|--------|-------------|
@@ -106,7 +106,7 @@
 | **Graceful Degradation** | No crashes at 2x normal load | Stress test |
 | **Recovery Time** | < 5 min after load removal | Spike test validation |
 
-### Дополнительные требования (Should Pass):
+### Additional Requirements (Should Pass):
 
 - Cache hit ratio > 70%
 - AI API latency < 5 seconds (p95)
@@ -193,7 +193,7 @@ Allowed downtime: 43,200 × 0.01 = 432 minutes = 7.2 hours/month
 | **Database Connections** | < 70% pool | 70-90% | > 90% |
 | **Disk Usage** | < 70% | 70-85% | > 85% |
 
-## 2.3. Latency Targets по Endpoints
+## 2.3. Latency Targets by Endpoints
 
 ### Tier 1: Critical Endpoints (Core User Journey)
 
@@ -228,7 +228,7 @@ Allowed downtime: 43,200 × 0.01 = 432 minutes = 7.2 hours/month
 | `POST /ai/chat` | AI chat response | 2500ms | 6000ms | 10000ms |
 | `POST /ai/price-analysis` | Price optimization | 3000ms | 7000ms | 12000ms |
 
-**Note:** AI endpoints допускают более высокую latency из-за зависимости от external Claude API.
+**Note:** AI endpoints allow higher latency due to dependency on external Claude API.
 
 ## 2.4. Throughput Requirements (RPS)
 
@@ -371,7 +371,7 @@ function getStatus(percentage) {
 
 # 3. Test Environment
 
-## 3.1. Архитектура тестового окружения
+## 3.1. Test Environment Architecture
 
 ### High-Level Architecture
 
@@ -716,7 +716,7 @@ networks:
     name: load-test-network
 ```
 
-## 3.3. Отличия от Production
+## 3.3. Differences from Production
 
 ### Capacity Differences
 
@@ -729,7 +729,7 @@ networks:
 | **Database IOPS** | 3000 (SSD) | 10000 (Provisioned) | 3.3x |
 | **Redis RAM** | 2GB | 8GB | 4x |
 
-**Implication:** Test results должны быть экстраполированы с учётом scaling factors.
+**Implication:** Test results must be extrapolated considering scaling factors.
 
 ### Infrastructure Differences
 
@@ -854,7 +854,7 @@ async function generateTestData() {
   for (const city of cities) {
     for (let i = 0; i < city.count; i++) {
       warehouses.push({
-        name: `${city.name} Склад ${i + 1}`,
+        name: `${city.name} Storage ${i + 1}`,
         address: faker.location.streetAddress(),
         city: city.name,
         location: {
@@ -1035,7 +1035,7 @@ pg_restore -U test -d selfstorage_test -c test-db-clean.dump
 ## 4.1. Baseline Load
 
 ### Definition
-Baseline load представляет систему в idle состоянии с минимальной активностью: только фоновые процессы, health checks, и мониторинг.
+Baseline load represents the system in idle state with minimal activity: only background processes, health checks, and monitoring.
 
 ### Characteristics
 
@@ -1066,10 +1066,10 @@ Baseline load представляет систему в idle состоянии
 
 ### Purpose
 
-1. **Reference Point** — Baseline для сравнения under load
-2. **System Validation** — Проверка правильной конфигурации
-3. **Anomaly Detection** — Выявление проблем до начала тестов
-4. **Monitoring Calibration** — Настройка alerts и dashboards
+1. **Reference Point** — Baseline for comparison under load
+2. **System Validation** — Configuration validation
+3. **Anomaly Detection** — Problem identification before test start
+4. **Monitoring Calibration** — Alert and dashboard configuration
 
 ### Test Script
 
@@ -1318,7 +1318,7 @@ Peak:      ============================================ (120 VUs)
 
 ### Graceful Degradation Expected
 
-At peak load, система может показывать degradation, что **acceptable** для MVP:
+At peak load, system may show degradation, which is **acceptable** for MVP:
 
 **Acceptable Degradation:**
 - Latency increase: +30-50% vs normal
@@ -1681,7 +1681,7 @@ iptables -A OUTPUT -p tcp --dport 5432 -j DROP
 ## 5.1. Smoke Load Test
 
 ### Purpose
-Быстрая проверка базовой функциональности системы под минимальной нагрузкой. Smoke test должен выполняться после каждого deployment и перед началом более серьёзных тестов.
+Quick verification of basic system functionality under minimal load. Smoke test should be executed after each deployment and before more serious tests.
 
 ### Configuration
 
@@ -1837,7 +1837,7 @@ http_req_failed................: 0.00%   ✓ 0   ✗ 450
 ## 5.2. Load Test
 
 ### Purpose
-Проверка производительности системы при **нормальной ожидаемой нагрузке**. Имитирует реалистичное поведение пользователей в течение достаточного времени для стабилизации метрик.
+System performance verification under **normal expected load**. Simulates realistic user behavior for sufficient time to stabilize metrics.
 
 ### Configuration
 
@@ -1881,7 +1881,7 @@ stages: [
 
 ### Request Distribution
 
-Имитация реалистичного user journey:
+Simulating realistic user journey:
 
 ```javascript
 const scenario = weightedChoice([
@@ -1929,7 +1929,7 @@ export const options = {
 
 const BASE_URL = __ENV.API_URL || 'http://localhost:3000';
 
-const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Новосибирск'];
+const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Novosibirsk'];
 
 export default function () {
   // Weighted scenario selection
@@ -2082,7 +2082,7 @@ vus..................................: 100 (peak)
 ## 5.3. Stress Test
 
 ### Purpose
-Определить **предел возможностей** системы путём постепенного увеличения нагрузки до точки отказа (breaking point).
+Determine system **capacity limits** by gradually increasing load to breaking point.
 
 ### Configuration
 
@@ -2218,7 +2218,7 @@ export function handleSummary(data) {
 
 ### Observations to Record
 
-During stress test, документировать:
+During stress test, document:
 
 1. **Breaking Point VUs:** ___ VUs (when error rate > 5%)
 2. **Primary Bottleneck:** CPU / Memory / Database / Connections / Network
@@ -2439,8 +2439,8 @@ export const CITIES = [
   'Dubai',
   'Abu Dhabi',
   'Sharjah',
-  'Новосибирск',
-  'Екатеринбург',
+  'Novosibirsk',
+  'Yekaterinburg',
 ];
 
 export const BOX_SIZES = ['XS', 'S', 'M', 'L', 'XL'];

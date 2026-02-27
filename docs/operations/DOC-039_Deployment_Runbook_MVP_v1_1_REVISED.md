@@ -485,56 +485,56 @@ This runbook provides comprehensive procedures to **reduce risk and support grow
 
 # 1. Runbook Overview
 
-## 1.1. Цели и назначение
+## 1.1. Goals and Purpose
 
-### Назначение документа
+### Document Purpose
 
-Этот Runbook является **единственным источником истины** для всех процедур развертывания Self-Storage Aggregator MVP. Документ обеспечивает:
+This Runbook is the **single source of truth** for all deployment procedures for the Self-Storage Aggregator MVP. The document ensures:
 
-- **Стандартизацию** процесса деплоя
-- **Минимизацию ошибок** при развертывании
-- **Быстрое восстановление** при возникновении проблем
-- **Передачу знаний** между членами команды
-- **Аудит и соответствие** лучшим практикам
+- **Standardization** of the deployment process
+- **Error minimization** during deployment
+- **Quick recovery** when issues arise
+- **Knowledge transfer** between team members
+- **Audit and compliance** with best practices
 
-### Основные цели
+### Main Goals
 
-**1. Надежность развертывания**
-- Zero-downtime deployments (≤30 секунд для backend, 0 секунд для frontend)
-- Автоматизированные проверки перед и после деплоя
-- Rollback capability <5 минут
+**1. Deployment Reliability**
+- Zero-downtime deployments (≤30 seconds for backend, 0 seconds for frontend)
+- Automated pre- and post-deployment checks
+- Rollback capability <5 minutes
 
-**2. Скорость деплоя**
-- Полный цикл деплоя: <15 минут (backend + frontend)
-- Hotfix деплой: <2 часа от обнаружения до production
-- Автоматизация 90% рутинных операций
+**2. Deployment Speed**
+- Full deployment cycle: <15 minutes (backend + frontend)
+- Hotfix deployment: <2 hours from detection to production
+- 90% automation of routine operations
 
-**3. Безопасность**
-- Обязательное резервное копирование перед миграциями
-- Многоуровневая система одобрений
-- Аудит всех действий
+**3. Security**
+- Mandatory backup before migrations
+- Multi-level approval system
+- Audit of all actions
 
-**4. Управление рисками**
-- Документированные rollback процедуры
-- Тестирование на staging перед production
-- Freeze-окна для критических периодов
+**4. Risk Management**
+- Documented rollback procedures
+- Testing on staging before production
+- Freeze windows for critical periods
 
-### Метрики успеха
+### Success Metrics
 
-| Метрика | Целевое значение | Текущее |
+| Metric | Target Value | Current |
 |---------|------------------|---------|
 | Deployment success rate | >98% | TBD |
-| Mean time to deploy (MTTD) | <15 минут | TBD |
-| Mean time to recovery (MTTR) | <5 минут | TBD |
-| Deployment frequency | ≥1 раз в неделю | TBD |
-| Hotfix deployment time | <2 часа | TBD |
+| Mean time to deploy (MTTD) | <15 minutes | TBD |
+| Mean time to recovery (MTTR) | <5 minutes | TBD |
+| Deployment frequency | ≥1 time per week | TBD |
+| Hotfix deployment time | <2 hours | TBD |
 | Incidents per deployment | <2% | TBD |
 
 ---
 
-## 1.2. Область применения
+## 1.2. Scope of Application
 
-### Покрываемые компоненты
+### Covered Components
 
 **Backend Services:**
 - REST API (NestJS)
@@ -560,47 +560,47 @@ This runbook provides comprehensive procedures to **reduce risk and support grow
 - SendGrid (email)
 - Payment gateway (planned)
 
-### Окружения
+### Environments
 
 **Development (Local):**
-- Цель: Локальная разработка
-- Доступ: Все разработчики
-- Деплой: Manual, docker-compose
-- База: Локальный PostgreSQL
+- Purpose: Local development
+- Access: All developers
+- Deploy: Manual, docker-compose
+- Database: Local PostgreSQL
 
 **Staging:**
-- Цель: Pre-production тестирование
-- Доступ: Вся команда
-- Деплой: Auto (push to develop branch)
-- База: Managed PostgreSQL (Railway)
+- Purpose: Pre-production testing
+- Access: Entire team
+- Deploy: Auto (push to develop branch)
+- Database: Managed PostgreSQL (Railway)
 - URL: https://api-staging.selfstorage.com
 
 > **Note:** Railway is an illustrative example of managed infrastructure provider. Teams may use alternative providers (AWS RDS, DigitalOcean, Heroku Postgres, self-hosted PostgreSQL, etc.) based on their infrastructure choices. Adapt procedures to your specific provider.
 
 **Production:**
-- Цель: Live пользовательский сервис
-- Доступ: Tech Lead + DevOps
-- Деплой: Manual approval required
-- База: Production PostgreSQL (Railway/DigitalOcean)
+- Purpose: Live user service
+- Access: Tech Lead + DevOps
+- Deploy: Manual approval required
+- Database: Production PostgreSQL (Railway/DigitalOcean)
 - URL: https://api.selfstorage.com
 
 > **Note:** Railway and DigitalOcean are illustrative examples. Production database can be hosted on any provider that meets performance and reliability requirements. All procedures in this runbook apply regardless of infrastructure provider.
 
-### Исключения
+### Exclusions
 
-Данный Runbook **НЕ** покрывает:
+This Runbook does **NOT** cover:
 
-- Локальную разработку (см. Developer Guide)
-- Архитектурные изменения (см. Architecture Decision Records)
-- Изменения безопасности (см. Security Runbook)
-- Disaster Recovery (см. DR Plan)
-- Scaling операции (см. Scaling Guide)
+- Local development (see Developer Guide)
+- Architectural changes (see Architecture Decision Records)
+- Security changes (see Security Runbook)
+- Disaster Recovery (see DR Plan)
+- Scaling operations (see Scaling Guide)
 
 ---
 
-## 1.3. Workflow деплоя
+## 1.3. Deployment Workflow
 
-### Стандартный процесс развертывания
+### Standard Deployment Process
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -662,33 +662,33 @@ This runbook provides comprehensive procedures to **reduce risk and support grow
 └──────────────┘
 ```
 
-### Типы развертываний
+### Deployment Types
 
-**1. Regular Release (еженедельно)**
-- Тип: Minor version (v1.x.0)
-- Одобрение: Tech Lead + QA Lead
-- Lead time: 24 часа
-- Включает: Новые фичи, bug fixes, improvements
+**1. Regular Release (weekly)**
+- Type: Minor version (v1.x.0)
+- Approval: Tech Lead + QA Lead
+- Lead time: 24 hours
+- Includes: New features, bug fixes, improvements
 
-**2. Patch Release (по необходимости)**
-- Тип: Patch version (v1.1.x)
-- Одобрение: Tech Lead
-- Lead time: 4 часа
-- Включает: Bug fixes only
+**2. Patch Release (as needed)**
+- Type: Patch version (v1.1.x)
+- Approval: Tech Lead
+- Lead time: 4 hours
+- Includes: Bug fixes only
 
-**3. Hotfix (экстренно)**
-- Тип: Patch version (v1.1.x)
-- Одобрение: On-call engineer (может деплоить без pre-approval)
-- Lead time: <2 часа
-- Включает: Critical bug fixes
+**3. Hotfix (emergency)**
+- Type: Patch version (v1.1.x)
+- Approval: On-call engineer (can deploy without pre-approval)
+- Lead time: <2 hours
+- Includes: Critical bug fixes
 
-**4. Major Release (ежеквартально)**
-- Тип: Major version (vx.0.0)
-- Одобрение: Tech Lead + Product Owner + QA Lead
-- Lead time: 1 неделя
-- Включает: Breaking changes, major features
+**4. Major Release (quarterly)**
+- Type: Major version (vx.0.0)
+- Approval: Tech Lead + Product Owner + QA Lead
+- Lead time: 1 week
+- Includes: Breaking changes, major features
 
-### Timeline типичного деплоя
+### Typical Deployment Timeline
 
 ```
 T-24h:  Team notification
@@ -719,13 +719,13 @@ T-0:    Start deployment
 
 ---
 
-## 1.4. Критерии готовности к деплою
+## 1.4. Deployment Readiness Criteria
 
-### Обязательные требования
+### Mandatory Requirements
 
 **Code Quality Gates:**
 
-| Критерий | Требование | Проверка |
+| Criterion | Requirement | Verification |
 |----------|------------|----------|
 | CI Pipeline | ✅ All checks passed | GitHub Actions |
 | Code Review | ✅ 2+ approvals | GitHub PR |
@@ -737,7 +737,7 @@ T-0:    Start deployment
 
 **Infrastructure Readiness:**
 
-| Критерий | Требование | Проверка |
+| Criterion | Requirement | Verification |
 |----------|------------|----------|
 | All services | ✅ Healthy & accessible | Health endpoints |
 | Disk space | ✅ >20% free | df -h |
@@ -761,7 +761,7 @@ T-0:    Start deployment
 - ✅ Rollback plan documented
 - ✅ Database migrations reviewed
 
-### Проверочный скрипт
+### Verification Script
 
 ```bash
 #!/bin/bash
@@ -850,75 +850,75 @@ fi
 
 ---
 
-## 1.5. Ограничения и freeze-окна
+## 1.5. Deployment Restrictions and Freeze Windows
 
-### Freeze Windows (когда НЕ деплоим)
+### Freeze Windows (when we do NOT deploy)
 
-**Регулярные freeze-окна:**
+**Regular freeze windows:**
 
-| Период | Причина | Исключения |
+| Period | Reason | Exceptions |
 |--------|---------|------------|
-| Пт 15:00 - Пн 10:00 | Reduced support availability | P0 hotfixes only |
-| Выходные | Weekend | P0 hotfixes only |
-| Праздничные дни | Holidays | P0 hotfixes only |
-| После 18:00 | End of business day | Planned maintenance |
+| Fri 15:00 - Mon 10:00 | Reduced support availability | P0 hotfixes only |
+| Weekends | Weekend | P0 hotfixes only |
+| Public holidays | Holidays | P0 hotfixes only |
+| After 18:00 | End of business day | Planned maintenance |
 
-**Праздничные дни РФ (2025):**
-- 1-8 января (Новогодние каникулы)
-- 23 февраля (День защитника Отечества)
-- 8 марта (Международный женский день)
-- 1 мая (Праздник Весны и Труда)
-- 9 мая (День Победы)
-- 12 июня (День России)
-- 4 ноября (День народного единства)
+**UAE Public Holidays (2025):**
+- Jan 1 (New Year's Day)
+- Ramadan dates (TBD based on lunar calendar)
+- Eid Al-Fitr (TBD, 3 days)
+- Eid Al-Adha (TBD, 4 days)
+- Islamic New Year (TBD)
+- Prophet Muhammad's Birthday (TBD)
+- Dec 2-3 (National Day)
 
-**Динамические freeze-окна:**
-- Во время активного инцидента
-- Во время планового обслуживания
-- В пиковые бизнес-периоды (по запросу Product)
-- После неудачного деплоя (24-часовой freeze)
+**Dynamic freeze windows:**
+- During active incident
+- During planned maintenance
+- During peak business periods (upon Product request)
+- After failed deployment (24-hour freeze)
 
-### Ограничения деплоя
+### Deployment Restrictions
 
-**Максимальная частота:**
-- Production: Не более 1 деплоя в день
-- Staging: Без ограничений
+**Maximum frequency:**
+- Production: No more than 1 deployment per day
+- Staging: No restrictions
 
-**Максимальное время простоя:**
-- Backend API: ≤30 секунд
-- Frontend: 0 секунд (CDN)
-- Database: 0 секунд (online migrations)
+**Maximum downtime:**
+- Backend API: ≤30 seconds
+- Frontend: 0 seconds (CDN)
+- Database: 0 seconds (online migrations)
 
-**Rollback время:**
-- Целевое: <5 минут
-- Максимальное: 15 минут
+**Rollback time:**
+- Target: <5 minutes
+- Maximum: 15 minutes
 
 ### Change Control Board
 
-**Типы изменений:**
+**Change types:**
 
 **Minor Changes (patch releases):**
-- Одобрение: Tech Lead
-- Lead time: 2 часа
-- Примеры: Bug fixes, minor improvements
+- Approval: Tech Lead
+- Lead time: 2 hours
+- Examples: Bug fixes, minor improvements
 
 **Major Changes (minor/major releases):**
-- Одобрение: Tech Lead + Product Owner
-- Lead time: 24 часа
-- Опционально: Review meeting
-- Примеры: New features, breaking changes
+- Approval: Tech Lead + Product Owner
+- Lead time: 24 hours
+- Optional: Review meeting
+- Examples: New features, breaking changes
 
 **Emergency Changes (hotfixes):**
-- Одобрение: On-call engineer
+- Approval: On-call engineer
 - Lead time: Immediate
 - Post-approval: Tech Lead notification
-- Примеры: P0 incidents, security fixes
+- Examples: P0 incidents, security fixes
 
 **Database Changes:**
-- Одобрение: Tech Lead + Senior Backend Engineer
-- Lead time: 4 часа (minimum)
-- Требование: Code review обязателен
-- Примеры: Schema changes, data migrations
+- Approval: Tech Lead + Senior Backend Engineer
+- Lead time: 4 hours (minimum)
+- Requirement: Code review mandatory
+- Examples: Schema changes, data migrations
 
 ### Enforcement Script
 
@@ -1018,7 +1018,7 @@ exit 0
 
 # 2. Pre-Deployment Checklist
 
-## 2.1. Проверка инфраструктуры
+## 2.1. Infrastructure Verification
 
 ### 2.1.1. Server Health Check
 
@@ -1093,7 +1093,7 @@ fi
 
 ---
 
-## 2.2. Проверка сервисов
+## 2.2. Service Verification
 
 ### 2.2.1. Service Status Script
 
@@ -1180,7 +1180,7 @@ fi
 
 ---
 
-## 2.3. Статус CI/CD
+## 2.3. CI/CD Status
 
 ### 2.3.1. CI Status Check
 
@@ -1225,7 +1225,7 @@ fi
 
 ---
 
-## 2.4. Готовность миграций
+## 2.4. Migration Readiness
 
 ### 2.4.1. Migration Check Script
 
@@ -1282,7 +1282,7 @@ fi
 
 ---
 
-## 2.5. Валидация секретов
+## 2.5. Secrets Validation
 
 ### 2.5.1. Secrets Validation Script
 
@@ -1359,7 +1359,7 @@ fi
 # Test Google Maps
 echo -n "Testing Google Maps API... "
 GOOGLE_MAPS_RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null \
-    "https://maps.googleapis.com/maps/api/geocode/json?apikey=$GOOGLE_MAPS_API_KEY&geocode=Москва&address=Dubai&geocode=Москва&address=Dubai&geocode=Москва&address=Dubai&geocode=Москва&format=json" 2>/dev/null || echo "000")
+    "https://maps.googleapis.com/maps/api/geocode/json?apikey=$GOOGLE_MAPS_API_KEY&address=Dubai&format=json" 2>/dev/null || echo "000")
 
 if [ "$GOOGLE_MAPS_RESPONSE" = "200" ]; then
     echo "✓"
@@ -1379,7 +1379,7 @@ fi
 
 ---
 
-## 2.6. Проверка мониторинга
+## 2.6. Monitoring Verification
 
 ### 2.6.1. Monitoring Check Script
 
@@ -1543,7 +1543,7 @@ fi
 
 # 3. Environment Preparation
 
-## 3.1. Development окружение
+## 3.1. Development Environment
 
 ### 3.1.1. Local Development Setup
 
@@ -1743,22 +1743,22 @@ export async function seedDevelopment(dataSource: DataSource) {
 
   const warehouses = [
     {
-      name: 'Центральный склад',
-      address: 'ул. Тверская, 1, Dubai',
+      name: 'Central Storage Hub',
+      address: 'Sheikh Zayed Road, 1, Dubai',
       city: 'Dubai',
-      latitude: 55.7558,
-      longitude: 37.6173,
-      description: 'Современный склад в центре Москвы',
+      latitude: 25.2048,
+      longitude: 55.2708,
+      description: 'Modern storage facility in downtown Dubai',
       amenities: ['24/7', 'security', 'climate'],
       operator_id: operator.id,
     },
     {
-      name: 'Складской комплекс Юг',
-      address: 'ул. Ленина, 50, Dubai',
+      name: 'South Storage Complex',
+      address: 'Al Quoz Industrial Area, 50, Dubai',
       city: 'Dubai',
-      latitude: 55.7000,
-      longitude: 37.6000,
-      description: 'Большой складской комплекс на юге',
+      latitude: 25.1372,
+      longitude: 55.2353,
+      description: 'Large storage complex in southern Dubai',
       amenities: ['24/7', 'security'],
       operator_id: operator.id,
     },
@@ -1804,7 +1804,7 @@ export async function seedDevelopment(dataSource: DataSource) {
 
 ---
 
-## 3.2. Staging окружение
+## 3.2. Staging Environment
 
 ### 3.2.1. Staging Preparation Script
 
@@ -1943,7 +1943,7 @@ jobs:
 
 ---
 
-## 3.3. Production окружение
+## 3.3. Production Environment
 
 ### 3.3.1. Production Configuration
 
@@ -3518,7 +3518,7 @@ fi
 
 # 6. Database Migrations
 
-## 6.1. Подготовка миграций
+## 6.1. Migration Preparation
 
 ### 6.1.1. TypeORM Migration Structure
 
@@ -3635,7 +3635,7 @@ echo "Dry run complete"
 
 ---
 
-## 6.3. Применение на staging
+## 6.3. Applying to Staging
 
 ### 6.3.1. Staging Migration Script
 
@@ -3680,7 +3680,7 @@ echo "✅ Staging migrations complete"
 
 ---
 
-## 6.4. Применение на production
+## 6.4. Applying to Production
 
 ### 6.4.1. Production Migration Script
 
@@ -3774,7 +3774,7 @@ echo "Backup: backups/$BACKUP_FILE"
 
 ---
 
-## 6.5. Rollback миграций
+## 6.5. Migration Rollback
 
 ### 6.5.1. Migration Rollback Script
 
@@ -3834,7 +3834,7 @@ echo "✅ Migration rollback complete"
 
 ---
 
-## 6.6. Проверка целостности БД
+## 6.6. Database Integrity Check
 
 ### 6.6.1. Database Integrity Check
 
@@ -4091,7 +4091,7 @@ fi
 
 # 8. Release Process
 
-## 8.1. Git-flow релизов
+## 8.1. Release Git-flow
 
 ### 8.1.1. Git Flow Workflow Script
 
@@ -4252,7 +4252,7 @@ echo "✅ Release tag $VERSION created"
 
 ---
 
-## 8.4. Коммуникации с командой
+## 8.4. Team Communications
 
 ### 8.4.1. Slack Notification Script
 
@@ -4299,7 +4299,7 @@ esac
 
 ---
 
-## 8.5. Релизные заметки
+## 8.5. Release Notes
 
 ### 8.5.1. CHANGELOG.md Structure
 
@@ -4336,7 +4336,7 @@ esac
 
 # 9. Rollback Procedures
 
-## 9.1. Когда делать rollback
+## 9.1. When to Rollback
 
 ### 9.1.1. Rollback Decision Matrix
 
@@ -4397,7 +4397,7 @@ fi
 
 ---
 
-## 9.2. Откат backend
+## 9.2. Backend Rollback
 
 ### 9.2.1. Backend Rollback Script
 
@@ -4445,7 +4445,7 @@ echo "✅ Backend rollback completed"
 
 ---
 
-## 9.3. Откат frontend
+## 9.3. Frontend Rollback
 
 ### 9.3.1. Frontend Rollback Script
 
@@ -4486,7 +4486,7 @@ echo "✅ Frontend rollback completed"
 
 ---
 
-## 9.4. Откат миграций
+## 9.4. Migration Rollback
 
 ### 9.4.1. Migration Rollback Script
 
@@ -4573,7 +4573,7 @@ echo "✅ Migration rollback completed"
 
 # 10. Hotfix Strategy
 
-## 10.1. Что считается hotfix
+## 10.1. What Qualifies as a Hotfix
 
 ### 10.1.1. Hotfix Classification
 
@@ -4635,7 +4635,7 @@ fi
 
 ---
 
-## 10.2. Hotfix ветки
+## 10.2. Hotfix Branches
 
 ### 10.2.1. Create Hotfix Script
 
@@ -4706,7 +4706,7 @@ echo "✅ Hotfix branch created"
 
 ---
 
-## 10.3. Применение без полной выкладки
+## 10.3. Rapid Deployment Without Full Release
 
 ### 10.3.1. Rapid Hotfix Deployment
 
@@ -4778,7 +4778,7 @@ echo "✅ HOTFIX DEPLOYED: $VERSION"
 
 ---
 
-## 10.4. Документирование
+## 10.4. Documentation
 
 ### 10.4.1. Hotfix Report Template
 
@@ -4822,7 +4822,7 @@ Added null check for optional phone_number field
 
 # 11. Post-Deployment Validation
 
-## 11.1. Проверка системных метрик
+## 11.1. System Metrics Verification
 
 > **MVP vs Post-MVP Note:** Extended post-deployment monitoring (30+ minutes) is a **RECOMMENDED best practice**. MVP v1 deployments may use shorter validation windows (10-15 minutes) with manual spot checks. Comprehensive automated monitoring becomes more critical as user base grows.  
 >   
@@ -4893,7 +4893,7 @@ echo "✅ Monitoring complete"
 
 ---
 
-## 11.2. Проверка логов
+## 11.2. Log Verification
 
 ### 11.2.1. Log Analysis Script
 
@@ -4943,7 +4943,7 @@ echo "✅ Log analysis complete"
 
 ---
 
-## 11.3. Проверка алёртов
+## 11.3. Alerts Verification
 
 ### 11.3.1. Alert Status Check
 
@@ -4986,7 +4986,7 @@ fi
 
 ---
 
-## 11.4. Верификация API
+## 11.4. API Verification
 
 ### 11.4.1. API Verification Script
 
@@ -5039,7 +5039,7 @@ fi
 
 ---
 
-## 11.5. Формализация результатов
+## 11.5. Results Formalization
 
 ### 11.5.1. Deployment Report Template
 
@@ -5079,7 +5079,7 @@ None
 
 # 12. Operational Contacts & Responsibilities
 
-## 12.1. Роли и зоны ответственности
+## 12.1. Roles and Responsibilities
 
 ### 12.1.1. RACI Matrix
 
@@ -5124,7 +5124,7 @@ roles:
 
 ---
 
-## 12.2. Контакты команды
+## 12.2. Team Contacts
 
 ### 12.2.1. Team Contacts
 
@@ -5138,23 +5138,23 @@ team_contacts:
       phone: "+7 999 123-45-67"
       
   devops:
-    - name: "Алексей Сидоров"
+    - name: "Mohammed Al-Farsi"
       role: "DevOps Engineer"
-      slack: "@alex-sidorov"
-      email: "alex.sidorov@company.com"
-      phone: "+7 999 234-56-78"
-      
+      slack: "@mohammed-alfarsi"
+      email: "mohammed.alfarsi@company.com"
+      phone: "+971 50 123 4567"
+
   backend:
-    - name: "Дмитрий Козлов"
+    - name: "Khalid Hassan"
       role: "Backend Lead"
-      slack: "@dmitry-kozlov"
-      email: "dmitry.kozlov@company.com"
-      
+      slack: "@khalid-hassan"
+      email: "khalid.hassan@company.com"
+
   qa:
-    - name: "Сергей Новиков"
+    - name: "Sara Al-Maktoum"
       role: "QA Lead"
-      slack: "@sergey-novikov"
-      email: "sergey.novikov@company.com"
+      slack: "@sara-almaktoum"
+      email: "sara.almaktoum@company.com"
 ```
 
 ### 12.2.2. Contact Script
@@ -5183,7 +5183,7 @@ esac
 
 ---
 
-## 12.3. Эскалация
+## 12.3. Escalation
 
 ### 12.3.1. Escalation Matrix
 
@@ -5228,7 +5228,7 @@ esac
 
 ---
 
-## 12.4. Каналы коммуникации
+## 12.4. Communication Channels
 
 ### 12.4.1. Communication Channels
 

@@ -1238,7 +1238,7 @@ See Legal Checklist § 2.3 for details.
 
 **A:** For MVP purposes, we comply with both. Key differences:
 - GDPR: 72-hour breach notification, €20M fines
-- UAE PDPL (Federal Decree-Law No. 45/2021): TDRA (Telecommunications Роскомнадзор Digital Government Regulatory Authority) registration required
+- UAE PDPL (Federal Decree-Law No. 45/2021): TDRA (Telecommunications and Digital Government Regulatory Authority) registration required
 
 Legal Checklist addresses both. Security Plan implements technical requirements.
 
@@ -1284,7 +1284,7 @@ See Logging Strategy § 4 for complete PII rules.
 ```json
 {
   "error_code": "box_not_available",
-  "message": "К сожалению, бокс только что забронирован",
+  "message": "Unfortunately, this box has just been reserved",
   "details": {
     "box_id": 123
   }

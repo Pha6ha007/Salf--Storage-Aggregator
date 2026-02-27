@@ -89,31 +89,31 @@
 **This is the FINAL and CANONICAL auth model for MVP v1.**
 
 ---
-## Оглавление
+## Table of Contents
 
-### Основы архитектуры
-1. **Общая Frontend архитектура**
-2. **Технологический стек**
-3. **Структура файлов и модули**
-4. **Frontend Implementation Decisions (MVP v1)** ← НОВАЯ СЕКЦИЯ
+### Architecture Fundamentals
+1. **General Frontend Architecture**
+2. **Technology Stack**
+3. **File Structure and Modules**
+4. **Frontend Implementation Decisions (MVP v1)** ← NEW SECTION
 
-### Управление данными и UI
-5. **Принципы управления состоянием**
-6. **Подход к загрузке данных**
-7. **Организация UI-компонентов**
+### Data Management and UI
+5. **State Management Principles**
+6. **Data Loading Approach**
+7. **UI Component Organization**
 
-### UX и оптимизация
-8. **Обработка состояний загрузки и ошибок**
-9. **SEO оптимизация**
-10. **Доступность (Accessibility)**
+### UX and Optimization
+8. **Loading and Error State Handling**
+9. **SEO Optimization**
+10. **Accessibility**
 
-### Производительность и карты
-11. **Оптимизация производительности**
-12. **Интеграция с картами**
+### Performance and Maps
+11. **Performance Optimization**
+12. **Maps Integration**
 
-### Безопасность и интеграция
-13. **Работа с токенами и безопасность**
-14. **Диаграммы взаимодействия с API**
+### Security and Integration
+13. **Token Handling and Security**
+14. **API Interaction Diagrams**
 
 ---
 

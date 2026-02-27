@@ -1541,7 +1541,7 @@ export const handlers = [
       data: [
         {
           id: 101,
-          name: 'СкладОК Выхино',
+          name: 'StorageHub Al Quoz',
           city: 'Dubai',
           price_from: 2500
         }
@@ -1892,18 +1892,18 @@ PERF-004: Soak Test
   "warehouses": [
     {
       "id": 101,
-      "name": "СкладОК Выхино",
+      "name": "StorageHub Al Quoz",
       "city": "Dubai",
-      "district": "Выхино",
+      "district": "Al Quoz",
       "price_from": 2500,
       "rating": 4.7,
       "climate_control": true
     },
     {
       "id": 102,
-      "name": "Хранилище Центр",
+      "name": "Storage Center Downtown",
       "city": "Dubai",
-      "district": "Центр",
+      "district": "Downtown",
       "price_from": 8000,
       "rating": 4.9
     }
@@ -1915,10 +1915,10 @@ PERF-004: Soak Test
 
 | ID | Warehouse | Size | Price | Available |
 |----|-----------|------|-------|-----------|
-| 501 | 101 | S (2.25м²) | 2500AED  | 10/20 |
-| 502 | 101 | M (6м²) | 5000AED  | 5/15 |
-| 503 | 101 | L (12м²) | 8000AED  | 0/10 |
-| 504 | 101 | XL (20м²) | 12000AED  | 2/5 |
+| 501 | 101 | S (2.25m²) | 2500AED  | 10/20 |
+| 502 | 101 | M (6m²) | 5000AED  | 5/15 |
+| 503 | 101 | L (12m²) | 8000AED  | 0/10 |
+| 504 | 101 | XL (20m²) | 12000AED  | 2/5 |
 
 ---
 

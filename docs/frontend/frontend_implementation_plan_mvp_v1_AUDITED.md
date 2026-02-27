@@ -1,36 +1,36 @@
 # Frontend Implementation Plan (MVP v1) — Self-Storage Aggregator
 
-**Версия документа:** 1.2 (Security Fixed)  
-**Дата создания:** 01 декабря 2024  
-**Дата аудита:** 16 декабря 2024  
-**Дата security fix:** 16 декабря 2024  
-**Проект:** Self-Storage Aggregator MVP v1
+**Document Version:** 1.2 (Security Fixed)
+**Creation Date:** December 1, 2024
+**Audit Date:** December 16, 2024
+**Security Fix Date:** December 16, 2024
+**Project:** Self-Storage Aggregator MVP v1
 
 ---
 
-## Терминология документа
+## Document Terminology
 
-В данном документе используется следующая терминология для обозначения уровня обязательности:
+This document uses the following terminology to indicate the level of requirement:
 
-| Термин | Значение |
+| Term | Meaning |
 |--------|----------|
-| **MUST** | Обязательно для MVP. Без этого функционал не работает. |
-| **SHOULD** | Рекомендуется для MVP. Улучшает качество, но не блокирует релиз. |
-| **MAY** | Опционально. Может быть реализовано по усмотрению команды. |
-| **POST-MVP** | Не входит в MVP v1. Планируется на следующие версии. |
-| **PLACEHOLDER** | Заглушка для MVP. Требует полной реализации в следующих версиях. |
+| **MUST** | Mandatory for MVP. Functionality will not work without this. |
+| **SHOULD** | Recommended for MVP. Improves quality but does not block release. |
+| **MAY** | Optional. May be implemented at the team's discretion. |
+| **POST-MVP** | Not included in MVP v1. Planned for future versions. |
+| **PLACEHOLDER** | Placeholder for MVP. Requires full implementation in future versions. |
 
 ---
 
-## Содержание
+## Table of Contents
 
-1. [Архитектура фронтенда](#1-архитектура-фронтенда)
-   - 1.1. Структура проекта
-   - 1.2. Страницы и роутинг
-   - 1.3. Компоненты (структура и уровни)
+1. [Frontend Architecture](#1-frontend-architecture)
+   - 1.1. Project Structure
+   - 1.2. Pages and Routing
+   - 1.3. Components (structure and levels)
    - 1.4. State-management
-   - 1.5. Сервисы API и синхронизация с backend
-   - 1.6. Работа с картами
+   - 1.5. API Services and Backend Synchronization
+   - 1.6. Working with Maps
    - 1.7. Работа с авторизацией
    - 1.8. Работа с формами и валидацией
 

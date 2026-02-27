@@ -70,7 +70,7 @@ This index organizes all project documentation into 9 tiers, from core specifica
 
 - **API_Rate_Limiting_Throttling_Specification_MVP_v1_CANONICAL.md**
   - **API RATE LIMITING & THROTTLING SPECIFICATION**
-- **DOC-020 Аudit_logging_specification_mvp_v1_CANONICAL.md**
+- **DOC-020 Audit_logging_specification_mvp_v1_CANONICAL.md**
   - Audit Logging Specification (MVP v1)
 - **DOC-078_Security_and_Compliance_Plan_MVP_v1_CANONICAL_REVISED.md**
   - Security and Compliance Plan - MVP v1
@@ -329,7 +329,7 @@ These are older versions of documents that have been superseded by canonical ver
 
 **Migration Results:**
 - **Domain:** selfstorage.ru → storagecompare.ae
-- **Legal Framework:** Russian laws (152-ФЗ, ГК РФ, Роскомнадзор) → UAE laws (PDPL, Civil Transactions Law, TDRA)
+- **Legal Framework:** Russian laws (Federal Law 152-FZ, Civil Code, Roskomnadzor) → UAE laws (PDPL, Civil Transactions Law, TDRA)
 - **Services:** Yandex Maps → Google Maps, Yookassa → Stripe, SMSC → Twilio + WhatsApp
 - **Market Adaptation:** All Russian examples → UAE examples (names, addresses, phone numbers, currency)
 - **Critical Deliverable:** DOC-094 completely rewritten for UAE legal framework

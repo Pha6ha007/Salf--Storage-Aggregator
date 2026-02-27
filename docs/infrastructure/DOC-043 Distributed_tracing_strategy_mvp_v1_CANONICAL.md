@@ -11,22 +11,22 @@
 ## Table of Contents
 
 1. [Tracing Overview](#1-tracing-overview)
-   - 1.1. Назначение распределённого трейсинга в MVP
-   - 1.2. Что покрывает трейсинг
-   - 1.3. Основные принципы
-   - 1.4. Компоненты архитектуры трейсинга
+   - 1.1. Purpose of Distributed Tracing in MVP
+   - 1.2. What Tracing Covers
+   - 1.3. Core Principles
+   - 1.4. Tracing Architecture Components
 
 2. [Tracing Architecture](#2-tracing-architecture)
-   - 2.1. Архитектурная схема
-   - 2.2. Точки генерации спанов
-   - 2.3. Где собираются данные трейсинга
-   - 2.4. Интеграция с observability-стеком
+   - 2.1. Architecture Diagram
+   - 2.2. Span Generation Points
+   - 2.3. Where Tracing Data is Collected
+   - 2.4. Integration with Observability Stack
 
 3. [Context Propagation](#3-context-propagation)
    - 3.1. W3C Trace Context
-   - 3.2. Как передаются trace_id и span_id
-   - 3.3. Проброс заголовков через API Gateway
-   - 3.4. Проброс контекста между сервисами
+   - 3.2. How trace_id and span_id are Passed
+   - 3.3. Header Propagation through API Gateway
+   - 3.4. Context Propagation Between Services
 
 4. [Identifiers & Span Structure](#4-identifiers--span-structure)
    - 4.1. trace_id
@@ -36,78 +36,78 @@
    - 4.5. span events
 
 5. [API Gateway Tracing](#5-api-gateway-tracing)
-   - 5.1. Создание root span
-   - 5.2. Обогащение метаданными запросов
+   - 5.1. Creating Root Span
+   - 5.2. Enriching with Request Metadata
    - 5.3. Error spans
-   - 5.4. Проброс контекста в backend
+   - 5.4. Context Propagation to Backend
 
 6. [Backend Service Tracing](#6-backend-service-tracing)
-   - 6.1. Основные точки инструментирования
-   - 6.2. Обработка ошибок
-   - 6.3. Взаимодействие между сервисами
-   - 6.4. Тайминги выполнения запросов
+   - 6.1. Main Instrumentation Points
+   - 6.2. Error Handling
+   - 6.3. Inter-Service Communication
+   - 6.4. Request Execution Timings
 
 7. [Database Tracing](#7-database-tracing)
-   - 7.1. Инструментирование запросов БД
+   - 7.1. Database Query Instrumentation
    - 7.2. Slow query spans
-   - 7.3. Ошибки БД
-   - 7.4. Корреляция с backend spans
+   - 7.3. Database Errors
+   - 7.4. Correlation with Backend Spans
 
 8. [Log & Trace Correlation](#8-log--trace-correlation)
    - 8.1. request_id ↔ trace_id
-   - 8.2. span_id в логах
-   - 8.3. Политика стандартизации логов
-   - 8.4. Пример связки лог + span
+   - 8.2. span_id in logs
+   - 8.3. Log Standardization Policy
+   - 8.4. Log + Span Correlation Example
 
 9. [Sampling Strategy](#9-sampling-strategy)
    - 9.1. Head sampling
    - 9.2. Tail sampling (Post-MVP)
    - 9.3. Adaptive sampling
-   - 9.4. MVP-настройки
+   - 9.4. MVP Configuration
 
 10. [Visualization & Analysis](#10-visualization--analysis)
-    - 10.1. Где смотреть трейсинг
-    - 10.2. Анализ цепочек вызовов
-    - 10.3. Bottleneck analysis по trace
-    - 10.4. Метрики трейсинга
+    - 10.1. Where to View Tracing
+    - 10.2. Call Chain Analysis
+    - 10.3. Trace-based Bottleneck Analysis
+    - 10.4. Tracing Metrics
 
 11. [Alerting & Monitoring](#11-alerting--monitoring)
-    - 11.1. Алерты на уровне трейсинга
-    - 11.2. Ошибки в спанах
-    - 11.3. Timeout-трейсы
-    - 11.4. Трейсы деградации производительности
+    - 11.1. Tracing-level Alerts
+    - 11.2. Errors in Spans
+    - 11.3. Timeout Traces
+    - 11.4. Performance Degradation Traces
 
 12. [Operational Guidelines](#12-operational-guidelines)
-    - 12.1. Стандарты разработки
-    - 12.2. Проверки в CI/CD
-    - 12.3. Общие best practices
-    - 12.4. Ограничения MVP
+    - 12.1. Development Standards
+    - 12.2. CI/CD Checks
+    - 12.3. General Best Practices
+    - 12.4. MVP Limitations
 
 ---
 
 ## Executive Summary
 
-Данный документ определяет стратегию распределённого трейсинга (distributed tracing) для MVP v1 платформы Self-Storage Aggregator. Стратегия основана на OpenTelemetry SDK, W3C Trace Context и интеграции с существующей logging инфраструктурой (Winston/Pino).
+This document defines the distributed tracing strategy for MVP v1 of the Self-Storage Aggregator platform. The strategy is based on OpenTelemetry SDK, W3C Trace Context, and integration with existing logging infrastructure (Winston/Pino).
 
-**Ключевые компоненты:**
-- OpenTelemetry SDK для генерации spans во всех сервисах
-- W3C Trace Context для propagation между компонентами
-- Структурированные логи с trace_id/span_id для корреляции
-- Head-based sampling (10% в production)
-- Log-centric подход без выделенного tracing backend
+**Key Components:**
+- OpenTelemetry SDK for generating spans across all services
+- W3C Trace Context for propagation between components
+- Structured logs with trace_id/span_id for correlation
+- Head-based sampling (10% in production)
+- Log-centric approach without dedicated tracing backend
 
-**Архитектурные компоненты:**
+**Architectural Components:**
 - API Gateway (Nginx + OpenTelemetry module)
 - Backend Services (NestJS + OpenTelemetry SDK)
-- Database (PostgreSQL с query instrumentation)
-- Cache (Redis с operation tracing)
+- Database (PostgreSQL with query instrumentation)
+- Cache (Redis with operation tracing)
 - AI Service (FastAPI + OpenTelemetry SDK)
 
-**MVP ограничения:**
-- Нет Jaeger/Tempo/Zipkin
-- Хранение в структурированных логах (30 дней)
-- Ручной анализ через log aggregation
-- Критические пути инструментированы в первую очередь
+**MVP Limitations:**
+- No Jaeger/Tempo/Zipkin
+- Storage in structured logs (30 days)
+- Manual analysis through log aggregation
+- Critical paths instrumented first
 
 ---
 
@@ -127,30 +127,30 @@ All architectural decisions align with:
 
 ## 1. Tracing Overview
 
-### 1.1. Назначение распределённого трейсинга в MVP
+### 1.1. Purpose of Distributed Tracing in MVP
 
-Distributed Tracing в проекте Self-Storage Aggregator MVP обеспечивает end-to-end visibility всех запросов пользователей через систему. Основные задачи трейсинга в MVP:
+Distributed Tracing in Self-Storage Aggregator MVP provides end-to-end visibility of all user requests through the system. Main tracing objectives in MVP:
 
-**Цели:**
-- **Performance Visibility** — отслеживание времени выполнения запросов на всех уровнях (API Gateway → Backend Services → Database)
-- **Error Attribution** — точное определение места возникновения ошибок в цепочке вызовов
-- **Request Flow Understanding** — визуализация пути запроса через микросервисы (Warehouse Service → Box Service → Database)
-- **Latency Analysis** — выявление узких мест и bottleneck'ов в системе
-- **Debugging Production Issues** — быстрая локализация проблем в production без необходимости воспроизведения локально
+**Goals:**
+- **Performance Visibility** — tracking request execution time at all levels (API Gateway → Backend Services → Database)
+- **Error Attribution** — precise determination of error origin in call chain
+- **Request Flow Understanding** — visualization of request path through microservices (Warehouse Service → Box Service → Database)
+- **Latency Analysis** — identification of bottlenecks in the system
+- **Debugging Production Issues** — fast problem localization in production without need for local reproduction
 
-**Scope в MVP:**
-Трейсинг покрывает критические user-facing операции:
-- Поиск складов (Search warehouses)
-- Просмотр деталей склада (Warehouse details + available boxes)
-- Создание бронирования (Booking creation flow)
-- AI-рекомендации (Box finder)
-- Аутентификация (Auth flow)
+**Scope in MVP:**
+Tracing covers critical user-facing operations:
+- Search warehouses (Search warehouses)
+- Warehouse details (Warehouse details + available boxes)
+- Booking creation (Booking creation flow)
+- AI recommendations (Box finder)
+- Authentication (Auth flow)
 
-### 1.2. Что покрывает трейсинг
+### 1.2. What Tracing Covers
 
-**Инструментируемые компоненты:**
+**Instrumented Components:**
 
-| Компонент | Что трейсим | Примеры операций |
+| Component | What We Trace | Operation Examples |
 |-----------|-------------|------------------|
 | **API Gateway (Nginx)** | HTTP requests/responses | Request routing, rate limiting checks, CORS handling |
 | **Backend Services** | Service-to-service calls | Warehouse → Box, Booking → Notification, Auth → User lookup |
@@ -158,17 +158,17 @@ Distributed Tracing в проекте Self-Storage Aggregator MVP обеспеч
 | **Cache (Redis)** | Cache operations | GET cached search results, SET AI responses |
 | **External APIs** | Third-party calls | Google Maps geocoding, OpenAI API calls |
 
-**Что НЕ трейсим в MVP:**
+**What We DO NOT Trace in MVP:**
 - Frontend client-side operations (browser-side tracing excluded)
 - Static asset requests (CDN traffic)
 - Health check endpoints (`/health`, `/readiness`)
 - Internal background jobs (scheduled tasks)
 
-### 1.3. Основные принципы
+### 1.3. Core Principles
 
-**Принцип 1: End-to-End Visibility**
+**Principle 1: End-to-End Visibility**
 
-Каждый user request генерирует единый trace, проходящий через все компоненты:
+Each user request generates a single trace passing through all components:
 
 ```
 User Request → API Gateway → Warehouse Service → PostgreSQL
@@ -178,39 +178,39 @@ User Request → API Gateway → Warehouse Service → PostgreSQL
                            Response → User
 ```
 
-Все операции в рамках одного запроса связаны единым `trace_id`.
+All operations within a single request are linked by a single `trace_id`.
 
-**Принцип 2: Correlation**
+**Principle 2: Correlation**
 
-Трейсинг обеспечивает корреляцию между:
-- **Traces ↔ Logs**: каждый лог содержит `trace_id` и `span_id`
-- **Spans ↔ Errors**: ошибки маркируются в соответствующих spans
-- **Requests ↔ Metrics**: метрики агрегируются по trace_id
-- **Services ↔ Dependencies**: видна вся цепочка межсервисных вызовов
+Tracing provides correlation between:
+- **Traces ↔ Logs**: each log contains `trace_id` and `span_id`
+- **Spans ↔ Errors**: errors are marked in corresponding spans
+- **Requests ↔ Metrics**: metrics are aggregated by trace_id
+- **Services ↔ Dependencies**: entire inter-service call chain is visible
 
-**Принцип 3: Sampling**
+**Principle 3: Sampling**
 
-В MVP используется **head-based sampling**:
+MVP uses **head-based sampling**:
 
-| Environment | Sampling Rate | Описание |
+| Environment | Sampling Rate | Description |
 |-------------|---------------|----------|
-| Development | 100% | Все трейсы записываются |
-| Staging | 50% | Каждый второй трейс |
-| Production | 10% | 10% случайных трейсов |
-| Production (errors) | 100% | Все трейсы с ошибками |
+| Development | 100% | All traces are recorded |
+| Staging | 50% | Every second trace |
+| Production | 10% | 10% random traces |
+| Production (errors) | 100% | All traces with errors |
 
-Sampling позволяет снизить overhead и стоимость хранения данных при сохранении репрезентативности.
+Sampling reduces overhead and storage costs while maintaining representativeness.
 
-**Принцип 4: Low Overhead**
+**Principle 4: Low Overhead**
 
-Трейсинг MUST NOT замедлять систему:
+Tracing MUST NOT slow down the system:
 - Target latency overhead: < 5ms per request
 - Memory overhead: < 50MB per service instance
 - CPU overhead: < 2% additional load
 
-### 1.4. Компоненты архитектуры трейсинга
+### 1.4. Tracing Architecture Components
 
-**Стек трейсинга MVP:**
+**MVP Tracing Stack:**
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -238,19 +238,19 @@ Sampling позволяет снизить overhead и стоимость хра
 └─────────────────────────────────────────────────┘
 ```
 
-**Ключевые элементы:**
+**Key Elements:**
 
-1. **OpenTelemetry SDK** — интеграция в каждый сервис для генерации spans
-2. **W3C Trace Context** — стандарт propagation заголовков (см. Section 3.1)
-3. **Structured Logging** — Winston/Pino с обязательными полями `trace_id`, `span_id`
-4. **Correlation IDs** — `request_id` = `trace_id` для унификации
-5. **Context Propagation** — автоматический проброс trace context через HTTP headers и internal calls
+1. **OpenTelemetry SDK** — integration into each service for span generation
+2. **W3C Trace Context** — header propagation standard (see Section 3.1)
+3. **Structured Logging** — Winston/Pino with mandatory fields `trace_id`, `span_id`
+4. **Correlation IDs** — `request_id` = `trace_id` for unification
+5. **Context Propagation** — automatic trace context propagation through HTTP headers and internal calls
 
 ---
 
 ## 2. Tracing Architecture
 
-### 2.1. Архитектурная схема
+### 2.1. Architecture Diagram
 
 ```mermaid
 graph TB
@@ -314,7 +314,7 @@ graph TB
 3. **Data Layer** — database and cache operations generate spans
 4. **Observability** — all components emit structured logs with `trace_id`
 
-### 2.2. Точки генерации спанов
+### 2.2. Span Generation Points
 
 **Span Hierarchy:**
 
@@ -337,7 +337,7 @@ Root Span (API Gateway)
 | Cache | Cache span | Redis client wrapper | `GET cache:warehouse:123` |
 | Inter-service | HTTP span | Axios interceptor | `POST http://box-service/api/boxes` |
 
-### 2.3. Где собираются данные трейсинга
+### 2.3. Where Tracing Data is Collected
 
 **MVP approach: Log-centric storage**
 
@@ -367,7 +367,7 @@ Root Span (API Gateway)
 - **Access**: Log aggregation scripts, `jq` queries
 - **Export**: Manual JSON export for analysis
 
-### 2.4. Интеграция с observability-стеком
+### 2.4. Integration with Observability Stack
 
 **Integration points:**
 
@@ -391,7 +391,7 @@ Root Span (API Gateway)
 
 **Standard**: [W3C Trace Context](https://www.w3.org/TR/trace-context/)
 
-OpenTelemetry использует стандарт W3C для передачи trace context между компонентами через HTTP заголовки.
+OpenTelemetry uses the W3C standard for passing trace context between components via HTTP headers.
 
 **Primary header:**
 ```
@@ -411,7 +411,7 @@ traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
 tracestate: vendor1=value1,vendor2=value2
 ```
 
-### 3.2. Как передаются trace_id и span_id
+### 3.2. How trace_id and span_id are Passed
 
 **Propagation flow:**
 
@@ -468,7 +468,7 @@ export class TracingInterceptor implements NestInterceptor {
 }
 ```
 
-### 3.3. Проброс заголовков через API Gateway
+### 3.3. Header Propagation through API Gateway
 
 **Nginx configuration:**
 
@@ -522,7 +522,7 @@ processors:
     send_batch_size: 1024
 ```
 
-### 3.4. Проброс контекста между сервисами
+### 3.4. Context Propagation Between Services
 
 **Inter-service HTTP calls (Axios):**
 
@@ -662,7 +662,7 @@ span.addEvent('ai_recommendation_generated', {
 
 ## 5. API Gateway Tracing
 
-### 5.1. Создание root span
+### 5.1. Creating Root Span
 
 **Nginx responsibility:**
 
@@ -684,7 +684,7 @@ attributes:
   http.request_id: "req_abc123" # Optional correlation
 ```
 
-### 5.2. Обогащение метаданными запросов
+### 5.2. Enriching with Request Metadata
 
 **Metadata enrichment:**
 
@@ -720,7 +720,7 @@ error.message: "Backend service timeout"
 http.status_code: 504
 ```
 
-### 5.4. Проброс контекста в backend
+### 5.4. Context Propagation to Backend
 
 See Section 3.3 for detailed Nginx configuration. Headers forwarded:
 - `traceparent` (W3C standard)
@@ -730,7 +730,7 @@ See Section 3.3 for detailed Nginx configuration. Headers forwarded:
 
 ## 6. Backend Service Tracing
 
-### 6.1. Основные точки инструментирования
+### 6.1. Main Instrumentation Points
 
 **Critical instrumentation points:**
 
@@ -779,7 +779,7 @@ export class WarehouseService {
 }
 ```
 
-### 6.2. Обработка ошибок
+### 6.2. Error Handling
 
 **Error recording:**
 
@@ -806,7 +806,7 @@ try {
 }
 ```
 
-### 6.3. Взаимодействие между сервисами
+### 6.3. Inter-Service Communication
 
 See Section 3.4 for inter-service HTTP propagation.
 
@@ -815,7 +815,7 @@ See Section 3.4 for inter-service HTTP propagation.
 - Parent-child span relationship maintained
 - Errors propagated with trace context
 
-### 6.4. Тайминги выполнения запросов
+### 6.4. Request Execution Timings
 
 **Automatic timing:**
 
@@ -843,7 +843,7 @@ span.setAttributes({
 
 ## 7. Database Tracing
 
-### 7.1. Инструментирование запросов БД
+### 7.1. Database Query Instrumentation
 
 **TypeORM interceptor:**
 
@@ -896,7 +896,7 @@ if (duration > 1000) { // 1 second threshold
 }
 ```
 
-### 7.3. Ошибки БД
+### 7.3. Database Errors
 
 **Database error classification:**
 
@@ -919,7 +919,7 @@ catch (error) {
 }
 ```
 
-### 7.4. Корреляция с backend spans
+### 7.4. Correlation with Backend Spans
 
 **Parent-child relationship:**
 
@@ -957,7 +957,7 @@ logger.info('Request received', {
 
 **MVP decision:** `request_id` = `trace_id` for simplicity.
 
-### 8.2. span_id в логах
+### 8.2. span_id in logs
 
 **Logger configuration:**
 
@@ -987,7 +987,7 @@ logger.format = winston.format((info) => {
 })();
 ```
 
-### 8.3. Политика стандартизации логов
+### 8.3. Log Standardization Policy
 
 **Required fields in all logs:**
 
@@ -1012,7 +1012,7 @@ See `Logging_Strategy_&_Log_Taxonomy_MVP_v1.md` for complete logging specificati
 - ✅ trace_id and span_id are safe to log
 - ✅ Business IDs (warehouse_id, booking_id) are safe
 
-### 8.4. Пример связки лог + span
+### 8.4. Log + Span Correlation Example
 
 **Complete correlation example:**
 
@@ -1060,7 +1060,7 @@ See `Logging_Strategy_&_Log_Taxonomy_MVP_v1.md` for complete logging specificati
 
 **Implementation:**
 
-Head sampling делает решение о записи трейса в момент его создания (в API Gateway).
+Head sampling makes the decision to record a trace at the moment of its creation (in API Gateway).
 
 ```typescript
 import { TraceIdRatioBasedSampler, ParentBasedSampler } from '@opentelemetry/sdk-trace-base';
@@ -1125,7 +1125,7 @@ export class AdaptiveSampler {
 }
 ```
 
-### 9.4. MVP-настройки
+### 9.4. MVP Configuration
 
 ```typescript
 const samplingRate = {
@@ -1152,7 +1152,7 @@ const neverSample = [
 
 ## 10. Visualization & Analysis
 
-### 10.1. Где смотреть трейсинг
+### 10.1. Where to View Tracing
 
 **MVP approach: Log-based analysis**
 
@@ -1170,7 +1170,7 @@ cat logs/app.log | jq 'select(.duration_ms > 1000)'
 cat logs/app.log | jq -s 'sort_by(.timestamp) | .[] | select(.trace_id == "TRACE_ID")'
 ```
 
-### 10.2. Анализ цепочек вызовов
+### 10.2. Call Chain Analysis
 
 **Reconstruct call tree:**
 
@@ -1203,7 +1203,7 @@ API Gateway (485ms)
       └── Box Service (20ms)
 ```
 
-### 10.3. Bottleneck analysis по trace
+### 10.3. Trace-based Bottleneck Analysis
 
 **Automated detection:**
 
@@ -1232,7 +1232,7 @@ export class BottleneckAnalyzer {
 }
 ```
 
-### 10.4. Метрики трейсинга
+### 10.4. Tracing Metrics
 
 **Key metrics from logs:**
 
@@ -1258,7 +1258,7 @@ cat logs/app.log | jq -s 'map(.duration_ms) | sort | .[length * 0.95 | floor]'
 
 ## 11. Alerting & Monitoring
 
-### 11.1. Алерты на уровне трейсинга
+### 11.1. Tracing-level Alerts
 
 **Alert Rules:**
 
@@ -1282,7 +1282,7 @@ cat logs/app.log | jq -s 'map(.duration_ms) | sort | .[length * 0.95 | floor]'
   description: "P99 latency > 5 seconds"
 ```
 
-### 11.2. Ошибки в спанах
+### 11.2. Errors in Spans
 
 **Error tracking:**
 
@@ -1305,7 +1305,7 @@ export class ErrorTracker {
 }
 ```
 
-### 11.3. Timeout-трейсы
+### 11.3. Timeout Traces
 
 **Timeout detection:**
 
@@ -1329,7 +1329,7 @@ if (span.duration_ms > timeout_threshold) {
 }
 ```
 
-### 11.4. Трейсы деградации производительности
+### 11.4. Performance Degradation Traces
 
 **Performance baseline comparison:**
 
@@ -1365,7 +1365,7 @@ export class PerformanceDegradationDetector {
 
 ## 12. Operational Guidelines
 
-### 12.1. Стандарты разработки
+### 12.1. Development Standards
 
 **DO:**
 - ✅ Use clear, hierarchical span names (`warehouse.get_by_id`, `database.select_warehouse`)
@@ -1395,7 +1395,7 @@ export class PerformanceDegradationDetector {
 - ✅ Operation metadata: HTTP methods, status codes, durations
 - ✅ Aggregated metrics: counts, averages, percentiles
 
-### 12.2. Проверки в CI/CD
+### 12.2. CI/CD Checks
 
 **Automated validation:**
 
@@ -1432,7 +1432,7 @@ jobs:
           echo "ERROR: Sensitive data in span attributes" && exit 1
 ```
 
-### 12.3. Общие best practices
+### 12.3. General Best Practices
 
 **Naming conventions:**
 
@@ -1474,7 +1474,7 @@ await doWork();
 span.end(); // Span not ended if doWork() throws
 ```
 
-### 12.4. Ограничения MVP
+### 12.4. MVP Limitations
 
 **Current MVP limitations:**
 

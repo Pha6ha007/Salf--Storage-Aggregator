@@ -312,7 +312,7 @@ Clients that do not recognize `verified_badge` continue to function normally.
 {
   "error_code": "ENDPOINT_DEPRECATED",
   "http_status": 410,
-  "message": "Этот эндпоинт более не поддерживается. Используйте /api/v1/bookings",
+  "message": "This endpoint is no longer supported. Please use /api/v1/bookings",
   "details": {
     "deprecated_endpoint": "/api/v1/bookings/legacy",
     "replacement_endpoint": "/api/v1/bookings",
