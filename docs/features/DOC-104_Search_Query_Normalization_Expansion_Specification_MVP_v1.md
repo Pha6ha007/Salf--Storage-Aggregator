@@ -133,14 +133,14 @@ Query normalization transforms raw user input into a consistent, searchable form
 **Lowercasing:**
 Converts input to lowercase for case-insensitive matching.
 
-- User types: "Dubai" or "МОСКВА" or "москва"
+- User types: "Dubai" or "MOSCOW" or "moscow"
 - Normalized form: consistent lowercase representation
 
 **Trimming:**
 Removes leading and trailing whitespace.
 
-- User types: "  склад  "
-- Normalized form: "склад"
+- User types: "  storage  "
+- Normalized form: "storage"
 
 **Diacritics Handling:**
 Standardizes accented characters (less relevant for Russian/Cyrillic).
@@ -148,8 +148,8 @@ Standardizes accented characters (less relevant for Russian/Cyrillic).
 **Punctuation Cleanup:**
 Removes or standardizes punctuation that does not carry semantic meaning.
 
-- User types: "склад...рядом!!!"
-- Normalized form: "склад рядом"
+- User types: "storage...nearby!!!"
+- Normalized form: "storage nearby"
 
 ### 3.2. Language Handling
 
@@ -164,7 +164,7 @@ Identifies the language of user input to apply appropriate processing rules.
 Converts between writing systems when appropriate.
 
 - "Dubai" ↔ "Dubai"
-- "Vyhino" ↔ "Выхино"
+- "Vyhino" ↔ "Vyhino"
 
 This is particularly relevant for:
 - Metro station names
@@ -183,17 +183,17 @@ Applies regional conventions for formatting.
 **Word Splitting:**
 Breaks input into individual tokens for processing.
 
-- "складское помещение рядом" → ["складское", "помещение", "рядом"]
+- "storage facility nearby" → ["storage", "facility", "nearby"]
 
 **Stemming / Lemmatization:**
 Reduces words to their base or dictionary form.
 
-- "складские" → "склад" (stem)
-- "бегущий" → "бежать" (lemma)
+- "storages" → "storage" (stem)
+- "running" → "run" (lemma)
 
 This allows matching across word forms:
-- User searches for "боксы" (plural)
-- Matches documents containing "бокс" (singular)
+- User searches for "boxes" (plural)
+- Matches documents containing "box" (singular)
 
 **Note:** Stemming for Russian language requires specialized algorithms (e.g., Snowball Russian stemmer). Implementation complexity is significant.
 
@@ -210,26 +210,26 @@ Storage industry terms that mean the same thing.
 
 | User Term | Equivalent Terms |
 |-----------|------------------|
-| бокс | ячейка, контейнер, склад |
-| склад | хранилище, складское помещение |
-| self-storage | селф-сторидж, индивидуальное хранение |
+| box | unit, container, storage |
+| warehouse | facility, storage facility |
+| self-storage | self storage, individual storage |
 
 **Size-Related Synonyms:**
 Different ways users describe storage needs.
 
 | User Expression | Potential Interpretation |
 |-----------------|--------------------------|
-| маленький | S, 1-3 м² |
-| средний | M, 3-6 м² |
-| большой | L, 6-12 м² |
-| очень большой | XL, 12+ м² |
+| small | S, 1-3 m² |
+| medium | M, 3-6 m² |
+| large | L, 6-12 m² |
+| extra large | XL, 12+ m² |
 
 **Item-Based Interpretation:**
 For the AI Box Finder feature, understanding what items typically require.
 
-- "диван" → typically requires M or larger
-- "велосипед" → typically requires S or M
-- "мебель из квартиры" → typically requires L or XL
+- "sofa" → typically requires M or larger
+- "bicycle" → typically requires S or M
+- "apartment furniture" → typically requires L or XL
 
 ### 4.2. Semantic Expansion
 
@@ -238,15 +238,15 @@ Understanding what the user is trying to accomplish.
 
 | User Query | Possible Intent |
 |------------|-----------------|
-| "переезд" | temporary storage during move |
-| "сезонные вещи" | long-term storage for seasonal items |
-| "документы" | secure, climate-controlled storage |
+| "moving" | temporary storage during move |
+| "seasonal items" | long-term storage for seasonal items |
+| "documents" | secure, climate-controlled storage |
 
 **Embedding-Based Expansion:**
 Using semantic similarity models to find related concepts.
 
-- Input: "старая мебель"
-- Related: "антиквариат", "хрупкие вещи", "крупногабаритные предметы"
+- Input: "old furniture"
+- Related: "antiques", "fragile items", "large items"
 
 **Note:** This is an advanced technique requiring ML infrastructure. Reference only for future consideration.
 
@@ -261,13 +261,13 @@ When searching by city, consider nearby administrative areas.
 **District Adjacency:**
 When no results in specified district, consider neighboring districts.
 
-- User searches: "Выхино"
-- Nearby: "Жулебино", "Рязанский проспект"
+- User searches: "Vyhino"
+- Nearby: "Zhulebino", "Ryazansky Prospect"
 
 **Metro Station Context:**
 Expand metro station searches to nearby areas.
 
-- User searches near "метро Выхино"
+- User searches near "Metro Vyhino"
 - Include warehouses within walking distance
 
 **Fallback Geo-Expansion:**
@@ -407,7 +407,7 @@ Relevant metrics for search quality (without specific targets):
 **Risk:** Expansion adds terms that shift results away from user intent.
 
 **Example:**
-- User searches: "маленький склад для документов"
+- User searches: "small storage for documents"
 - Over-expansion adds: general storage terms
 - Results: large warehouses for furniture (irrelevant)
 
@@ -418,7 +418,7 @@ Relevant metrics for search quality (without specific targets):
 **Risk:** Query terms with multiple meanings lead to mixed results.
 
 **Example:**
-- User searches: "бокс"
+- User searches: "box"
 - Could mean: storage box, boxing gym, vehicle box
 - Results: mixed or incorrect
 
@@ -440,7 +440,7 @@ Relevant metrics for search quality (without specific targets):
 **Risk:** Expansion matches terms that look similar but have different meanings.
 
 **Example:**
-- Stemming reduces "бокс" and "боксёр" to same root
+- Stemming reduces "box" and "boxer" to same root
 - Boxing-related content appears in storage search
 
 **Mitigation:** Domain-specific term handling.

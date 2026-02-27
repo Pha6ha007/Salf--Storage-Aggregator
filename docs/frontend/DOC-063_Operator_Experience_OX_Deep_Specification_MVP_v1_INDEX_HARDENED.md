@@ -1,13 +1,13 @@
 # Operator Experience (OX) — Deep Specification (MVP v1)
-# Главное оглавление и структура документа
+# Main Table of Contents and Document Structure
 
 **Document ID**: DOC-063  
-**Платформа**: Self-Storage Aggregator  
-**Версия документа**: MVP v1 (Hardened)  
-**Дата создания**: 10 декабря 2025  
-**Дата обновления**: 17 декабря 2025  
-**Язык**: Русский  
-**Автор**: Claude (Anthropic)  
+**Platform**: Self-Storage Aggregator  
+**Document Version**: MVP v1 (Hardened)  
+**Created**: 10 December 2025  
+**Updated**: 17 December 2025  
+**Language**: English  
+**Author**: Claude (Anthropic)  
 
 ---
 
@@ -73,49 +73,49 @@ This specification supports and aligns with:
 ### Terminology Alignment
 
 **Key terms used in this document**:
-- **Заявка (Lead/Inquiry)**: Initial customer request, not yet confirmed
-- **Бронирование (Confirmed Reservation)**: Operator-confirmed booking
+- **Request (Lead/Inquiry)**: Initial customer request, not yet confirmed
+- **Booking (Confirmed Reservation)**: Operator-confirmed booking
 
 These terms are aligned with DOC-090 (User Stories) and domain glossary. Where terminology conflicts exist, DOC-090 takes precedence.
 
 ---
 
-## О документе
+## About This Document
 
-Данный документ представляет собой **детальную UX-спецификацию Operator Experience (OX)** для платформы-агрегатора складов самостоятельного хранения (self-storage).
+This document represents **detailed UX specification for Operator Experience (OX)** for self-storage aggregator platform.
 
-Документ описывает предполагаемый пользовательский опыт оператора на платформе:
-- Регистрация и онбординг
-- Добавление и управление складами
-- Управление боксами и ценами
-- Обработка заявок от клиентов
-- AI-инструменты для оптимизации работы (where supported by platform capabilities)
-- Общие требования к поддерживающему API (reference only)
-- Безопасность и производительность
-- Планы развития (post-MVP, illustrative)
+This document describes the expected operator user experience on the platform:
+- Registration and onboarding
+- Adding and managing warehouses
+- Managing boxes and prices
+- Processing customer requests
+- AI tools for workflow optimization (where supported by platform capabilities)
+- General supporting API requirements (reference only)
+- Security and performance
+- Development plans (post-MVP, illustrative)
 
 ---
 
-## Структура документа
+## Document Structure
 
-Документ разделён на **4 части** для удобства работы:
+Document is divided into **4 parts** for convenience:
 
-### **Part 1**: Разделы 1-3 (Foundation)
-- Введение и архитектура OX
-- Навигация и дизайн-принципы
-- Онбординг оператора
+### **Part 1**: Sections 1-3 (Foundation)
+- Introduction and OX architecture
+- Navigation and design principles
+- Operator onboarding
 
-### **Part 2**: Разделы 4-5 (Core Operations)
-- Управление складами
-- Управление боксами
+### **Part 2**: Sections 4-5 (Core Operations)
+- Warehouse management
+- Box management
 
-### **Part 3**: Разделы 6-7 (Business Logic)
-- Управление ценами (Pricing UX)
-- Управление заявками (Booking Management)
+### **Part 3**: Sections 6-7 (Business Logic)
+- Price management (Pricing UX)
+- Request management (Booking Management)
 
-### **Part 4**: Разделы 8-13 (Advanced & Technical)
+### **Part 4**: Sections 8-13 (Advanced & Technical)
 - AI Tools (subject to implementation)
-- Ошибки и UI состояния
+- Errors and UI states
 - Backend API Requirements (reference only)
 - Security
 - Performance
@@ -123,498 +123,498 @@ These terms are aligned with DOC-090 (User Stories) and domain glossary. Where t
 
 ---
 
-## Полное оглавление
+## Full Table of Contents
 
-### РАЗДЕЛ 1: Введение и архитектура
+### SECTION 1: Introduction and architecture
 
-**1.1. Кто такой оператор**
-- Определение
-- Роли: Owner, Manager, Staff
-- Бизнес-цели оператора
+**1.1. Who is an operator**
+- Definition
+- Roles: Owner, Manager, Staff
+- Operator business goals
 
-**1.2. Бизнес-цели оператора на платформе**
-- Привлечение клиентов
-- Оптимизация заполненности
-- Автоматизация процессов
-- Принятие решений на основе данных
+**1.2. Operator business goals on platform**
+- Customer acquisition
+- Occupancy optimization
+- Process automation
+- Data-driven decision making
 
-**1.3. Scope MVP v1: что входит, что не входит**
-- Включено в MVP
-- Не включено в MVP (post-MVP features, illustrative)
+**1.3. Scope MVP v1: what is included, what is not included**
+- Included in MVP
+- Not included in MVP (post-MVP features, illustrative)
 
-**1.4. Архитектура OX**
-- Структура кабинета
-- Основные разделы
-- Дашборд
-- Заявки
-- Склады
-- Аналитика
-- Настройки
+**1.4. OX Architecture**
+- Dashboard structure
+- Main sections
+- Dashboard
+- Requests
+- Warehouses
+- Analytics
+- Settings
 - AI Tools (where supported)
 
-**1.5. Дизайн-принципы OX**
-- Ясность и понятность
-- Минимизация ручных действий
-- Автоматизация рутины (subject to implementation)
-- Прозрачность ценообразования
+**1.5. Design principles OX**
+- Clarity and understandability
+- Manual action minimization
+- Routine automation (subject to implementation)
+- Pricing transparency
 
-**1.6. Навигация**
-- Sidebar меню
+**1.6. Navigation**
+- Sidebar menu
 - Breadcrumbs
 - Quick actions
-- Глобальный поиск
-- URL структура
+- Global search
+- URL structure
 - Responsive behavior
 
 ---
 
-### РАЗДЕЛ 2: Дашборд оператора
+### SECTION 2: Operator dashboard
 
-**2.1. Обзор дашборда**
-- Целевое назначение
-- Основные блоки
+**2.1. Dashboard overview**
+- Target purpose
+- Main blocks
 
 **2.2. Summary Cards**
-- Новые заявки
-- Активные бронирования
-- Свободные боксы
-- Выручка за месяц
+- New requests
+- Active bookings
+- Available boxes
+- Monthly revenue
 
-**2.3. Графики и визуализация**
-- График заявок
-- Конверсия
+**2.3. Charts and visualization**
+- Requests chart
+- Conversion
 
-**2.4. AI-рекомендации на дашборде**
-- Ценовые рекомендации (optional, subject to implementation)
-- Предупреждения (optional)
-- Возможности оптимизации (optional)
+**2.4. AI recommendations on dashboard**
+- Pricing recommendations (optional, subject to implementation)
+- Warnings (optional)
+- Optimization opportunities (optional)
 
 **2.5. Quick Actions**
-- Быстрые действия с дашборда
+- Quick actions from dashboard
 
 ---
 
-### РАЗДЕЛ 3: Онбординг оператора
+### SECTION 3: Operator onboarding
 
-**3.1. Регистрация**
-- Форма регистрации
-- Поля и валидация
+**3.1. Registration**
+- Registration form
+- Fields and validation
 - Edge cases
 
-**3.2. Верификация контактов**
+**3.2. Contact verification**
 - Email verification
 - SMS verification
-- Обработка ошибок
+- Error handling
 
-**3.3. Завершение профиля**
-- Опциональные поля
-- Использование данных
+**3.3. Profile completion**
+- Optional fields
+- Data usage
 
-**3.4. Модерация аккаунта**
-- MVP подход
-- Альтернативный подход
-- Критерии одобрения
+**3.4. Account moderation**
+- MVP approach
+- Alternative approach
+- Approval criteria
 
-**3.5. Добавление первого склада**
-- 5-шаговый визард
-- Шаг 1: Основная информация
-- Шаг 2: Адрес и локация
-- Шаг 3: Фотографии
-- Шаг 4: Удобства
-- Шаг 5: Проверка и отправка
-- Автосохранение
-- Действия после отправки
+**3.5. Adding first warehouse**
+- 5-step wizard
+- Step 1: Basic information
+- Step 2: Address and location
+- Step 3: Photos
+- Step 4: Amenities
+- Step 5: Review and submit
+- Autosave
+- Actions after submission
 
 ---
 
-### РАЗДЕЛ 4: Управление складами
+### SECTION 4: Warehouse management
 
-**4.1. Список складов**
-- URL и назначение
-- Табличный вид
-- Карточный вид
-- Фильтры и сортировка
-- Действия над складом
-- Индикаторы статусов
+**4.1. Warehouse list**
+- URL and purpose
+- Table view
+- Card view
+- Filters and sorting
+- Warehouse actions
+- Status indicators
 
-**4.2. Добавление нового склада**
-- Пошаговый визард
-- Одностраничная форма
-- Автосохранение
+**4.2. Adding new warehouse**
+- Step wizard
+- Single-page form
+- Autosave
 
-**4.3. Редактирование склада**
-- Логика доступа по статусам
-- Виды изменений (минорные/мажорные)
-- Форма редактирования
-- История изменений
+**4.3. Warehouse editing**
+- Status access logic
+- Types of changes (minor/major)
+- Edit form
+- Change history
 
-**4.4. Фотографии и галереи**
-- Требования к фото
-- UI загрузки
-- Функции (загрузка, сортировка, редактирование, удаление)
-- Поддержка видео (optional, post-MVP)
+**4.4. Photos and galleries**
+- Photo requirements
+- Upload UI
+- Functions (upload, sort, edit, delete)
+- Video support (optional, post-MVP)
 
-**4.5. Атрибуты и услуги склада**
-- Список удобств (MVP)
-- UI управления атрибутами
-- Режим работы
-- Кастомные атрибуты (post-MVP, illustrative)
+**4.5. Warehouse attributes and services**
+- Amenities list (MVP)
+- Attribute management UI
+- Operating hours
+- Custom attributes (post-MVP, illustrative)
 
-**4.6. Логические состояния**
-- Диаграмма переходов
-- 4.6.1. Черновик (Draft)
-- 4.6.2. На модерации (Pending Moderation)
-- 4.6.3. Опубликован/Активен (Published/Active)
-- 4.6.4. Скрыт (Hidden)
-- 4.6.5. Отклонён (Rejected)
+**4.6. Logical states**
+- Transition diagram
+- 4.6.1. Draft
+- 4.6.2. Pending Moderation
+- 4.6.3. Published/Active
+- 4.6.4. Hidden
+- 4.6.5. Rejected
 
 **4.7. Edge cases**
-- Некорректные координаты
-- Дубли складов
-- Удаление с активными бронями
-- Изменение адреса с активными заявками
-- Массовое редактирование (post-MVP)
+- Incorrect coordinates
+- Duplicate warehouses
+- Deletion with active bookings
+- Address change with active requests
+- Bulk editing (post-MVP)
 
 ---
 
-### РАЗДЕЛ 5: Управление боксами
+### SECTION 5: Box management
 
-**5.1. Добавление боксов**
-- URL и точки входа
-- UI страницы
-- Форма добавления
-- Валидация
+**5.1. Adding boxes**
+- URL and entry points
+- Page UI
+- Add form
+- Validation
 
-**5.2. Групповое добавление**
+**5.2. Bulk adding**
 - UI
-- Логика создания
-- Ограничения
+- Creation logic
+- Limitations
 
-**5.3. Редактирование**
-- Одного бокса
-- Массовое редактирование (optional)
+**5.3. Editing**
+- Single box
+- Bulk editing (optional)
 
-**5.4. Управление ценами**
-- Индивидуальная цена
-- Скидки за длительность (optional, subject to implementation)
-- Расчёт итоговой цены
-- История изменения цен
+**5.4. Price management**
+- Individual price
+- Duration discounts (optional, subject to implementation)
+- Final price calculation
+- Price change history
 
-**5.5. Управление доступностью**
-- Статусы боксов
-- Переходы между статусами
-- UI управления
-- Автоматическая смена (post-MVP)
-- Массовое изменение (optional)
+**5.5. Availability management**
+- Box statuses
+- Status transitions
+- Management UI
+- Automatic change (post-MVP)
+- Bulk change (optional)
 
-**5.6. Взаимодействие с рекомендациями AI**
+**5.6. AI recommendation interaction**
 - AI Price Recommendation Engine (optional, subject to implementation)
 - AI Box Size Recommendation (optional, subject to implementation)
-- Польза для оператора
+- Operator benefits
 
-**5.7. Логические состояния**
-- 5.7.1. Доступен (Available)
-- 5.7.2. Недоступен (Unavailable)
-- 5.7.3. Архив (Archived) - post-MVP
+**5.7. Logical states**
+- 5.7.1. Available
+- 5.7.2. Unavailable
+- 5.7.3. Archived - post-MVP
 
 ---
 
-### РАЗДЕЛ 6: Управление ценами (Pricing UX)
+### SECTION 6: Price management (Pricing UX)
 
-**6.1. Просмотр текущей цены**
-- На странице боксов
-- В карточке бокса
+**6.1. Current price view**
+- On boxes page
+- In box card
 
-**6.2. История цен**
-- Зачем нужна
-- UI истории
-- График и таблица
-- Влияние на заявки
+**6.2. Price history**
+- Why needed
+- History UI
+- Chart and table
+- Impact on requests
 
 **6.3. AI Price Recommendation**
-- Как работает (subject to implementation)
-- UI рекомендаций
-- Частота обновления
+- How it works (subject to implementation)
+- Recommendations UI
+- Update frequency
 
-**6.4. Объяснение цен (Explainability)**
-- Принцип прозрачности
-- Три уровня объяснения
-- Детальный анализ
+**6.4. Price explanation (Explainability)**
+- Transparency principle
+- Three explanation levels
+- Detailed analysis
 
-**6.5. Влияние цены на позиции в каталоге**
-- Алгоритм ранжирования (reference, subject to change)
-- UI показа влияния
+**6.5. Price impact on catalog positions**
+- Ranking algorithm (reference, subject to change)
+- Impact display UI
 
 **6.6. Edge cases**
-- Слишком низкая цена
-- Слишком высокая цена
+- Price too low
+- Price too high
 
 ---
 
-### РАЗДЕЛ 7: Управление заявками
+### SECTION 7: Request management
 
-**7.1. Просмотр всех заявок**
-- URL и назначение
-- UI страницы
-- Элементы таблицы
-- Цветовая кодировка
+**7.1. View all requests**
+- URL and purpose
+- Page UI
+- Table elements
+- Color coding
 
-**7.2. Статусы**
-- Диаграмма переходов
-- 7.2.1. Новая (New)
-- 7.2.2. Подтверждена (Confirmed)
-- 7.2.3. Отклонена (Rejected)
+**7.2. Statuses**
+- Transition diagram
+- 7.2.1. New
+- 7.2.2. Confirmed
+- 7.2.3. Rejected
 
-**7.3. Просмотр деталей заявки**
-- Детальная страница
-- Блоки информации
-- AI-анализ (optional, subject to implementation)
+**7.3. Request details view**
+- Detail page
+- Information blocks
+- AI analysis (optional, subject to implementation)
 
-**7.4. Коммуникация с пользователем**
-- Телефон
+**7.4. User communication**
+- Phone
 - Email
-- Внутренние заметки
+- Internal notes
 
-**7.5. Автоматические уведомления**
-- Триггеры
-- Настройки уведомлений
+**7.5. Automatic notifications**
+- Triggers
+- Notification settings
 
 **7.6. Edge cases**
-- Отмена заявки клиентом
-- Дубль заявок
-- Задержка доставки уведомлений
+- Customer request cancellation
+- Duplicate requests
+- Notification delivery delay
 
 ---
 
-### РАЗДЕЛ 8: AI Tools
+### SECTION 8: AI Tools
 
 **Note**: All AI tools are optional and subject to platform capabilities at implementation time.
 
-**8.1. Обзор AI-инструментов**
-- Список инструментов в MVP (where supported)
+**8.1. AI tools overview**
+- MVP tools list (where supported)
 
 **8.2. Price Analytics Engine**
-- Ссылка на раздел 6.3-6.4 (optional, subject to implementation)
+- Reference to section 6.3-6.4 (optional, subject to implementation)
 
 **8.3. Operator Knowledge Assistant**
-- Концепция (optional, post-MVP consideration)
-- UI страницы
-- Типы вопросов
-- База знаний
+- Concept (optional, post-MVP consideration)
+- Page UI
+- Question types
+- Knowledge base
 
 **8.4. AI Card Generator**
-- Назначение (optional, subject to implementation)
-- UI генерации
-- Логика работы
+- Purpose (optional, subject to implementation)
+- Generation UI
+- Operation logic
 
 **8.5. Request Quality Analyzer**
-- Назначение (optional, subject to implementation)
-- Критерии оценки
-- Примеры анализа
+- Purpose (optional, subject to implementation)
+- Evaluation criteria
+- Analysis examples
 
 **8.6. Explainability**
-- Принцип (where AI features are implemented)
-- Уровни объяснения
+- Principle (where AI features are implemented)
+- Explanation levels
 
 ---
 
-### РАЗДЕЛ 9: Ошибки, сообщения, UI состояния
+### SECTION 9: Errors, messages, UI states
 
-**9.1. Типы ошибок**
-- Ошибки валидации
-- Ошибки API
-- Ошибки бизнес-логики
+**9.1. Error types**
+- Validation errors
+- API errors
+- Business logic errors
 
 **9.2. UI Loading States**
-- Скелетоны
-- Спиннеры
+- Skeletons
+- Spinners
 - Progress bars
 
 **9.3. Empty States**
-- Нет складов
-- Нет боксов
-- Нет заявок
+- No warehouses
+- No boxes
+- No requests
 
 **9.4. Success States**
-- Toast-уведомления
-- Модальные подтверждения
+- Toast notifications
+- Modal confirmations
 
 **9.5. Confirmation Dialogs**
-- Для необратимых действий
+- For irreversible actions
 
 ---
 
-### РАЗДЕЛ 10: Backend API Requirements
+### SECTION 10: Backend API Requirements
 
 **⚠️ IMPORTANT**: This section provides reference examples only. **Final API contracts are defined in DOC-101 (Internal/Admin API Specification)**. All endpoints, request/response formats, and error codes described here must be validated against DOC-101 before implementation.
 
-**10.1. Общие требования**
+**10.1. General requirements**
 - Authentication & Authorization
-- Базовый URL
-- Формат ответов
+- Base URL
+- Response format
 
 **10.2. Warehouse API**
-- Список складов
-- Создание
-- Обновление
-- Удаление
-- Отправка на модерацию
-- Загрузка фото
-- Управление фото
+- Warehouse list
+- Creation
+- Update
+- Deletion
+- Submit for moderation
+- Photo upload
+- Photo management
 
 **10.3. Box API**
-- Список боксов
-- Создание
-- Групповое создание
-- Обновление
-- Массовое обновление
-- История цен
+- Box list
+- Creation
+- Bulk creation
+- Update
+- Bulk update
+- Price history
 
 **10.4. Request/Booking API**
-- Список заявок
-- Детали заявки
-- Подтверждение
-- Отклонение
-- Добавление заметки
+- Request list
+- Request details
+- Confirmation
+- Rejection
+- Add note
 
 **10.5. AI Tools API**
-- Ценовые рекомендации (optional, subject to implementation)
+- Pricing recommendations (optional, subject to implementation)
 - Knowledge Assistant (optional, post-MVP)
-- Генерация описания (optional, subject to implementation)
+- Description generation (optional, subject to implementation)
 
 **10.6. Analytics API**
-- Дашборд (reference only)
+- Dashboard (reference only)
 
 **10.7. Auth API**
-- Регистрация
-- Логин
+- Registration
+- Login
 - Refresh Token
 
 **10.8. Rate Limiting**
-- Лимиты (defined in DOC-101)
-- Обработка превышения
+- Limits (defined in DOC-101)
+- Overflow handling
 
 ---
 
-### РАЗДЕЛ 11: Security & Access Control
+### SECTION 11: Security & Access Control
 
-**11.1. Права доступа (RBAC)**
-- Роли
-- Матрица прав
+**11.1. Access rights (RBAC)**
+- Roles
+- Rights matrix
 
-**11.2. Защита от несанкционированного доступа**
-- Backend проверки
-- Frontend проверки
+**11.2. Unauthorized access protection**
+- Backend checks
+- Frontend checks
 
-**11.3. Защита системных параметров**
-- Запрещённые для изменения поля
-- Backend защита
+**11.3. System parameter protection**
+- Restricted modification fields
+- Backend protection
 
-**11.4. Защита чувствительных данных**
-- Контакты клиентов
-- Финансовые данные
+**11.4. Sensitive data protection**
+- Customer contacts
+- Financial data
 
-**11.5. Защита от UI-ошибок**
-- Подтверждения
-- Защита от двойных кликов
-- Защита от потери данных
+**11.5. UI error protection**
+- Confirmations
+- Double-click protection
+- Data loss protection
 
 **11.6. XSS Protection**
 
 **11.7. CSRF Protection**
 
-**11.8. Логирование действий**
+**11.8. Action logging**
 
 ---
 
-### РАЗДЕЛ 12: Performance & UX Optimization
+### SECTION 12: Performance & UX Optimization
 
-**12.1. Целевые метрики производительности**
+**12.1. Target performance metrics**
 
-**12.2. Оптимизация загрузки страниц**
+**12.2. Page load optimization**
 - Code Splitting
-- Изображения
-- Кэширование
+- Images
+- Caching
 
-**12.3. Оптимизация карт**
+**12.3. Map optimization**
 
-**12.4. Оптимизация списков**
-- Виртуализация (optional)
-- Пагинация vs Infinite Scroll
+**12.4. List optimization**
+- Virtualization (optional)
+- Pagination vs Infinite Scroll
 
-**12.5. Оптимизация форм**
+**12.5. Form optimization**
 - Debouncing
-- Оптимистичные обновления (optional)
+- Optimistic updates (optional)
 
-**12.6. Мобильная оптимизация**
+**12.6. Mobile optimization**
 - Viewport settings
 - Touch targets
 - Responsive breakpoints
 
-**12.7. Мониторинг производительности**
+**12.7. Performance monitoring**
 - Frontend
 - Backend
 
 ---
 
-### РАЗДЕЛ 13: Future Recommendations (post-MVP)
+### SECTION 13: Future Recommendations (post-MVP)
 
 **Note**: All items in this section are illustrative only and not part of MVP v1 scope. They are included for context and future planning purposes.
 
-**13.1. Онлайн-оплата** (post-MVP)
-- Интеграции
-- Возможности
+**13.1. Online payment** (post-MVP)
+- Integrations
+- Capabilities
 - UI flow
 
-**13.2. CRM интеграция** (post-MVP)
-- Системы
-- Возможности
+**13.2. CRM integration** (post-MVP)
+- Systems
+- Capabilities
 
-**13.3. Электронные договоры** (post-MVP)
-- Функционал
+**13.3. Electronic contracts** (post-MVP)
+- Functionality
 - UI
 
-**13.4. Мобильное приложение** (post-MVP)
-- Платформы
-- Уникальные возможности
+**13.4. Mobile application** (post-MVP)
+- Platforms
+- Unique capabilities
 
-**13.5. Умный доступ к боксам** (post-MVP)
-- Интеграция с замками
-- Преимущества
+**13.5. Smart box access** (post-MVP)
+- Lock integration
+- Benefits
 
-**13.6. Автопродление аренды** (post-MVP)
-- Автоматизация
+**13.6. Auto-renewal** (post-MVP)
+- Automation
 
-**13.7. Расширенная аналитика** (post-MVP)
-- Дополнительные отчёты
+**13.7. Advanced analytics** (post-MVP)
+- Additional reports
 - Dashboards
 
-**13.8. Marketplace для дополнительных услуг** (post-MVP)
-- Концепция
-- Партнёры
-- Монетизация
+**13.8. Marketplace for additional services** (post-MVP)
+- Concept
+- Partners
+- Monetization
 
-**13.9. Публикация на внешних платформах** (post-MVP)
-- Интеграции
-- Преимущества
+**13.9. Publishing on external platforms** (post-MVP)
+- Integrations
+- Benefits
 
-**13.10. AI-автоматизация ответов** (post-MVP)
-- Концепция
-- Примеры
-- Польза
+**13.10. AI response automation** (post-MVP)
+- Concept
+- Examples
+- Benefits
 
-**13.11. Программа лояльности** (post-MVP)
-- Идеи
+**13.11. Loyalty program** (post-MVP)
+- Ideas
 
-**13.12. Социальные функции** (post-MVP)
-- Отзывы и рейтинги
-- Сообщество
+**13.12. Social features** (post-MVP)
+- Reviews and ratings
+- Community
 
 ---
 
-## Ключевые технические характеристики
+## Key technical characteristics
 
-### Технологический стек (рекомендации):
+### Technology stack (recommendations):
 
 **Note**: These are recommendations only and may be adjusted based on project decisions.
 
@@ -626,60 +626,60 @@ These terms are aligned with DOC-090 (User Stories) and domain glossary. Where t
 - React Hook Form + Zod
 
 **Backend**:
-- Node.js (Express / Fastify) или Python (FastAPI)
-- PostgreSQL (основная БД)
-- Redis (кэширование)
-- S3-совместимое хранилище (фото)
+- Node.js (Express / Fastify) or Python (FastAPI)
+- PostgreSQL (main DB)
+- Redis (caching)
+- S3-compatible storage (photos)
 
 **AI/ML** (where applicable):
 - OpenAI API / Anthropic Claude API (subject to implementation)
 - Python (scikit-learn, pandas)
 
-**Инфраструктура**:
+**Infrastructure**:
 - Docker + Kubernetes
 - CDN (Cloudflare / AWS CloudFront)
 - Monitoring (Grafana + Prometheus)
 
 ---
 
-## Метрики успеха MVP
+## MVP success metrics
 
-### Для операторов:
-- **Время добавления первого склада**: <15 минут (target)
-- **Конверсия регистрация → первый склад**: >60% (target)
-- **Среднее время обработки заявки**: <5 минут (target)
+### For operators:
+- **Time to add first warehouse**: <15 minutes (target)
+- **Conversion registration → first warehouse**: >60% (target)
+- **Average request processing time**: <5 minutes (target)
 - **Satisfaction score (NPS)**: >40 (target)
 
-### Для платформы:
-- **Время модерации склада**: <24 часа (target)
+### For platform:
+- **Warehouse moderation time**: <24 hours (target)
 - **Uptime API**: >99.5% (target)
 - **P95 API response time**: <500ms (target)
-- **Mobile-friendly**: 100% функциональность на мобильных (target)
+- **Mobile-friendly**: 100% mobile functionality (target)
 
 **Note**: All metrics are targets and subject to adjustment based on platform capabilities and business priorities.
 
 ---
 
-## Контакты и поддержка
+## Contacts and support
 
-**Техническая поддержка**: support@platform.com  
-**Документация**: https://docs.platform.com  
+**Technical support**: support@platform.com  
+**Documentation**: https://docs.platform.com  
 **Slack**: #operator-support  
 
 **Note**: Contact information is illustrative and will be updated with actual values.
 
 ---
 
-## Версионирование документа
+## Document versioning
 
-| Версия | Дата | Изменения |
+| Version | Date | Changes |
 |--------|------|-----------|
-| **v1.0** | 10.12.2025 | Первая полная версия (MVP scope) |
+| **v1.0** | 10.12.2025 | First complete version (MVP scope) |
 | **v1.1 (Hardened)** | 17.12.2025 | Scope hardening: Added Document Role & Scope, clarified AI/API/post-MVP status, multi-region disclaimers, terminology alignment |
 
 ---
 
-## Связанные канонические документы
+## Related canonical documents
 
 ### Primary Authority Documents:
 - **DOC-090** — User Stories & Acceptance Criteria (Feature Authority)
@@ -702,16 +702,16 @@ These terms are aligned with DOC-090 (User Stories) and domain glossary. Where t
 - Security and Compliance Plan
 - Public Policies Pack
 
-### Файлы спецификации OX (DOC-063):
-- **Part 1**: Разделы 1-3 (Foundation)
-- **Part 2**: Разделы 4-5 (Core Operations)
-- **Part 3**: Разделы 6-7 (Business Logic)
-- **Part 4**: Разделы 8-13 (Advanced & Technical)
+### OX specification files (DOC-063):
+- **Part 1**: Sections 1-3 (Foundation)
+- **Part 2**: Sections 4-5 (Core Operations)
+- **Part 3**: Sections 6-7 (Business Logic)
+- **Part 4**: Sections 8-13 (Advanced & Technical)
 
 ---
 
-**Конец главного оглавления**
+**End of main table of contents**
 
-Для работы с полным документом откройте соответствующие Part-файлы.
+To work with the full document open the corresponding Part files.
 
-**⚠️ ВАЖНО**: Данный документ является **поддерживающей UX-спецификацией**, а не каноническим источником истины. Все технические решения должны согласовываться с соответствующими каноническими документами (DOC-090, DOC-101, DOC-092, DOC-059).
+**⚠️ IMPORTANT**: This document is **supporting UX specification**, and not canonical source of truth. All technical decisions must align with corresponding canonical documents (DOC-090, DOC-101, DOC-092, DOC-059).

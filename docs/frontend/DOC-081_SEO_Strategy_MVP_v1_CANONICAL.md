@@ -167,7 +167,7 @@ The following page types MUST be indexable and SEO-optimized:
 **SEO Requirements:**
 
 - SSR or ISR (Incremental Static Regeneration)
-- City-specific title: "Аренда бокса для хранения в {City}"
+- City-specific title: "Storage box rental in {City}"
 - City-specific meta description
 - H1 with city name
 - Canonical URL properly set
@@ -190,7 +190,7 @@ The following page types MUST be indexable and SEO-optimized:
 **SEO Requirements:**
 
 - ISR (Incremental Static Regeneration) per DOC-046
-- Unique title: "{Warehouse Name} - Аренда бокса в {Location}"
+- Unique title: "{Warehouse Name} - Box rental in {Location}"
 - Unique meta description with key attributes (price, location, features)
 - H1 = warehouse name
 - H2 sections for details (boxes, reviews, location)
@@ -212,12 +212,12 @@ The following page types MUST be indexable and SEO-optimized:
 
 **URL Pattern:** `/boxes/{size-slug}` (e.g., `/boxes/m-box`)
 
-**Purpose:** Landing pages for box size queries (e.g., "аренда бокса M")
+**Purpose:** Landing pages for box size queries (e.g., "M box rental")
 
 **SEO Requirements:**
 
 - SSR or ISR
-- Size-specific title: "Аренда бокса размера {Size} - от {Min Price} AED /мес"
+- Size-specific title: "Size {Size} box rental - from {Min Price} AED /month"
 - Size-specific meta description
 - H1 with size information
 - Canonical URL
@@ -357,13 +357,13 @@ If a slug collision occurs (two warehouses with the same name), append a numeric
 
 ```html
 <!-- Homepage -->
-<title>Аренда боксов для хранения вещей | SelfStorage.ru</title>
+<title>Storage box rental | SelfStorage.ae</title>
 
 <!-- City page -->
-<title>Аренда бокса в Москве от 2000AED  | SelfStorage.ru</title>
+<title>Box rental in Dubai from 2000AED | SelfStorage.ae</title>
 
 <!-- Warehouse page -->
-<title>СкладОК Выхино - аренда бокса от 3000AED  | SelfStorage.ru</title>
+<title>StorageOK Business Bay - box rental from 3000AED | SelfStorage.ae</title>
 ```
 
 **Title Generation Logic (Reference):**
@@ -381,15 +381,15 @@ function generateTitle(params: PageTitleParams): string {
   
   switch (pageType) {
     case 'home':
-      return `Аренда боксов для хранения вещей | ${brandName}`;
+      return `Storage box rental | ${brandName}`;
     case 'city':
-      const priceStr = minPrice ? ` от ${minPrice}AED ` : '';
-      return `Аренда бокса в ${entityName}${priceStr} | ${brandName}`;
+      const priceStr = minPrice ? ` from ${minPrice}AED ` : '';
+      return `Box rental in ${entityName}${priceStr} | ${brandName}`;
     case 'warehouse':
-      const priceStr2 = minPrice ? ` от ${minPrice}AED ` : '';
-      return `${entityName} - аренда бокса${priceStr2} | ${brandName}`;
+      const priceStr2 = minPrice ? ` from ${minPrice}AED ` : '';
+      return `${entityName} - box rental${priceStr2} | ${brandName}`;
     case 'catalog':
-      return `Каталог складов и боксов | ${brandName}`;
+      return `Warehouse and box catalog | ${brandName}`;
     default:
       return brandName;
   }
@@ -409,13 +409,13 @@ function generateTitle(params: PageTitleParams): string {
 
 ```html
 <!-- Homepage -->
-<meta name="description" content="Найдите бокс для хранения вещей рядом с вами. Более 100 складов в Москве и МО. Онлайн-бронирование, доступные цены." />
+<meta name="description" content="Find storage boxes near you. Over 100 warehouses in Dubai and UAE. Online booking, affordable prices." />
 
 <!-- City page -->
-<meta name="description" content="Аренда боксов в Москве: 50+ складов, от 2000AED /мес. Круглосуточный доступ, охрана, климат-контроль. Бронируйте онлайн." />
+<meta name="description" content="Box rental in Dubai: 50+ warehouses, from 2000AED /month. 24/7 access, security, climate control. Book online." />
 
 <!-- Warehouse page -->
-<meta name="description" content="СкладОК Выхино: боксы от 3 до 20 м², цены от 3000AED /мес. Круглосуточный доступ, видеонаблюдение, климат-контроль. Забронируйте сейчас!" />
+<meta name="description" content="StorageOK Business Bay: boxes from 3 to 20 m², prices from 3000AED /month. 24/7 access, CCTV, climate control. Book now!" />
 ```
 
 ## 5.3. H1 / H2 Policy
@@ -431,13 +431,13 @@ function generateTitle(params: PageTitleParams): string {
 
 ```html
 <!-- Homepage -->
-<h1>Аренда боксов для хранения вещей</h1>
+<h1>Storage box rental</h1>
 
 <!-- City page -->
-<h1>Аренда боксов в Москве</h1>
+<h1>Box rental in Dubai</h1>
 
 <!-- Warehouse page -->
-<h1>СкладОК Выхино</h1>
+<h1>StorageOK Business Bay</h1>
 ```
 
 **H2 Rules:**
@@ -449,10 +449,10 @@ function generateTitle(params: PageTitleParams): string {
 **H2 Examples (Warehouse Page):**
 
 ```html
-<h2>Доступные боксы</h2>
-<h2>Отзывы клиентов</h2>
-<h2>Расположение</h2>
-<h2>Дополнительные услуги</h2>
+<h2>Available boxes</h2>
+<h2>Customer reviews</h2>
+<h2>Location</h2>
+<h2>Additional services</h2>
 ```
 
 ## 5.4. Schema.org Structured Data
@@ -493,14 +493,14 @@ function generateTitle(params: PageTitleParams): string {
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "СкладОК Выхино",
-  "description": "Современный складской комплекс с климат-контролем",
+  "name": "StorageOK Business Bay",
+  "description": "Modern storage facility with climate control",
   "image": "https://cdn.storagecompare.ae/warehouses/101/main.jpg",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "ул. Ташкентская, 23",
+    "streetAddress": "Business Bay, Building 23",
     "addressLocality": "Dubai",
-    "addressCountry": "RU"
+    "addressCountry": "AE"
   },
   "geo": {
     "@type": "GeoCoordinates",
@@ -533,10 +533,10 @@ function generateTitle(params: PageTitleParams): string {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Сколько стоит аренда бокса?",
+      "name": "How much does box rental cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Стоимость аренды бокса зависит от размера и расположения склада. Цены начинаются от 2000AED  в месяц за бокс размером 1-2 м²."
+        "text": "Box rental cost depends on the size and location of the warehouse. Prices start from 2000AED per month for a 1-2 m² box."
       }
     }
   ]
@@ -819,7 +819,7 @@ Sitemap: https://storagecompare.ae/sitemap.xml
 **Geo-Targeting:**
 
 - Use `hreflang` tags if multi-language support is added (post-MVP)
-- City pages should target local search queries (e.g., "аренда бокса в Москве")
+- City pages should target local search queries (e.g., "box rental in Dubai")
 
 ## 9.3. What is NOT Supported in MVP
 

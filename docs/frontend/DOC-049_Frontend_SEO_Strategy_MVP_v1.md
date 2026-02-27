@@ -277,8 +277,8 @@ Frontend SEO implementation is successful when:
 
 **Examples:**
 ```html
-<title>Склады в Москве — аренда боксов от 2000AED /мес | SelfStorage</title>
-<title>Склад "Складовка" — Таганская, 23 | SelfStorage</title>
+<title>Warehouses in Dubai — box rental from 2000AED /month | SelfStorage</title>
+<title>Warehouse "StorageHub" — Business Bay, 23 | SelfStorage</title>
 ```
 
 ## 5.2. Meta Descriptions
@@ -295,7 +295,7 @@ Frontend SEO implementation is successful when:
 
 **Examples:**
 ```html
-<meta name="description" content="Аренда складских боксов в Москве. Более 50 складов с климат-контролем и 24/7 доступом. Цены от 2000AED /мес." />
+<meta name="description" content="Storage box rental in Dubai. Over 50 warehouses with climate control and 24/7 access. Prices from 2000AED /month." />
 ```
 
 ## 5.3. Open Graph & Social Metadata
@@ -310,8 +310,8 @@ Frontend SEO implementation is successful when:
 
 **Example:**
 ```html
-<meta property="og:title" content="Склад Складовка — Таганская, 23" />
-<meta property="og:description" content="Безопасное хранение с климат-контролем и круглосуточным доступом." />
+<meta property="og:title" content="Warehouse StorageHub — Business Bay, 23" />
+<meta property="og:description" content="Secure storage with climate control and 24/7 access." />
 <meta property="og:image" content="https://cdn.example/warehouse-101.jpg" />
 <meta property="og:url" content="https://platform.example/warehouse/101" />
 ```
@@ -352,7 +352,7 @@ Frontend SEO implementation is successful when:
 **Example:**
 ```html
 <!-- Page 2 of catalog -->
-<title>Склады в Москве — страница 2 | SelfStorage</title>
+<title>Warehouses in Dubai — page 2 | SelfStorage</title>
 ```
 
 ## 6.3. Filter Pages
@@ -389,9 +389,9 @@ Frontend SEO implementation is successful when:
 **Example:**
 ```html
 <nav aria-label="breadcrumb">
-  <a href="/">Главная</a> >
-  <a href="/catalog">Каталог</a> >
-  <span>Склад "Складовка"</span>
+  <a href="/">Home</a> >
+  <a href="/catalog">Catalog</a> >
+  <span>Warehouse "StorageHub"</span>
 </nav>
 ```
 
@@ -428,7 +428,7 @@ Frontend SEO implementation is successful when:
 
 **Examples:**
 ```html
-<img src="/warehouse-101.jpg" alt="Внутренний вид склада Складовка с климат-контролем" />
+<img src="/warehouse-101.jpg" alt="Interior view of StorageHub warehouse with climate control" />
 <img src="/decorative-line.svg" alt="" />
 ```
 

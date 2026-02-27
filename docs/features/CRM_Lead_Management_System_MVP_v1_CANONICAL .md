@@ -365,7 +365,7 @@ GET /api/v1/crm/leads
       "is_spam": false,
       "warehouse": {
         "id": "550e8400-e29b-41d4-a716-446655440000",
-        "name": "СкладОК Выхино"
+        "name": "StorageOK Vyhino"
       },
       "preferred_box_size": "M",
       "created_at": "2025-12-15T14:30:00Z"
@@ -403,7 +403,7 @@ GET /api/v1/crm/leads/{id}
     "is_spam": false,
     "warehouse": {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "name": "СкладОК Выхино"
+      "name": "StorageOK Vyhino"
     },
     "preferred_box_size": "M",
     "notes": "Customer booked box M for 3 months starting Dec 20",
@@ -617,8 +617,8 @@ Quoted 5000AED /month. Will call back tomorrow to confirm."
 │ Name          Phone          Status        Created         │
 ├─────────────────────────────────────────────────────────────┤
 │ Ahmed Al-Rashid   +7999...       new           14:30          │
-│ Мария Сидо... +7985...       contacted     12:15          │
-│ Петр Иванов   +7916...       in_progress   11:45          │
+│ Maria Sidorova +7985...       contacted     12:15          │
+│ Peter Ivanov   +7916...       in_progress   11:45          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -642,7 +642,7 @@ Quoted 5000AED /month. Will call back tomorrow to confirm."
 │ Name: Ahmed Al-Rashid                                       │
 │ Phone: +971 50 123 4567                               │
 │ Email: ivan@example.com                                 │
-│ Warehouse: СкладОК Выхино                               │
+│ Warehouse: StorageOK Vyhino                               │
 │ Box Size: M (6 m²)                                      │
 │                                                         │
 │ Status: [contacted ▼] [Update]                         │
@@ -706,7 +706,7 @@ Quoted 5000AED /month. Will call back tomorrow to confirm."
 ```
 New lead from Ahmed Al-Rashid
 Phone: +7999...
-Warehouse: СкладОК Выхино
+Warehouse: StorageOK Vyhino
 Box: M (6 m²)
 
 [View Lead]

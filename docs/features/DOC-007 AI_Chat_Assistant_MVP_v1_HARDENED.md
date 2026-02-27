@@ -486,7 +486,7 @@ The AI Chat Assistant can be built with **modular components** that clearly sepa
 1. **Normalization (basic):**
    - Lowercase transformation
    - Remove extra whitespace/punctuation
-   - Expand abbreviations (м², кв.м → square meters)
+   - Expand abbreviations (m², sq.m → square meters)
 
 2. **Intent Detection (can be simplified):**
    - Classification of query type through simple rules or ML classifier:
@@ -517,17 +517,17 @@ The AI Chat Assistant can be built with **modular components** that clearly sepa
 # This is a reference pattern, actual implementation may differ
 
 # Input
-query = "Мне нужен бокс 6 кв м в центре до 4к руб на 3 месяца"
+query = "I need a 6 sqm box in the center up to 4k AED for 3 months"
 
 # Simplified Output
 {
-  "normalized_query": "мне нужен бокс 6 квадратных метров в центре до 4000 dirhamй на 3 месяца",
+  "normalized_query": "i need a 6 square meter box in the center up to 4000 dirhams for 3 months",
   "intent": "SEARCH_BOX",
   "confidence": 0.92,
   "entities": {
     "box_size": {"value": 6, "unit": "m2"},
-    "location": {"value": "центр", "type": "district"},
-    "price": {"value": 4000, "currency": "RUB", "operator": "<="},
+    "location": {"value": "center", "type": "district"},
+    "price": {"value": 4000, "currency": "AED", "operator": "<="},
     "duration": {"value": 3, "unit": "months"}
   }
 }
@@ -591,7 +591,7 @@ Vector Database (if using Qdrant)
 # Actual implementation will vary based on chosen vector DB
 
 # Query embedding
-query_vector = embedding_model.encode("как выбрать размер бокса")
+query_vector = embedding_model.encode("how to choose box size")
 
 # Semantic search
 results = vector_db.search(
@@ -607,8 +607,8 @@ results = vector_db.search(
     "id": "faq_42",
     "score": 0.87,
     "payload": {
-      "question": "Как подобрать размер бокса?",
-      "answer": "Рекомендуем ориентироваться на объем вещей...",
+      "question": "How to choose box size?",
+      "answer": "We recommend focusing on the volume of items...",
       "category": "box_selection"
     }
   },
@@ -702,40 +702,40 @@ final_docs = [doc for doc, score in reranked_docs if score > 0.6]
 
 **System Prompt Template Example:**
 ```
-Ты — AI-ассистент платформы агрегатора складов самостоятельного хранения в России.
+You are an AI assistant for a self-storage aggregator platform in the UAE.
 
-ТВОИ ЗАДАЧИ:
-1. Помогать пользователям найти подходящий склад и бокс
-2. Отвечать на вопросы о ценах, условиях, услугах
-3. Поддерживать операторов складов в управлении бизнесом
-4. Предоставлять информацию администраторам
+YOUR TASKS:
+1. Help users find suitable warehouses and boxes
+2. Answer questions about prices, terms, services
+3. Support warehouse operators in managing their business
+4. Provide information to administrators
 
-ПРАВИЛА (рекомендуемые):
-- ✅ Отвечай на основе предоставленного контекста
-- ❌ Старайся не выдумывать цены, адреса, характеристики
-- ✅ Если информации недостаточно, можешь сказать "Уточните, пожалуйста..."
-- ✅ Желательно указывать источники
-- ✅ Будь вежливым и профессиональным
+RULES (recommended):
+- ✅ Answer based on provided context
+- ❌ Avoid making up prices, addresses, characteristics
+- ✅ If information is insufficient, say "Please clarify..."
+- ✅ Indicate sources when possible
+- ✅ Be polite and professional
 
-ФОРМАТ ОТВЕТА (suggested):
-1. Прямой ответ на вопрос
-2. Детали / Рекомендации (если есть)
-3. Источники информации (если возможно)
+RESPONSE FORMAT (suggested):
+1. Direct answer to the question
+2. Details / Recommendations (if any)
+3. Information sources (if possible)
 
-КОНТЕКСТ:
-Роль пользователя: {user_role}
-Локация: {user_location}
+CONTEXT:
+User role: {user_role}
+Location: {user_location}
 ```
 
 **User Message Template Example:**
 ```
-ВОПРОС ПОЛЬЗОВАТЕЛЯ:
+USER QUESTION:
 {user_query}
 
-РЕЛЕВАНТНЫЕ ДОКУМЕНТЫ (если найдены):
+RELEVANT DOCUMENTS (if found):
 {retrieved_docs}
 
-Пожалуйста, ответь на вопрос, используя информацию из документов.
+Please answer the question using information from the documents.
 ```
 
 **Full Prompt Example (Illustrative):**
@@ -745,29 +745,29 @@ final_docs = [doc for doc, score in reranked_docs if score > 0.6]
 # This shows a possible prompt structure
 
 system_prompt = f"""
-Ты — AI-ассистент платформы агрегатора складов...
+You are an AI assistant for a storage aggregator platform...
 [full system prompt]
 
-КОНТЕКСТ ЗАПРОСА:
-Роль пользователя: user
-Локация: Dubai, ЦАО
-Тип запроса: SEARCH_BOX
+REQUEST CONTEXT:
+User role: user
+Location: Dubai, Business Bay
+Request type: SEARCH_BOX
 """
 
 user_message = f"""
-ВОПРОС ПОЛЬЗОВАТЕЛЯ:
+USER QUESTION:
 {query}
 
-РЕЛЕВАНТНЫЕ ДОКУМЕНТЫ:
+RELEVANT DOCUMENTS:
 
-[Документ 1: box_size_guidelines.md]
-Для хранения мебели из 2-комнатной квартиры рекомендуем боксы 
-размером L (12-15 м²) или XL (20+ м²). Средний объем мебели: 15-20 м³.
+[Document 1: box_size_guidelines.md]
+For storing furniture from a 2-bedroom apartment, we recommend boxes
+size L (12-15 m²) or XL (20+ m²). Average furniture volume: 15-20 m³.
 
-[Документ 2: warehouse_catalog.json]
+[Document 2: warehouse_catalog.json]
 {{
   "warehouse_id": 42,
-  "name": "СклаДом на Ленинском",
+  "name": "StorageHub on Sheikh Zayed",
   "location": "Dubai, Sheikh Zayed Road",
   "available_boxes": [
     {{"size": "L", "area_m2": 15, "price": 3500, "available": 3}}
@@ -775,7 +775,7 @@ user_message = f"""
   "rating": 4.8
 }}
 
-Пожалуйста, ответь на вопрос.
+Please answer the question.
 """
 
 # API call (illustrative)
@@ -790,16 +790,16 @@ response = claude_api.generate(
 
 **Output Example:**
 ```
-Для хранения мебели из двухкомнатной квартиры рекомендую бокс 
-размером L (12-15 м²). Вот подходящий вариант:
+For storing furniture from a two-bedroom apartment, I recommend a box
+size L (12-15 m²). Here's a suitable option:
 
-📦 "СклаДом на Ленинском"
-- Размер: L (15 м²)
-- Цена: 3500AED /мес
-- Доступно: 3 бокса
-- Рейтинг: 4.8/5
+📦 "StorageHub on Sheikh Zayed"
+- Size: L (15 m²)
+- Price: 3500AED /month
+- Available: 3 boxes
+- Rating: 4.8/5
 
-Источники: [box_size_guidelines.md, warehouse_catalog.json]
+Sources: [box_size_guidelines.md, warehouse_catalog.json]
 ```
 
 **MVP v1 Simplifications:**
@@ -1354,7 +1354,7 @@ def calculate_rank_score(doc, query, user_context):
 1. **Lowercase:** Convert to lowercase
 2. **Trim whitespace:** Remove leading/trailing spaces
 3. **Remove special chars:** Keep alphanumeric and basic punctuation
-4. **Expand abbreviations:** (optional) м² → квадратных метров
+4. **Expand abbreviations:** (optional) m² → square meters
 
 **Example (Illustrative):**
 ```python
@@ -1374,9 +1374,9 @@ def normalize_query(query):
     query = re.sub(r'\s+', ' ', query).strip()
     
     # Expand common abbreviations (optional)
-    query = query.replace('кв.м', 'квадратных метров')
-    query = query.replace('м²', 'квадратных метров')
-    query = query.replace('кв м', 'квадратных метров')
+    query = query.replace('sq.m', 'square meters')
+    query = query.replace('m²', 'square meters')
+    query = query.replace('sqm', 'square meters')
     
     return query
 ```
@@ -1412,13 +1412,13 @@ def detect_intent_simple(query):
     """
     query = query.lower()
     
-    if any(word in query for word in ['найти', 'поиск', 'где', 'склад']):
+    if any(word in query for word in ['find', 'search', 'where', 'warehouse']):
         return 'SEARCH_WAREHOUSE'
-    elif any(word in query for word in ['бокс', 'размер', 'объем']):
+    elif any(word in query for word in ['box', 'size', 'volume']):
         return 'SEARCH_BOX'
-    elif any(word in query for word in ['цена', 'стоимость', 'сколько']):
+    elif any(word in query for word in ['price', 'cost', 'how much']):
         return 'PRICING_QUERY'
-    elif any(word in query for word in ['как забронировать', 'booking']):
+    elif any(word in query for word in ['how to book', 'booking']):
         return 'BOOKING_HELP'
     else:
         return 'INFO_QUERY'
@@ -1459,19 +1459,19 @@ def extract_entities_simple(query):
     """
     entities = {}
     
-    # Extract price (examples: "3000 dirhamй", "до 5000AED ")
-    price_match = re.search(r'(\d+)\s*(рубл|AED |руб)', query)
+    # Extract price (examples: "3000 dirhams", "up to 5000AED")
+    price_match = re.search(r'(\d+)\s*(dirham|AED|aed)', query)
     if price_match:
         entities['price'] = int(price_match.group(1))
-    
-    # Extract box size (examples: "6 м²", "10 кв.м")
-    size_match = re.search(r'(\d+)\s*(м²|кв\.?м)', query)
+
+    # Extract box size (examples: "6 m²", "10 sq.m")
+    size_match = re.search(r'(\d+)\s*(m²|sq\.?m)', query)
     if size_match:
         entities['box_size_m2'] = int(size_match.group(1))
-    
-    # Extract duration (examples: "3 месяца", "полгода")
-    if 'месяц' in query:
-        duration_match = re.search(r'(\d+)\s*месяц', query)
+
+    # Extract duration (examples: "3 months", "half year")
+    if 'month' in query:
+        duration_match = re.search(r'(\d+)\s*month', query)
         if duration_match:
             entities['duration_months'] = int(duration_match.group(1))
     
@@ -1541,31 +1541,31 @@ def build_prompt(query, retrieved_docs, user_context):
     Actual implementation may vary significantly.
     """
     system_prompt = """
-Ты — AI-ассистент платформы агрегатора складов самостоятельного хранения.
+You are an AI assistant for a self-storage aggregator platform.
 
-ТВОИ ЗАДАЧИ:
-- Помогать пользователям найти подходящий склад
-- Отвечать на вопросы о ценах и услугах
-- Использовать только информацию из предоставленных документов
+YOUR TASKS:
+- Help users find suitable warehouses
+- Answer questions about prices and services
+- Use only information from provided documents
 
-ПРАВИЛА:
-- Отвечай кратко и по делу
-- Если информации нет — скажи об этом
-- Указывай источники информации
+RULES:
+- Answer briefly and to the point
+- If information is missing - say so
+- Cite information sources
 """
-    
+
     context = f"""
-КОНТЕКСТ:
-Роль: {user_context['role']}
-Локация: {user_context.get('location', 'не указана')}
+CONTEXT:
+Role: {user_context['role']}
+Location: {user_context.get('location', 'not specified')}
 
-ДОКУМЕНТЫ:
+DOCUMENTS:
 """
-    
+
     for i, doc in enumerate(retrieved_docs, 1):
-        context += f"\n[Документ {i}]\n{doc['content']}\n"
-    
-    user_message = f"\nВОПРОС: {query}\n\nПожалуйста, ответь на основе документов выше."
+        context += f"\n[Document {i}]\n{doc['content']}\n"
+
+    user_message = f"\nQUESTION: {query}\n\nPlease answer based on the documents above."
     
     return system_prompt, context + user_message
 ```
@@ -1584,11 +1584,11 @@ def build_prompt(query, retrieved_docs, user_context):
 
 **Example Instruction Fragment:**
 ```
-ВАЖНО:
-- Отвечай только на основе предоставленных документов
-- Если информации недостаточно, скажи: "К сожалению, у меня нет информации по этому вопросу"
-- НИКОГДА не выдумывай цены, адреса или другие факты
-- Указывай источники в конце ответа: [источник1, источник2]
+IMPORTANT:
+- Answer only based on provided documents
+- If information is insufficient, say: "Unfortunately, I don't have information on this question"
+- NEVER make up prices, addresses or other facts
+- Cite sources at the end of the answer: [source1, source2]
 ```
 
 **MVP v1 Note:** Start with simple rules. Refine prompts based on observed output quality.
@@ -1673,13 +1673,13 @@ def select_top_docs(retrieved_docs, max_tokens=4000):
 
 **Example Desired Output:**
 ```
-Для хранения мебели рекомендую бокс размером L (12-15 м²).
+For furniture storage, I recommend a box size L (12-15 m²).
 
-Подходящие склады в вашем районе:
-1. "СклаДом" — 3500AED /мес, рейтинг 4.8
-2. "МойСклад" — 3200AED /мес, рейтинг 4.6
+Suitable warehouses in your area:
+1. "StorageHub" — 3500AED /month, rating 4.8
+2. "MyStorage" — 3200AED /month, rating 4.6
 
-Источники: [warehouse_catalog, pricing_data]
+Sources: [warehouse_catalog, pricing_data]
 ```
 
 **MVP v1 Note:** Let LLM format naturally initially. Add formatting rules as needed based on output quality.
@@ -1708,7 +1708,7 @@ def check_for_sources(response):
     Simple check: Does response reference sources?
     This is a basic validation example.
     """
-    source_indicators = ['[', 'источник', 'документ', 'согласно']
+    source_indicators = ['[', 'source', 'document', 'according']
     has_sources = any(indicator in response.lower() for indicator in source_indicators)
     
     if not has_sources:
@@ -1786,20 +1786,20 @@ def basic_content_filter(text):
 
 **Type 1: No Information Found**
 ```
-К сожалению, у меня нет информации по вашему вопросу. 
-Пожалуйста, обратитесь к оператору для помощи.
+Unfortunately, I don't have information on your question.
+Please contact an operator for assistance.
 ```
 
 **Type 2: Need Clarification**
 ```
-Не совсем понял ваш вопрос. Могли бы вы уточнить, 
-что именно вы хотите узнать?
+I didn't quite understand your question. Could you clarify
+what exactly you'd like to know?
 ```
 
 **Type 3: Technical Error**
 ```
-Извините, произошла техническая ошибка. 
-Попробуйте повторить запрос или обратитесь в поддержку.
+Sorry, a technical error occurred.
+Please try your request again or contact support.
 ```
 
 **MVP v1 Note:** Simple, graceful fallback messages are essential. Avoid exposing technical errors to users.
@@ -2031,17 +2031,17 @@ def calculate_confidence(response, retrieved_docs, query):
 
 **Format 1: Inline (Simple)**
 ```
-... рекомендую бокс размером L (12-15 м²) [warehouse_guidelines]...
+... I recommend a box size L (12-15 m²) [warehouse_guidelines]...
 ```
 
 **Format 2: End of Response (Better)**
 ```
 [Response text]
 
-Источники:
-- Руководство по выбору боксов
-- Каталог складов
-- Данные о ценах
+Sources:
+- Box selection guide
+- Warehouse catalog
+- Pricing data
 ```
 
 **Format 3: Structured (Best)**
@@ -2050,7 +2050,7 @@ def calculate_confidence(response, retrieved_docs, query):
   {
     "id": "doc_123",
     "type": "guideline",
-    "title": "Руководство по выбору боксов",
+    "title": "Box selection guide",
     "url": "/docs/guidelines/box-selection"
   }
 ]
@@ -2069,8 +2069,8 @@ def calculate_confidence(response, retrieved_docs, query):
 {
   "error": {
     "code": "NO_ANSWER_FOUND",
-    "message": "К сожалению, я не нашел ответа на ваш вопрос",
-    "suggestion": "Попробуйте переформулировать вопрос или обратитесь к оператору"
+    "message": "Unfortunately, I didn't find an answer to your question",
+    "suggestion": "Try rephrasing your question or contact an operator"
   }
 }
 ```
@@ -2080,7 +2080,7 @@ def calculate_confidence(response, retrieved_docs, query):
 {
   "error": {
     "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Превышен лимит запросов",
+    "message": "Request limit exceeded",
     "retry_after": 3600
   }
 }
@@ -2091,7 +2091,7 @@ def calculate_confidence(response, retrieved_docs, query):
 {
   "error": {
     "code": "INVALID_INPUT",
-    "message": "Запрос слишком короткий (минимум 3 символа)",
+    "message": "Query too short (minimum 3 characters)",
     "field": "query"
   }
 }
@@ -2269,14 +2269,14 @@ Precision@K = (Relevant docs in top-K) / K
 
 **Option 2: Redirect to Human Support**
 ```
-"К сожалению, AI-ассистент временно недоступен. 
-Пожалуйста, обратитесь к оператору через форму поддержки."
+"Unfortunately, the AI assistant is temporarily unavailable.
+Please contact an operator through the support form."
 ```
 
 **Option 3: Degraded Service Notice**
 ```
-"AI-ассистент работает в ограниченном режиме. 
-Некоторые функции могут быть недоступны."
+"AI assistant is operating in limited mode.
+Some functions may be unavailable."
 ```
 
 **MVP v1 Note:** Option 2 (redirect to support) is simplest and safest.
@@ -2291,24 +2291,24 @@ Precision@K = (Relevant docs in top-K) / K
 
 **Response 1: Request Clarification**
 ```
-"Не совсем понял ваш вопрос. Могли бы вы уточнить или 
-переформулировать? Например: 'Какой размер бокса нужен 
-для мебели из 2-комнатной квартиры?'"
+"I didn't quite understand your question. Could you clarify or
+rephrase it? For example: 'What box size is needed
+for furniture from a 2-bedroom apartment?'"
 ```
 
 **Response 2: Suggest Topics**
 ```
-"К сожалению, не нашел информации по этому вопросу. 
-Могу помочь с:
-- Выбором размера бокса
-- Поиском склада в вашем районе
-- Вопросами о ценах"
+"Unfortunately, I didn't find information on this question.
+I can help with:
+- Choosing box size
+- Finding a warehouse in your area
+- Questions about prices"
 ```
 
 **Response 3: Escalate to Human**
 ```
-"Для получения ответа на этот вопрос лучше обратиться 
-к оператору. Могу соединить вас?"
+"To get an answer to this question, it's best to contact
+an operator. Can I connect you?"
 ```
 
 **MVP v1 Note:** All three responses are useful. Can combine them intelligently.
@@ -2454,7 +2454,7 @@ CREATE INDEX idx_ai_chat_session ON ai_chat_messages(session_id);
 **Essential UI Elements:**
 
 1. **Chat Input Box**
-   - Placeholder: "Задайте вопрос..." / "Ask a question..."
+   - Placeholder: "Ask a question..."
    - Character counter (500 max)
    - Send button + Enter key support
 

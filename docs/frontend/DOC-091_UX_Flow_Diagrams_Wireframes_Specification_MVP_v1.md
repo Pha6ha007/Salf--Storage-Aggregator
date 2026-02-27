@@ -292,10 +292,10 @@ flowchart TD
     Input --> Optional{Add budget?}
     Optional -->|Yes| Budget[Enter monthly budget]
     Optional -->|No| Submit
-    Budget --> Submit[Click "Подобрать" button]
-    
+    Budget --> Submit[Click "Find match" button]
+
     Submit --> Validate{Input valid?}
-    Validate -->|No - empty| ErrorEmpty[Show "Опишите вещи" error]
+    Validate -->|No - empty| ErrorEmpty[Show "Describe items" error]
     Validate -->|Yes| APICall[Call AI service]
     
     ErrorEmpty --> Input
@@ -351,14 +351,14 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([User clicks "Регистрация"]) --> RegForm[Registration Form]
+    Start([User clicks "Register"]) --> RegForm[Registration Form]
     
     RegForm --> FormFields[Fill required fields]
     FormFields --> FieldsList[Email, Password, Name, Phone]
     FieldsList --> Terms{Accept terms?}
     
     Terms -->|No| TermsError[Show terms required error]
-    Terms -->|Yes| Submit[Click "Зарегистрироваться"]
+    Terms -->|Yes| Submit[Click "Register"]
     
     TermsError --> Terms
     
@@ -379,10 +379,10 @@ flowchart TD
     Loading --> ServerResponse{Server response}
     
     ServerResponse -->|201 Created| Success[Registration successful]
-    ServerResponse -->|409 Email exists| DuplicateEmail[Show "Email уже используется"]
-    ServerResponse -->|409 Phone exists| DuplicatePhone[Show "Телефон уже зарегистрирован"]
+    ServerResponse -->|409 Email exists| DuplicateEmail[Show "Email already in use"]
+    ServerResponse -->|409 Phone exists| DuplicatePhone[Show "Phone already registered"]
     ServerResponse -->|422 Validation| ValidationError[Show validation errors]
-    ServerResponse -->|500 Server error| ServerError[Show "Попробуйте позже"]
+    ServerResponse -->|500 Server error| ServerError[Show "Try again later"]
     
     DuplicateEmail --> FormFields
     DuplicatePhone --> FormFields
@@ -444,8 +444,8 @@ flowchart TD
     Duration --> Validate
     SpecialReqs --> Validate
     
-    Validate -->|Date in past| DateError[Show "Дата не может быть в прошлом"]
-    Validate -->|Duration invalid| DurationError[Show "Выберите от 1 до 12 месяцев"]
+    Validate -->|Date in past| DateError[Show "Date cannot be in the past"]
+    Validate -->|Duration invalid| DurationError[Show "Select 1 to 12 months"]
     Validate -->|Valid| PriceCalc[Calculate total price]
     
     DateError --> FormFields
@@ -462,9 +462,9 @@ flowchart TD
     Loading --> ServerResponse{Server response}
     
     ServerResponse -->|201 Created| BookingSuccess[Booking created]
-    ServerResponse -->|409 Box unavailable| BoxUnavailable[Show "Бокс уже забронирован"]
+    ServerResponse -->|409 Box unavailable| BoxUnavailable[Show "Box already booked"]
     ServerResponse -->|422 Invalid data| ValidationError[Show validation errors]
-    ServerResponse -->|500 Server error| ServerError[Show "Попробуйте позже"]
+    ServerResponse -->|500 Server error| ServerError[Show "Try again later"]
     
     BoxUnavailable --> BoxUnavailableAction{User action}
     BoxUnavailableAction -->|Choose another| BoxSelection[Return to warehouse]
@@ -552,7 +552,7 @@ flowchart TD
     CancelCheck{Booking<br/>cancellable?}
     CancelCheck -->|Status = pending| CancelConfirm[Show cancellation confirmation]
     CancelCheck -->|Status = confirmed| CancelConfirm
-    CancelCheck -->|Status = active| CancelNotAllowed[Show "Свяжитесь с оператором"]
+    CancelCheck -->|Status = active| CancelNotAllowed[Show "Contact operator"]
     CancelCheck -->|Other status| CancelNotAllowed
     
     CancelNotAllowed --> Actions
@@ -573,7 +573,7 @@ flowchart TD
     
     ReviewCheck{Can review?}
     ReviewCheck -->|Status = completed| ReviewForm[Show review form]
-    ReviewCheck -->|Other status| ReviewNotAllowed[Show "Доступно после завершения"]
+    ReviewCheck -->|Other status| ReviewNotAllowed[Show "Available after completion"]
     
     ReviewNotAllowed --> Actions
     ReviewForm --> ReviewFlow[Review Submission Flow]
@@ -609,7 +609,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([User selects "Стать оператором"]) --> RoleChoice[Choose account type]
+    Start([User selects "Become operator"]) --> RoleChoice[Choose account type]
     
     RoleChoice --> OpRegForm[Operator Registration Form]
     
@@ -629,7 +629,7 @@ flowchart TD
     
     Validate -->|Personal info invalid| PersonalError[Show personal field errors]
     Validate -->|Company info invalid| CompanyError[Show company field errors]
-    Validate -->|Documents missing| DocumentsError[Show "Загрузите документы"]
+    Validate -->|Documents missing| DocumentsError[Show "Upload documents"]
     Validate -->|All valid| TermsCheck
     
     PersonalError --> PersonalInfo
@@ -656,7 +656,7 @@ flowchart TD
     ServerError --> OpRegForm
     
     RegSuccess --> PendingVerification[Account in verification status]
-    PendingVerification --> VerificationNotice[Show "Ждите проверку документов"]
+    PendingVerification --> VerificationNotice[Show "Wait for document verification"]
     VerificationNotice --> OpDashboard[Operator Dashboard (Limited)]
     
     OpDashboard --> LimitedAccess[Can view interface but cannot create warehouses]
@@ -687,8 +687,8 @@ flowchart TD
 flowchart TD
     Start([Operator Dashboard]) --> VerifyStatus{Operator<br/>verified?}
     
-    VerifyStatus -->|No| NotVerified[Show "Ждите завершения верификации"]
-    VerifyStatus -->|Yes| CreateButton[Click "Добавить склад"]
+    VerifyStatus -->|No| NotVerified[Show "Wait for verification completion"]
+    VerifyStatus -->|Yes| CreateButton[Click "Add warehouse"]
     
     NotVerified --> End([Cannot create warehouse])
     
@@ -718,8 +718,8 @@ flowchart TD
     
     Validation -->|Basic invalid| BasicError[Show basic field errors]
     Validation -->|Location invalid| LocationError[Show location errors]
-    Validation -->|Coordinates invalid| CoordError[Show "Укажите на карте"]
-    Validation -->|Photos missing| PhotoError[Show "Добавьте минимум 3 фото"]
+    Validation -->|Coordinates invalid| CoordError[Show "Mark on map"]
+    Validation -->|Photos missing| PhotoError[Show "Add minimum 3 photos"]
     Validation -->|Schedule invalid| ScheduleError[Show schedule errors]
     Validation -->|All valid| ReviewForm[Review all information]
     
@@ -786,7 +786,7 @@ flowchart TD
 flowchart TD
     Start([Operator Dashboard]) --> Notifications{New booking<br/>notification?}
     
-    Notifications -->|Yes| NotificationBadge[Show badge on "Заявки"]
+    Notifications -->|Yes| NotificationBadge[Show badge on "Requests"]
     Notifications -->|Manual check| BookingsList
     
     NotificationBadge --> BookingsList[Bookings List Page]
@@ -824,7 +824,7 @@ flowchart TD
     
     ConfirmCheck{Status<br/>= pending?}
     ConfirmCheck -->|Yes| ConfirmPrompt[Show confirmation prompt]
-    ConfirmCheck -->|No| AlreadyProcessed[Show "Уже обработано"]
+    ConfirmCheck -->|No| AlreadyProcessed[Show "Already processed"]
     
     AlreadyProcessed --> BookingsList
     
@@ -851,7 +851,7 @@ flowchart TD
     DeclineForm --> ReasonInput[Enter decline reason]
     ReasonInput --> ReasonValidate{Reason<br/>provided?}
     
-    ReasonValidate -->|No| ReasonRequired[Show "Укажите причину"]
+    ReasonValidate -->|No| ReasonRequired[Show "Specify reason"]
     ReasonValidate -->|Yes| DeclineConfirm[Confirm decline]
     
     ReasonRequired --> ReasonInput
@@ -927,28 +927,28 @@ Primary entry point for all users to discover storage options through search, AI
 
 **Header:**
 - Logo (left)
-- Navigation: "Как это работает", "Стать оператором" (center)
-- "Войти" / "Регистрация" buttons (right)
+- Navigation: "How it works", "Become operator" (center)
+- "Login" / "Register" buttons (right)
 
 **Hero Section:**
-- Prominent headline: "Найдите склад для ваших вещей"
+- Prominent headline: "Find storage for your belongings"
 - Location search bar (full-width, prominent)
 - AI Box Finder widget (below search or separate section)
 
 **Featured Warehouses Section:**
-- Heading: "Популярные склады"
+- Heading: "Popular warehouses"
 - Grid of warehouse cards (2-3 rows, 3 cards per row on desktop)
 - Each card shows: photo, name, rating, min price, location
 
 **Footer:**
-- Links: О нас, Контакты, Помощь, Условия использования
+- Links: About us, Contacts, Help, Terms of use
 - Social media links
 - Contact information
 
 ### Error States
-- **No location results:** "Ничего не найдено. Попробуйте другой запрос"
+- **No location results:** "Nothing found. Try another query"
 - **AI service unavailable:** Silent fallback to rule-based recommendations
-- **Network error:** "Проверьте подключение к интернету"
+- **Network error:** "Check your internet connection"
 
 ---
 
@@ -979,21 +979,21 @@ Display filterable, sortable list of warehouses matching user's search criteria.
 **Header:** (Same as home page)
 
 **Breadcrumb:**
-- Home > Склады в [Location]
+- Home > Warehouses in [Location]
 
 **Filter Sidebar (Left, 25% width):**
 - Location display with edit option
 - Price range slider
 - Box size checkboxes (S, M, L, XL)
 - Features checkboxes (24/7 access, Climate control, CCTV, etc.)
-- "Применить" and "Сбросить" buttons
+- "Apply" and "Reset" buttons
 
 **Main Content (Right, 75% width):**
 
 **Toolbar:**
-- Results count: "Найдено 47 складов"
+- Results count: "Found 47 warehouses"
 - View toggle: List / Map
-- Sort dropdown: По рейтингу, По цене, По расстоянию
+- Sort dropdown: By rating, By price, By distance
 - Per page: 12 / 24 / 48
 
 **Warehouse Grid:**
@@ -1010,12 +1010,12 @@ Display filterable, sortable list of warehouses matching user's search criteria.
 **Pagination:**
 - Previous / Next buttons
 - Page numbers
-- "Показать больше" option
+- "Show more" option
 
 ### Error States
-- **No results:** "Ничего не найдено. Попробуйте изменить фильтры"
-- **Loading error:** "Не удалось загрузить склады. Попробуйте позже"
-- **Empty filters:** "Выберите хотя бы один критерий"
+- **No results:** "Nothing found. Try changing filters"
+- **Loading error:** "Failed to load warehouses. Try again later"
+- **Empty filters:** "Select at least one criterion"
 
 ---
 
@@ -1048,15 +1048,15 @@ Provide comprehensive information about a specific warehouse to help users make 
 **Header:** (Same as home page)
 
 **Breadcrumb:**
-- Home > Склады в [City] > [Warehouse Name]
+- Home > Warehouses in [City] > [Warehouse Name]
 
 **Hero Section:**
 - Photo gallery (main photo + thumbnails)
 - Warehouse name
 - Rating (stars) + review count
 - Address with metro station
-- "Сохранить" button (heart icon)
-- "Поделиться" button
+- "Save" button (heart icon)
+- "Share" button
 
 **Main Content (Tabbed or Scrollable Sections):**
 
@@ -1068,7 +1068,7 @@ Provide comprehensive information about a specific warehouse to help users make 
   - Climate control
   - Parking
   - etc.
-- Pricing: "От [min_price] AED /месяц"
+- Pricing: "From [min_price] AED /month"
 
 **Section 2: Available Boxes**
 - Box filter: By size, By price
@@ -1077,8 +1077,8 @@ Provide comprehensive information about a specific warehouse to help users make 
   - Dimensions (length × width × height)
   - Area (m²)
   - Price per month
-  - Available quantity: "[X] свободно"
-  - "Выбрать" button
+  - Available quantity: "[X] available"
+  - "Select" button
 
 **Section 3: Working Hours**
 - Table: Day of week | Hours
@@ -1087,7 +1087,7 @@ Provide comprehensive information about a specific warehouse to help users make 
 **Section 4: Location**
 - Interactive map with warehouse marker
 - Address with copy button
-- "Проложить маршрут" button
+- "Get directions" button
 - Nearest metro/bus stops
 
 **Section 5: Reviews**
@@ -1098,7 +1098,7 @@ Provide comprehensive information about a specific warehouse to help users make 
   - Date
   - Review text
   - Pros/Cons (if provided)
-- "Показать больше" button
+- "Show more" button
 - Sort by: Newest, Highest rating, Lowest rating
 
 **Sidebar (if space allows):**
@@ -1107,13 +1107,13 @@ Provide comprehensive information about a specific warehouse to help users make 
   - Phone number (click to call)
   - Email (click to open)
   - Response time estimate
-- "Задать вопрос" button
+- "Ask question" button
 
 ### Error States
-- **Warehouse not found (404):** "Склад не найден"
-- **No boxes available:** "Нет свободных боксов. Попробуйте позже"
-- **No reviews yet:** "Пока нет отзывов. Будьте первым!"
-- **Map loading error:** "Не удалось загрузить карту"
+- **Warehouse not found (404):** "Warehouse not found"
+- **No boxes available:** "No available boxes. Try later"
+- **No reviews yet:** "No reviews yet. Be the first!"
+- **Map loading error:** "Failed to load map"
 
 ---
 
@@ -1143,10 +1143,10 @@ Collect necessary information to create a booking request and submit it for oper
 **Header:** (Same as home page)
 
 **Breadcrumb:**
-- Home > [Warehouse Name] > Бронирование
+- Home > [Warehouse Name] > Booking
 
 **Page Title:**
-- "Бронирование бокса"
+- "Box booking"
 
 **Summary Card (Top):**
 - Warehouse name
@@ -1159,38 +1159,38 @@ Collect necessary information to create a booking request and submit it for oper
 **Field 1: Start Date**
 - Date picker
 - Validation: Must be today or future
-- Helper text: "Дата начала аренды"
+- Helper text: "Rental start date"
 
 **Field 2: Duration**
 - Dropdown or number input
 - Options: 1-12 months
-- Helper text: "Количество месяцев"
+- Helper text: "Number of months"
 
 **Field 3: Special Requirements (Optional)**
 - Multiline text area
-- Placeholder: "Укажите особые требования или пожелания"
+- Placeholder: "Specify special requirements or wishes"
 - Character limit: 500
 
 **Price Summary Box:**
 - Box price per month: [X] AED 
 - Duration: [Y] months
 - **Total:** [X × Y] AED 
-- "Цена указана без учета дополнительных услуг"
+- "Price excludes additional services"
 
 **Action Buttons:**
-- "Отправить заявку" (primary button)
-- "Отмена" (secondary button, returns to warehouse)
+- "Submit request" (primary button)
+- "Cancel" (secondary button, returns to warehouse)
 
 **Information Notice:**
-- "После отправки заявки оператор склада свяжется с вами для подтверждения"
-- "Бронирование не является договором и не гарантирует наличие бокса"
+- "After submitting, warehouse operator will contact you for confirmation"
+- "Booking is not a contract and does not guarantee box availability"
 
 ### Error States
 - **Not authenticated:** Redirect to login/register with return URL
-- **Date in past:** "Дата не может быть в прошлом"
-- **Duration invalid:** "Выберите от 1 до 12 месяцев"
-- **Box unavailable (409):** "К сожалению, бокс уже забронирован. Выберите другой"
-- **Server error (500):** "Не удалось создать заявку. Попробуйте позже"
+- **Date in past:** "Date cannot be in the past"
+- **Duration invalid:** "Select 1 to 12 months"
+- **Box unavailable (409):** "Unfortunately, box already booked. Choose another"
+- **Server error (500):** "Failed to create request. Try later"
 
 ---
 
@@ -1219,7 +1219,7 @@ Central hub for authenticated users to manage their bookings, profile, and favor
 
 **Header:** (Authenticated state)
 - Logo
-- "Мои заявки", "Избранное" (navigation)
+- "My requests", "Favorites" (navigation)
 - User avatar/name dropdown (right)
 
 **Sidebar (Left, 20% width):**
@@ -1228,23 +1228,23 @@ Central hub for authenticated users to manage their bookings, profile, and favor
   - Name
   - Email
 - Navigation menu:
-  - Мои заявки (active)
-  - Избранное
-  - Профиль
-  - Настройки
-  - Выйти
+  - My requests (active)
+  - Favorites
+  - Profile
+  - Settings
+  - Logout
 
 **Main Content (Right, 80% width):**
 
-**Page Title:** "Мои заявки"
+**Page Title:** "My requests"
 
 **Filter Tabs:**
-- Все
-- Ожидают (pending badge)
-- Подтверждены
-- Активные
-- Завершенные
-- Отмененные
+- All
+- Pending (pending badge)
+- Confirmed
+- Active
+- Completed
+- Cancelled
 
 **Bookings List:**
 - Booking cards (one per row):
@@ -1255,19 +1255,19 @@ Central hub for authenticated users to manage their bookings, profile, and favor
   - Duration
   - Total price
   - Action buttons (status-dependent):
-    - Pending: "Отменить"
-    - Confirmed: "Отменить", "Связаться с оператором"
-    - Active: "Связаться с оператором"
-    - Completed: "Оставить отзыв"
-    - Cancelled: "Посмотреть детали"
+    - Pending: "Cancel"
+    - Confirmed: "Cancel", "Contact operator"
+    - Active: "Contact operator"
+    - Completed: "Leave review"
+    - Cancelled: "View details"
 
 **Empty States:**
-- No bookings: "У вас пока нет заявок. Найдите склад и забронируйте бокс"
-- No bookings in filter: "Нет заявок с таким статусом"
+- No bookings: "You have no requests yet. Find warehouse and book box"
+- No bookings in filter: "No requests with this status"
 
 ### Error States
-- **Loading error:** "Не удалось загрузить заявки. Обновите страницу"
-- **Cancel error:** "Не удалось отменить заявку. Попробуйте позже"
+- **Loading error:** "Failed to load requests. Refresh page"
+- **Cancel error:** "Failed to cancel request. Try later"
 
 ---
 
@@ -1298,7 +1298,7 @@ Central management interface for warehouse operators to oversee their business, 
 
 **Header:** (Operator state)
 - Logo
-- "Дашборд", "Склады", "Заявки", "Боксы" (navigation)
+- "Dashboard", "Warehouses", "Requests", "Boxes" (navigation)
 - Operator name dropdown (right)
 
 **Sidebar (Left, 20% width):**
@@ -1306,53 +1306,53 @@ Central management interface for warehouse operators to oversee their business, 
   - Company name
   - Verification status badge
 - Navigation menu:
-  - Дашборд (active)
-  - Мои склады
-  - Заявки
-  - Боксы
-  - Профиль
-  - Выйти
+  - Dashboard (active)
+  - My warehouses
+  - Requests
+  - Boxes
+  - Profile
+  - Logout
 
 **Main Content (Right, 80% width):**
 
-**Page Title:** "Дашборд оператора"
+**Page Title:** "Operator dashboard"
 
 **Metrics Cards (Top Row):**
-- Card 1: Новые заявки
+- Card 1: New requests
   - Number: [X]
   - Badge if > 0
-  - Link: "Посмотреть"
-- Card 2: Активные бронирования
+  - Link: "View"
+- Card 2: Active bookings
   - Number: [Y]
-  - Link: "Посмотреть"
-- Card 3: Заполненность
+  - Link: "View"
+- Card 3: Occupancy
   - Percentage: [Z]%
-  - Subtext: "[filled] из [total] боксов"
-- Card 4: Всего складов
+  - Subtext: "[filled] of [total] boxes"
+- Card 4: All warehouses
   - Number: [W]
-  - Link: "Управление"
+  - Link: "Manage"
 
 **Recent Bookings Section:**
-- Heading: "Недавние заявки"
+- Heading: "Recent requests"
 - Table or card list:
   - User name
   - Warehouse name
   - Box size
   - Status
   - Date
-  - Actions: "Подтвердить", "Отклонить", "Детали"
-- "Посмотреть все" link
+  - Actions: "Confirm", "Reject", "Details"
+- "View all" link
 
 **Quick Actions:**
-- "Добавить склад" button
-- "Добавить боксы" button
+- "Add warehouse" button
+- "Add boxes" button
 
 **Verification Notice (if not verified):**
-- Warning banner: "Ваш аккаунт на проверке. Вы сможете добавлять склады после завершения верификации"
+- Warning banner: "Your account is under review. You can add warehouses after verification completion"
 
 ### Error States
-- **No warehouses:** "У вас пока нет складов. Добавьте первый склад"
-- **Loading error:** "Не удалось загрузить данные. Обновите страницу"
+- **No warehouses:** "You have no warehouses yet. Add first warehouse"
+- **Loading error:** "Failed to load data. Refresh page"
 - **Not verified:** Limited functionality with prominent notice
 
 ---
@@ -1385,7 +1385,7 @@ Provide geographic visualization of warehouse locations with interactive cluster
 
 **Filter Sidebar (Left, collapsible on mobile):**
 - Same filters as catalog page
-- "Применить" updates map markers
+- "Apply" updates map markers
 
 **Map Container (Main area):**
 - Full-screen interactive map
@@ -1400,8 +1400,8 @@ Provide geographic visualization of warehouse locations with interactive cluster
 - Rating + review count
 - Min price
 - Distance from user location
-- "Подробнее" button → Warehouse Details
-- "Построить маршрут" button
+- "More details" button → Warehouse Details
+- "Build route" button
 
 **Cluster Marker (multiple warehouses):**
 - Number badge showing warehouse count
@@ -1409,7 +1409,7 @@ Provide geographic visualization of warehouse locations with interactive cluster
 
 ### Error States
 - **Location permission denied:** Map centers on default location (city center)
-- **No warehouses in area:** "В этой области нет складов"
+- **No warehouses in area:** "No warehouses in this area"
 - **Map service unavailable:** Fallback to list view with message
 
 ---
@@ -1434,8 +1434,8 @@ Provide geographic visualization of warehouse locations with interactive cluster
 ### Header Consistency
 **Guest users:**
 - Logo (left) → Home
-- "Как это работает", "Стать оператором" (center)
-- "Войти" / "Регистрация" (right)
+- "How it works", "Become operator" (center)
+- "Login" / "Register" (right)
 
 **Authenticated users:**
 - Logo (left) → Home or Dashboard (based on role)
@@ -1446,10 +1446,10 @@ Provide geographic visualization of warehouse locations with interactive cluster
 
 ### Form Cancellation
 **Pattern:**
-1. User clicks "Отмена" or back button during form entry
+1. User clicks "Cancel" or back button during form entry
 2. If form has unsaved changes:
-   - Show confirmation modal: "Несохраненные изменения будут потеряны. Продолжить?"
-   - Options: "Да, отменить" / "Нет, остаться"
+   - Show confirmation modal: "Unsaved changes will be lost. Continue?"
+   - Options: "Yes, cancel" / "No, stay"
 3. If confirmed, return to previous page or entry point
 
 ### API Retry Logic
@@ -1488,20 +1488,20 @@ Provide geographic visualization of warehouse locations with interactive cluster
 ### Empty States
 
 **No Results (Search/Filter):**
-- **Message:** "Ничего не найдено"
+- **Message:** "Nothing found"
 - **Illustration:** Simple icon or image
-- **Action:** "Сбросить фильтры" or "Изменить запрос"
-- **Helpful text:** "Попробуйте изменить условия поиска"
+- **Action:** "Reset filters" or "Change query"
+- **Helpful text:** "Try changing search conditions"
 
 **No Data (Dashboard/Lists):**
-- **Message:** "[Feature name] пока пусто"
+- **Message:** "[Feature name] is empty"
 - **Action:** Primary action to add first item
-- **Example:** "У вас пока нет заявок. Найдите склад и забронируйте бокс"
+- **Example:** "You have no requests yet. Find warehouse and book box"
 
 **Error Loading:**
-- **Message:** "Не удалось загрузить данные"
-- **Action:** "Обновить" button
-- **Helpful text:** "Проверьте подключение к интернету"
+- **Message:** "Failed to load data"
+- **Action:** "Refresh" button
+- **Helpful text:** "Check your internet connection"
 
 ## 5.4. Error Handling Patterns
 
@@ -1525,20 +1525,20 @@ Field Label *
 ### API Errors
 
 **Network Errors:**
-- **Message:** "Проверьте подключение к интернету"
+- **Message:** "Check your internet connection"
 - **Action:** Retry button
 
 **4xx Client Errors:**
 - **400 Bad Request:** Show specific validation errors
 - **401 Unauthorized:** Redirect to login
-- **403 Forbidden:** "У вас нет доступа к этой странице"
-- **404 Not Found:** "Страница не найдена"
-- **409 Conflict:** Context-specific message (e.g., "Бокс уже забронирован")
+- **403 Forbidden:** "You have no access to this page"
+- **404 Not Found:** "Page not found"
+- **409 Conflict:** Context-specific message (e.g., "Box already booked")
 - **422 Unprocessable:** Show field-specific errors
 
 **5xx Server Errors:**
-- **500 Internal Server Error:** "Что-то пошло не так. Попробуйте позже"
-- **503 Service Unavailable:** "Сервис временно недоступен. Попробуйте позже"
+- **500 Internal Server Error:** "Something went wrong. Try later"
+- **503 Service Unavailable:** "Service temporarily unavailable. Try later"
 
 **Error Message Format:**
 ```
@@ -1549,11 +1549,11 @@ Secondary explanation or helpful text
 
 ### Critical Operation Confirmations
 **Pattern for Destructive Actions:**
-1. User clicks destructive action (e.g., "Отменить бронирование")
+1. User clicks destructive action (e.g., "Cancel booking")
 2. Show modal confirmation:
-   - **Title:** "Отменить бронирование?"
+   - **Title:** "Cancel booking?"
    - **Message:** Explanation of consequences
-   - **Actions:** "Да, отменить" (danger style) / "Нет, вернуться" (default style)
+   - **Actions:** "Yes, cancel" (danger style) / "No, go back" (default style)
 3. If confirmed, proceed with action
 4. Show success feedback
 
@@ -1564,20 +1564,20 @@ Secondary explanation or helpful text
 - Green toast/banner at top of screen
 - Auto-dismiss after 5 seconds
 - Close button (×) for manual dismiss
-- Example: "✓ Бронирование успешно создано"
+- Example: "✓ Booking successfully created"
 
 ### Error Notifications
 **Pattern:**
 - Red toast/banner at top of screen
 - Requires manual dismiss (no auto-dismiss)
 - Close button (×)
-- Example: "⚠️ Не удалось создать бронирование"
+- Example: "⚠️ Failed to create booking"
 
 ### Info Notifications
 **Pattern:**
 - Blue toast/banner
 - Auto-dismiss after 7 seconds or manual dismiss
-- Example: "ℹ️ Ваша заявка отправлена оператору"
+- Example: "ℹ️ Your request sent to operator"
 
 ### Notification Position
 - **Desktop:** Top-right corner
