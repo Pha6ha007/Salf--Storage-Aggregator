@@ -978,7 +978,7 @@ As per **Error_Handling_&_Fault_Tolerance_Specification_MVP_v1.md**, all API err
   "success": false,
   "error": {
     "code": "box_not_available",
-    "message": "К сожалению, бокс только что забронирован",
+    "message": "Unfortunately, the box was just reserved",
     "details": {
       "box_id": 123,
       "warehouse_id": 45

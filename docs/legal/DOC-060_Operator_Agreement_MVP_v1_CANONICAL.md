@@ -1,10 +1,10 @@
 # OPERATOR AGREEMENT (MVP v1)
 ## Self-Storage Aggregator Platform
 
-**Document ID:** DOC-060  
-**Version:** 1.0 CANONICAL  
-**Status:** 🟢 Canonical — Master Agreement Template  
-**Date:** December 2025  
+**Document ID:** DOC-060
+**Version:** 1.0 CANONICAL
+**Status:** 🟢 Canonical — Master Agreement Template
+**Date:** December 2025
 **Phase:** MVP v1
 
 ---
@@ -61,529 +61,529 @@ This agreement must be read in conjunction with the following documents:
 
 ---
 
-## 1. Общие положения
+## 1. General Provisions
 
-### 1.1. Стороны договора
+### 1.1. Parties to the Agreement
 
-Настоящий договор (далее — **"Договор"**) заключается между:
+This Agreement (hereinafter referred to as the **"Agreement"**) is entered into between:
 
-**Платформой** — оператором онлайн-платформы Self-Storage Aggregator, обеспечивающей агрегирование предложений складских услуг самостоятельного хранения (self-storage) и соединение операторов складов с потенциальными клиентами,
+**Platform** — the operator of the Self-Storage Aggregator online platform, which provides aggregation of self-storage facility offerings and connects storage operators with potential customers,
 
-и
+and
 
-**Оператором** — юридическим лицом или индивидуальным предпринимателем, осуществляющим деятельность по предоставлению услуг складского хранения и желающим размещать информацию о своих объектах на Платформе.
+**Operator** — a legal entity or individual entrepreneur engaged in providing storage services and wishing to list information about their facilities on the Platform.
 
-### 1.2. Предмет договора
+### 1.2. Subject Matter of the Agreement
 
-Предметом настоящего Договора является установление условий, на которых:
+The subject matter of this Agreement is to establish the terms and conditions under which:
 
-1. Платформа предоставляет Оператору доступ к программно-техническим средствам и сервисам для размещения информации о складских объектах, боксах и услугах, subject to platform technical availability;
+1. The Platform provides the Operator with access to software and technical services for listing information about storage facilities, units, and services, subject to platform technical availability;
 
-2. Платформа агрегирует спрос на услуги self-storage, осуществляет поиск и передачу Оператору заявок от потенциальных клиентов (Пользователей);
+2. The Platform aggregates demand for self-storage services, conducts search activities, and transmits inquiries from potential customers (Users) to the Operator;
 
-3. Оператор обязуется предоставлять достоверную информацию о своих объектах, обрабатывать полученные заявки и заключать договоры хранения непосредственно с Пользователями;
+3. The Operator undertakes to provide accurate information about their facilities, process received inquiries, and enter into storage contracts directly with Users;
 
-4. Стороны определяют порядок взаимодействия, вознаграждения Платформы и распределения ответственности.
+4. The Parties define the procedures for interaction, Platform compensation, and allocation of responsibilities.
 
-Платформа выступает исключительно как технологический посредник и агрегатор информации. Платформа не является стороной договора хранения между Оператором и Пользователем, не предоставляет складские услуги самостоятельно и не несет ответственности за действия Оператора или качество предоставляемых им услуг.
+The Platform acts exclusively as a technology intermediary and information aggregator. The Platform is not a party to the storage contract between the Operator and User, does not provide storage services independently, and bears no responsibility for the Operator's actions or the quality of services provided by the Operator.
 
-### 1.3. Акцепт договора
+### 1.3. Acceptance of the Agreement
 
-Настоящий Договор является публичной офертой в соответствии с применимым законодательством, as defined by the Regional Addendum.
+This Agreement constitutes a public offer in accordance with applicable law, as defined by the Regional Addendum.
 
-Акцепт (полное и безоговорочное принятие условий) Договора Оператором происходит посредством совершения одного из следующих действий:
+Acceptance (full and unconditional agreement to the terms) of the Agreement by the Operator occurs through one of the following actions:
 
-- прохождения процедуры регистрации на Платформе и создания Личного кабинета Оператора;
-- подписания настоящего Договора в электронной или письменной форме;
-- фактического начала использования сервисов Платформы, включая размещение информации о складах или получение заявок.
+- completing the registration process on the Platform and creating an Operator Account;
+- signing this Agreement in electronic or written form;
+- actual commencement of use of Platform services, including posting information about facilities or receiving inquiries.
 
-Совершение акцепта означает, что Оператор:
-- ознакомился с условиями настоящего Договора в полном объёме;
-- согласен соблюдать все условия Договора;
-- обладает необходимыми правами и полномочиями для заключения Договора и осуществления деятельности по предоставлению складских услуг, as required by applicable local law.
-
----
-
-## 2. Термины и определения
-
-Для целей настоящего Договора применяются следующие термины и определения:
-
-### 2.1. Платформа
-
-**Платформа** — программно-технический комплекс Self-Storage Aggregator, включающий веб-сайт, мобильные приложения, API и другие онлайн-сервисы, обеспечивающие агрегирование информации о складских объектах, поиск подходящих предложений для Пользователей и передачу заявок Операторам.
-
-### 2.2. Оператор
-
-**Оператор** — юридическое лицо или индивидуальный предприниматель, управляющее одним или несколькими объектами self-storage, зарегистрированное на Платформе и размещающее информацию о своих складах и услугах для привлечения клиентов.
-
-### 2.3. Склад / Объект
-
-**Склад** или **Объект** — физическое здание, сооружение или территория, оборудованные для предоставления услуг самостоятельного хранения вещей клиентов, управляемые Оператором и представленные на Платформе.
-
-### 2.4. Бокс / Место хранения
-
-**Бокс** или **Место хранения** — отдельная складская единица (помещение, ячейка, контейнер, паллето-место и т.п.) в рамках Объекта, предназначенная для аренды Пользователем с целью хранения личных вещей или товаров.
-
-### 2.5. Пользователь
-
-**Пользователь** — физическое или юридическое лицо, использующее Платформу для поиска складских услуг и намеренное заключить или заключившее договор хранения с Оператором.
-
-### 2.6. Заявка (Lead)
-
-**Заявка** (англ. Lead) — первичный запрос Пользователя, оформленный через Платформу, на получение информации об условиях хранения или выражение интереса к конкретному Объекту или Боксу. Заявка содержит контактные данные Пользователя и базовые параметры требований.
-
-**Уточнение:** Заявка НЕ является подтверждённым бронированием (Confirmed Reservation) до момента явного согласия Оператора и Пользователя.
-
-### 2.7. Бронирование (Confirmed Reservation)
-
-**Бронирование** (англ. Confirmed Reservation) — подтверждённое соглашение между Оператором и Пользователем о резервировании конкретного Бокса на определённый срок. Бронирование возникает после положительного ответа Оператора на Заявку и подтверждения условий Пользователем.
-
-### 2.8. Личный кабинет Оператора
-
-**Личный кабинет Оператора** (далее — **"ЛК"**) — защищённый раздел Платформы, предоставляющий Оператору инструменты для:
-- размещения и редактирования информации о Складах и Боксах;
-- управления ценами, доступностью и условиями;
-- получения и обработки Заявок;
-- просмотра статистики и отчётов;
-- коммуникации с Платформой и Пользователями.
-
-### 2.9. Комиссия Платформы
-
-**Комиссия Платформы** — вознаграждение, выплачиваемое Оператором Платформе за предоставляемые услуги, включая доступ к сервисам, передачу Заявок и поддержку. Размер, порядок расчёта и условия выплаты Комиссии определяются в соответствии с разделом 6 настоящего Договора и индивидуальными параметрами, установленными для Оператора в Личном кабинете или в отдельных соглашениях, subject to regional addendum and applicable tax law.
+Acceptance means that the Operator:
+- has familiarized themselves with the terms of this Agreement in full;
+- agrees to comply with all terms of the Agreement;
+- possesses the necessary rights and authority to enter into the Agreement and conduct storage service activities, as required by applicable local law.
 
 ---
 
-## 3. Права и обязанности Платформы
+## 2. Terms and Definitions
 
-### 3.1. Обязанности Платформы
+For purposes of this Agreement, the following terms and definitions apply:
 
-Платформа обязуется:
+### 2.1. Platform
 
-1. **Обеспечить работу сервисов:**
-   - Поддерживать функционирование веб-сайта, мобильных приложений и API в режиме разумной доступности, прилагая коммерчески оправданные усилия для обеспечения непрерывности работы. Конкретные SLA параметры могут устанавливаться Regional Addendum, where supported by MVP functionality.
-   - Проводить плановое техническое обслуживание с предварительным уведомлением Операторов, когда это технически возможно.
+**Platform** — the Self-Storage Aggregator software and technical complex, including the website, mobile applications, API, and other online services that provide aggregation of information about storage facilities, search for suitable offerings for Users, and transmission of inquiries to Operators.
 
-2. **Передавать Заявки Оператору:**
-   - Передавать Оператору поступившие от Пользователей Заявки на аренду Боксов через Личный кабинет, электронную почту или другие согласованные каналы коммуникации, subject to platform technical availability.
-   - Обеспечить корректную маршрутизацию Заявок согласно параметрам Объектов и Боксов, указанным Оператором, where supported by platform functionality.
+### 2.2. Operator
 
-3. **Поддерживать Личный кабинет:**
-   - Предоставить Оператору доступ к функционалу Личного кабинета для управления информацией о Складах, Боксах, ценах, доступности и обработки Заявок.
-   - Обеспечивать базовую техническую поддержку по вопросам использования Платформы в рабочие дни в разумные сроки.
+**Operator** — a legal entity or individual entrepreneur managing one or more self-storage facilities, registered on the Platform, and listing information about their facilities and services to attract customers.
 
-4. **Модерировать контент (по необходимости):**
-   - Проверять размещаемую Операторами информацию на соответствие требованиям раздела 7 настоящего Договора, where supported by platform capacity.
-   - Предоставлять рекомендации по улучшению качества контента.
+### 2.3. Facility / Property
 
-5. **Обеспечивать конфиденциальность:**
-   - Соблюдать требования применимого законодательства о защите персональных данных, as defined by Regional Addendum and applicable data protection law.
-   - Не передавать контактные данные Оператора третьим лицам без согласия, за исключением случаев, предусмотренных законом или настоящим Договором.
+**Facility** or **Property** — a physical building, structure, or territory equipped to provide self-storage services for customer belongings, managed by the Operator and represented on the Platform.
 
-### 3.2. Права Платформы
+### 2.4. Unit / Storage Space
 
-Платформа имеет право:
+**Unit** or **Storage Space** — an individual storage unit (room, cell, container, pallet space, etc.) within a Facility, intended for rental by a User for the purpose of storing personal belongings or goods.
 
-1. **Модерировать и контролировать контент:**
-   - Проверять информацию, размещаемую Оператором, на соответствие требованиям настоящего Договора, законодательству и внутренним стандартам качества.
-   - Требовать от Оператора исправления недостоверной, неполной или неактуальной информации.
-   - Отклонять или удалять контент, нарушающий условия Договора, в том числе содержащий запрещённые материалы, вводящий в заблуждение или противоречащий закону.
+### 2.5. User
 
-2. **Приостанавливать или ограничивать доступ:**
-   - Временно или постоянно приостанавливать доступ Оператора к Платформе при выявлении нарушений настоящего Договора, включая, но не ограничиваясь:
-     - предоставлением заведомо ложной информации;
-     - систематическим игнорированием Заявок;
-     - получением жалоб от Пользователей на качество услуг или мошеннические действия;
-     - нарушением обязательств по оплате Комиссии;
-     - попытками манипулирования системой или нарушения безопасности.
+**User** — an individual or legal entity using the Platform to search for storage services and intending to enter into or having entered into a storage contract with the Operator.
+
+### 2.6. Lead (Inquiry)
+
+**Lead** (Inquiry) — an initial request from a User, submitted through the Platform, to receive information about storage terms or expressing interest in a specific Facility or Unit. A Lead contains the User's contact information and basic requirement parameters.
+
+**Clarification:** A Lead is NOT a Confirmed Reservation until explicit agreement by both the Operator and User.
+
+### 2.7. Confirmed Reservation
+
+**Confirmed Reservation** — a confirmed agreement between the Operator and User regarding the reservation of a specific Unit for a defined period. A Confirmed Reservation occurs after the Operator's positive response to a Lead and confirmation of terms by the User.
+
+### 2.8. Operator Account
+
+**Operator Account** (hereinafter **"Account"**) — a protected section of the Platform providing the Operator with tools for:
+- posting and editing information about Facilities and Units;
+- managing prices, availability, and terms;
+- receiving and processing Leads;
+- viewing statistics and reports;
+- communication with the Platform and Users.
+
+### 2.9. Platform Commission
+
+**Platform Commission** — compensation paid by the Operator to the Platform for services provided, including access to services, transmission of Leads, and support. The amount, calculation method, and payment terms of the Commission are determined in accordance with Section 6 of this Agreement and individual parameters established for the Operator in the Operator Account or in separate agreements, subject to regional addendum and applicable tax law.
+
+---
+
+## 3. Rights and Obligations of the Platform
+
+### 3.1. Obligations of the Platform
+
+The Platform undertakes to:
+
+1. **Ensure service operation:**
+   - Maintain the functioning of the website, mobile applications, and API with reasonable availability, making commercially reasonable efforts to ensure continuity of operation. Specific SLA parameters may be established by Regional Addendum, where supported by MVP functionality.
+   - Conduct scheduled technical maintenance with advance notice to Operators, when technically feasible.
+
+2. **Transmit Leads to the Operator:**
+   - Transmit Leads received from Users for Unit rentals to the Operator through the Operator Account, email, or other agreed communication channels, subject to platform technical availability.
+   - Ensure correct routing of Leads according to the Facility and Unit parameters specified by the Operator, where supported by platform functionality.
+
+3. **Maintain the Operator Account:**
+   - Provide the Operator with access to Operator Account functionality for managing information about Facilities, Units, prices, availability, and processing Leads.
+   - Ensure basic technical support for Platform usage issues during business days within reasonable timeframes.
+
+4. **Moderate content (as necessary):**
+   - Review information posted by Operators for compliance with the requirements of Section 7 of this Agreement, where supported by platform capacity.
+   - Provide recommendations for improving content quality.
+
+5. **Ensure confidentiality:**
+   - Comply with applicable personal data protection legislation requirements, as defined by Regional Addendum and applicable data protection law.
+   - Not transfer the Operator's contact information to third parties without consent, except as required by law or this Agreement.
+
+### 3.2. Rights of the Platform
+
+The Platform has the right to:
+
+1. **Moderate and control content:**
+   - Review information posted by the Operator for compliance with the requirements of this Agreement, legislation, and internal quality standards.
+   - Require the Operator to correct inaccurate, incomplete, or outdated information.
+   - Reject or remove content violating the Agreement terms, including prohibited materials, misleading information, or content contrary to law.
+
+2. **Suspend or restrict access:**
+   - Temporarily or permanently suspend the Operator's access to the Platform upon detection of violations of this Agreement, including but not limited to:
+     - provision of knowingly false information;
+     - systematic ignoring of Leads;
+     - receipt of User complaints regarding service quality or fraudulent actions;
+     - violation of Commission payment obligations;
+     - attempts to manipulate the system or violate security.
    - Enforcement of restrictions may occur manually or through automated means, subject to platform technical availability and alignment with Trust & Safety Framework (DOC-106).
-   - Приостанавливать показ Объектов Оператора в результатах поиска при наличии технических проблем, жалоб или до устранения выявленных несоответствий.
+   - Suspend display of the Operator's Facilities in search results in the presence of technical problems, complaints, or until identified discrepancies are resolved.
 
-3. **Изменять функционал Платформы:**
-   - Вносить изменения в интерфейс, функционал и алгоритмы работы Платформы с целью улучшения качества сервиса, безопасности или соответствия законодательству.
-   - Добавлять новые функции или прекращать поддержку устаревших возможностей с уведомлением Операторов в разумные сроки.
+3. **Modify Platform functionality:**
+   - Make changes to the interface, functionality, and Platform algorithms to improve service quality, security, or legislative compliance.
+   - Add new features or discontinue support for outdated capabilities with notice to Operators within reasonable timeframes.
 
-4. **Устанавливать приоритеты показа:**
-   - Определять алгоритмы ранжирования и показа Объектов в результатах поиска на основании различных факторов (релевантность, качество контента, рейтинг, отзывы, история работы с Платформой и т.д.), subject to platform technical implementation.
-   - Не раскрывать полный алгоритм ранжирования в целях предотвращения манипуляций.
+4. **Establish display priorities:**
+   - Determine algorithms for ranking and displaying Facilities in search results based on various factors (relevance, content quality, rating, reviews, Platform interaction history, etc.), subject to platform technical implementation.
+   - Not disclose the complete ranking algorithm to prevent manipulation.
 
-5. **Собирать и анализировать данные:**
-   - Собирать и обрабатывать агрегированные данные о работе Платформы, поведении Пользователей, эффективности Операторов для целей улучшения сервиса, формирования статистики и отчётности, в соответствии с applicable data protection law.
-   - Использовать обезличенные данные для аналитики, исследований и маркетинга.
+5. **Collect and analyze data:**
+   - Collect and process aggregated data about Platform operation, User behavior, and Operator effectiveness for purposes of improving the service, forming statistics and reports, in accordance with applicable data protection law.
+   - Use anonymized data for analytics, research, and marketing.
 
-6. **Запрашивать подтверждающие документы:**
-   - Требовать от Оператора предоставления документов, подтверждающих право на осуществление деятельности, владение или управление Объектами, соответствие требованиям безопасности, as may be required by applicable law or regulatory requirements.
+6. **Request supporting documents:**
+   - Require the Operator to provide documents confirming the right to conduct business, ownership or management of Facilities, and compliance with safety requirements, as may be required by applicable law or regulatory requirements.
 
 ---
 
-## 4. Права и обязанности Оператора
+## 4. Rights and Obligations of the Operator
 
-### 4.1. Обязанности Оператора
+### 4.1. Obligations of the Operator
 
-Оператор обязуется:
+The Operator undertakes to:
 
-1. **Предоставлять достоверную информацию:**
-   - Размещать на Платформе полную, точную и актуальную информацию о своих Объектах, Боксах, ценах, условиях аренды и доступности.
-   - Незамедлительно обновлять информацию при изменении условий (цены, доступность, характеристики Боксов и т.д.).
-   - Не вводить Пользователей в заблуждение относительно характеристик услуг, наличия свободных мест, условий договора или иных существенных факторов.
+1. **Provide accurate information:**
+   - Post complete, accurate, and current information on the Platform about their Facilities, Units, prices, rental terms, and availability.
+   - Immediately update information when conditions change (prices, availability, Unit characteristics, etc.).
+   - Not mislead Users regarding service characteristics, availability of vacant spaces, contract terms, or other material factors.
 
-2. **Обрабатывать Заявки:**
-   - Своевременно (в течение **24 часов** с момента получения, или в срок, установленный Regional Addendum) рассматривать поступающие Заявки от Пользователей и давать ответ (подтверждение, уточнение условий или мотивированный отказ).
-   - Соблюдать профессиональные стандарты коммуникации, быть вежливым, корректным и информативным при общении с Пользователями.
+2. **Process Leads:**
+   - Timely (within **24 hours** of receipt, or within the timeframe established by Regional Addendum) review incoming Leads from Users and provide a response (confirmation, clarification of terms, or reasoned refusal).
+   - Observe professional communication standards, being polite, correct, and informative when communicating with Users.
    - Response time requirements are subject to platform technical availability for tracking and may be enforced progressively.
 
-3. **Соблюдать условия работы с Пользователями:**
-   - Заключать договоры хранения с Пользователями на условиях, не менее выгодных, чем те, что указаны на Платформе.
-   - Предоставлять Пользователям услуги надлежащего качества в соответствии с описанием, размещённым на Платформе, и applicable consumer protection law.
-   - Разрешать споры с Пользователями добросовестно, в соответствии с законодательством и условиями заключённого договора хранения.
+3. **Comply with terms of work with Users:**
+   - Enter into storage contracts with Users on terms no less favorable than those indicated on the Platform.
+   - Provide Users with services of appropriate quality in accordance with the description posted on the Platform and applicable consumer protection law.
+   - Resolve disputes with Users in good faith, in accordance with legislation and the terms of the concluded storage contract.
 
-4. **Оплачивать Комиссию Платформы:**
-   - Своевременно и в полном объёме выплачивать Платформе Комиссию в соответствии с разделом 6 настоящего Договора.
-   - Предоставлять необходимые документы для расчёта и подтверждения Комиссии, as required by Regional Addendum and applicable tax law.
+4. **Pay Platform Commission:**
+   - Timely and in full pay the Platform Commission in accordance with Section 6 of this Agreement.
+   - Provide necessary documents for calculation and confirmation of the Commission, as required by Regional Addendum and applicable tax law.
    - Payment processing mechanisms are subject to regional payment infrastructure and may vary by region per DOC-097.
 
-5. **Соблюдать применимое законодательство:**
-   - Осуществлять свою деятельность в соответствии с applicable law, включая лицензирование (если требуется), соблюдение норм пожарной безопасности, санитарных правил и требований к хранению имущества.
-   - Обеспечивать безопасность и сохранность имущества Пользователей в соответствии с заключёнными договорами хранения и применимыми нормами.
+5. **Comply with applicable law:**
+   - Conduct business in accordance with applicable law, including licensing (if required), compliance with fire safety standards, sanitary rules, and property storage requirements.
+   - Ensure safety and security of User property in accordance with concluded storage contracts and applicable standards.
 
-6. **Защищать персональные данные:**
-   - Обрабатывать персональные данные Пользователей, переданные через Платформу, исключительно в целях исполнения договоров хранения и в соответствии с applicable data protection law.
-   - Обеспечивать конфиденциальность и безопасность персональных данных, не передавать их третьим лицам без законных оснований.
-   - Заключить с Платформой Соглашение об обработке персональных данных (Data Processing Agreement), if required by Regional Addendum.
+6. **Protect personal data:**
+   - Process personal data of Users transmitted through the Platform exclusively for purposes of fulfilling storage contracts and in accordance with applicable data protection law.
+   - Ensure confidentiality and security of personal data, not transfer to third parties without lawful grounds.
+   - Enter into a Data Processing Agreement with the Platform, if required by Regional Addendum.
 
-7. **Поддерживать качество объектов:**
-   - Обеспечивать надлежащее техническое состояние Объектов и Боксов, включая чистоту, функционирование систем безопасности, климат-контроля (если заявлен) и доступа.
-   - Устранять выявленные недостатки в разумные сроки.
+7. **Maintain facility quality:**
+   - Ensure proper technical condition of Facilities and Units, including cleanliness, functioning of security systems, climate control (if stated), and access.
+   - Remedy identified deficiencies within reasonable timeframes.
 
-### 4.2. Права Оператора
+### 4.2. Rights of the Operator
 
-Оператор имеет право:
+The Operator has the right to:
 
-1. **Использовать сервисы Платформы:**
-   - Получать доступ к Личному кабинету и использовать предоставляемые инструменты для управления своими Объектами и обработки Заявок.
-   - Получать статистику и аналитику по работе своих Объектов, where supported by platform functionality.
+1. **Use Platform services:**
+   - Receive access to the Operator Account and use the provided tools for managing their Facilities and processing Leads.
+   - Receive statistics and analytics on the operation of their Facilities, where supported by platform functionality.
 
-2. **Получать Заявки:**
-   - Получать от Платформы Заявки от заинтересованных Пользователей в соответствии с настройками и параметрами, указанными Оператором.
+2. **Receive Leads:**
+   - Receive Leads from interested Users from the Platform in accordance with the settings and parameters specified by the Operator.
 
-3. **Самостоятельно определять условия:**
-   - Устанавливать цены на аренду Боксов в соответствии с рыночными условиями и собственной стратегией, subject to applicable pricing regulations.
-   - Определять минимальные и максимальные сроки аренды, размер депозита, дополнительные услуги и условия их предоставления, within framework defined by applicable law.
+3. **Independently determine terms:**
+   - Set prices for Unit rentals in accordance with market conditions and their own strategy, subject to applicable pricing regulations.
+   - Determine minimum and maximum rental periods, deposit amount, additional services and their provision terms, within framework defined by applicable law.
 
-4. **Отказывать в заключении договора:**
-   - Мотивированно отказать Пользователю в заключении договора хранения при наличии обоснованных причин (например, отсутствие свободных мест, несоответствие требуемых условий возможностям Объекта, неполнота предоставленных данных), in accordance with applicable non-discrimination law.
+4. **Refuse to enter into a contract:**
+   - Refuse a User entry into a storage contract with reasonable cause (for example, absence of vacant spaces, mismatch between required conditions and Facility capabilities, incompleteness of provided data), in accordance with applicable non-discrimination law.
 
-5. **Запрашивать поддержку:**
-   - Обращаться в службу поддержки Платформы по техническим, операционным и коммерческим вопросам.
-   - Получать консультации по использованию функционала Платформы.
+5. **Request support:**
+   - Contact Platform support regarding technical, operational, and commercial issues.
+   - Receive consultations on using Platform functionality.
 
-6. **Получать информацию:**
-   - Быть информированным об изменениях в функционале Платформы, условиях Договора, алгоритмах ранжирования (в общем виде, без раскрытия деталей) и других существенных вопросах.
+6. **Receive information:**
+   - Be informed of changes in Platform functionality, Agreement terms, ranking algorithms (in general form, without disclosure of details), and other material issues.
 
 ---
 
-## 5. Рейтинги, отзывы и репутация
+## 5. Ratings, Reviews, and Reputation
 
-### 5.1. Система рейтингов
+### 5.1. Rating System
 
-Платформа может внедрять систему рейтингов Операторов на основании отзывов Пользователей, статистики обработки Заявок, количества подтверждённых бронирований и других показателей качества работы.
+The Platform may implement an Operator rating system based on User reviews, Lead processing statistics, number of Confirmed Reservations, and other quality performance indicators.
 
 **MVP v1 Note:** Rating and reputation systems are subject to platform technical availability and may be applied progressively as platform capabilities mature. Implementation aligns with Trust & Safety Framework (DOC-106) and Quality Score Algorithm principles (DOC-092).
 
-**Применение рейтингов:**
-- Рейтинги могут использоваться для ранжирования Объектов в результатах поиска, where supported by platform functionality.
-- Низкий рейтинг может повлечь снижение видимости Объектов Оператора или временное ограничение доступа, subject to Trust & Safety Framework enforcement mechanisms.
+**Application of ratings:**
+- Ratings may be used for ranking Facilities in search results, where supported by platform functionality.
+- A low rating may result in reduced visibility of the Operator's Facilities or temporary access restriction, subject to Trust & Safety Framework enforcement mechanisms.
 
-### 5.2. Отзывы Пользователей
+### 5.2. User Reviews
 
-Пользователи могут оставлять отзывы о работе с Оператором после завершения или в процессе аренды, where supported by platform functionality.
+Users may leave reviews about working with the Operator after completion or during the rental period, where supported by platform functionality.
 
-**Правила модерации отзывов:**
-- Платформа оставляет за собой право модерировать отзывы, удаляя те, которые содержат нецензурную лексику, клевету, персональные данные третьих лиц или нарушают условия использования Платформы.
-- Оператор вправе отвечать на отзывы, давать пояснения и комментарии, where supported by platform functionality.
+**Review moderation rules:**
+- The Platform reserves the right to moderate reviews, removing those containing profanity, defamation, personal data of third parties, or violating Platform usage terms.
+- The Operator has the right to respond to reviews, provide explanations and comments, where supported by platform functionality.
 
-### 5.3. Качественные показатели
+### 5.3. Quality Indicators
 
-Платформа может учитывать следующие показатели при оценке качества работы Оператора (subject to platform technical availability):
+The Platform may consider the following indicators when assessing the quality of the Operator's work (subject to platform technical availability):
 
-- **Скорость ответа на Заявки:** Среднее время от получения Заявки до ответа Оператора.
-- **Процент подтверждённых бронирований:** Доля Заявок, по которым Оператор подтвердил бронирование.
-- **Актуальность информации:** Частота обновлений цен, доступности и характеристик Объектов.
-- **Жалобы Пользователей:** Количество и характер жалоб, поступивших на Оператора.
-- **Отмены и отказы:** Частота отмены бронирований или отказов в обслуживании без обоснованных причин.
+- **Lead response speed:** Average time from Lead receipt to Operator response.
+- **Percentage of Confirmed Reservations:** Share of Leads for which the Operator confirmed a reservation.
+- **Information currency:** Frequency of updates to prices, availability, and Facility characteristics.
+- **User complaints:** Number and nature of complaints received about the Operator.
+- **Cancellations and refusals:** Frequency of reservation cancellations or service refusals without reasonable cause.
 
 **MVP v1 Note:** Measurement and enforcement of quality metrics are implemented progressively as platform analytics capabilities mature, in alignment with DOC-014 (Analytics & Metrics Tracking).
 
 ---
 
-## 6. Комиссия и условия оплаты
+## 6. Commission and Payment Terms
 
-### 6.1. Модель комиссии
+### 6.1. Commission Model
 
-Платформа получает вознаграждение от Операторов в виде Комиссии за предоставляемые услуги.
+The Platform receives compensation from Operators in the form of a Commission for services provided.
 
-**Возможные модели комиссии (определяются индивидуально и/or в Regional Addendum):**
+**Possible commission models (determined individually and/or in Regional Addendum):**
 
-1. **Комиссия за Заявку (Lead-based):**
-   - Оператор оплачивает фиксированную сумму за каждую переданную Заявку от Пользователя, независимо от факта заключения договора хранения.
+1. **Lead-based Commission:**
+   - The Operator pays a fixed amount for each transmitted Lead from a User, regardless of whether a storage contract is concluded.
 
-2. **Комиссия за подтверждённое бронирование (Booking-based):**
-   - Оператор оплачивает процент или фиксированную сумму за каждое подтверждённое бронирование (Confirmed Reservation).
+2. **Booking-based Commission:**
+   - The Operator pays a percentage or fixed amount for each Confirmed Reservation.
 
-3. **Комиссия от выручки (Revenue share):**
-   - Оператор оплачивает процент от стоимости оказанных услуг хранения (например, процент от суммы арендной платы за период хранения), where supported by regional payment infrastructure per DOC-097.
+3. **Revenue share Commission:**
+   - The Operator pays a percentage of the cost of storage services provided (for example, a percentage of rental payment for the storage period), where supported by regional payment infrastructure per DOC-097.
 
-4. **Подписка (Subscription):**
-   - Оператор оплачивает фиксированную ежемесячную или ежегодную плату за доступ к Платформе независимо от количества Заявок или бронирований.
+4. **Subscription:**
+   - The Operator pays a fixed monthly or annual fee for access to the Platform regardless of the number of Leads or Reservations.
 
-5. **Гибридная модель:**
-   - Комбинация вышеуказанных моделей (например, базовая подписка + комиссия за бронирование).
+5. **Hybrid model:**
+   - A combination of the above models (for example, basic subscription + reservation commission).
 
 **MVP v1 Note:**
 - Specific commission model and payment mechanics are defined in Regional Addendum
 - Payment collection and invoicing capabilities are subject to regional payment infrastructure availability per DOC-097
 - Billing automation is implemented progressively as platform capabilities mature
 
-### 6.2. Размер комиссии
+### 6.2. Commission Amount
 
-Конкретный размер Комиссии определяется индивидуально для каждого Оператора и может зависеть от:
+The specific Commission amount is determined individually for each Operator and may depend on:
 
-- выбранной модели комиссии;
-- объёма Заявок и бронирований;
-- категории и местоположения Объектов;
-- уровня сервиса и поддержки, предоставляемого Платформой;
-- региональных рыночных условий, as defined by Regional Addendum;
-- действующих акций и специальных условий.
+- the chosen commission model;
+- volume of Leads and reservations;
+- category and location of Facilities;
+- level of service and support provided by the Platform;
+- regional market conditions, as defined by Regional Addendum;
+- active promotions and special terms.
 
-Размер Комиссии указывается в Личном кабинете Оператора или в отдельном дополнительном соглашении.
+The Commission amount is indicated in the Operator Account or in a separate additional agreement.
 
-### 6.3. Порядок расчёта и выплаты
+### 6.3. Calculation and Payment Procedure
 
-1. **Расчётный период:**
-   - Комиссия рассчитывается за отчётный период (например, календарный месяц), unless otherwise specified in Regional Addendum.
+1. **Billing period:**
+   - The Commission is calculated for the reporting period (for example, calendar month), unless otherwise specified in Regional Addendum.
 
-2. **Формирование отчёта:**
-   - По окончании отчётного периода Платформа формирует отчёт с указанием количества переданных Заявок, подтверждённых бронирований, сумм к оплате, where supported by platform functionality.
-   - Отчёт предоставляется Оператору через Личный кабинет или по email.
+2. **Report generation:**
+   - At the end of the reporting period, the Platform generates a report indicating the number of transmitted Leads, Confirmed Reservations, and amounts payable, where supported by platform functionality.
+   - The report is provided to the Operator through the Operator Account or by email.
 
-3. **Выставление счёта:**
-   - На основании отчёта Платформа выставляет Оператору счёт (Invoice) на оплату Комиссии, subject to regional invoicing requirements.
+3. **Invoice issuance:**
+   - Based on the report, the Platform issues an Invoice to the Operator for payment of the Commission, subject to regional invoicing requirements.
 
-4. **Сроки оплаты:**
-   - Оператор обязуется оплатить счёт в течение **[указать срок, например: 10 календарных дней]** с даты выставления счёта, or as specified in Regional Addendum.
+4. **Payment terms:**
+   - The Operator undertakes to pay the invoice within **[specify period, for example: 10 calendar days]** from the invoice date, or as specified in Regional Addendum.
 
-5. **Способы оплаты:**
-   - Оплата производится банковским переводом, through regional payment infrastructure, или иными способами, согласованными Сторонами and available in the region per DOC-097.
+5. **Payment methods:**
+   - Payment is made by bank transfer, through regional payment infrastructure, or by other methods agreed by the Parties and available in the region per DOC-097.
 
-6. **Налоги и сборы:**
-   - Все применимые налоги, сборы и пошлины оплачиваются Сторонами в соответствии с applicable tax law, as defined in Regional Addendum.
-   - Комиссия указывается [с НДС / без НДС / as applicable], as required by regional tax regulations.
+6. **Taxes and fees:**
+   - All applicable taxes, fees, and duties are paid by the Parties in accordance with applicable tax law, as defined in Regional Addendum.
+   - The Commission is indicated [with VAT / without VAT / as applicable], as required by regional tax regulations.
 
 **MVP v1 Note:** Payment processing, invoicing automation, and tax calculation are subject to regional capabilities and may be implemented manually or semi-automatically during MVP phase.
 
-### 6.4. Последствия неуплаты
+### 6.4. Consequences of Non-Payment
 
-1. **Уведомление:**
-   - В случае неоплаты счёта в установленный срок Платформа направляет Оператору напоминание с указанием суммы задолженности и срока погашения.
+1. **Notification:**
+   - In case of non-payment of the invoice within the established timeframe, the Platform sends the Operator a reminder indicating the amount of debt and payment deadline.
 
-2. **Ограничение доступа:**
-   - При неоплате в течение **[указать срок, например: 5 рабочих дней]** после напоминания Платформа вправе ограничить или приостановить доступ Оператора к сервисам, включая прекращение передачи новых Заявок и скрытие Объектов из результатов поиска, subject to platform technical availability for enforcement.
+2. **Access restriction:**
+   - In case of non-payment within **[specify period, for example: 5 business days]** after the reminder, the Platform has the right to restrict or suspend the Operator's access to services, including cessation of transmission of new Leads and hiding Facilities from search results, subject to platform technical availability for enforcement.
 
-3. **Расторжение Договора:**
-   - При систематической неуплате (задержка более **[указать срок]** или неоплата **[указать количество]** счётов подряд) Платформа вправе расторгнуть Договор в одностороннем порядке с уведомлением Оператора.
+3. **Agreement termination:**
+   - In case of systematic non-payment (delay of more than **[specify period]** or non-payment of **[specify number]** invoices in a row), the Platform has the right to terminate the Agreement unilaterally with notice to the Operator.
 
-4. **Взыскание задолженности:**
-   - Платформа вправе взыскивать задолженность в порядке, предусмотренном применимым законодательством, as defined in Regional Addendum.
-
----
-
-## 7. Требования к контенту и информации
-
-### 7.1. Общие требования
-
-Вся информация, размещаемая Оператором на Платформе, должна:
-
-- быть **достоверной, полной и актуальной**;
-- соответствовать реальному состоянию Объектов и Боксов;
-- не вводить в заблуждение Пользователей относительно характеристик, условий, цен и доступности;
-- соответствовать требованиям применимого законодательства, including consumer protection and advertising regulations.
-
-### 7.2. Фотографии и визуальные материалы
-
-- Фотографии должны соответствовать реальному состоянию Объектов и Боксов на момент публикации.
-- Запрещается использовать чужие фотографии, изображения из интернета, не относящиеся к данному Объекту, или существенно изменённые (фильтры, ретушь) изображения, искажающие действительность.
-- Фотографии не должны содержать персональных данных третьих лиц (лица людей, номера автомобилей и т.п.) без их согласия, as required by applicable data protection law.
-
-### 7.3. Описание услуг
-
-- Описание должно быть чётким, информативным и не содержать недостоверной или вводящей в заблуждение информации.
-- Необходимо указывать все существенные условия: размеры Боксов, тип доступа, наличие климат-контроля, охраны, страхования, дополнительных услуг и т.д.
-- Запрещается использовать формулировки, гарантирующие абсолютную безопасность, полное отсутствие рисков или обещающие невозможные условия.
-
-### 7.4. Запрещённый контент
-
-Оператору запрещается размещать на Платформе:
-
-- Недостоверную, заведомо ложную или вводящую в заблуждение информацию.
-- Контент, нарушающий права третьих лиц (авторские права, товарные знаки, патенты и т.д.).
-- Контент, содержащий нецензурную лексику, оскорбления, угрозы, дискриминацию по любому признаку.
-- Контент, пропагандирующий насилие, экстремизм, терроризм, незаконную деятельность.
-- Спам, рекламу сторонних ресурсов или услуг, не связанных с предметом Договора.
-- Персональные данные третьих лиц без их согласия, in violation of applicable data protection law.
-- Контент, нарушающий применимое законодательство или общепринятые нормы морали.
-
-### 7.5. Ответственность за контент
-
-Оператор несёт полную ответственность за размещаемый контент. Платформа не проверяет всю информацию до публикации, но оставляет за собой право модерировать контент и требовать исправлений или удалять нарушающие материалы, where supported by platform moderation capacity.
+4. **Debt collection:**
+   - The Platform has the right to collect debt in the manner prescribed by applicable law, as defined in Regional Addendum.
 
 ---
 
-## 8. Конфиденциальность и защита данных
+## 7. Content and Information Requirements
 
-### 8.1. Обработка персональных данных
+### 7.1. General Requirements
 
-Обработка персональных данных Пользователей и Операторов осуществляется в соответствии с:
+All information posted by the Operator on the Platform must:
 
-- Политикой конфиденциальности Платформы;
+- be **accurate, complete, and current**;
+- correspond to the actual condition of Facilities and Units;
+- not mislead Users regarding characteristics, terms, prices, and availability;
+- comply with applicable law requirements, including consumer protection and advertising regulations.
+
+### 7.2. Photographs and Visual Materials
+
+- Photographs must correspond to the actual condition of Facilities and Units at the time of publication.
+- It is prohibited to use third-party photographs, images from the internet not related to the Facility, or substantially modified (filters, retouching) images distorting reality.
+- Photographs must not contain personal data of third parties (faces of people, vehicle numbers, etc.) without their consent, as required by applicable data protection law.
+
+### 7.3. Service Description
+
+- The description must be clear, informative, and not contain false or misleading information.
+- It is necessary to indicate all material terms: Unit sizes, access type, availability of climate control, security, insurance, additional services, etc.
+- It is prohibited to use wording guaranteeing absolute safety, complete absence of risks, or promising impossible conditions.
+
+### 7.4. Prohibited Content
+
+The Operator is prohibited from posting on the Platform:
+
+- Inaccurate, knowingly false, or misleading information.
+- Content violating third-party rights (copyrights, trademarks, patents, etc.).
+- Content containing profanity, insults, threats, discrimination on any basis.
+- Content promoting violence, extremism, terrorism, illegal activities.
+- Spam, advertising of third-party resources or services not related to the subject of the Agreement.
+- Personal data of third parties without their consent, in violation of applicable data protection law.
+- Content violating applicable law or generally accepted moral standards.
+
+### 7.5. Content Responsibility
+
+The Operator bears full responsibility for posted content. The Platform does not verify all information before publication but reserves the right to moderate content and require corrections or remove violating materials, where supported by platform moderation capacity.
+
+---
+
+## 8. Confidentiality and Data Protection
+
+### 8.1. Personal Data Processing
+
+Processing of personal data of Users and Operators is carried out in accordance with:
+
+- The Platform's Privacy Policy;
 - Applicable data protection law, as defined in Regional Addendum;
-- Соглашением об обработке персональных данных (Data Processing Agreement), if required by Regional Addendum.
+- Data Processing Agreement, if required by Regional Addendum.
 
-### 8.2. Роли Сторон
+### 8.2. Roles of the Parties
 
-- **Платформа** выступает в качестве оператора персональных данных (data controller) для данных, собираемых в процессе работы Платформы.
-- **Оператор** выступает в качестве оператора персональных данных (data controller) для данных Пользователей, полученных при заключении и исполнении договоров хранения.
+- **Platform** acts as a data controller for data collected in the process of Platform operation.
+- **Operator** acts as a data controller for User data received when entering into and performing storage contracts.
 
-Обработка персональных данных в рамках взаимодействия Платформы и Оператора регулируется отдельным Data Processing Agreement (DPA), where required by applicable data protection law.
+Personal data processing in the context of Platform and Operator interaction is governed by a separate Data Processing Agreement (DPA), where required by applicable data protection law.
 
-### 8.3. Обязательства по защите данных
+### 8.3. Data Protection Obligations
 
-Обе Стороны обязуются:
+Both Parties undertake to:
 
-- Обрабатывать персональные данные исключительно в целях, установленных настоящим Договором и применимым законодательством.
-- Обеспечивать конфиденциальность и безопасность персональных данных.
-- Не передавать персональные данные третьим лицам без законных оснований или согласия субъектов данных.
-- Уведомлять другую Сторону о случаях утечки или несанкционированного доступа к персональным данным в срок, установленный applicable data protection law (например, в течение **24-72 часов**).
-- Соблюдать права субъектов данных (доступ, исправление, удаление, портируемость и т.д.) in accordance with applicable data protection law.
+- Process personal data exclusively for purposes established by this Agreement and applicable law.
+- Ensure confidentiality and security of personal data.
+- Not transfer personal data to third parties without lawful grounds or consent of data subjects.
+- Notify the other Party of cases of leakage or unauthorized access to personal data within the timeframe established by applicable data protection law (for example, within **24-72 hours**).
+- Comply with data subject rights (access, correction, deletion, portability, etc.) in accordance with applicable data protection law.
 
 ---
 
-## 9. Ответственность Сторон
+## 9. Liability of the Parties
 
-### 9.1. Ответственность Платформы
+### 9.1. Platform Liability
 
-Платформа несёт ответственность за:
+The Platform bears responsibility for:
 
-- Обеспечение функционирования своих сервисов в пределах разумной доступности, subject to MVP technical capabilities and applicable SLA if defined in Regional Addendum.
-- Сохранность персональных данных, обрабатываемых Платформой, в соответствии с applicable data protection law.
-- Соблюдение условий настоящего Договора в части своих обязательств.
+- Ensuring functionality of its services within reasonable availability, subject to MVP technical capabilities and applicable SLA if defined in Regional Addendum.
+- Security of personal data processed by the Platform, in accordance with applicable data protection law.
+- Compliance with the terms of this Agreement in respect of its obligations.
 
-**Ограничение ответственности:**
+**Limitation of liability:**
 
-Платформа НЕ несёт ответственности за:
+The Platform is NOT liable for:
 
-- Действия или бездействие Операторов, качество предоставляемых ими услуг хранения, safety of stored property, or compliance with contracts between Operators and Users.
-- Убытки Операторов, связанные с изменением функционала Платформы, алгоритмов ранжирования, прекращением работы отдельных сервисов или временными техническими сбоями.
-- Упущенную выгоду Оператора, неполучение ожидаемого количества Заявок или бронирований.
-- Действия третьих лиц (хакеры, DDoS-атаки, сбои интернет-провайдеров), находящиеся вне контроля Платформы.
-- Ошибки или неточности в информации, предоставленной Оператором.
-- Споры между Оператором и Пользователем.
+- Actions or omissions of Operators, quality of storage services provided by them, safety of stored property, or compliance with contracts between Operators and Users.
+- Losses of Operators related to changes in Platform functionality, ranking algorithms, cessation of individual services, or temporary technical failures.
+- Lost profits of the Operator, failure to receive the expected number of Leads or reservations.
+- Actions of third parties (hackers, DDoS attacks, internet provider failures) beyond the Platform's control.
+- Errors or inaccuracies in information provided by the Operator.
+- Disputes between the Operator and User.
 
-Совокупная ответственность Платформы перед Оператором за все претензии, возникшие в связи с исполнением настоящего Договора, ограничивается суммой, эквивалентной сумме Комиссии, уплаченной Оператором за последние **[указать период, например: 3 месяца]**, or as defined in Regional Addendum.
+The Platform's aggregate liability to the Operator for all claims arising in connection with performance of this Agreement is limited to an amount equivalent to the Commission paid by the Operator for the last **[specify period, for example: 3 months]**, or as defined in Regional Addendum.
 
-### 9.2. Ответственность Оператора
+### 9.2. Operator Liability
 
-Оператор несёт ответственность за:
+The Operator bears responsibility for:
 
-- Достоверность и актуальность размещаемой на Платформе информации.
-- Качество предоставляемых услуг хранения и исполнение договоров с Пользователями in accordance with applicable consumer protection law.
-- Соблюдение применимого законодательства при осуществлении своей деятельности, including licensing, safety regulations, and compliance requirements.
-- Защиту персональных данных Пользователей, полученных в процессе взаимодействия, in accordance with applicable data protection law.
-- Своевременную оплату Комиссии Платформы.
+- Accuracy and currency of information posted on the Platform.
+- Quality of storage services provided and performance of contracts with Users in accordance with applicable consumer protection law.
+- Compliance with applicable law when conducting business, including licensing, safety regulations, and compliance requirements.
+- Protection of personal data of Users received in the process of interaction, in accordance with applicable data protection law.
+- Timely payment of Platform Commission.
 
-Оператор обязуется возместить Платформе убытки, причинённые нарушением условий настоящего Договора, включая штрафы и санкции, наложенные на Платформу вследствие действий Оператора, subject to applicable liability limitations and dispute resolution procedures defined in Regional Addendum.
+The Operator undertakes to compensate the Platform for losses caused by violation of the terms of this Agreement, including fines and sanctions imposed on the Platform as a result of the Operator's actions, subject to applicable liability limitations and dispute resolution procedures defined in Regional Addendum.
 
-### 9.3. Освобождение от ответственности (Indemnification)
+### 9.3. Indemnification
 
-Оператор обязуется защищать, освобождать от ответственности и возмещать ущерб Платформе, её аффилированным лицам, директорам, сотрудникам и партнёрам от любых претензий, исков, убытков, обязательств, издержек и расходов (включая разумные юридические издержки), возникающих из или в связи с:
+The Operator undertakes to defend, indemnify, and hold harmless the Platform, its affiliates, directors, employees, and partners from any claims, lawsuits, losses, liabilities, costs, and expenses (including reasonable legal costs) arising from or in connection with:
 
-- нарушением Оператором условий настоящего Договора;
-- нарушением Оператором прав третьих лиц (интеллектуальная собственность, персональные данные и т.д.);
-- предоставлением Оператором недостоверной информации;
-- спорами между Оператором и Пользователями;
-- нарушением Оператором применимого законодательства.
+- the Operator's violation of the terms of this Agreement;
+- the Operator's violation of third-party rights (intellectual property, personal data, etc.);
+- provision of inaccurate information by the Operator;
+- disputes between the Operator and Users;
+- the Operator's violation of applicable law.
 
 Indemnification provisions are subject to limitations and procedures defined in Regional Addendum and applicable law.
 
 ---
 
-## 10. Срок действия и расторжение Договора
+## 10. Term and Termination of the Agreement
 
-### 10.1. Срок действия
+### 10.1. Term
 
-Настоящий Договор вступает в силу с момента акцепта (раздел 1.3) и действует бессрочно до момента расторжения одной из Сторон в соответствии с условиями настоящего раздела.
+This Agreement enters into force from the moment of acceptance (Section 1.3) and remains in effect indefinitely until terminated by one of the Parties in accordance with the terms of this section.
 
-### 10.2. Расторжение по инициативе Оператора
+### 10.2. Termination by the Operator
 
-Оператор вправе расторгнуть Договор в любое время, направив письменное уведомление Платформе за **[указать срок, например: 30 календарных дней]** до предполагаемой даты расторжения, or as defined in Regional Addendum.
+The Operator has the right to terminate the Agreement at any time by sending written notice to the Platform **[specify period, for example: 30 calendar days]** before the proposed termination date, or as defined in Regional Addendum.
 
-Расторжение Договора по инициативе Оператора не освобождает его от обязательств по оплате Комиссии, начисленной до даты расторжения.
+Termination of the Agreement at the initiative of the Operator does not release them from obligations to pay the Commission accrued before the termination date.
 
-### 10.3. Расторжение по инициативе Платформы
+### 10.3. Termination by the Platform
 
-Платформа вправе расторгнуть Договор:
+The Platform has the right to terminate the Agreement:
 
-1. **С уведомлением:**
-   - При отсутствии нарушений со стороны Оператора Платформа вправе расторгнуть Договор, уведомив Оператора за **[указать срок]**, or as defined in Regional Addendum.
+1. **With notice:**
+   - In the absence of violations by the Operator, the Platform has the right to terminate the Agreement by notifying the Operator **[specify period]** in advance, or as defined in Regional Addendum.
 
-2. **Без уведомления (немедленное расторжение):**
-   - При существенном нарушении Оператором условий Договора, включая:
-     - систематическое предоставление недостоверной информации;
-     - грубое нарушение прав Пользователей, мошеннические действия;
-     - неоплату Комиссии в течение **[указать срок]** после последнего напоминания;
-     - совершение действий, наносящих ущерб репутации Платформы;
-     - нарушение применимого законодательства, in violation of regulatory requirements.
+2. **Without notice (immediate termination):**
+   - In case of material breach by the Operator of the Agreement terms, including:
+     - systematic provision of inaccurate information;
+     - gross violation of User rights, fraudulent actions;
+     - non-payment of Commission within **[specify period]** after the last reminder;
+     - commission of actions damaging the Platform's reputation;
+     - violation of applicable law, in violation of regulatory requirements.
 
-### 10.4. Последствия расторжения
+### 10.4. Consequences of Termination
 
-При расторжении Договора:
+Upon termination of the Agreement:
 
-- Оператор теряет доступ к Личному кабинету и сервисам Платформы.
-- Информация об Объектах Оператора удаляется из результатов поиска и каталога Платформы.
-- Передача новых Заявок Оператору прекращается.
-- Оператор обязан завершить обработку ранее полученных Заявок и исполнить обязательства перед Пользователями, с которыми были заключены договоры хранения.
-- Финансовые обязательства Оператора по оплате Комиссии сохраняются до полного погашения задолженности.
+- The Operator loses access to the Operator Account and Platform services.
+- Information about the Operator's Facilities is removed from search results and the Platform catalog.
+- Transmission of new Leads to the Operator ceases.
+- The Operator must complete processing of previously received Leads and fulfill obligations to Users with whom storage contracts were concluded.
+- The Operator's financial obligations to pay the Commission remain until full repayment of debt.
 - Positive resolution of pending disputes and final settlement obligations are governed by Regional Addendum.
 
 ---
 
-## 11. Изменение условий Договора
+## 11. Modification of Agreement Terms
 
-### 11.1. Право Платформы на изменение
+### 11.1. Platform's Right to Modify
 
-Платформа оставляет за собой право изменять условия настоящего Договора в одностороннем порядке.
+The Platform reserves the right to modify the terms of this Agreement unilaterally.
 
-### 11.2. Уведомление об изменениях
+### 11.2. Notice of Modifications
 
-Об изменениях Договора Платформа уведомляет Операторов одним из следующих способов:
+The Platform notifies Operators of Agreement modifications by one of the following methods:
 
-- публикацией новой редакции Договора на официальном сайте Платформы;
-- направлением уведомления в Личный кабинет Оператора;
-- отправкой уведомления на email, указанный при регистрации.
+- publication of a new version of the Agreement on the Platform's official website;
+- sending a notification to the Operator Account;
+- sending a notification to the email specified during registration.
 
-Изменения вступают в силу не ранее **[указать срок, например: 14 календарных дней]** с момента уведомления, если иной срок не указан в уведомлении, or as required by Regional Addendum.
+Modifications enter into force no earlier than **[specify period, for example: 14 calendar days]** from the moment of notification, unless a different period is indicated in the notification, or as required by Regional Addendum.
 
-### 11.3. Согласие Оператора
+### 11.3. Operator's Consent
 
-Продолжение использования Платформы после вступления изменений в силу означает согласие Оператора с новой редакцией Договора.
+Continued use of the Platform after modifications enter into force means the Operator's consent to the new version of the Agreement.
 
-Если Оператор не согласен с изменениями, он обязан прекратить использование Платформы и расторгнуть Договор в соответствии с разделом 10.2 до даты вступления изменений в силу.
+If the Operator does not agree with the modifications, they must cease using the Platform and terminate the Agreement in accordance with Section 10.2 before the modifications enter into force.
 
 ---
 
-## 12. Разрешение споров и применимое право
+## 12. Dispute Resolution and Applicable Law
 
-### 12.1. Применимое право
+### 12.1. Applicable Law
 
-Настоящий Договор регулируется и толкуется в соответствии с **[applicable law as defined by Regional Addendum]**.
+This Agreement is governed by and interpreted in accordance with **[applicable law as defined by Regional Addendum]**.
 
 **Important Note:** This Master Agreement Template MUST be supplemented with a Regional Addendum that defines:
 - Specific governing law and jurisdiction
@@ -591,202 +591,202 @@ Indemnification provisions are subject to limitations and procedures defined in 
 - Applicable regulatory framework
 - Tax treatment and payment provisions
 
-### 12.2. Досудебный порядок
+### 12.2. Pre-Litigation Procedure
 
-Стороны обязуются соблюдать досудебный порядок урегулирования споров, as required by applicable law or defined in Regional Addendum.
+The Parties undertake to comply with a pre-litigation dispute resolution procedure, as required by applicable law or defined in Regional Addendum.
 
-Претензия направляется в письменной форме (включая электронную почту).
+A claim is sent in written form (including email).
 
-Срок рассмотрения претензии: **[указать срок]**, or as defined in Regional Addendum.
+Claim consideration period: **[specify period]**, or as defined in Regional Addendum.
 
-### 12.3. Судебный порядок
+### 12.3. Judicial Procedure
 
-В случае невозможности урегулирования спора в досудебном порядке споры разрешаются в **[applicable court/arbitration as defined by Regional Addendum]**.
+In case of impossibility of resolving the dispute through pre-litigation procedure, disputes are resolved in **[applicable court/arbitration as defined by Regional Addendum]**.
 
-### 12.4. Многонациональные Операторы
+### 12.4. Multi-National Operators
 
-Для Операторов, зарегистрированных в разных странах, применимое право и юрисдикция определяются Regional Addendum with consideration of international private law principles and conflict of laws rules.
+For Operators registered in different countries, applicable law and jurisdiction are determined by Regional Addendum with consideration of international private law principles and conflict of laws rules.
 
 ---
 
-## 13. Заключительные положения
+## 13. Final Provisions
 
-### 13.1. Полнота договора
+### 13.1. Entire Agreement
 
-1. **Исчерпывающее регулирование:**
-   - Настоящий Договор, включая Regional Addendum, приложения, дополнительные соглашения и документы, на которые Договор ссылается (Политика конфиденциальности, Content Guidelines, DPA и т.д.), представляет собой полное соглашение между Сторонами относительно предмета Договора.
+1. **Comprehensive regulation:**
+   - This Agreement, including Regional Addendum, appendices, additional agreements, and documents referenced by the Agreement (Privacy Policy, Content Guidelines, DPA, etc.), constitutes the complete agreement between the Parties regarding the subject matter of the Agreement.
 
-2. **Отмена предыдущих договорённостей:**
-   - Настоящий Договор заменяет и отменяет все предыдущие устные и письменные договорённости, соглашения, переписку и переговоры между Сторонами по вопросам, регулируемым Договором.
+2. **Cancellation of previous arrangements:**
+   - This Agreement replaces and cancels all previous oral and written arrangements, agreements, correspondence, and negotiations between the Parties on matters governed by the Agreement.
 
-3. **Толкование:**
-   - В случае неясности или противоречия между положениями Master Agreement Template и Regional Addendum, Regional Addendum имеет преимущественную силу для вопросов, специфичных для региона.
+3. **Interpretation:**
+   - In case of ambiguity or contradiction between provisions of the Master Agreement Template and Regional Addendum, the Regional Addendum takes precedence for region-specific matters.
 
-### 13.2. Приоритет над перепиской
+### 13.2. Priority Over Correspondence
 
-1. **Официальные документы:**
-   - Условия настоящего Договора и Regional Addendum имеют приоритет над любой неформальной перепиской между Сторонами (email, сообщения в чатах, устные договорённости), если иное не оформлено письменным дополнительным соглашением, подписанным уполномоченными представителями обеих Сторон.
+1. **Official documents:**
+   - The terms of this Agreement and Regional Addendum take priority over any informal correspondence between the Parties (email, chat messages, oral arrangements), unless otherwise formalized by a written additional agreement signed by authorized representatives of both Parties.
 
-2. **Изменения и дополнения:**
-   - Любые изменения, дополнения или отступления от условий настоящего Договора действительны только в том случае, если они:
-     - оформлены в письменной форме (включая электронный документооборот с электронной подписью, as recognized by applicable law);
-     - подписаны уполномоченными представителями обеих Сторон;
-     - либо произведены в соответствии с разделом 11 (изменение Договора Платформой в одностороннем порядке).
+2. **Modifications and additions:**
+   - Any modifications, additions, or deviations from the terms of this Agreement are valid only if they:
+     - are formalized in written form (including electronic document flow with electronic signature, as recognized by applicable law);
+     - are signed by authorized representatives of both Parties;
+     - or are made in accordance with Section 11 (modification of the Agreement by the Platform unilaterally).
 
-3. **Недействительность устных договорённостей:**
-   - Устные заверения, обещания или договорённости, сделанные представителями Сторон, не имеют юридической силы, если они не подтверждены письменно в установленном порядке.
+3. **Invalidity of oral arrangements:**
+   - Oral assurances, promises, or arrangements made by Party representatives have no legal force if not confirmed in writing in the established manner.
 
-### 13.3. Изменение условий Платформой
+### 13.3. Modification of Terms by the Platform
 
-1. **Право одностороннего изменения:**
-   - Платформа сохраняет за собой право изменять условия настоящего Договора в одностороннем порядке в соответствии с процедурой, установленной в разделе 11.
+1. **Right of unilateral modification:**
+   - The Platform retains the right to modify the terms of this Agreement unilaterally in accordance with the procedure established in Section 11.
 
-2. **Уведомление Операторов:**
-   - Все изменения доводятся до сведения Операторов путём публикации новой редакции Договора на официальном сайте Платформы и/или направления уведомления в Личный кабинет и на email Оператора.
-   - Датой вступления изменений в силу считается дата, указанная в уведомлении, но не ранее истечения срока уведомления, предусмотренного разделом 11, or as required by Regional Addendum.
+2. **Operator notification:**
+   - All modifications are brought to the attention of Operators by publication of a new version of the Agreement on the Platform's official website and/or sending notification to the Operator Account and Operator's email.
+   - The date of entry into force of modifications is the date indicated in the notification, but not earlier than expiration of the notification period provided in Section 11, or as required by Regional Addendum.
 
-3. **Продолжение использования:**
-   - Продолжение использования Платформы Оператором после вступления изменений в силу означает согласие с новой редакцией Договора.
-   - Если Оператор не согласен с изменениями, он обязан прекратить использование Платформы и расторгнуть Договор до даты вступления изменений в силу.
+3. **Continued use:**
+   - Continued use of the Platform by the Operator after modifications enter into force means consent to the new version of the Agreement.
+   - If the Operator does not agree with the modifications, they must cease using the Platform and terminate the Agreement before the modifications enter into force.
 
-4. **Сохранение обязательств:**
-   - Изменение условий Договора не влияет на обязательства, возникшие до вступления изменений в силу, если иное не предусмотрено в уведомлении об изменениях.
+4. **Preservation of obligations:**
+   - Modification of Agreement terms does not affect obligations arising before modifications enter into force, unless otherwise provided in the modification notification.
 
-### 13.4. Недействительность отдельных положений
+### 13.4. Invalidity of Individual Provisions
 
-1. **Сохранение действия Договора:**
-   - В случае если какое-либо положение настоящего Договора будет признано недействительным, незаконным или не имеющим юридической силы under applicable law as determined by competent authority, такое признание не влечёт недействительности Договора в целом.
+1. **Preservation of Agreement validity:**
+   - In case any provision of this Agreement is found to be invalid, illegal, or without legal force under applicable law as determined by competent authority, such finding does not entail invalidity of the Agreement as a whole.
 
-2. **Замена недействительного положения:**
-   - Недействительное положение заменяется положением, которое:
-     - является действительным и законным under applicable law;
-     - максимально близко по смыслу и экономическому эффекту к первоначальному намерению Сторон.
+2. **Replacement of invalid provision:**
+   - The invalid provision is replaced by a provision that:
+     - is valid and lawful under applicable law;
+     - is as close as possible in meaning and economic effect to the original intention of the Parties.
 
-3. **Обязанность согласования:**
-   - Стороны обязуются добросовестно вести переговоры для согласования замены недействительного положения в разумный срок.
+3. **Obligation to negotiate:**
+   - The Parties undertake to negotiate in good faith to agree on replacement of the invalid provision within a reasonable timeframe.
 
-### 13.5. Уступка прав и обязанностей
+### 13.5. Assignment of Rights and Obligations
 
-1. **Запрет уступки Оператором:**
-   - Оператор не вправе передавать (уступать) свои права и обязанности по настоящему Договору третьим лицам без предварительного письменного согласия Платформы.
+1. **Prohibition of assignment by Operator:**
+   - The Operator may not transfer (assign) their rights and obligations under this Agreement to third parties without prior written consent of the Platform.
 
-2. **Право Платформы:**
-   - Платформа вправе передать свои права и обязанности по настоящему Договору аффилированным лицам, правопреемникам или третьим лицам, уведомив Оператора.
+2. **Platform's right:**
+   - The Platform has the right to transfer its rights and obligations under this Agreement to affiliates, successors, or third parties, notifying the Operator.
 
-3. **Передача бизнеса:**
-   - В случае реорганизации Платформы (слияние, присоединение, выделение, преобразование) или продажи бизнеса права и обязанности по настоящему Договору переходят к правопреемнику.
+3. **Business transfer:**
+   - In case of reorganization of the Platform (merger, accession, spin-off, transformation) or business sale, rights and obligations under this Agreement pass to the successor.
 
-### 13.6. Язык договора
+### 13.6. Agreement Language
 
-1. **Основной язык:**
-   - Настоящий Master Agreement Template составлен на [английском / русском / other base language as defined by Platform].
+1. **Primary language:**
+   - This Master Agreement Template is drafted in English.
    - Regional Addendum may be provided in local language as required by applicable law.
-   - В случае перевода Договора на другие языки при расхождении между версиями приоритет определяется Regional Addendum or applicable law.
+   - In case of translation of the Agreement into other languages, in case of discrepancy between versions, priority is determined by Regional Addendum or applicable law.
 
-2. **Переводы для локализации:**
-   - Платформа может предоставлять переводы Договора на языки Операторов для удобства. Legally binding language version is defined in Regional Addendum.
+2. **Translations for localization:**
+   - The Platform may provide translations of the Agreement into Operators' languages for convenience. Legally binding language version is defined in Regional Addendum.
 
-### 13.7. Контактные данные
+### 13.7. Contact Information
 
-**Для связи с Платформой:**
-- Официальный сайт: [указать URL]
-- Email для официальной переписки: [указать email]
-- Служба поддержки: [указать канал поддержки]
-- Юридический адрес: [specified in Regional Addendum]
+**To contact the Platform:**
+- Official website: [specify URL]
+- Email for official correspondence: [specify email]
+- Support service: [specify support channel]
+- Legal address: [specified in Regional Addendum]
 
-**Для Оператора:**
-- Контактные данные указаны в Личном кабинете и регистрационных данных.
+**For the Operator:**
+- Contact information is indicated in the Operator Account and registration data.
 
-### 13.8. Электронный документооборот
+### 13.8. Electronic Document Flow
 
-1. **Признание юридической силы:**
-   - Стороны признают юридическую силу электронных документов, подписанных электронной подписью, in accordance with applicable electronic signature law as defined in Regional Addendum.
+1. **Recognition of legal force:**
+   - The Parties recognize the legal force of electronic documents signed with electronic signature, in accordance with applicable electronic signature law as defined in Regional Addendum.
 
-2. **Акты и отчёты:**
-   - Акты оказанных услуг, отчёты, счета и иные документы могут формироваться и подписываться в электронном виде через Личный кабинет или систему электронного документооборота, where supported by platform functionality.
+2. **Acts and reports:**
+   - Acts of services rendered, reports, invoices, and other documents may be generated and signed electronically through the Operator Account or electronic document flow system, where supported by platform functionality.
 
-3. **Равнозначность форм:**
-   - Электронные документы имеют равную юридическую силу с документами на бумажном носителе, subject to applicable electronic signature law requirements.
+3. **Equivalence of forms:**
+   - Electronic documents have equal legal force with paper documents, subject to applicable electronic signature law requirements.
 
-### 13.9. Форс-мажор
+### 13.9. Force Majeure
 
-1. **Обстоятельства непреодолимой силы:**
-   - Стороны освобождаются от ответственности за частичное или полное неисполнение обязательств по Договору, если оно явилось следствием обстоятельств непреодолимой силы (форс-мажор), возникших после заключения Договора.
+1. **Circumstances of force majeure:**
+   - The Parties are released from liability for partial or complete non-performance of obligations under the Agreement if it resulted from force majeure circumstances arising after conclusion of the Agreement.
 
-2. **Понятие форс-мажора:**
-   - К обстоятельствам непреодолимой силы относятся: стихийные бедствия, военные действия, акты террора, эпидемии и пандемии, забастовки, действия органов государственной власти, делающие невозможным исполнение обязательств, и иные обстоятельства, не зависящие от воли Сторон, as defined by applicable law.
+2. **Concept of force majeure:**
+   - Force majeure circumstances include: natural disasters, military actions, acts of terrorism, epidemics and pandemics, strikes, actions of government authorities making performance of obligations impossible, and other circumstances beyond the Parties' control, as defined by applicable law.
 
-3. **Уведомление:**
-   - Сторона, для которой стало невозможным исполнение обязательств, обязана незамедлительно (в течение **[указать срок, или as defined in Regional Addendum]**) уведомить другую Сторону о наступлении и прекращении обстоятельств непреодолимой силы.
+3. **Notification:**
+   - The Party for which performance of obligations has become impossible must immediately (within **[specify period, or as defined in Regional Addendum]**) notify the other Party of the occurrence and cessation of force majeure circumstances.
 
-4. **Последствия:**
-   - Если обстоятельства непреодолимой силы продолжаются более **[указать срок, или as defined in Regional Addendum]**, любая из Сторон вправе расторгнуть Договор в одностороннем порядке, письменно уведомив другую Сторону.
+4. **Consequences:**
+   - If force majeure circumstances continue for more than **[specify period, or as defined in Regional Addendum]**, either Party has the right to terminate the Agreement unilaterally by written notice to the other Party.
 
-### 13.10. Заключение
+### 13.10. Conclusion
 
-Настоящий Договор отражает взаимное намерение Сторон построить долгосрочное и взаимовыгодное сотрудничество на принципах добросовестности, прозрачности и профессионализма.
+This Agreement reflects the mutual intention of the Parties to build long-term and mutually beneficial cooperation on principles of good faith, transparency, and professionalism.
 
-Платформа обязуется предоставлять качественные сервисы для помощи Операторам в привлечении клиентов, subject to technical capabilities and progressive implementation of platform features, а Оператор — обеспечивать высокий уровень услуг хранения и ответственный подход к работе с Пользователями.
+The Platform undertakes to provide quality services to assist Operators in attracting customers, subject to technical capabilities and progressive implementation of platform features, and the Operator — to ensure a high level of storage services and responsible approach to working with Users.
 
-Акцептуя настоящий Договор, Оператор подтверждает:
-- полное понимание и согласие со всеми условиями Договора и applicable Regional Addendum;
-- наличие необходимых прав и полномочий для заключения Договора as required by applicable law;
-- готовность добросовестно исполнять принятые обязательства.
-
----
-
-## Приложение A: Региональные требования (Regional Addendum Framework)
-
-**Обязательное дополнение к данному Договору**
-
-Для применения настоящего Master Agreement Template в конкретной юрисдикции ОБЯЗАТЕЛЬНО требуется Regional Addendum, который определяет:
-
-### A.1. Юридические параметры
-
-- **Применимое право:** Конкретное законодательство, регулирующее договор
-- **Юрисдикция:** Суды или арбитражи, компетентные для разрешения споров
-- **Порядок разрешения споров:** Претензионный порядок, медиация, арбитраж
-- **Электронная подпись:** Требования к электронным подписям в регионе
-
-### A.2. Комплаенс и защита данных
-
-- **Data Protection:** Применимые требования по защите персональных данных (GDPR, 152-FZ, etc.)
-- **DPA Requirements:** Необходимость и форма Data Processing Agreement
-- **Cookie Consent:** Требования к согласию на использование cookies
-- **User Rights:** Процедуры реализации прав субъектов данных
-
-### A.3. Налоговые и платёжные условия
-
-- **Налогообложение:** НДС, налог на прибыль, withholding tax
-- **Валюта:** Валюта расчётов и курсы конвертации
-- **Способы оплаты:** Доступные методы платежей в регионе (per DOC-097)
-- **Invoicing:** Требования к счетам и отчётности
-
-### A.4. Операционные параметры
-
-- **Response Times:** Региональные стандарты времени ответа
-- **Support Hours:** Часы работы поддержки с учётом часового пояса
-- **Language:** Официальный язык договора и коммуникаций
-- **Local Regulations:** Специфические региональные требования (лицензирование, сертификация, etc.)
-
-### A.5. Ограничения и исключения
-
-- **Liability Caps:** Ограничения ответственности в соответствии с местным правом
-- **Indemnification Limits:** Ограничения обязательств по возмещению
-- **Force Majeure:** Региональная трактовка форс-мажорных обстоятельств
-
-**Без Regional Addendum данный Master Agreement Template не может применяться для ведения операционной деятельности.**
+By accepting this Agreement, the Operator confirms:
+- full understanding and agreement with all terms of the Agreement and applicable Regional Addendum;
+- possession of necessary rights and authority to enter into the Agreement as required by applicable law;
+- readiness to conscientiously fulfill accepted obligations.
 
 ---
 
-**КОНЕЦ ДОКУМЕНТА**
+## Appendix A: Regional Requirements (Regional Addendum Framework)
+
+**Mandatory supplement to this Agreement**
+
+For application of this Master Agreement Template in a specific jurisdiction, a Regional Addendum is MANDATORY, which defines:
+
+### A.1. Legal Parameters
+
+- **Applicable Law:** Specific legislation governing the agreement
+- **Jurisdiction:** Courts or arbitration bodies competent to resolve disputes
+- **Dispute Resolution Procedure:** Claims procedure, mediation, arbitration
+- **Electronic Signature:** Requirements for electronic signatures in the region
+
+### A.2. Compliance and Data Protection
+
+- **Data Protection:** Applicable personal data protection requirements (GDPR, UAE PDPL, etc.)
+- **DPA Requirements:** Necessity and form of Data Processing Agreement
+- **Cookie Consent:** Requirements for consent to use of cookies
+- **User Rights:** Procedures for implementing data subject rights
+
+### A.3. Tax and Payment Terms
+
+- **Taxation:** VAT, income tax, withholding tax
+- **Currency:** Settlement currency and conversion rates
+- **Payment Methods:** Available payment methods in the region (per DOC-097)
+- **Invoicing:** Requirements for invoices and reporting
+
+### A.4. Operational Parameters
+
+- **Response Times:** Regional response time standards
+- **Support Hours:** Support operating hours considering time zone
+- **Language:** Official language of agreement and communications
+- **Local Regulations:** Specific regional requirements (licensing, certification, etc.)
+
+### A.5. Limitations and Exclusions
+
+- **Liability Caps:** Liability limitations in accordance with local law
+- **Indemnification Limits:** Limitations on indemnification obligations
+- **Force Majeure:** Regional interpretation of force majeure circumstances
+
+**Without Regional Addendum, this Master Agreement Template cannot be applied for operational activities.**
 
 ---
 
-**Версия:** MVP v1.0 CANONICAL  
-**Статус:** Master Agreement Template — Requires Regional Addendum  
-**Дата последнего обновления:** December 2025  
-**Следующий пересмотр:** Quarterly or upon regulatory change
+**END OF DOCUMENT**
+
+---
+
+**Version:** MVP v1.0 CANONICAL
+**Status:** Master Agreement Template — Requires Regional Addendum
+**Last Updated:** December 2025
+**Next Review:** Quarterly or upon regulatory change
 
 ---
 

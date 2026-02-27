@@ -773,7 +773,7 @@ Admins can review, approve, reject, and manage operator accounts.
     "company_registration_number": "1234567890123",
     "bank_account": {
       "account_number": "40702810100000012345",
-      "bank_name": "Сбербанк",
+      "bank_name": "Emirates NBD",
       "bik": "044525225",
       "correspondent_account": "30101810400000000225"
     },
@@ -803,7 +803,7 @@ Admins can review, approve, reject, and manage operator accounts.
     "warehouses": [
       {
         "id": "wh-uuid-1",
-        "name": "СкладОК Выхино",
+        "name": "StorageHub Al Quoz",
         "status": "published",
         "boxes_count": 50
       }
@@ -1029,8 +1029,8 @@ Admins can view, moderate, and manage warehouses and boxes.
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "operator_id": "660e8400-e29b-41d4-a716-446655440001",
       "operator_name": "StorageOK LLC",
-      "name": "СкладОК Выхино",
-      "address": "Dubai, ул. Ферганская, 10",
+      "name": "StorageHub Al Quoz",
+      "address": "Dubai, Al Quoz Industrial Street, 10",
       "status": "published",
       "rating": 4.7,
       "reviews_count": 45,
@@ -1077,9 +1077,9 @@ Admins can view, moderate, and manage warehouses and boxes.
       "phone": "+971501234567",
       "status": "approved"
     },
-    "name": "СкладОК Выхино",
-    "description": "Современный склад с климат-контролем...",
-    "address": "Dubai, ул. Ферганская, 10",
+    "name": "StorageHub Al Quoz",
+    "description": "Modern warehouse with climate control...",
+    "address": "Dubai, Al Quoz Industrial Street, 10",
     "latitude": 55.6992,
     "longitude": 37.8089,
     "status": "published",
@@ -1337,7 +1337,7 @@ Admins can view, search, and manage bookings (including cancellations).
       },
       "warehouse": {
         "id": "warehouse-uuid",
-        "name": "СкладОК Выхино"
+        "name": "StorageHub Al Quoz"
       },
       "box": {
         "id": "box-uuid",
@@ -1394,14 +1394,14 @@ Admins can view, search, and manage bookings (including cancellations).
     },
     "warehouse": {
       "id": "warehouse-uuid",
-      "name": "СкладОК Выхино",
-      "address": "Dubai, ул. Ферганская, 10"
+      "name": "StorageHub Al Quoz",
+      "address": "Dubai, Al Quoz Industrial Street, 10"
     },
     "box": {
       "id": "box-uuid",
       "size": "M",
       "number": "M-101",
-      "dimensions": "3x2x2.5м"
+      "dimensions": "3x2x2.5m"
     },
     "status": "confirmed",
     "payment_status": "paid",
@@ -1416,7 +1416,7 @@ Admins can view, search, and manage bookings (including cancellations).
     "contact_name": "Ahmed Al-Rashid",
     "contact_phone": "+971501234567",
     "contact_email": "ivan@example.com",
-    "notes": "Нужна помощь с погрузкой",
+    "notes": "Need help with loading",
     "special_requests": null,
     "created_at": "2025-12-15T14:00:00Z",
     "confirmed_at": "2025-12-15T15:00:00Z",
@@ -1736,12 +1736,12 @@ Admins can moderate user-generated content (reviews) and detect fraud.
       },
       "warehouse": {
         "id": "warehouse-uuid",
-        "name": "СкладОК Выхино",
+        "name": "StorageHub Al Quoz",
         "operator_name": "StorageOK LLC"
       },
       "booking_id": "booking-uuid",
       "rating": 5,
-      "comment": "Отличный склад, всё понравилось!",
+      "comment": "Excellent warehouse, loved everything!",
       "verified": true,
       "is_visible": true,
       "created_at": "2025-12-10T14:00:00Z",
@@ -1782,7 +1782,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
     },
     "warehouse": {
       "id": "warehouse-uuid",
-      "name": "СкладОК Выхино",
+      "name": "StorageHub Al Quoz",
       "operator_name": "StorageOK LLC"
     },
     "booking": {
@@ -1792,7 +1792,7 @@ Admins can moderate user-generated content (reviews) and detect fraud.
       "completed_at": "2025-12-05T10:00:00Z"
     },
     "rating": 5,
-    "comment": "Отличный склад, всё понравилось! Чисто, безопасно, удобный доступ.",
+    "comment": "Excellent warehouse, loved everything! Clean, safe, convenient access.",
     "verified": true,
     "is_visible": true,
     "operator_response": null,
@@ -1969,7 +1969,7 @@ Admins can view all CRM leads across all operators for support and oversight.
       "email": "ivan@example.com",
       "warehouse": {
         "id": "warehouse-uuid",
-        "name": "СкладОК Выхино"
+        "name": "StorageHub Al Quoz"
       },
       "operator": {
         "id": "operator-uuid",
@@ -2011,8 +2011,8 @@ Admins can view all CRM leads across all operators for support and oversight.
     "email": "ivan@example.com",
     "warehouse": {
       "id": "warehouse-uuid",
-      "name": "СкладОК Выхино",
-      "address": "Dubai, ул. Ферганская, 10"
+      "name": "StorageHub Al Quoz",
+      "address": "Dubai, Al Quoz Industrial Street, 10"
     },
     "operator": {
       "id": "operator-uuid",
@@ -2116,7 +2116,7 @@ All list endpoints support:
 {
   "error_code": "USER_NOT_FOUND",
   "http_status": 404,
-  "message": "Пользователь не найден",
+  "message": "User not found",
   "details": {
     "user_id": "550e8400-e29b-41d4-a716-446655440000"
   }
@@ -2365,48 +2365,48 @@ GET /api/v1/admin/users?sort=created_at&order=desc
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `UNAUTHORIZED` | 401 | Требуется аутентификация | Missing or invalid JWT |
-| `FORBIDDEN` | 403 | Доступ запрещён | User role is not `admin` |
-| `TOKEN_EXPIRED` | 401 | Токен истёк | JWT expired |
-| `INVALID_TOKEN` | 401 | Неверный токен | JWT signature invalid |
-| `ADMIN_ACCESS_REQUIRED` | 403 | Требуются права администратора | Endpoint requires admin role |
+| `UNAUTHORIZED` | 401 | Authentication required | Missing or invalid JWT |
+| `FORBIDDEN` | 403 | Access forbidden | User role is not `admin` |
+| `TOKEN_EXPIRED` | 401 | Token expired | JWT expired |
+| `INVALID_TOKEN` | 401 | Invalid token | JWT signature invalid |
+| `ADMIN_ACCESS_REQUIRED` | 403 | Administrator rights required | Endpoint requires admin role |
 
 ### Resource Not Found Errors
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `USER_NOT_FOUND` | 404 | Пользователь не найден | User ID not found |
-| `OPERATOR_NOT_FOUND` | 404 | Оператор не найден | Operator ID not found |
-| `WAREHOUSE_NOT_FOUND` | 404 | Склад не найден | Warehouse ID not found |
-| `BOOKING_NOT_FOUND` | 404 | Бронирование не найдено | Booking ID not found |
-| `REVIEW_NOT_FOUND` | 404 | Отзыв не найден | Review ID not found |
+| `USER_NOT_FOUND` | 404 | User not found | User ID not found |
+| `OPERATOR_NOT_FOUND` | 404 | Operator not found | Operator ID not found |
+| `WAREHOUSE_NOT_FOUND` | 404 | Warehouse not found | Warehouse ID not found |
+| `BOOKING_NOT_FOUND` | 404 | Booking not found | Booking ID not found |
+| `REVIEW_NOT_FOUND` | 404 | Review not found | Review ID not found |
 
 ### Validation Errors
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `INVALID_PARAMETER` | 400 | Неверный параметр | Query parameter validation failed |
-| `MISSING_REQUIRED_FIELD` | 400 | Отсутствует обязательное поле | Required field missing in request body |
-| `INVALID_STATUS_TRANSITION` | 422 | Недопустимый переход статуса | Status transition not allowed |
-| `INVALID_DATE_RANGE` | 400 | Неверный диапазон дат | date_from > date_to |
+| `INVALID_PARAMETER` | 400 | Invalid parameter | Query parameter validation failed |
+| `MISSING_REQUIRED_FIELD` | 400 | Required field missing | Required field missing in request body |
+| `INVALID_STATUS_TRANSITION` | 422 | Invalid status transition | Status transition not allowed |
+| `INVALID_DATE_RANGE` | 400 | Invalid date range | date_from > date_to |
 
 ### Business Logic Errors
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `USER_ALREADY_SUSPENDED` | 422 | Пользователь уже заблокирован | User already suspended |
-| `USER_NOT_SUSPENDED` | 422 | Пользователь не заблокирован | Cannot restore non-suspended user |
-| `OPERATOR_ALREADY_APPROVED` | 422 | Оператор уже одобрен | Operator already approved |
-| `CANNOT_SUSPEND_ADMIN` | 422 | Невозможно заблокировать администратора | Cannot suspend admin users |
-| `DOCUMENTS_NOT_UPLOADED` | 422 | Документы не загружены | Required documents missing |
-| `CANNOT_DELETE_ACTIVE_WAREHOUSE` | 422 | Невозможно удалить активный склад | Warehouse has active bookings |
+| `USER_ALREADY_SUSPENDED` | 422 | User already suspended | User already suspended |
+| `USER_NOT_SUSPENDED` | 422 | User not suspended | Cannot restore non-suspended user |
+| `OPERATOR_ALREADY_APPROVED` | 422 | Operator already approved | Operator already approved |
+| `CANNOT_SUSPEND_ADMIN` | 422 | Cannot suspend administrator | Cannot suspend admin users |
+| `DOCUMENTS_NOT_UPLOADED` | 422 | Documents not uploaded | Required documents missing |
+| `CANNOT_DELETE_ACTIVE_WAREHOUSE` | 422 | Cannot delete active warehouse | Warehouse has active bookings |
 
 ### Rate Limiting Errors
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `RATE_LIMIT_EXCEEDED` | 429 | Превышен лимит запросов | Admin rate limit exceeded |
-| `BULK_OPERATION_LIMIT` | 429 | Превышен лимит массовых операций | Too many bulk operations |
+| `RATE_LIMIT_EXCEEDED` | 429 | Rate limit exceeded | Admin rate limit exceeded |
+| `BULK_OPERATION_LIMIT` | 429 | Bulk operation limit exceeded | Too many bulk operations |
 
 ## 8.2. Error Response Format
 
@@ -2416,7 +2416,7 @@ GET /api/v1/admin/users?sort=created_at&order=desc
 {
   "error_code": "USER_NOT_FOUND",
   "http_status": 404,
-  "message": "Пользователь не найден",
+  "message": "User not found",
   "details": {
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "requested_at": "2025-12-16T10:30:00Z"

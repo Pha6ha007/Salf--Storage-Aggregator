@@ -607,17 +607,17 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
   "success": false,
   "error": {
     "code": "validation_error",
-    "message": "Ошибка валидации данных",
+    "message": "Validation error",
     "details": {
       "email": [
-        "Неверный формат email адреса"
+        "Invalid email address format"
       ],
       "password": [
-        "Пароль должен содержать минимум 8 символов",
-        "Пароль должен содержать хотя бы одну заглавную букву"
+        "Password must contain at least 8 characters",
+        "Password must contain at least one uppercase letter"
       ],
       "phone": [
-        "Номер телефона должен быть в формате E.164 (+971501234567)"
+        "Phone number must be in E.164 format (+971501234567)"
       ]
     }
   }
@@ -631,7 +631,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
   "success": false,
   "error": {
     "code": "email_already_exists",
-    "message": "Пользователь с таким email уже зарегистрирован",
+    "message": "User with this email already registered",
     "details": {
       "field": "email",
       "value": "ahmed.alrashid@example.com"
@@ -647,7 +647,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
   "success": false,
   "error": {
     "code": "phone_already_exists",
-    "message": "Пользователь с таким номером телефона уже зарегистрирован",
+    "message": "User with this phone number already registered",
     "details": {
       "field": "phone",
       "value": "+971501234567"
@@ -769,7 +769,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
 {
   "success": true,
   "data": {
-    "message": "Вы успешно вышли из системы"
+    "message": "You have successfully logged out"
   }
 }
 ```
@@ -796,7 +796,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
 {
   "success": true,
   "data": {
-    "message": "Если пользователь с таким email существует, на него отправлена ссылка для сброса пароля",
+    "message": "If a user with this email exists, a password reset link has been sent",
     "email": "ahmed.alrashid@example.com"
   }
 }
@@ -822,7 +822,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
 {
   "success": true,
   "data": {
-    "message": "Пароль успешно изменен. Теперь вы можете войти с новым паролем."
+    "message": "Password successfully changed. You can now login with your new password."
   }
 }
 ```
@@ -849,7 +849,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
 {
   "success": true,
   "data": {
-    "message": "Email успешно подтвержден",
+    "message": "Email successfully verified",
     "user": {
       "id": 123,
       "email": "ahmed.alrashid@example.com",
@@ -871,7 +871,7 @@ Invalid: 971501234567, 971501234567, +971 50 123 4567
 {
   "success": true,
   "data": {
-    "message": "Письмо с подтверждением отправлено на ahmed.alrashid@example.com",
+    "message": "Verification email sent to ahmed.alrashid@example.com",
     "email": "ahmed.alrashid@example.com"
   }
 }
@@ -1054,7 +1054,7 @@ Content-Type: application/json
 ```json
 {
   "password": "SecurePass123!",
-  "reason": "Больше не использую сервис",
+  "reason": "No longer using the service",
   "confirm": true
 }
 ```
@@ -1077,7 +1077,7 @@ Content-Type: application/json
 {
   "success": true,
   "data": {
-    "message": "Ваш аккаунт успешно удален",
+    "message": "Your account has been successfully deleted",
     "deleted_at": "2025-11-30T18:00:00Z"
   }
 }
@@ -1214,7 +1214,7 @@ Content-Type: application/json
       "status": "active",
       "warehouse": {
         "id": 101,
-        "name": "СкладОК Выхино",
+        "name": "StorageHub Al Quoz",
         "address": {
           "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
           "city": "Dubai"
@@ -1287,13 +1287,13 @@ Content-Type: application/json
     "status": "active",
     "warehouse": {
       "id": 101,
-      "name": "СкладОК Выхино",
-      "description": "Современный складской комплекс с климат-контролем",
+      "name": "StorageHub Al Quoz",
+      "description": "Modern storage facility with climate control",
       "address": {
         "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
         "city": "Dubai",
-        "district": "Выхино-Жулебино",
-        "metro_station": "Выхино"
+        "district": "Al Quoz Industrial Area 3",
+        "metro_station": "Al Quoz"
       },
       "coordinates": {
         "lat": 55.714521,
@@ -1317,7 +1317,7 @@ Content-Type: application/json
       "volume": 10.0,
       "number": "M-205",
       "floor": 2,
-      "description": "Бокс среднего размера с климат-контролем"
+      "description": "Medium-sized box with climate control"
     },
     "start_date": "2025-12-01",
     "end_date": "2026-02-28",
@@ -1327,7 +1327,7 @@ Content-Type: application/json
     "payment_status": "paid",
     "payment_method": "card",
     "payment_date": "2025-11-25T14:00:00Z",
-    "notes": "Хранение зимних вещей",
+    "notes": "Storage of winter items",
     "created_at": "2025-11-25T10:00:00Z",
     "updated_at": "2025-11-25T14:00:00Z",
     "confirmed_at": "2025-11-25T11:30:00Z",
@@ -1335,17 +1335,17 @@ Content-Type: application/json
       {
         "status": "pending",
         "timestamp": "2025-11-25T10:00:00Z",
-        "comment": "Заявка создана"
+        "comment": "Request created"
       },
       {
         "status": "confirmed",
         "timestamp": "2025-11-25T11:30:00Z",
-        "comment": "Подтверждено оператором"
+        "comment": "Confirmed by operator"
       },
       {
         "status": "active",
         "timestamp": "2025-12-01T09:00:00Z",
-        "comment": "Бронирование активировано"
+        "comment": "Booking activated"
       }
     ]
   }
@@ -1389,12 +1389,12 @@ Content-Type: application/json
       "warehouse_id": 101,
       "warehouse": {
         "id": 101,
-        "name": "СкладОК Выхино",
-        "description": "Современный складской комплекс с климат-контролем",
+        "name": "StorageHub Al Quoz",
+        "description": "Modern storage facility with climate control",
         "address": {
           "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
           "city": "Dubai",
-          "district": "Выхино-Жулебино"
+          "district": "Al Quoz Industrial Area 3"
         },
         "coordinates": {
           "lat": 55.714521,
@@ -1473,7 +1473,7 @@ Content-Type: application/json
   "success": false,
   "error": {
     "code": "warehouse_not_found",
-    "message": "Склад не найден",
+    "message": "Warehouse not found",
     "details": {
       "warehouse_id": 9999
     }
@@ -1488,7 +1488,7 @@ Content-Type: application/json
   "success": false,
   "error": {
     "code": "already_in_favorites",
-    "message": "Склад уже добавлен в избранное",
+    "message": "Warehouse already added to favorites",
     "details": {
       "warehouse_id": 103
     }
@@ -1526,7 +1526,7 @@ Content-Type: application/json
 {
   "success": true,
   "data": {
-    "message": "Склад удален из избранного",
+    "message": "Warehouse removed from favorites",
     "warehouse_id": 103
   }
 }
@@ -1590,7 +1590,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
 | `name` | string | ✅ | Min 2 chars, max 100 chars | Full name of contact person |
 | `phone` | string | ✅ | E.164 format, unique | Contact phone number |
 | `company_name` | string | ✅ | Min 2 chars, max 200 chars | Legal company name |
-| `inn` | string | ✅ | 10 or 12 digits, valid checksum | Tax identification number (ИНН) |
+| `inn` | string | ✅ | 10 or 12 digits, valid checksum | Tax identification number (TRN) |
 | `agree_to_terms` | boolean | ✅ | Must be `true` | Terms acceptance |
 | `agree_to_privacy` | boolean | ✅ | Must be `true` | Privacy policy acceptance |
 
@@ -1629,10 +1629,10 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "timestamp": "2025-11-30T20:00:00Z",
     "request_id": "req_op_reg_001",
     "next_steps": [
-      "Подтвердите email",
-      "Заполните профиль оператора",
-      "Загрузите документы компании",
-      "Дождитесь верификации"
+      "Confirm email",
+      "Complete operator profile",
+      "Upload company documents",
+      "Wait for verification"
     ]
   }
 }
@@ -1667,14 +1667,14 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "website": "https://skladok.ru"
   },
   "bank_details": {
-    "bank_name": "ПАО Сбербанк",
+    "bank_name": "Emirates NBD",
     "bik": "044525225",
     "account_number": "40702810400000012345",
     "correspondent_account": "30101810400000000225"
   },
   "contact_person": {
     "name": "Raj Patel",
-    "position": "Директор по развитию",
+    "position": "Development Director",
     "email": "s.ivanov@skladok.ru",
     "phone": "+97145551234"
   },
@@ -1708,13 +1708,13 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "operator_id": 456,
     "onboarding_status": "completed",
     "account_status": "pending_verification",
-    "verification_eta": "2-3 рабочих дня",
+    "verification_eta": "2-3 business days",
     "submitted_at": "2025-11-30T20:30:00Z"
   },
   "meta": {
     "timestamp": "2025-11-30T20:30:00Z",
     "request_id": "req_onboarding_001",
-    "message": "Спасибо! Ваша заявка отправлена на проверку. Мы свяжемся с вами в течение 2-3 рабочих дней."
+    "message": "Thank you! Your application has been submitted for review. We will contact you within 2-3 business days."
   }
 }
 ```
@@ -1764,7 +1764,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
       "website": "https://skladok.ru"
     },
     "bank_details": {
-      "bank_name": "ПАО Сбербанк",
+      "bank_name": "Emirates NBD",
       "bik": "044525225",
       "account_number": "40702810400000012345",
       "correspondent_account": "30101810400000000225"
@@ -1808,7 +1808,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "avatar": "https://cdn.storagecompare.ae/avatars/new-456.jpg",
   "company_info": {
     "website": "https://new-skladok.ru",
-    "actual_address": "Dubai, ул. Ташкентская, 25"
+    "actual_address": "Dubai, Sheikh Zayed Road, 25"
   },
   "contact_person": {
     "email": "new.email@skladok.ru",
@@ -1833,14 +1833,14 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     "is_phone_verified": false,
     "company_info": {
       "website": "https://new-skladok.ru",
-      "actual_address": "Dubai, ул. Ташкентская, 25"
+      "actual_address": "Dubai, Sheikh Zayed Road, 25"
     },
     "updated_at": "2025-11-30T21:15:00Z"
   },
   "meta": {
     "timestamp": "2025-11-30T21:15:00Z",
     "warnings": [
-      "Номер телефона изменён. Требуется повторная верификация."
+      "Phone number changed. Re-verification required."
     ]
   }
 }
@@ -1867,7 +1867,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
 ```json
 {
   "type": "insurance_policy",
-  "title": "Страховой полис 2025",
+  "title": "Insurance Policy 2025",
   "url": "https://cdn.storagecompare.ae/uploads/docs/insurance_2025.pdf",
   "expires_at": "2025-12-31"
 }
@@ -1885,7 +1885,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
   "data": {
     "id": 789,
     "type": "insurance_policy",
-    "title": "Страховой полис 2025",
+    "title": "Insurance Policy 2025",
     "url": "https://cdn.storagecompare.ae/uploads/docs/insurance_2025.pdf",
     "status": "pending_review",
     "expires_at": "2025-12-31",
@@ -1915,7 +1915,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
     {
       "id": 789,
       "type": "insurance_policy",
-      "title": "Страховой полис 2025",
+      "title": "Insurance Policy 2025",
       "url": "https://cdn.storagecompare.ae/uploads/docs/insurance_2025.pdf",
       "status": "approved",
       "expires_at": "2025-12-31",
@@ -1945,7 +1945,7 @@ Operator API endpoints allow warehouse operators to register, manage their profi
 {
   "success": true,
   "data": {
-    "message": "Документ удалён",
+    "message": "Document deleted",
     "document_id": 789
   }
 }
@@ -2096,13 +2096,13 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
   "data": [
     {
       "id": 101,
-      "name": "СкладОК Выхино",
-      "description": "Современный складской комплекс с климат-контролем",
+      "name": "StorageHub Al Quoz",
+      "description": "Modern storage facility with climate control",
       "address": {
         "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
         "city": "Dubai",
-        "district": "Выхино-Жулебино",
-        "metro_station": "Выхино"
+        "district": "Al Quoz Industrial Area 3",
+        "metro_station": "Al Quoz"
       },
       "coordinates": {
         "lat": 55.714521,
@@ -2151,9 +2151,9 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
   "success": true,
   "data": {
     "id": 101,
-    "name": "СкладОК Выхино",
-    "description": "Современный складской комплекс",
-    "long_description": "Полное описание...",
+    "name": "StorageHub Al Quoz",
+    "description": "Modern storage facility",
+    "long_description": "Full description...",
     "address": {
       "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
       "city": "Dubai"
@@ -2205,7 +2205,7 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
   "data": [
     {
       "id": 101,
-      "name": "СкладОК Выхино",
+      "name": "StorageHub Al Quoz",
       "status": "active",
       "total_boxes": 50,
       "available_boxes": 23,
@@ -2239,10 +2239,10 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
 
 ```json
 {
-  "name": "СкладОК Новокосино",
-  "description": "Современный складской комплекс",
+  "name": "StorageHub Dubai Hills",
+  "description": "Modern storage facility",
   "address": {
-    "full_address": "Dubai, ул. Новокосинская, 15",
+    "full_address": "Dubai, Al Wasl Road, 15",
     "city": "Dubai"
   },
   "coordinates": {
@@ -2269,12 +2269,12 @@ Warehouses API provides endpoints for public warehouse browsing (catalog, search
   "success": true,
   "data": {
     "id": 104,
-    "name": "СкладОК Новокосино",
+    "name": "StorageHub Dubai Hills",
     "status": "draft",
     "created_at": "2025-11-30T23:30:00Z"
   },
   "meta": {
-    "message": "Склад создан в режиме черновика. Добавьте фотографии и боксы для активации."
+    "message": "Warehouse created in draft mode. Add photos and boxes for activation."
   }
 }
 ```
@@ -2616,14 +2616,14 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
         "rental_duration_months": 3
       },
       "rating": 5,
-      "title": "Отличный склад, всё понравилось!",
-      "text": "Хранил вещи 3 месяца. Всё в идеальном состоянии...",
-      "pros": ["Круглосуточный доступ", "Климат-контроль"],
-      "cons": ["Немного дорого"],
+      "title": "Excellent warehouse, loved everything!",
+      "text": "Stored items for 3 months. Everything in perfect condition...",
+      "pros": ["24/7 Access", "Climate Control"],
+      "cons": ["Slightly expensive"],
       "helpful_count": 12,
       "is_verified": true,
       "operator_response": {
-        "text": "Спасибо за отзыв!",
+        "text": "Thanks for the review!",
         "created_at": "2025-11-25T15:00:00Z"
       },
       "created_at": "2025-11-25T10:00:00Z"
@@ -2671,10 +2671,10 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
 {
   "booking_id": 1001,
   "rating": 5,
-  "title": "Отличный склад!",
-  "text": "Хранил вещи 3 месяца. Всё в идеальном состоянии...",
-  "pros": ["Круглосуточный доступ", "Климат-контроль"],
-  "cons": ["Немного дорого"],
+  "title": "Excellent warehouse!",
+  "text": "Stored items for 3 months. Everything in perfect condition...",
+  "pros": ["24/7 Access", "Climate Control"],
+  "cons": ["Slightly expensive"],
   "photos": [
     "https://cdn.storagecompare.ae/uploads/review-photo-1.jpg"
   ]
@@ -2706,7 +2706,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
     "id": 2003,
     "warehouse_id": 101,
     "rating": 5,
-    "title": "Отличный склад!",
+    "title": "Excellent warehouse!",
     "is_verified": true,
     "status": "published",
     "created_at": "2025-12-01T16:00:00Z"
@@ -2725,7 +2725,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
   "success": false,
   "error": {
     "code": "booking_not_completed",
-    "message": "Отзыв можно оставить только после завершения бронирования"
+    "message": "Reviews can only be left after booking completion"
   }
 }
 ```
@@ -2737,7 +2737,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
   "success": false,
   "error": {
     "code": "review_already_exists",
-    "message": "Вы уже оставили отзыв для этого бронирования"
+    "message": "You have already left a review for this booking"
   }
 }
 ```
@@ -2761,9 +2761,9 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
 ```json
 {
   "rating": 5,
-  "title": "Обновлённый заголовок",
-  "text": "Обновлённый текст отзыва...",
-  "pros": ["Отличный климат-контроль"],
+  "title": "Updated title",
+  "text": "Updated review text...",
+  "pros": ["Excellent climate control"],
   "cons": []
 }
 ```
@@ -2780,7 +2780,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
   "data": {
     "id": 2001,
     "rating": 5,
-    "title": "Обновлённый заголовок",
+    "title": "Updated title",
     "updated_at": "2025-12-01T16:30:00Z",
     "is_edited": true
   }
@@ -2805,7 +2805,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
 {
   "success": true,
   "data": {
-    "message": "Отзыв успешно удалён",
+    "message": "Review successfully deleted",
     "review_id": 2001
   }
 }
@@ -2831,7 +2831,7 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
 
 ```json
 {
-  "text": "Спасибо за подробный отзыв! Рады, что вам всё понравилось."
+  "text": "Thank you for the detailed review! Glad you liked everything."
 }
 ```
 
@@ -2847,11 +2847,11 @@ Reviews API allows users to leave reviews and ratings for warehouses they have u
   "data": {
     "review_id": 2001,
     "response": {
-      "text": "Спасибо за подробный отзыв!",
+      "text": "Thank you for the detailed review!",
       "created_at": "2025-12-01T17:30:00Z",
       "responder": {
-        "name": "Сергей И.",
-        "position": "Менеджер"
+        "name": "Sergey I.",
+        "position": "Manager"
       }
     }
   }
@@ -2893,16 +2893,16 @@ AI Core API provides AI-powered features including box recommendations, price an
 ```json
 {
   "items": [
-    "Диван двухместный",
-    "Шкаф-купе 2м",
-    "10 коробок с вещами"
+    "Two-seater sofa",
+    "2m wardrobe",
+    "10 boxes with items"
   ],
   "apartment_size": "1-room",
   "storage_purpose": "renovation",
   "duration_months": 3,
   "location": {
     "city": "Dubai",
-    "district": "Выхино"
+    "district": "Al Quoz"
   },
   "budget": {
     "max_monthly": 8000
@@ -2923,7 +2923,7 @@ AI Core API provides AI-powered features including box recommendations, price an
     "recommended_size": "M",
     "confidence": 0.87,
     "reasoning": {
-      "summary": "Рекомендуем бокс размера M площадью 4-5 м²",
+      "summary": "We recommend size M box with 4-5 m² area",
       "estimated_space_needed": {
         "area_m2": 4.2,
         "volume_m3": 10.5
@@ -2932,14 +2932,14 @@ AI Core API provides AI-powered features including box recommendations, price an
     "recommendations": [
       {
         "warehouse_id": 101,
-        "warehouse_name": "СкладОК Выхино",
+        "warehouse_name": "StorageHub Al Quoz",
         "box_size": "M",
         "price_per_month": 5000,
         "match_score": 0.95
       }
     ],
     "packing_tips": [
-      "Разберите мебель для экономии места"
+      "Disassemble furniture to save space"
     ]
   }
 }
@@ -2993,7 +2993,7 @@ AI Core API provides AI-powered features including box recommendations, price an
       "suggested_price": 4700,
       "min_safe_price": 4200,
       "max_optimal_price": 5200,
-      "reasoning": "Снижение до 4700 AED повысит конкурентоспособность"
+      "reasoning": "Reducing to 4700 AED will improve competitiveness"
     },
     "revenue_projections": {
       "current_scenario": {
@@ -3033,7 +3033,7 @@ AI Core API provides AI-powered features including box recommendations, price an
   "entity_id": 101,
   "description_type": "long",
   "tone": "professional",
-  "include_keywords": ["климат-контроль", "безопасность"]
+  "include_keywords": ["climate control", "security"]
 }
 ```
 
@@ -3048,13 +3048,13 @@ AI Core API provides AI-powered features including box recommendations, price an
   "success": true,
   "data": {
     "descriptions": {
-      "short": "Современный склад с климат-контролем",
-      "long": "СкладОК Выхино — современный складской комплекс...",
-      "meta": "Склад СкладОК: аренда боксов с климат-контролем"
+      "short": "Modern warehouse with climate control",
+      "long": "StorageHub Al Quoz — modern storage facility...",
+      "meta": "StorageHub: climate-controlled box rental"
     },
     "highlights": [
-      "Климат-контроль",
-      "24/7 доступ"
+      "Climate Control",
+      "24/7 access"
     ]
   }
 }
@@ -3082,7 +3082,7 @@ AI Core API provides AI-powered features including box recommendations, price an
 
 ```json
 {
-  "message": "Какой размер бокса мне нужен?",
+  "message": "What box size do I need?",
   "conversation_id": null,
   "context": {
     "location": "Dubai"
@@ -3103,11 +3103,11 @@ AI Core API provides AI-powered features including box recommendations, price an
     "conversation_id": "conv_abc123",
     "message": {
       "role": "assistant",
-      "content": "Для определения размера расскажите, что планируете хранить?"
+      "content": "To determine the size, please tell us what you plan to store?"
     },
     "suggestions": [
-      "Мебель из однокомнатной квартиры",
-      "Сезонные вещи"
+      "Furniture from a one-bedroom apartment",
+      "Seasonal items"
     ]
   }
 }
@@ -3187,7 +3187,7 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
         "id": 105,
         "type": "marker",
         "warehouse_id": 105,
-        "warehouse_name": "МойСклад Кузьминки",
+        "warehouse_name": "MyStorage Mirdif",
         "coordinates": {
           "lat": 55.705123,
           "lon": 37.785432
@@ -3240,13 +3240,13 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
   "data": [
     {
       "id": 101,
-      "name": "СкладОК Выхино",
+      "name": "StorageHub Al Quoz",
       "coordinates": {
         "lat": 55.714521,
         "lon": 37.816830
       },
       "distance": 1234,
-      "distance_formatted": "1.2 км",
+      "distance_formatted": "1.2 km",
       "travel_time": {
         "walking": 16,
         "driving": 4
@@ -3302,11 +3302,11 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
       "lat": 55.714521,
       "lon": 37.816830
     },
-    "formatted_address": "Россия, Dubai, улица Ташкентская, 23",
+    "formatted_address": "UAE, Dubai, Sheikh Zayed Road, 23",
     "components": {
-      "country": "Россия",
+      "country": "UAE",
       "city": "Dubai",
-      "street": "улица Ташкентская",
+      "street": "Sheikh Zayed Road",
       "house_number": "23"
     },
     "accuracy": "rooftop"
@@ -3351,12 +3351,12 @@ Map & Geo API provides geospatial functionality including map clustering, geo-ba
       "lat": 55.714521,
       "lon": 37.816830
     },
-    "address": "Россия, Dubai, улица Ташкентская, 23",
+    "address": "UAE, Dubai, Sheikh Zayed Road, 23",
     "components": {
-      "country": "Россия",
+      "country": "UAE",
       "city": "Dubai",
-      "street": "улица Ташкентская",
-      "metro_station": "Выхино",
+      "street": "Sheikh Zayed Road",
+      "metro_station": "Al Quoz",
       "metro_distance": 850
     }
   }
@@ -3479,8 +3479,8 @@ This section defines all data schemas, validation rules, and constraints used ac
 ```json
 {
   "id": 101,
-  "name": "СкладОК Выхино",
-  "description": "Современный складской комплекс",
+  "name": "StorageHub Al Quoz",
+  "description": "Modern storage facility",
   "address": {
     "full_address": "Dubai, Building 7, Street 14, Al Quoz Industrial 3",
     "city": "Dubai"
@@ -3510,12 +3510,12 @@ This section defines all data schemas, validation rules, and constraints used ac
 
 ```javascript
 [
-  "climate_control",      // Климат-контроль
-  "cctv_24_7",           // Видеонаблюдение 24/7
-  "access_24_7",         // Доступ 24/7
-  "security_guard",      // Охрана
-  "parking",             // Парковка
-  "elevator"             // Лифт
+  "climate_control",      // Climate Control
+  "cctv_24_7",           // CCTV 24/7
+  "access_24_7",         // 24/7 Access
+  "security_guard",      // Security guard
+  "parking",             // Parking
+  "elevator"             // Elevator
 ]
 ```
 
@@ -3628,23 +3628,23 @@ volume = (width * length * height) / 1000000  // m³
 **Booking Status:**
 ```javascript
 {
-  "pending": "Ожидает подтверждения",
-  "confirmed": "Подтверждено",
-  "active": "Активно",
-  "completed": "Завершено",
-  "cancelled": "Отменено",
-  "rejected": "Отклонено",
-  "expired": "Истёк срок"
+  "pending": "Awaiting confirmation",
+  "confirmed": "Confirmed",
+  "active": "Active",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "rejected": "Rejected",
+  "expired": "Expired"
 }
 ```
 
 **Payment Status:**
 ```javascript
 {
-  "pending": "Ожидает оплаты",
-  "paid": "Оплачено",
-  "failed": "Ошибка",
-  "refunded": "Возвращено"
+  "pending": "Awaiting payment",
+  "paid": "Paid",
+  "failed": "Failed",
+  "refunded": "Refunded"
 }
 ```
 
@@ -3661,10 +3661,10 @@ volume = (width * length * height) / 1000000  // m³
   "user_id": 123,
   "booking_id": 1001,
   "rating": 5,
-  "title": "Отличный склад!",
-  "text": "Хранил вещи 3 месяца...",
-  "pros": ["Круглосуточный доступ"],
-  "cons": ["Немного дорого"],
+  "title": "Excellent warehouse!",
+  "text": "Stored items for 3 months...",
+  "pros": ["24/7 Access"],
+  "cons": ["Slightly expensive"],
   "is_verified": true,
   "status": "published",
   "created_at": "2025-11-25T10:00:00Z"
@@ -3690,10 +3690,10 @@ volume = (width * length * height) / 1000000  // m³
 
 ```javascript
 {
-  "guest": { "level": 0, "description": "Неавторизованный" },
-  "user": { "level": 1, "description": "Пользователь" },
-  "operator": { "level": 2, "description": "Оператор" },
-  "admin": { "level": 3, "description": "Администратор" }
+  "guest": { "level": 0, "description": "Unauthorized" },
+  "user": { "level": 1, "description": "User" },
+  "operator": { "level": 2, "description": "Operator" },
+  "admin": { "level": 3, "description": "Administrator" }
 }
 ```
 
@@ -3794,7 +3794,7 @@ X-RateLimit-Reset: 1701350100
   "success": false,
   "error": {
     "code": "rate_limit_exceeded",
-    "message": "Превышен лимит запросов",
+    "message": "Rate limit exceeded",
     "details": {
       "limit": 100,
       "window": "1 minute",

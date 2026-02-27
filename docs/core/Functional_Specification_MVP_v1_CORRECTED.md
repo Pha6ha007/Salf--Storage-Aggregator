@@ -301,8 +301,8 @@ The home page is the main entry point for users to discover self-storage options
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Location search | User on home page | Types "Dubai, Выхино" in search | Autocomplete shows matching locations |
-| Search submission | Location selected | Clicks "Найти" button | Redirects to catalog with location filter |
+| Location search | User on home page | Types "Dubai, Al Quoz" in search | Autocomplete shows matching locations |
+| Search submission | Location selected | Clicks "Search" button | Redirects to catalog with location filter |
 | Empty search | User on home page | Clicks search without input | Shows validation message |
 
 ---
@@ -321,9 +321,9 @@ The home page is the main entry point for users to discover self-storage options
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| AI recommendation | User on home page | Enters "Диван, кровать, 10 коробок" | AI returns recommended size (e.g., "M - 5м²") with reasoning |
+| AI recommendation | User on home page | Enters "Sofa, bed, 10 boxes" | AI returns recommended size (e.g., "M - 5m²") with reasoning |
 | AI unavailable | AI service down | User submits query | Fallback shows rule-based recommendation |
-| Empty query | User clicks "Подобрать" | Query field is empty | Shows validation message |
+| Empty query | User clicks "Find Size" | Query field is empty | Shows validation message |
 
 **API Mapping:**
 
@@ -332,7 +332,7 @@ POST /api/v1/ai/box-finder
 
 Request:
 {
-  "query": "Диван, кровать, 10 коробок",
+  "query": "Sofa, bed, 10 boxes",
   "budget": 5000
 }
 
@@ -343,10 +343,10 @@ Response (200 OK):
     "recommended_size": "M",
     "recommended_area_m2": 5,
     "confidence": 0.85,
-    "reasoning": "Для дивана (~2м³), кровати (~1.5м³) и 10 коробок (~1м³) рекомендуем бокс 5м² с высотой 2.5м",
+    "reasoning": "For a sofa (~2m³), bed (~1.5m³), and 10 boxes (~1m³), we recommend a 5m² box with 2.5m height",
     "alternatives": [
-      {"size": "S", "area_m2": 3, "note": "Если разобрать мебель"},
-      {"size": "L", "area_m2": 8, "note": "С запасом для дополнительных вещей"}
+      {"size": "S", "area_m2": 3, "note": "If furniture is disassembled"},
+      {"size": "L", "area_m2": 8, "note": "Extra space for additional items"}
     ]
   }
 }
@@ -358,7 +358,7 @@ Response (fallback when AI unavailable):
     "recommended_size": "M",
     "recommended_area_m2": 5,
     "confidence": 0.6,
-    "reasoning": "Рекомендация основана на среднем размере и бюджете (AI-сервис временно недоступен)",
+    "reasoning": "Recommendation based on average size and budget (AI service temporarily unavailable)",
     "is_fallback": true
   }
 }
@@ -422,10 +422,10 @@ The catalog page displays a filterable, sortable list of warehouses.
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
 | Price filter | Catalog page loaded | Sets price range 2000-5000 AED  | Shows only warehouses with boxes in range |
-| Size filter | Catalog page loaded | Selects "M (3-6 м²)" | Shows warehouses with M-sized boxes available |
-| Feature filter | Catalog page loaded | Checks "Круглосуточный доступ" | Shows only 24/7 access warehouses |
+| Size filter | Catalog page loaded | Selects "M (3-6 m²)" | Shows warehouses with M-sized boxes available |
+| Feature filter | Catalog page loaded | Checks "24/7 Access" | Shows only 24/7 access warehouses |
 | Combined filters | Multiple filters set | Applies filters | Shows intersection of all criteria |
-| Clear filters | Filters applied | Clicks "Сбросить" | Removes all filters, shows full list |
+| Clear filters | Filters applied | Clicks "Clear" | Removes all filters, shows full list |
 
 **API Mapping:**
 
@@ -438,9 +438,9 @@ Response (200 OK):
   "data": [
     {
       "id": 101,
-      "name": "СкладОК Выхино",
-      "slug": "skladok-vyhino",
-      "address": "Dubai, ул. Ферганская, 10",
+      "name": "StorageHub Al Quoz",
+      "slug": "storagehub-al-quoz",
+      "address": "Dubai, Al Quoz Industrial Area 3, Street 8",
       "rating": 4.7,
       "review_count": 45,
       "min_price": 2500,
@@ -476,9 +476,9 @@ Response (200 OK):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Sort by price | Catalog page loaded | Selects "Цена (по возрастанию)" | List sorted by min_price ascending |
-| Sort by rating | Catalog page loaded | Selects "Рейтинг" | List sorted by rating descending |
-| Sort by distance | Location set | Selects "Расстояние" | List sorted by distance from location |
+| Sort by price | Catalog page loaded | Selects "Price (Low to High)" | List sorted by min_price ascending |
+| Sort by rating | Catalog page loaded | Selects "Rating" | List sorted by rating descending |
+| Sort by distance | Location set | Selects "Distance" | List sorted by distance from location |
 | Default sort | Page loads | No sort selected | Default: by rating descending |
 
 ---
@@ -544,9 +544,9 @@ The warehouse details page shows complete information about a specific warehouse
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
 | Box list | Warehouse page loaded | Views boxes section | Shows all box types with sizes and prices |
-| Availability | Boxes displayed | Views box card | Shows available quantity (e.g., "3 свободно") |
-| Select box | Box available | Clicks "Выбрать" | Navigates to booking flow with box pre-selected |
-| No availability | Box quantity = 0 | Views box card | Shows "Нет в наличии", button disabled |
+| Availability | Boxes displayed | Views box card | Shows available quantity (e.g., "3 available") |
+| Select box | Box available | Clicks "Select" | Navigates to booking flow with box pre-selected |
+| No availability | Box quantity = 0 | Views box card | Shows "Not Available", button disabled |
 
 **API Mapping:**
 
@@ -559,7 +559,7 @@ Response (200 OK):
   "data": [
     {
       "id": 501,
-      "name": "Бокс S",
+      "name": "Box S",
       "size_code": "S",
       "dimensions": {
         "length": 2.0,
@@ -571,7 +571,7 @@ Response (200 OK):
       "price_per_month": 2500,
       "available_quantity": 5,
       "total_quantity": 10,
-      "features": ["Первый этаж", "Отдельный вход"]
+      "features": ["Ground Floor", "Separate Entrance"]
     }
   ]
 }
@@ -595,8 +595,8 @@ Response (200 OK):
 |----------|-------|------|------|
 | Reviews list | Warehouse has reviews | Views reviews section | Shows reviews sorted by date (newest first) |
 | Rating display | Review displayed | Views review | Shows rating (1-5 stars), date, author name |
-| Pagination | More than 10 reviews | Scrolls to bottom | Shows "Загрузить ещё" button |
-| No reviews | Warehouse has 0 reviews | Views reviews section | Shows "Пока нет отзывов" message |
+| Pagination | More than 10 reviews | Scrolls to bottom | Shows "Load More" button |
+| No reviews | Warehouse has 0 reviews | Views reviews section | Shows "No reviews yet" message |
 
 ---
 
@@ -637,7 +637,7 @@ The map view provides a geographic visualization of warehouses.
 | Markers | Warehouses exist | Map loaded | Shows markers for warehouses |
 | Clustering | Zoomed out | Many markers in area | Groups markers into clusters with count |
 | Marker click | Marker visible | Clicks marker | Shows popup with warehouse preview |
-| Navigate | Popup shown | Clicks "Подробнее" | Navigates to warehouse details |
+| Navigate | Popup shown | Clicks "Details" | Navigates to warehouse details |
 
 ---
 
@@ -728,11 +728,11 @@ The booking flow allows users to reserve a storage box.
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Start booking | Box selected | Clicks "Забронировать" | Shows booking form |
+| Start booking | Box selected | Clicks "Book Now" | Shows booking form |
 | Select dates | Booking form open | Selects start date + duration | Calculates end date and total price |
 | Enter contact | Form open | Enters name, phone, email | Fields validated |
-| Submit | Form completed | Clicks "Отправить заявку" | Creates booking with status = `pending` |
-| Not authenticated | Guest user | Clicks "Забронировать" | Redirects to login/register |
+| Submit | Form completed | Clicks "Submit Request" | Creates booking with status = `pending` |
+| Not authenticated | Guest user | Clicks "Book Now" | Redirects to login/register |
 
 **API Mapping:**
 
@@ -747,7 +747,7 @@ Request:
   "contact_name": "Ahmed Al-Rashid",
   "contact_phone": "+79161234567",
   "contact_email": "ivan@example.com",
-  "notes": "Планирую привезти вещи в выходные"
+  "notes": "Planning to bring items on the weekend"
 }
 
 Response (201 Created):
@@ -759,8 +759,8 @@ Response (201 Created):
     "status": "pending",
     "box": {
       "id": 501,
-      "name": "Бокс S",
-      "warehouse_name": "СкладОК Выхино"
+      "name": "Box S",
+      "warehouse_name": "StorageHub Al Quoz"
     },
     "start_date": "2025-02-01",
     "end_date": "2025-05-01",
@@ -789,10 +789,10 @@ Response (201 Created):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| View all | User has bookings | Opens "Мои бронирования" | Shows list of all bookings |
+| View all | User has bookings | Opens "My Bookings" | Shows list of all bookings |
 | Filter by status | Bookings displayed | Selects status filter | Shows only bookings with selected status |
 | View details | Booking in list | Clicks booking row | Shows full booking details |
-| Empty state | User has no bookings | Opens "Мои бронирования" | Shows "У вас пока нет бронирований" |
+| Empty state | User has no bookings | Opens "My Bookings" | Shows "You have no bookings yet" |
 
 ---
 
@@ -810,10 +810,10 @@ Response (201 Created):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Cancel pending | Booking status = `pending` | Clicks "Отменить" | Status → `cancelled`, reason saved |
-| Cancel confirmed | Booking status = `confirmed` | Clicks "Отменить" | Status → `cancelled`, reason saved |
-| Cannot cancel active | Booking status = `active` | Views booking | "Отменить" button not shown |
-| Confirmation dialog | Any cancelable booking | Clicks "Отменить" | Shows confirmation dialog with reason input |
+| Cancel pending | Booking status = `pending` | Clicks "Cancel" | Status → `cancelled`, reason saved |
+| Cancel confirmed | Booking status = `confirmed` | Clicks "Cancel" | Status → `cancelled`, reason saved |
+| Cannot cancel active | Booking status = `active` | Views booking | "Cancel" button not shown |
+| Confirmation dialog | Any cancelable booking | Clicks "Cancel" | Shows confirmation dialog with reason input |
 
 **API Mapping:**
 
@@ -822,7 +822,7 @@ POST /api/v1/bookings/1001/cancel
 
 Request:
 {
-  "reason": "Изменились планы"
+  "reason": "Plans changed"
 }
 
 Response (200 OK):
@@ -833,7 +833,7 @@ Response (200 OK):
     "booking_number": "BK-20251215-1001",
     "status": "cancelled",
     "cancelled_at": "2025-12-15T15:00:00Z",
-    "cancellation_reason": "Изменились планы",
+    "cancellation_reason": "Plans changed",
     "cancelled_by": "user"
   }
 }
@@ -897,8 +897,8 @@ The operator dashboard allows warehouse owners to manage their properties and bo
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
 | Load dashboard | Operator logged in | Opens dashboard | Shows summary cards: new requests, active bookings, occupancy |
-| New requests badge | Pending bookings exist | Views dashboard | Shows count badge on "Заявки" card |
-| Empty state | Operator has no warehouses | Opens dashboard | Shows "Добавьте первый склад" prompt |
+| New requests badge | Pending bookings exist | Views dashboard | Shows count badge on "Requests" card |
+| Empty state | Operator has no warehouses | Opens dashboard | Shows "Add your first warehouse" prompt |
 
 **API Mapping:**
 
@@ -935,12 +935,12 @@ Response (200 OK):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| View requests | Pending bookings exist | Opens "Заявки" | Shows list of pending booking requests |
+| View requests | Pending bookings exist | Opens "Requests" | Shows list of pending booking requests |
 | View details | Request in list | Clicks request row | Shows full booking details + customer contact |
-| Confirm request | Request pending | Clicks "Подтвердить" | Status → `confirmed`, customer notified |
-| Decline request | Request pending | Clicks "Отклонить" + enters reason | Status → `cancelled`, reason saved, customer notified |
+| Confirm request | Request pending | Clicks "Confirm" | Status → `confirmed`, customer notified |
+| Decline request | Request pending | Clicks "Decline" + enters reason | Status → `cancelled`, reason saved, customer notified |
 
-> **⚠️ CORRECTED:** "Отклонить" (Decline) action now uses `cancel` endpoint with `cancelled_by: "operator"` instead of a separate `reject` endpoint.
+> **⚠️ CORRECTED:** "Decline" action now uses `cancel` endpoint with `cancelled_by: "operator"` instead of a separate `reject` endpoint.
 
 **API Mapping — Confirm:**
 
@@ -965,7 +965,7 @@ PUT /api/v1/operator/bookings/1001/cancel
 
 Request:
 {
-  "reason": "Бокс уже забронирован другим клиентом"
+  "reason": "Box already reserved by another customer"
 }
 
 Response (200 OK):
@@ -975,7 +975,7 @@ Response (200 OK):
     "id": 1001,
     "status": "cancelled",
     "cancelled_at": "2025-12-15T16:00:00Z",
-    "cancellation_reason": "Бокс уже забронирован другим клиентом",
+    "cancellation_reason": "Box already reserved by another customer",
     "cancelled_by": "operator"
   }
 }
@@ -997,12 +997,12 @@ Response (200 OK):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Add warehouse | Dashboard open | Clicks "Добавить склад" | Opens warehouse creation form |
+| Add warehouse | Dashboard open | Clicks "Add Warehouse" | Opens warehouse creation form |
 | Fill details | Creation form open | Fills name, address, contacts | Fields validated |
 | Upload photos | Form open | Uploads photos | Shows photo previews |
-| Save warehouse | Form completed | Clicks "Сохранить" | Creates warehouse with status = `draft` |
-| Edit warehouse | Warehouse exists | Clicks "Редактировать" | Opens edit form with current data |
-| Publish | Warehouse in draft | Clicks "Опубликовать" | Status → `published`, visible in catalog |
+| Save warehouse | Form completed | Clicks "Save" | Creates warehouse with status = `draft` |
+| Edit warehouse | Warehouse exists | Clicks "Edit" | Opens edit form with current data |
+| Publish | Warehouse in draft | Clicks "Publish" | Status → `published`, visible in catalog |
 
 ---
 
@@ -1020,11 +1020,11 @@ Response (200 OK):
 
 | Scenario | Given | When | Then |
 |----------|-------|------|------|
-| Add box | Warehouse selected | Clicks "Добавить бокс" | Opens box creation form |
+| Add box | Warehouse selected | Clicks "Add Box" | Opens box creation form |
 | Set dimensions | Form open | Enters length, width, height | Auto-calculates area and volume |
 | Set price | Form open | Enters price per month | Price validated (> 0) |
 | Set quantity | Form open | Enters available quantity | Quantity validated (≥ 0) |
-| Save box | Form completed | Clicks "Сохранить" | Creates box, appears in warehouse |
+| Save box | Form completed | Clicks "Save" | Creates box, appears in warehouse |
 
 ---
 

@@ -650,7 +650,7 @@ export class BoxRecommendationService {
       recommended_size: this.calculateBasicSize(dto.items),
       confidence: 0.5,
       fallback: true,
-      message: 'Рекомендация основана на базовых правилах. AI временно недоступен.',
+      message: 'Recommendation based on basic rules. AI temporarily unavailable.',
     };
   }
 }

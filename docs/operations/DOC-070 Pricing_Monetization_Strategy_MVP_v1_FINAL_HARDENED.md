@@ -3,17 +3,17 @@
 
 ---
 
-**Полный документ по стратегии монетизации**
+**Complete Monetization Strategy Document**
 
 ---
 
-**Версия:** 1.0.1 (Scope-Hardened)  
-**Дата создания:** December 2025  
-**Последнее обновление:** December 17, 2025  
-**Статус:** Final - Scope Clarified  
-**Автор:** Product Strategy Team  
+**Version:** 1.0.1 (Scope-Hardened)
+**Created:** December 2025
+**Last Updated:** December 17, 2025
+**Status:** Final - Scope Clarified
+**Author:** Product Strategy Team
 
-**Совместимость с проектными документами:**
+**Compatibility with Project Documents:**
 - Product Brief v1.0
 - Functional Specification MVP v1
 - Technical Architecture Complete
@@ -35,9 +35,9 @@ This document describes the **monetization strategy** (business model, pricing t
 ✅ **Revenue roadmap** — which monetization features in MVP vs post-MVP  
 
 ### What this document DOES NOT cover:
-❌ **Technical implementation** of billing, payments, or subscriptions  
-❌ **Payment gateway integration** (ЮKassa, Stripe, etc.)  
-❌ **Automated billing systems** or recurring payment infrastructure  
+❌ **Technical implementation** of billing, payments, or subscriptions
+❌ **Payment gateway integration** (Telr, Stripe, etc.)
+❌ **Automated billing systems** or recurring payment infrastructure
 ❌ **Payout automation** or financial transaction processing  
 
 ---
@@ -49,7 +49,7 @@ This document describes the **monetization strategy** (business model, pricing t
    - Conceptually: commission charged on confirmed bookings
    - In MVP: commission tracked manually/offline, not automated billing
    
-2. **Subscription tiers** (Basic free, Standard 2,990AED /мес) — COMMERCIALLY allowed
+2. **Subscription tiers** (Basic free, Standard 2,990AED /month) — COMMERCIALLY allowed
    - Operators may subscribe to Standard tier
    - In MVP: subscription handled **offline/manually** (invoice → bank transfer → manual activation)
    - NOT automated subscription billing or recurring payments
@@ -59,7 +59,7 @@ This document describes the **monetization strategy** (business model, pricing t
 - ❌ Automated subscription billing (cronjobs, webhooks, PSP integration)
 - ❌ Automated payouts to operators
 - ❌ Split-payment or escrow systems
-- ❌ Payment gateway APIs (ЮKassa, Stripe)
+- ❌ Payment gateway APIs (Telr, Stripe)
 - ❌ Recurring billing infrastructure
 
 **Key Principle:**  
@@ -69,89 +69,89 @@ This document describes the **monetization strategy** (business model, pricing t
 
 ---
 
-## 📄 О документе
+## 📄 About this Document
 
-Данный документ представляет собой комплексную **бизнес-стратегию монетизации** платформы-агрегатора self-storage складов.
+This document represents a comprehensive **business monetization strategy** for the self-storage aggregator platform.
 
-**Внимание:** Этот документ фокусируется на **"что" и "почему"** (бизнес-логика), а НЕ на **"как"** (техническая реализация). Технические детали billing/payments находятся вне скоупа данного документа и вне скоупа MVP v1.
+**Note:** This document focuses on the **"what" and "why"** (business logic), NOT on the **"how"** (technical implementation). Technical details of billing/payments are out of scope for this document and out of scope for MVP v1.
 
-Документ охватывает:
-- Все модели монетизации (5 основных + дополнительные)
-- Коммерческий план для MVP (какие модели применяются)
-- Конкурентный анализ международных и российских игроков
-- Unit-экономику с прогнозами на 18 месяцев
-- Анализ рисков и стратегии их минимизации
-- Roadmap развития монетизации от v1.0 до v3.0
+Document covers:
+- All monetization models (5 core + additional)
+- Commercial plan for MVP (which models are applied)
+- Competitive analysis of international and regional players
+- Unit economics with 18-month projections
+- Risk analysis and mitigation strategies
+- Monetization development roadmap from v1.0 to v3.0
 
-**Целевая аудитория:**
-- Product Owner / CEO — для принятия бизнес-решений
-- Инвесторы (seed round) — для оценки unit-экономики
-- Команда разработки — для понимания бизнес-контекста (не как техспека)
-- Маркетинг и Sales — для позиционирования и B2B-продаж
+**Target Audience:**
+- Product Owner / CEO — for business decision-making
+- Investors (seed round) — for unit economics assessment
+- Development Team — for business context understanding (not as tech spec)
+- Marketing and Sales — for positioning and B2B sales
 
-**Что НЕ является этот документ:**
-- ❌ Техническая спецификация billing-системы
-- ❌ API specification для payment processing
-- ❌ Database schema для transactions/subscriptions
-- ❌ Implementation roadmap для backend/billing
+**What this document is NOT:**
+- ❌ Technical specification of billing system
+- ❌ API specification for payment processing
+- ❌ Database schema for transactions/subscriptions
+- ❌ Implementation roadmap for backend/billing
 
 
 
-## 📋 Оглавление (Table of Contents)
+## 📋 Table of Contents
 
-### [1. Цели монетизации](#1-цели-монетизации)
-- [1.1. Почему нужна монетизация](#11-почему-нужна-монетизация)
-- [1.2. Принципы монетизационной модели](#12-принципы-монетизационной-модели)
-- [1.3. Цели MVP по доходам](#13-цели-mvp-по-доходам)
+### [1. Monetization Goals](#1-monetization-goals)
+- [1.1. Why Monetization is Needed](#11-why-monetization-is-needed)
+- [1.2. Monetization Model Principles](#12-monetization-model-principles)
+- [1.3. MVP Revenue Goals](#13-mvp-revenue-goals)
 
-### [2. Модели монетизации платформы](#2-модели-монетизации-платформы)
-- [2.1. Комиссия с бронирований (Booking Fee Model)](#21-комиссия-с-бронирований-booking-fee-model)
-- [2.2. Подписка для операторов (Operator Subscription Model)](#22-подписка-для-операторов-operator-subscription-model)
-- [2.3. Платные промо-слоты и продвижение складов](#23-платные-промо-слоты-и-продвижение-складов-promoted-listings-model)
-- [2.4. Партнёрский API (B2B API Model)](#24-партнёрский-api-b2b-api-model)
-- [2.5. Дополнительные источники дохода](#25-дополнительные-источники-дохода-future-revenue-streams)
+### [2. Platform Monetization Models](#2-platform-monetization-models)
+- [2.1. Booking Commission (Booking Fee Model)](#21-booking-commission-booking-fee-model)
+- [2.2. Operator Subscriptions (Operator Subscription Model)](#22-operator-subscriptions-operator-subscription-model)
+- [2.3. Paid Promo Slots and Facility Promotion](#23-paid-promo-slots-and-facility-promotion-promoted-listings-model)
+- [2.4. Partner API (B2B API Model)](#24-partner-api-b2b-api-model)
+- [2.5. Additional Revenue Streams](#25-additional-revenue-streams-future-revenue-streams)
 
-### [3. Монетизация в MVP](#3-монетизация-в-mvp)
-- [3.1. Что реально реализовать в MVP](#31-что-реально-реализовать-в-mvp)
-- [3.2. Что НЕ входит в MVP](#32-что-не-входит-в-mvp)
-- [3.3. Обоснование выбора MVP-scope](#33-обоснование-выбора-mvp-scope)
+### [3. Monetization in MVP](#3-monetization-in-mvp)
+- [3.1. What is Feasible to Implement in MVP](#31-what-is-feasible-to-implement-in-mvp)
+- [3.2. What is NOT Included in MVP](#32-what-is-not-included-in-mvp)
+- [3.3. MVP Scope Rationale](#33-mvp-scope-rationale)
 
-### [4. Конкурентный анализ монетизации](#4-конкурентный-анализ-монетизации)
-- [4.1. Как монетизируются топовые self-storage агрегаторы](#41-как-монетизируются-топовые-self-storage-агрегаторы)
-- [4.2. Сравнительная таблица моделей](#42-сравнительная-таблица-моделей)
-- [4.3. Выводы из конкурентного анализа](#43-выводы-из-конкурентного-анализа)
+### [4. Competitive Monetization Analysis](#4-competitive-monetization-analysis)
+- [4.1. How Top Self-Storage Aggregators Monetize](#41-how-top-self-storage-aggregators-monetize)
+- [4.2. Comparative Model Table](#42-comparative-model-table)
+- [4.3. Insights from Competitive Analysis](#43-insights-from-competitive-analysis)
 
-### [5. Расчёт unit-экономики](#5-расчёт-unit-экономики)
-- [5.1. Ключевые метрики и формулы](#51-ключевые-метрики-и-формулы)
-- [5.2. Модель расчётов для операторов](#52-модель-расчётов-для-операторов)
-- [5.3. Модель расчётов для платформы](#53-модель-расчётов-для-платформы)
-- [5.4. Прогноз по этапам роста](#54-прогноз-по-этапам-роста)
+### [5. Unit Economics Calculation](#5-unit-economics-calculation)
+- [5.1. Key Metrics and Formulas](#51-key-metrics-and-formulas)
+- [5.2. Calculation Model for Operators](#52-calculation-model-for-operators)
+- [5.3. Calculation Model for Platform](#53-calculation-model-for-platform)
+- [5.4. Growth Stage Projections](#54-growth-stage-projections)
 
-### [6. Риски и ограничения монетизации](#6-риски-и-ограничения-монетизации)
-- [6.1. Сопротивление операторов комиссиям](#61-сопротивление-операторов-комиссиям)
-- [6.2. Низкое количество заявок в начале](#62-низкое-количество-заявок-в-начале)
-- [6.3. Регуляторные ограничения](#63-регуляторные-ограничения)
-- [6.4. Конкурентное давление на цены](#64-конкурентное-давление-на-цены)
-- [6.5. Технические риски](#65-технические-риски)
+### [6. Monetization Risks and Limitations](#6-monetization-risks-and-limitations)
+- [6.1. Operator Resistance to Commissions](#61-operator-resistance-to-commissions)
+- [6.2. Low Booking Volume Initially](#62-low-booking-volume-initially)
+- [6.3. Regulatory Constraints](#63-regulatory-constraints)
+- [6.4. Competitive Pricing Pressure](#64-competitive-pricing-pressure)
+- [6.5. Technical Risks](#65-technical-risks)
 
-### [7. Рекомендации и стратегия развития монетизации](#7-рекомендации-и-стратегия-развития-монетизации)
-- [7.1. Как масштабировать монетизационную модель](#71-как-масштабировать-монетизационную-модель)
-- [7.2. Как расширять тарифы операторов](#72-как-расширять-тарифы-операторов)
-- [7.3. Как повышать ARPU и LTV](#73-как-повышать-arpu-и-ltv)
-- [7.4. Приоритизация функций для монетизации](#74-приоритизация-функций-для-монетизации)
+### [7. Recommendations and Monetization Growth Strategy](#7-recommendations-and-monetization-growth-strategy)
+- [7.1. How to Scale the Monetization Model](#71-how-to-scale-the-monetization-model)
+- [7.2. How to Expand Operator Pricing Tiers](#72-how-to-expand-operator-pricing-tiers)
+- [7.3. How to Increase ARPU and LTV](#73-how-to-increase-arpu-and-ltv)
+- [7.4. Feature Prioritization for Monetization](#74-feature-prioritization-for-monetization)
 
-### [8. Roadmap монетизации](#8-roadmap-монетизации-v10--v20--v30)
-- [8.1. MVP (v1.0) — Launch Phase](#81-mvp-v10--launch-phase-месяцы-1-3)
-- [8.2. Version 1.5 — Growth Phase](#82-version-15--growth-phase-месяцы-4-9)
-- [8.3. Version 2.0 — Scale Phase](#83-version-20--scale-phase-месяцы-10-18)
-- [8.4. Version 3.0 — Maturity Phase](#84-version-30--maturity-phase-месяцы-19-24)
-- [8.5. Roadmap-таблица (сводная)](#85-roadmap-таблица-сводная)
+### [8. Monetization Roadmap](#8-monetization-roadmap-v10--v20--v30)
+- [8.1. MVP (v1.0) — Launch Phase](#81-mvp-v10--launch-phase-months-1-3)
+- [8.2. Version 1.5 — Growth Phase](#82-version-15--growth-phase-months-4-9)
+- [8.3. Version 2.0 — Scale Phase](#83-version-20--scale-phase-months-10-18)
+- [8.4. Version 3.0 — Maturity Phase](#84-version-30--maturity-phase-months-19-24)
+- [8.5. Roadmap Summary Table](#85-roadmap-summary-table)
 
-### [Приложения](#приложения)
-- [Приложение A: Глоссарий терминов](#приложение-a-глоссарий-терминов)
-- [Приложение B: Примеры расчётов](#приложение-b-примеры-расчётов)
-- [Приложение C: Конкурентная таблица (детально)](#приложение-c-конкурентная-таблица-детально)
-- [Приложение D: Чек-лист запуска монетизации](#приложение-d-чек-лист-запуска-монетизации)
+### [Appendices](#appendices)
+- [Appendix A: Glossary of Terms](#appendix-a-glossary-of-terms)
+- [Appendix B: Calculation Examples](#appendix-b-calculation-examples)
+- [Appendix C: Detailed Competitive Table](#appendix-c-detailed-competitive-table)
+- [Appendix D: Monetization Launch Checklist](#appendix-d-monetization-launch-checklist)
 
 ---
 ---
@@ -161,434 +161,434 @@ This document describes the **monetization strategy** (business model, pricing t
 
 ---
 
-**Версия документа:** 1.0  
-**Дата создания:** December 2025  
-**Статус:** Draft for Review  
-**Совместимость:** Product Brief v1.0, Functional Spec MVP v1, Technical Architecture, Competitive Analysis
+**Document Version:** 1.0
+**Created:** December 2025
+**Status:** Draft for Review
+**Compatibility:** Product Brief v1.0, Functional Spec MVP v1, Technical Architecture, Competitive Analysis
 
 ---
 
-# 1. Цели монетизации
+# 1. Monetization Goals
 
-## 1.1. Почему нужна монетизация
+## 1.1. Why Monetization is Needed
 
-Разработка платформы-агрегатора self-storage требует создания устойчивой бизнес-модели, которая обеспечит:
+Developing a self-storage aggregator platform requires creating a sustainable business model that ensures:
 
-### Финансовую устойчивость проекта
-- **Покрытие операционных расходов:** серверная инфраструктура, хостинг, API-интеграции, техническая поддержка
-- **Инвестиции в развитие продукта:** разработка новых функций, AI-модулей, улучшение UX
-- **Маркетинг и привлечение пользователей:** SEO, контекстная реклама, партнёрские программы
-- **Масштабирование:** расширение на новые города и регионы
+### Project Financial Sustainability
+- **Cover operating expenses:** server infrastructure, hosting, API integrations, technical support
+- **Invest in product development:** new features, AI modules, UX improvements
+- **Marketing and user acquisition:** SEO, contextual advertising, partnership programs
+- **Scaling:** expansion to new cities and regions
 
-### Создание ценности для всех участников
-Монетизация должна быть win-win для трёх сторон:
+### Creating Value for All Participants
+Monetization must be win-win for three parties:
 
-| Сторона | Получаемая ценность | Что платит |
+| Party | Value Received | What They Pay |
 |---------|---------------------|------------|
-| **Пользователи (арендаторы)** | Удобный поиск, сравнение цен, AI-помощник, экономия времени | Ничего (free to use) или минимальная комиссия |
-| **Операторы складов** | Качественный трафик, готовые лиды, аналитика, автоматизация | Комиссия с подтверждённых бронирований или подписка |
-| **Платформа** | Доход для развития и масштабирования | Комиссия / подписка от операторов |
+| **Users (Renters)** | Convenient search, price comparison, AI assistant, time savings | Nothing (free to use) or minimal commission |
+| **Storage Operators** | Quality traffic, ready leads, analytics, automation | Commission on confirmed bookings or subscription |
+| **Platform** | Revenue for development and scaling | Commission / subscription from operators |
 
-### Подтверждение Product-Market Fit
-- **Willingness to pay** — готовность операторов платить подтверждает, что платформа решает реальную проблему
-- **Метрики вовлечённости** — монетизация стимулирует фокус на качественных заявках, а не просто трафике
-- **Сигнал для инвесторов** — работающая модель монетизации = доказательство жизнеспособности бизнеса
+### Product-Market Fit Validation
+- **Willingness to pay** — operators' readiness to pay confirms the platform solves a real problem
+- **Engagement metrics** — monetization drives focus on quality leads, not just traffic
+- **Investor signal** — working monetization model = proof of business viability
 
-### Конкурентное преимущество
-Правильная монетизация позволяет:
-- Инвестировать в уникальные AI-функции (Box Finder, Price Recommender)
-- Поддерживать высокое качество операторов через модерацию
-- Предлагать лучший UX, чем у прямых конкурентов
-
----
-
-## 1.2. Принципы монетизационной модели
-
-### Простота
-**Что это значит:**
-- Операторы должны понимать модель ценообразования за 2 минуты
-- Никаких скрытых комиссий или сложных формул
-- Прозрачный калькулятор на сайте: "Сколько я заплачу?"
-
-**Как реализуем:**
-- Единая ставка комиссии для всех операторов в MVP (без градаций)
-- Чёткая формула: **Комиссия = X% от суммы бронирования** или **Фиксированная сумма YAED **
-- Калькулятор на странице оператора: ввёл цену бокса → увидел свою комиссию
-
-**Пример:**
-```
-Бронирование бокса: 5 000AED /мес × 3 месяца = 15 000AED 
-Комиссия платформы (10%): 1 500AED 
-Оператор получает: 13 500AED 
-```
+### Competitive Advantage
+Proper monetization enables:
+- Investing in unique AI features (Box Finder, Price Recommender)
+- Maintaining high operator quality through moderation
+- Offering better UX than direct competitors
 
 ---
 
-### Прозрачность
-**Что это значит:**
-- Оператор видит все начисления в личном кабинете
-- История транзакций доступна в любой момент
-- Отчётность в одно касание: скачать PDF/Excel за период
+## 1.2. Monetization Model Principles
 
-**Как реализуем:**
-- Раздел "Финансы" в Operator Dashboard
-- Таблица транзакций:
-  - Дата бронирования
-  - ID заявки
-  - Сумма бронирования
-  - Комиссия платформы
-  - Сумма к получению
-  - Статус оплаты (pending / paid)
-- Уведомления о каждом начислении комиссии
+### Simplicity
+**What this means:**
+- Operators should understand the pricing model in 2 minutes
+- No hidden fees or complex formulas
+- Transparent calculator on the website: "How much will I pay?"
 
-**UI в ЛК оператора:**
+**How we implement:**
+- Single commission rate for all operators in MVP (no tiers)
+- Clear formula: **Commission = X% of booking amount** or **Fixed amount AED**
+- Calculator on operator page: enter box price → see your commission
+
+**Example:**
+```
+Box booking: 5,000 AED/month × 3 months = 15,000 AED
+Platform commission (10%): 1,500 AED
+Operator receives: 13,500 AED
+```
+
+---
+
+### Transparency
+**What this means:**
+- Operator sees all charges in their dashboard
+- Transaction history available at any time
+- One-click reporting: download PDF/Excel for any period
+
+**How we implement:**
+- "Finances" section in Operator Dashboard
+- Transaction table:
+  - Booking date
+  - Request ID
+  - Booking amount
+  - Platform commission
+  - Amount to receive
+  - Payment status (pending / paid)
+- Notifications for each commission charge
+
+**Operator Dashboard UI:**
 ```
 ┌─────────────────────────────────────────────────┐
-│  💰 Финансы за ноябрь 2025                      │
+│  💰 Finances for November 2025                  │
 ├─────────────────────────────────────────────────┤
-│  Всего бронирований:        25                  │
-│  Общая сумма бронирований:  375 000AED             │
-│  Комиссия платформы (10%):  37 500AED              │
+│  Total bookings:            25                  │
+│  Total booking amount:      375,000 AED         │
+│  Platform commission (10%): 37,500 AED          │
 │  ────────────────────────────────────────────    │
-│  К получению:               337 500AED             │
+│  To receive:                337,500 AED         │
 │                                                  │
-│  [Скачать отчёт] [История транзакций]           │
+│  [Download Report] [Transaction History]        │
 └─────────────────────────────────────────────────┘
 ```
 
 ---
 
-### Масштабируемость
-**Что это значит:**
-- Модель должна работать при 10 операторах и при 1000 операторах
-- Автоматизация расчётов и выплат (минимум ручной работы)
-- Возможность добавления новых уровней тарифов без переделки архитектуры
+### Scalability
+**What this means:**
+- Model must work with 10 operators and with 1000 operators
+- Automated calculations and payouts (minimal manual work)
+- Ability to add new pricing tiers without architecture changes
 
-**Как реализуем:**
-- Автоматический расчёт комиссий в момент подтверждения бронирования
-- API для биллинга и выплат (интеграция с payment gateway в будущем)
-- Модульная архитектура: легко добавить новые типы подписок или комиссий
+**How we implement:**
+- Automatic commission calculation upon booking confirmation
+- API for billing and payouts (payment gateway integration in future)
+- Modular architecture: easy to add new subscription types or commissions
 
-**Технические требования:**
-- Таблица `transactions` фиксирует все операции
-- Cronjob для автоматического начисления комиссий
-- Webhook-уведомления для операторов
-
----
-
-### Выравнивание интересов (Alignment of Interests)
-**Что это значит:**
-- Платформа зарабатывает только когда операторы зарабатывают
-- Модель комиссии с транзакций = стимул давать качественные лиды
-- Никакого "платишь за показы" — оплата только за результат
-
-**Как реализуем:**
-- **Success-based pricing:** комиссия взимается только с подтверждённых бронирований
-- Бесплатное размещение складов (Basic tier)
-- Платформа заинтересована в росте GMV операторов → улучшаем конверсию, качество трафика
-
-**Логика:**
-```
-Больше бронирований для оператора 
-    ↓
-Выше доход оператора
-    ↓
-Выше комиссия платформы
-    ↓
-Больше ресурсов на улучшение продукта
-    ↓
-Ещё больше бронирований
-```
+**Technical requirements:**
+- `transactions` table records all operations
+- Cronjob for automatic commission calculation
+- Webhook notifications for operators
 
 ---
 
-## 1.3. Цели MVP по доходам
+### Alignment of Interests
+**What this means:**
+- Platform earns only when operators earn
+- Transaction-based commission model = incentive to provide quality leads
+- No "pay per impression" — payment only for results
 
-### Первые транзакции
-**Цель MVP:** Доказать, что модель монетизации работает
+**How we implement:**
+- **Success-based pricing:** commission charged only on confirmed bookings
+- Free facility listings (Basic tier)
+- Platform interested in growing operators' GMV → we improve conversion, traffic quality
+
+**Logic:**
+```
+More bookings for operator
+    ↓
+Higher operator revenue
+    ↓
+Higher platform commission
+    ↓
+More resources for product improvement
+    ↓
+Even more bookings
+```
+
+---
+
+## 1.3. MVP Revenue Goals
+
+### First Transactions
+**MVP Goal:** Prove that the monetization model works
 
 **Key Milestones:**
 
-| Milestone | Целевая метрика | Срок |
+| Milestone | Target Metric | Timeline |
 |-----------|-----------------|------|
-| First paid transaction | 1 подтверждённое бронирование с комиссией | Месяц 1 после запуска |
-| Operator adoption | 5 активных операторов платят комиссию | Месяц 2 |
-| Sustainable revenue | 50 000AED  GMV в месяц | Месяц 3 |
-| Positive unit economics | CAC < 3-month LTV | Месяц 4-6 |
+| First paid transaction | 1 confirmed booking with commission | Month 1 after launch |
+| Operator adoption | 5 active operators paying commission | Month 2 |
+| Sustainable revenue | 50,000 AED GMV per month | Month 3 |
+| Positive unit economics | CAC < 3-month LTV | Month 4-6 |
 
 ---
 
-### Подтверждение гипотезы ценности
-**Ключевые гипотезы для проверки в MVP:**
+### Value Hypothesis Validation
+**Key Hypotheses to Test in MVP:**
 
-#### Гипотеза 1: Операторы готовы платить комиссию за качественные лиды
-- **Метрика успеха:** >70% операторов не отключаются после первой комиссии
-- **Как проверяем:** Retention rate операторов через 30/60/90 дней
-- **Критерий провала:** >50% операторов уходят после первой оплаты
+#### Hypothesis 1: Operators willing to pay commission for quality leads
+- **Success metric:** >70% operators don't churn after first commission
+- **How we test:** Operator retention rate at 30/60/90 days
+- **Failure criterion:** >50% operators churn after first payment
 
-#### Гипотеза 2: Комиссия 10-15% приемлема для операторов
-- **Метрика успеха:** NPS операторов >30
-- **Как проверяем:** Опросы после первых 3 бронирований
-- **Критерий провала:** Массовые жалобы на высокую комиссию
+#### Hypothesis 2: 10-15% commission is acceptable to operators
+- **Success metric:** Operator NPS >30
+- **How we test:** Surveys after first 3 bookings
+- **Failure criterion:** Mass complaints about high commission
 
-#### Гипотеза 3: Пользователи готовы бронировать через платформу (не уходят напрямую к оператору)
-- **Метрика успеха:** >60% кликов на "Забронировать" конвертируются в заявку
-- **Как проверяем:** Conversion funnel: просмотр склада → клик "Забронировать" → отправка заявки
-- **Критерий провала:** <30% конверсия (значит, пользователи обходят платформу)
+#### Hypothesis 3: Users willing to book through platform (not bypassing to operator directly)
+- **Success metric:** >60% of "Book Now" clicks convert to requests
+- **How we test:** Conversion funnel: facility view → "Book Now" click → request submission
+- **Failure criterion:** <30% conversion (means users bypass platform)
 
-#### Гипотеза 4: AI-функции повышают конверсию и готовность платить
-- **Метрика успеха:** Бронирования с использованием AI Box Finder имеют конверсию на +20% выше
-- **Как проверяем:** A/B тест: пользователи с AI vs без AI
-- **Критерий провала:** AI не влияет на конверсию (тогда не монетизируем его в Pro-подписке)
+#### Hypothesis 4: AI features increase conversion and willingness to pay
+- **Success metric:** Bookings using AI Box Finder have +20% higher conversion
+- **How we test:** A/B test: users with AI vs without AI
+- **Failure criterion:** AI doesn't affect conversion (then don't monetize it in Pro subscription)
 
 ---
 
-### Метрики успеха MVP-монетизации
+### MVP Monetization Success Metrics
 
 #### Revenue Metrics
 
-| Метрика | Формула | Целевое значение (месяц 3) | Комментарий |
+| Metric | Formula | Target Value (month 3) | Comment |
 |---------|---------|---------------------------|-------------|
-| **GMV** | Σ(сумма всех бронирований) | 50 000AED + | Gross Merchandise Value |
-| **Revenue** | GMV × Take Rate | 5 000AED + (при 10% take rate) | Доход платформы |
-| **ARPU (оператор)** | Revenue / активные операторы | 1 000AED + | Средний доход с оператора |
-| **Take Rate** | Revenue / GMV × 100% | 10-15% | Процент комиссии |
+| **GMV** | Σ(all booking amounts) | 50,000 AED+ | Gross Merchandise Value |
+| **Revenue** | GMV × Take Rate | 5,000 AED+ (at 10% take rate) | Platform revenue |
+| **ARPU (operator)** | Revenue / active operators | 1,000 AED+ | Average revenue per operator |
+| **Take Rate** | Revenue / GMV × 100% | 10-15% | Commission percentage |
 
 #### Engagement Metrics
 
-| Метрика | Формула | Целевое значение | Комментарий |
+| Metric | Formula | Target Value | Comment |
 |---------|---------|------------------|-------------|
-| **Active Operators** | Операторы с ≥1 бронированием/мес | 10+ | Платящая база |
-| **Bookings per Operator** | Σ бронирований / операторов | 3+ | Качество трафика |
-| **Conversion Rate** | Бронирования / просмотры складов × 100% | 2-5% | Эффективность платформы |
-| **Repeat Booking Rate** | Повторные бронирования / всего бронирований | 15-20% | Лояльность пользователей |
+| **Active Operators** | Operators with ≥1 booking/month | 10+ | Paying base |
+| **Bookings per Operator** | Σ bookings / operators | 3+ | Traffic quality |
+| **Conversion Rate** | Bookings / facility views × 100% | 2-5% | Platform effectiveness |
+| **Repeat Booking Rate** | Repeat bookings / total bookings | 15-20% | User loyalty |
 
 #### Retention Metrics
 
-| Метрика | Формула | Целевое значение | Комментарий |
+| Metric | Formula | Target Value | Comment |
 |---------|---------|------------------|-------------|
-| **Operator Churn** | Ушедшие операторы / всего операторов | <20% | Удержание операторов |
-| **MRR** | Monthly Recurring Revenue (подписки) | 0AED  в MVP | Появится в v2.0 |
+| **Operator Churn** | Churned operators / total operators | <20% | Operator retention |
+| **MRR** | Monthly Recurring Revenue (subscriptions) | 0 AED in MVP | Will appear in v2.0 |
 
 ---
 
-### Чего НЕ ожидаем от MVP по монетизации
+### What we DON'T Expect from MVP Monetization
 
-**Реалистичные ожидания:**
+**Realistic Expectations:**
 
-❌ **НЕ ожидаем:**
-- Прибыльности в первые 6 месяцев
-- Сотен операторов на платформе
-- Высокого ARPU (>5 000AED /мес с оператора)
-- Стабильного MRR (подписки вводятся после MVP)
+❌ **DON'T expect:**
+- Profitability in first 6 months
+- Hundreds of operators on platform
+- High ARPU (>5,000 AED/month per operator)
+- Stable MRR (subscriptions introduced after MVP)
 
-✅ **Ожидаем:**
-- Доказательство концепции: операторы платят
-- Понимание оптимальной ставки комиссии (через тестирование)
-- Первые данные для unit-экономики
-- Feedback от операторов для улучшения модели
-
----
-
-# 2. Модели монетизации платформы
-
-В данном разделе рассматриваем **5 основных моделей монетизации**, из которых **2 войдут в MVP**, а остальные будут реализованы в последующих версиях продукта.
+✅ **DO expect:**
+- Proof of concept: operators pay
+- Understanding of optimal commission rate (through testing)
+- Initial data for unit economics
+- Operator feedback for model improvement
 
 ---
 
-## 2.1. Комиссия с бронирований (Booking Fee Model)
+# 2. Platform Monetization Models
 
-### Описание модели
-**Суть:** Платформа берёт процент или фиксированную сумму с каждого подтверждённого бронирования.
+This section examines **5 core monetization models**, of which **2 will be included in MVP**, while the rest will be implemented in subsequent product versions.
 
-**Базовая логика:**
+---
+
+## 2.1. Booking Commission (Booking Fee Model)
+
+### Model Description
+**Essence:** Platform takes a percentage or fixed amount from each confirmed booking.
+
+**Basic Logic:**
 ```
-Пользователь бронирует бокс → Оператор подтверждает → Платформа фиксирует комиссию
+User books a box → Operator confirms → Platform records commission
 ```
 
 ---
 
-### Структура комиссии
+### Commission Structure
 
-#### Вариант A: Процент от суммы бронирования
-**Формула:**
+#### Option A: Percentage of Booking Amount
+**Formula:**
 ```
-Комиссия = Сумма бронирования × Take Rate%
+Commission = Booking Amount × Take Rate%
 ```
 
-**Пример расчёта:**
+**Calculation Example:**
 ```
-Бокс 6м²: 4 000AED /мес
-Срок аренды: 6 месяцев
+Box 6m²: 4,000 AED/month
+Rental period: 6 months
 ─────────────────────────
-Сумма бронирования: 24 000AED 
-Комиссия платформы (12%): 2 880AED 
-Оператор получает: 21 120AED 
+Booking amount: 24,000 AED
+Platform commission (12%): 2,880 AED
+Operator receives: 21,120 AED
 ```
 
-**Рекомендуемая ставка для MVP:** 10-15%
+**Recommended Rate for MVP:** 10-15%
 
-**Градация по объёму (для будущих версий):**
+**Volume Tiers (for future versions):**
 
-| Объём бронирований/мес | Take Rate | Логика |
+| Booking Volume/month | Take Rate | Logic |
 |------------------------|-----------|--------|
-| 1-5 бронирований | 15% | Стандартная ставка для новых операторов |
-| 6-15 бронирований | 12% | Стимул для роста |
-| 16+ бронирований | 10% | Лояльность крупным партнёрам |
+| 1-5 bookings | 15% | Standard rate for new operators |
+| 6-15 bookings | 12% | Growth incentive |
+| 16+ bookings | 10% | Loyalty to large partners |
 
 ---
 
-#### Вариант B: Фиксированная сумма за бронирование
-**Формула:**
+#### Option B: Fixed Amount per Booking
+**Formula:**
 ```
-Комиссия = Фиксированная сумма (например, 500AED )
+Commission = Fixed amount (e.g., 500 AED)
 ```
 
-**Преимущества:**
-- Простота для операторов: понятная фиксированная ставка
-- Предсказуемость расходов
+**Advantages:**
+- Simplicity for operators: clear fixed rate
+- Expense predictability
 
-**Недостатки:**
-- Не масштабируется: одинаковая комиссия за бокс 2м² и 20м²
-- Несправедливо для мелких операторов (высокая комиссия относительно дешёвых боксов)
+**Disadvantages:**
+- Doesn't scale: same commission for 2m² and 20m² box
+- Unfair to small operators (high commission relative to cheap boxes)
 
-**Вывод:** Процентная модель предпочтительнее для агрегатора.
+**Conclusion:** Percentage model is preferable for aggregator.
 
 ---
 
-#### Вариант C: Гибридная модель (процент + минимальная сумма)
-**Формула:**
+#### Option C: Hybrid Model (percentage + minimum amount)
+**Formula:**
 ```
-Комиссия = MAX(Сумма × 12%, 300AED )
+Commission = MAX(Amount × 12%, 300 AED)
 ```
 
-**Логика:**
-- Для дорогих бронирований (>2 500AED ) — процент
-- Для дешёвых бронирований (<2 500AED ) — минимальная фиксированная сумма
+**Logic:**
+- For expensive bookings (>2,500 AED) — percentage
+- For cheap bookings (<2,500 AED) — minimum fixed amount
 
-**Плюсы:**
-- Защита доходов платформы на малых суммах
-- Справедливость на больших суммах
+**Pros:**
+- Protects platform revenue on small amounts
+- Fair on large amounts
 
-**Минусы:**
-- Чуть сложнее для понимания операторов
+**Cons:**
+- Slightly more complex for operators to understand
 
-**Рекомендация:** Внедрить в v2.0, когда будет больше данных о распределении сумм бронирований.
+**Recommendation:** Implement in v2.0 when more data on booking amount distribution is available.
 
 ---
 
-### Кто платит: оператор или арендатор?
+### Who Pays: Operator or Renter?
 
-#### Модель 1: Комиссию платит оператор (Supply-side fee)
-**Как работает:**
+#### Model 1: Operator Pays Commission (Supply-side fee)
+**How it works:**
 ```
-Пользователь видит цену: 4 000AED /мес
-Оператор получает: 4 000AED  - 12% = 3 520AED 
-Платформа берёт: 480AED 
+User sees price: 4,000 AED/month
+Operator receives: 4,000 AED - 12% = 3,520 AED
+Platform takes: 480 AED
 ```
 
-**Плюсы:**
-- ✅ Пользователю прозрачна финальная цена (что видит — то и платит)
-- ✅ Не увеличивает стоимость для арендатора
-- ✅ Стандартная модель для большинства агрегаторов (Booking.com, Airbnb в B2B)
+**Pros:**
+- ✅ Final price transparent to user (what you see is what you pay)
+- ✅ Doesn't increase cost for renter
+- ✅ Standard model for most aggregators (Booking.com, Airbnb in B2B)
 
-**Минусы:**
-- ❌ Сопротивление операторов: "Вы забираете мою маржу!"
-- ❌ Давление на снижение комиссии
+**Cons:**
+- ❌ Operator resistance: "You're taking my margin!"
+- ❌ Pressure to reduce commission
 
-**Применимость в MVP:** ✅ **Рекомендуется**
+**Applicability in MVP:** ✅ **Recommended**
 
 ---
 
-#### Модель 2: Комиссию платит арендатор (Demand-side fee)
-**Как работает:**
+#### Model 2: Renter Pays Commission (Demand-side fee)
+**How it works:**
 ```
-Оператор устанавливает цену: 4 000AED /мес
-Пользователь платит: 4 000AED  + 12% = 4 480AED 
-Оператор получает: 4 000AED  (полностью)
-Платформа берёт: 480AED 
+Operator sets price: 4,000 AED/month
+User pays: 4,000 AED + 12% = 4,480 AED
+Operator receives: 4,000 AED (full amount)
+Platform takes: 480 AED
 ```
 
-**Плюсы:**
-- ✅ Операторы получают полную сумму своей цены
-- ✅ Нет сопротивления операторов
+**Pros:**
+- ✅ Operators receive full amount of their price
+- ✅ No operator resistance
 
-**Минусы:**
-- ❌ Снижение конверсии: пользователь видит "наценку" платформы
-- ❌ Негативное восприятие: "Платформа делает мой бокс дороже"
-- ❌ Конкуренты без комиссии становятся привлекательнее
+**Cons:**
+- ❌ Reduced conversion: user sees platform "markup"
+- ❌ Negative perception: "Platform makes my box more expensive"
+- ❌ Competitors without commission become more attractive
 
-**Применимость в MVP:** ❌ **Не рекомендуется**
+**Applicability in MVP:** ❌ **Not recommended**
 
 ---
 
-#### Модель 3: Гибридная — делим комиссию 50/50
-**Как работает:**
+#### Model 3: Hybrid — Split Commission 50/50
+**How it works:**
 ```
-Оператор устанавливает цену: 4 000AED /мес
-Комиссия платформы 12%: 480AED 
-  → Оператор платит: 240AED  (6%)
-  → Арендатор платит: 240AED  (6%)
+Operator sets price: 4,000 AED/month
+Platform commission 12%: 480 AED
+  → Operator pays: 240 AED (6%)
+  → Renter pays: 240 AED (6%)
 
-Оператор получает: 3 760AED 
-Пользователь платит: 4 240AED 
-Платформа берёт: 480AED 
+Operator receives: 3,760 AED
+User pays: 4,240 AED
+Platform takes: 480 AED
 ```
 
-**Плюсы:**
-- ✅ Справедливое распределение "бремени"
-- ✅ Меньше сопротивления операторов
+**Pros:**
+- ✅ Fair distribution of "burden"
+- ✅ Less operator resistance
 
-**Минусы:**
-- ❌ Сложность коммуникации
-- ❌ Всё равно увеличивает цену для пользователя
+**Cons:**
+- ❌ Communication complexity
+- ❌ Still increases price for user
 
-**Применимость в MVP:** ⚠️ **Рассмотреть, если будет сильное сопротивление операторов**
+**Applicability in MVP:** ⚠️ **Consider if strong operator resistance emerges**
 
 ---
 
-### Рекомендация для MVP:
-**Модель:** Комиссию платит оператор (Supply-side fee)  
-**Ставка:** 10-12%  
-**Обоснование:**
-- Прозрачность для пользователя
-- Стандарт индустрии
-- Простота имплементации
+### MVP Recommendation:
+**Model:** Operator pays commission (Supply-side fee)
+**Rate:** 10-12%
+**Rationale:**
+- Transparency for user
+- Industry standard
+- Implementation simplicity
 
 ---
 
-### Плюсы модели Booking Fee
+### Booking Fee Model Advantages
 
-| Преимущество | Описание |
+| Advantage | Description |
 |--------------|----------|
-| **Alignment of interests** | Платформа зарабатывает только при успешных сделках |
-| **Low barrier to entry** | Оператор платит только за результат, а не за размещение |
-| **Scalability** | Доход растёт пропорционально росту GMV |
-| **Fair pricing** | Комиссия зависит от стоимости бокса |
-| **Incentive for quality** | Платформа мотивирована давать конверсионный трафик |
+| **Alignment of interests** | Platform earns only on successful deals |
+| **Low barrier to entry** | Operator pays only for results, not for listing |
+| **Scalability** | Revenue grows proportionally to GMV growth |
+| **Fair pricing** | Commission depends on box price |
+| **Incentive for quality** | Platform motivated to provide conversion traffic |
 
 ---
 
-### Минусы модели Booking Fee
+### Booking Fee Model Disadvantages
 
-| Недостаток | Описание | Как минимизировать |
+| Disadvantage | Description | How to Minimize |
 |------------|----------|-------------------|
-| **Operator resistance** | "Почему я должен делиться доходом?" | Показать ROI: сколько заявок получено vs комиссия |
-| **Depends on transaction volume** | Низкий объём = низкий доход | Комбинировать с подписками (Operator Pro) |
-| **No recurring revenue** | Нет предсказуемого MRR | Внедрить подписочные тарифы в v2.0 |
-| **Pressure to lower rates** | Конкуренты могут демпинговать | Фокус на качестве лидов, а не на низкой комиссии |
+| **Operator resistance** | "Why should I share revenue?" | Show ROI: leads received vs commission |
+| **Depends on transaction volume** | Low volume = low revenue | Combine with subscriptions (Operator Pro) |
+| **No recurring revenue** | No predictable MRR | Implement subscription tiers in v2.0 |
+| **Pressure to lower rates** | Competitors may undercut | Focus on lead quality, not low commission |
 
 ---
 
-### Применимость в MVP
+### Applicability in MVP
 
-✅ **ВКЛЮЧАЕМ В MVP (коммерчески)**
+✅ **INCLUDED IN MVP (commercially)**
 
-**Почему эта модель выбрана для MVP:**
-1. **Proof of concept:** самый быстрый способ проверить готовность операторов платить
-2. **Low friction:** не требует онлайн-оплаты или сложных биллинг-систем
-3. **Simple to validate:** фиксируем комиссии, выплаты — офлайн/manually
-4. **Validates value:** если операторы платят комиссию — значит, трафик ценный
+**Why this model chosen for MVP:**
+1. **Proof of concept:** fastest way to test operators' willingness to pay
+2. **Low friction:** doesn't require online payments or complex billing systems
+3. **Simple to validate:** track commissions, payouts — offline/manually
+4. **Validates value:** if operators pay commission — traffic is valuable
 
 **MVP Implementation Note:**
 - Commission is tracked and calculated **offline/manually** in MVP
@@ -598,590 +598,590 @@ This document describes the **monetization strategy** (business model, pricing t
 
 ---
 
-## 2.2. Подписка для операторов (Operator Subscription Model)
+## 2.2. Operator Subscriptions (Operator Subscription Model)
 
-### Описание модели
-**Суть:** Операторы платят фиксированную ежемесячную или годовую подписку за доступ к расширенным функциям платформы.
+### Model Description
+**Essence:** Operators pay fixed monthly or annual subscription for access to extended platform features.
 
-**Базовая логика:**
+**Basic Logic:**
 ```
-Оператор регистрируется → Получает Basic (free) → Может апгрейдиться до Standard/Pro
+Operator registers → Gets Basic (free) → Can upgrade to Standard/Pro
 ```
 
 ---
 
-### Уровень Basic (Free)
+### Basic Tier (Free)
 
-**Что входит:**
-- ✅ Размещение складов (неограниченно)
-- ✅ Размещение боксов (неограниченно)
-- ✅ Получение заявок от пользователей
-- ✅ Базовый ЛК оператора (управление складами/боксами)
-- ✅ Загрузка до 10 фото на склад
-- ✅ Базовая статистика: просмотры, клики, заявки
+**What's included:**
+- ✅ Facility listings (unlimited)
+- ✅ Box listings (unlimited)
+- ✅ Receive requests from users
+- ✅ Basic operator dashboard (facility/box management)
+- ✅ Upload up to 10 photos per facility
+- ✅ Basic statistics: views, clicks, requests
 
-**Ограничения:**
-- ❌ Без расширенной аналитики
-- ❌ Без AI Price Recommender
-- ❌ Стандартная позиция в каталоге (по релевантности)
-- ❌ Без приоритетной поддержки
+**Limitations:**
+- ❌ No advanced analytics
+- ❌ No AI Price Recommender
+- ❌ Standard catalog position (by relevance)
+- ❌ No priority support
 
-**Цена:** 0AED /мес
+**Price:** 0 AED/month
 
-**Цель Basic:**
-- Минимизировать барьер входа
-- Привлечь максимум операторов
-- Сформировать базу для upsell в Standard/Pro
-
----
-
-### Уровень Standard
-
-**Что входит:**
-- ✅ Всё из Basic +
-- ✅ Расширенная аналитика:
-  - Конверсионная воронка (просмотры → клики → заявки → подтверждения)
-  - Динамика загрузки по месяцам
-  - Сравнение с конкурентами в районе
-- ✅ AI Price Recommender (базовые рекомендации):
-  - Средняя цена по району
-  - "Ваша цена выше/ниже рынка на X%"
-- ✅ Загрузка до 25 фото на склад
-- ✅ Приоритетная поддержка (ответ в течение 24 часов)
-- ✅ Бейдж "Проверенный оператор" на карточке
-
-**Цена:** AED 2,990/мес или 29 900AED /год (экономия 17%)
-
-**Целевая аудитория:**
-- Операторы с 1-3 складами
-- Средний объём заявок: 10-30 в месяц
-- Хотят базовую аналитику и оптимизировать цены
+**Basic Tier Goal:**
+- Minimize entry barrier
+- Attract maximum operators
+- Build base for upsell to Standard/Pro
 
 ---
 
-### Уровень Pro
+### Standard Tier
 
-**Что входит:**
-- ✅ Всё из Standard +
-- ✅ Продвинутая аналитика:
-  - Heatmap активности по времени суток
-  - Retention analysis: сколько клиентов продлевают аренду
-  - Revenue forecasting на 3-6 месяцев
-  - Когортный анализ пользователей
-- ✅ AI Price Recommender (полная версия):
-  - Dynamic pricing recommendations (учёт сезонности, заполняемости)
-  - Автоматические уведомления: "Рекомендуем поднять цену на 10%"
-  - A/B тестирование цен
-- ✅ API доступ (для интеграции со своей CRM)
-- ✅ Белый label отчётность (PDF с логотипом оператора)
-- ✅ Приоритетное размещение в каталоге (топ-3 в районе)
-- ✅ Загрузка до 50 фото + видео на склад
-- ✅ Персональный менеджер (для операторов с 5+ складами)
-- ✅ Расширенная поддержка (ответ в течение 4 часов)
+**What's included:**
+- ✅ Everything from Basic +
+- ✅ Advanced analytics:
+  - Conversion funnel (views → clicks → requests → confirmations)
+  - Monthly occupancy trends
+  - Comparison with competitors in area
+- ✅ AI Price Recommender (basic recommendations):
+  - Average price by area
+  - "Your price is X% above/below market"
+- ✅ Upload up to 25 photos per facility
+- ✅ Priority support (response within 24 hours)
+- ✅ "Verified Operator" badge on card
 
-**Цена:** 9 990AED /мес или 99 900AED /год (экономия 17%)
+**Price:** 2,990 AED/month or 29,900 AED/year (17% savings)
 
-**Целевая аудитория:**
-- Крупные операторы с 5+ складами
-- Высокий объём заявок: 50+ в месяц
-- Нужна глубокая аналитика для принятия решений
-- Хотят максимизировать revenue через оптимизацию цен
+**Target Audience:**
+- Operators with 1-3 facilities
+- Average request volume: 10-30 per month
+- Want basic analytics and price optimization
 
 ---
 
-### Сравнительная таблица тарифов
+### Pro Tier
 
-| Функция | Basic (Free) | Standard (AED 2,990/мес) | Pro (9 990AED /мес) |
+**What's included:**
+- ✅ Everything from Standard +
+- ✅ Advanced analytics:
+  - Activity heatmap by time of day
+  - Retention analysis: how many customers renew rental
+  - Revenue forecasting for 3-6 months
+  - Cohort user analysis
+- ✅ AI Price Recommender (full version):
+  - Dynamic pricing recommendations (seasonality, occupancy)
+  - Automatic notifications: "Recommend raising price by 10%"
+  - A/B price testing
+- ✅ API access (for CRM integration)
+- ✅ White label reporting (PDF with operator logo)
+- ✅ Priority catalog placement (top-3 in area)
+- ✅ Upload up to 50 photos + video per facility
+- ✅ Personal manager (for operators with 5+ facilities)
+- ✅ Extended support (response within 4 hours)
+
+**Price:** 9,990 AED/month or 99,900 AED/year (17% savings)
+
+**Target Audience:**
+- Large operators with 5+ facilities
+- High request volume: 50+ per month
+- Need deep analytics for decision-making
+- Want to maximize revenue through price optimization
+
+---
+
+### Pricing Tier Comparison Table
+
+| Feature | Basic (Free) | Standard (2,990 AED/month) | Pro (9,990 AED/month) |
 |---------|--------------|----------------------|-----------------|
-| **Размещение складов** | ✅ Безлимит | ✅ Безлимит | ✅ Безлимит |
-| **Получение заявок** | ✅ Да | ✅ Да | ✅ Да |
-| **Фото на склад** | 10 | 25 | 50 + видео |
-| **Базовая аналитика** | ✅ Просмотры, клики | ✅ Да | ✅ Да |
-| **Расширенная аналитика** | ❌ Нет | ✅ Воронка, динамика | ✅ Полная + прогнозы |
-| **AI Price Recommender** | ❌ Нет | ✅ Базовый | ✅ Продвинутый + auto |
-| **Сравнение с рынком** | ❌ Нет | ✅ Средние цены | ✅ Детальные инсайты |
-| **Приоритет в каталоге** | ❌ Стандартный | ⚠️ Небольшой буст | ✅ Топ-3 в районе |
-| **API доступ** | ❌ Нет | ❌ Нет | ✅ Да |
-| **Поддержка** | Email (48ч) | Приоритет (24ч) | VIP (4ч) + менеджер |
-| **Бейдж** | ❌ Нет | ✅ "Проверенный" | ✅ "Premium партнёр" |
+| **Facility Listings** | ✅ Unlimited | ✅ Unlimited | ✅ Unlimited |
+| **Receive Requests** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Photos per Facility** | 10 | 25 | 50 + video |
+| **Basic Analytics** | ✅ Views, clicks | ✅ Yes | ✅ Yes |
+| **Advanced Analytics** | ❌ No | ✅ Funnel, trends | ✅ Full + forecasts |
+| **AI Price Recommender** | ❌ No | ✅ Basic | ✅ Advanced + auto |
+| **Market Comparison** | ❌ No | ✅ Average prices | ✅ Detailed insights |
+| **Catalog Priority** | ❌ Standard | ⚠️ Small boost | ✅ Top-3 in area |
+| **API Access** | ❌ No | ❌ No | ✅ Yes |
+| **Support** | Email (48h) | Priority (24h) | VIP (4h) + manager |
+| **Badge** | ❌ No | ✅ "Verified" | ✅ "Premium Partner" |
 
 ---
 
-### Функции платных пакетов (детально)
+### Paid Package Features (Detailed)
 
-#### 1. Расширенная аналитика
+#### 1. Advanced Analytics
 
-**Что входит в Standard:**
+**What's included in Standard:**
 ```
 Dashboard:
-├─ Конверсионная воронка
-│  ├─ Просмотры карточки склада: 1 500
-│  ├─ Клики на "Забронировать": 120 (8%)
-│  ├─ Отправленные заявки: 45 (3%)
-│  └─ Подтверждённые бронирования: 18 (1.2%)
+├─ Conversion funnel
+│  ├─ Facility card views: 1,500
+│  ├─ "Book Now" clicks: 120 (8%)
+│  ├─ Requests submitted: 45 (3%)
+│  └─ Confirmed bookings: 18 (1.2%)
 │
-├─ Динамика загрузки
-│  └─ График: заполненность боксов по месяцам
+├─ Occupancy trends
+│  └─ Chart: box occupancy by month
 │
-└─ Сравнение с конкурентами
-   └─ "Ваш склад: 85% загрузка vs Средняя в районе: 72%"
+└─ Competitor comparison
+   └─ "Your facility: 85% occupancy vs Area average: 72%"
 ```
 
-**Что входит в Pro (дополнительно):**
+**What's included in Pro (additional):**
 ```
 Advanced Analytics:
-├─ Heatmap активности
-│  └─ Когда пользователи чаще ищут склады (по часам/дням)
+├─ Activity heatmap
+│  └─ When users search for facilities (by hours/days)
 │
 ├─ Retention analysis
-│  └─ % клиентов, продлевающих аренду на 3/6/12 мес
+│  └─ % of customers renewing rental for 3/6/12 months
 │
 ├─ Revenue forecasting
-│  └─ Прогноз дохода на 3-6 месяцев вперёд (AI-модель)
+│  └─ Revenue forecast for 3-6 months ahead (AI model)
 │
-└─ Когортный анализ
-   └─ Поведение пользователей по когортам (месяц первого бронирования)
+└─ Cohort analysis
+   └─ User behavior by cohorts (month of first booking)
 ```
 
 ---
 
 #### 2. AI Price Recommender
 
-**Standard (базовая версия):**
+**Standard (basic version):**
 ```
 ┌──────────────────────────────────────────┐
-│ 💡 AI Рекомендация по цене               │
+│ 💡 AI Price Recommendation               │
 ├──────────────────────────────────────────┤
-│ Ваша цена: 4 000AED /мес за 6м²             │
-│ Средняя в районе: 4 200AED /мес             │
+│ Your price: 4,000 AED/month for 6m²      │
+│ Area average: 4,200 AED/month            │
 │                                           │
-│ 📊 Ваша цена на 5% ниже рынка            │
+│ 📊 Your price is 5% below market         │
 │                                           │
-│ Рекомендация:                             │
-│ Можете поднять цену до 4 200AED             │
-│ без потери конверсии                      │
+│ Recommendation:                           │
+│ You can raise price to 4,200 AED         │
+│ without losing conversion                 │
 │                                           │
-│ [Применить рекомендацию]                  │
+│ [Apply Recommendation]                    │
 └──────────────────────────────────────────┘
 ```
 
-**Pro (продвинутая версия):**
+**Pro (advanced version):**
 ```
 ┌─────────────────────────────────────────────┐
 │ 🤖 AI Dynamic Pricing                       │
 ├─────────────────────────────────────────────┤
-│ Ваша цена: 4 000AED /мес за 6м²                │
-│ Рекомендуемая: 4 500AED /мес (+12.5%)         │
+│ Your price: 4,000 AED/month for 6m²         │
+│ Recommended: 4,500 AED/month (+12.5%)       │
 │                                              │
-│ Факторы:                                     │
-│ • Высокий спрос в декабре (+15%)            │
-│ • Ваша загрузка 95% (дефицит боксов)       │
-│ • Конкуренты подняли цены на 8%             │
+│ Factors:                                     │
+│ • High demand in December (+15%)            │
+│ • Your occupancy 95% (box shortage)         │
+│ • Competitors raised prices by 8%           │
 │                                              │
-│ Ожидаемый эффект:                            │
-│ • Снижение конверсии: -5%                   │
-│ • Рост revenue: +8%                         │
-│ • Дополнительно: 7 200AED /мес                 │
+│ Expected effect:                             │
+│ • Conversion decrease: -5%                   │
+│ • Revenue growth: +8%                        │
+│ • Additional: 7,200 AED/month                │
 │                                              │
-│ [Применить] [Настроить] [A/B тест]          │
+│ [Apply] [Configure] [A/B Test]              │
 └─────────────────────────────────────────────┘
 ```
 
-**Уведомления (только Pro):**
+**Notifications (Pro only):**
 ```
-📬 Еженедельное письмо:
-"Рекомендуем скорректировать цены на 3 бокса:
-- Бокс S (3м²): снизить до 2 800AED  (низкий спрос)
-- Бокс M (6м²): поднять до 4 500AED  (высокий спрос)
-- Бокс L (10м²): оставить 7 000AED  (оптимально)"
+📬 Weekly email:
+"Recommend adjusting prices for 3 boxes:
+- Box S (3m²): lower to 2,800 AED (low demand)
+- Box M (6m²): raise to 4,500 AED (high demand)
+- Box L (10m²): keep at 7,000 AED (optimal)"
 ```
 
 ---
 
-#### 3. Приоритетное размещение (только Pro)
+#### 3. Priority Placement (Pro only)
 
-**Как работает:**
-- При поиске по району Pro-операторы показываются в топ-3
-- При равной релевантности Pro-склад ранжируется выше
-- Бейдж "Premium партнёр" на карточке → доверие пользователей
+**How it works:**
+- In area search, Pro operators shown in top-3
+- With equal relevance, Pro facility ranked higher
+- "Premium Partner" badge on card → user trust
 
-**Эффект:**
-- Увеличение просмотров на 30-50%
-- Рост кликов на 20-30%
-- Больше заявок
+**Effect:**
+- Views increase by 30-50%
+- Clicks grow by 20-30%
+- More requests
 
 ---
 
-### Плюсы модели Subscription
+### Subscription Model Advantages
 
-| Преимущество | Описание |
+| Advantage | Description |
 |--------------|----------|
-| **Predictable recurring revenue** | MRR (Monthly Recurring Revenue) — предсказуемый доход |
-| **Higher LTV** | Подписчики платят месяцами → LTV выше, чем в комиссионной модели |
-| **Less friction** | Оператор платит фикс — нет негатива за каждую комиссию |
-| **Value-based pricing** | Операторы платят за ценность (аналитика, AI), а не за "забирание маржи" |
-| **Upsell potential** | Легко апгрейдить Basic → Standard → Pro |
+| **Predictable recurring revenue** | MRR (Monthly Recurring Revenue) — predictable income |
+| **Higher LTV** | Subscribers pay for months → LTV higher than commission model |
+| **Less friction** | Operator pays fixed amount — no negative feeling per commission |
+| **Value-based pricing** | Operators pay for value (analytics, AI), not for "taking margin" |
+| **Upsell potential** | Easy to upgrade Basic → Standard → Pro |
 
 ---
 
-### Минусы модели Subscription
+### Subscription Model Disadvantages
 
-| Недостаток | Описание | Как минимизировать |
+| Disadvantage | Description | How to Minimize |
 |------------|----------|-------------------|
-| **High barrier to entry** | Оператор должен платить ДО результата | Basic-тариф бесплатный, подписка — опциональна |
-| **Requires proven value** | Нужно сначала показать ROI | Запускаем подписки ПОСЛЕ того, как есть трафик |
-| **Churn risk** | Если нет заявок — оператор отменит подписку | Гарантия: "Не получили заявок — вернём деньги" |
-| **Complex pricing** | Много тарифов = сложность | Простые 3 уровня (Basic/Standard/Pro) |
+| **High barrier to entry** | Operator must pay BEFORE results | Basic tier free, subscription optional |
+| **Requires proven value** | Need to show ROI first | Launch subscriptions AFTER traffic exists |
+| **Churn risk** | If no requests — operator cancels subscription | Guarantee: "No requests — money back" |
+| **Complex pricing** | Multiple tiers = complexity | Simple 3 levels (Basic/Standard/Pro) |
 
 ---
 
-### Применимость в MVP
+### Applicability in MVP
 
-⚠️ **КОММЕРЧЕСКИ ДОПУСТИМО, технически OFFLINE**
+⚠️ **COMMERCIALLY ALLOWED, technically OFFLINE**
 
-**Subscription в MVP v1:**
-- Basic (free) — доступен всем операторам
-- Standard (2,990AED /мес) — **коммерчески allowed**, но технически handled offline
-  - Оператор может коммерчески подписаться на Standard tier
-  - Активация подписки: **вручную/offline** (invoice → bank transfer → manual activation by admin)
-  - Функции Standard tier могут быть доступны после ручной активации
-  - **НЕТ** автоматической рекуррентной оплаты или subscription billing системы в MVP
+**Subscription in MVP v1:**
+- Basic (free) — available to all operators
+- Standard (2,990 AED/month) — **commercially allowed**, but technically handled offline
+  - Operator can commercially subscribe to Standard tier
+  - Subscription activation: **manually/offline** (invoice → bank transfer → manual activation by admin)
+  - Standard tier features may be available after manual activation
+  - **NO** automatic recurring payments or subscription billing system in MVP
 
-**Что НЕ включаем в MVP:**
-- ❌ Pro-тариф (слишком сложная аналитика для MVP)
-- ❌ Автоматическая subscription billing система
+**What's NOT included in MVP:**
+- ❌ Pro tier (too complex analytics for MVP)
+- ❌ Automatic subscription billing system
 - ❌ Recurring payment processing
-- ❌ API доступ
-- ❌ Webhooks для подписок
-- ❌ Автоматический dynamic pricing
+- ❌ API access
+- ❌ Subscription webhooks
+- ❌ Automatic dynamic pricing
 
-**Почему offline в MVP:**
-1. **Focus на validation:** MVP должен проверить willingness to pay, не автоматизацию billing
-2. **Ресурсы:** автоматизация billing/subscriptions требует значительных ресурсов
-3. **Простота:** ручная обработка 5-10 операторов feasible в MVP
-4. **Приоритет:** комиссионная модель — primary, подписка — secondary
+**Why offline in MVP:**
+1. **Focus on validation:** MVP should test willingness to pay, not billing automation
+2. **Resources:** billing/subscription automation requires significant resources
+3. **Simplicity:** manual processing of 5-10 operators feasible in MVP
+4. **Priority:** commission model is primary, subscription is secondary
 
-**Рекомендация:**
-- **MVP (месяцы 1-3):** Только комиссия с бронирований
-- **v1.5 (месяцы 4-6):** Добавить Standard-подписку (когда есть данные для аналитики)
-- **v2.0 (месяцы 7-12):** Запустить Pro-тариф с полной аналитикой и API
-
----
-
-**Конец Файла 1 (Разделы 1, 2.1, 2.2)**
+**Recommendation:**
+- **MVP (months 1-3):** Booking commission only
+- **v1.5 (months 4-6):** Add Standard subscription (when analytics data available)
+- **v2.0 (months 7-12):** Launch Pro tier with full analytics and API
 
 ---
 
-**Статус:** Разделы 1-2.2 готовы  
-**Следующий файл:** Разделы 2.3-2.5 (остальные модели монетизации)# Pricing & Monetization Strategy (MVP v1)
-## Part 2: Модели монетизации (продолжение)
+**End of Section 1 (Sections 1, 2.1, 2.2)**
 
 ---
 
-## 2.3. Платные промо-слоты и продвижение складов (Promoted Listings Model)
+**Status:** Sections 1-2.2 complete
+**Next:** Sections 2.3-2.5 (remaining monetization models)# Pricing & Monetization Strategy (MVP v1)
+## Part 2: Monetization Models (continued)
 
-### Описание модели
-**Суть:** Операторы платят за повышенную видимость своих складов в каталоге и на карте.
+---
 
-**Базовая логика:**
+## 2.3. Paid Promo Slots and Facility Promotion (Promoted Listings Model)
+
+### Model Description
+**Essence:** Operators pay for increased visibility of their facilities in catalog and on map.
+
+**Basic Logic:**
 ```
-Оператор покупает промо-слот → Его склад показывается выше в результатах поиска → Больше кликов и заявок
+Operator buys promo slot → Facility shown higher in search results → More clicks and requests
 ```
 
 ---
 
-### Типы промо-размещения
+### Promo Placement Types
 
-#### 1. ТОП-размещение в каталоге
+#### 1. TOP placement in catalog
 
-**Как работает:**
-- Склад показывается в топ-3 на первой странице результатов поиска
-- Специальный бейдж: "Рекомендуем" или "Топ выбор"
-- Выделение цветом или рамкой в списке
+**How it works:**
+- Facility shown in top-3 on the first page of search results
+- Special badge: "Recommended" or "Top choice"
+- Highlighted with color or border in the list
 
-**Модели оплаты:**
+**Payment models:**
 
-| Модель | Цена | Описание |
+| Model | Price | Description |
 |--------|------|----------|
-| **Pay-per-day** | 500AED /день | Склад в топ-3 на весь день |
-| **Pay-per-week** | 3 000AED /неделя (скидка 15%) | 7 дней в топе |
-| **Pay-per-month** | 10 000AED /месяц (скидка 33%) | Постоянное присутствие в топе |
+| **Pay-per-day** | 500AED /day | Facility in top-3 for the whole day |
+| **Pay-per-week** | 3 000AED /week (discount 15%) | 7 days in top |
+| **Pay-per-month** | 10 000AED /month (discount 33%) | Permanent presence in top |
 
-**Где показывается:**
-- Главная страница (блок "Топ складов рядом с вами")
-- Каталог (первые 3 позиции)
-- Карта (при открытии района)
+**Where it shows:**
+- Home page (block "Top facilities near you")
+- Catalog (first 3 positions)
+- Map (when opening a district)
 
-**Примерный эффект:**
-- Увеличение просмотров: +150-200%
-- Увеличение кликов: +80-120%
-- Рост заявок: +50-80%
+**Approximate effect:**
+- Increase in views: +150-200%
+- Increase in clicks: +80-120%
+- Growth in requests: +50-80%
 
 ---
 
-#### 2. Рекламные карточки (Sponsored Cards)
+#### 2. Advertising cards (Sponsored Cards)
 
-**Как работает:**
-- Специальные рекламные блоки между органической выдачей
-- Маркировка "Реклама" или "Спонсировано"
-- Более крупная карточка с дополнительными преимуществами
+**How it works:**
+- Special advertising blocks between organic results
+- Marking "Advertising" or "Sponsored"
+- Larger card with additional benefits
 
-**Формат:**
+**Format:**
 ```
 ┌─────────────────────────────────────────────┐
-│ 📍 РЕКЛАМА                                   │
+│ 📍 ADVERTISEMENT                             │
 ├─────────────────────────────────────────────┤
-│ [Большое фото склада]                        │
+│ [Large facility photo]                       │
 │                                              │
-│ ⭐⭐⭐⭐⭐ Склад "Мой Бокс" | м. Пролетарская │
+│ ⭐⭐⭐⭐⭐ Facility "My Box" | Marina metro      │
 │                                              │
-│ ✓ От 2 500AED /мес                             │
-│ ✓ Климат-контроль                           │
-│ ✓ Охрана 24/7                               │
-│ ✓ Свободно 15 боксов                        │
+│ ✓ From 2 500AED /month                             │
+│ ✓ Climate control                           │
+│ ✓ Security 24/7                               │
+│ ✓ Available 15 boxes                        │
 │                                              │
-│ [Забронировать сейчас]   [Подробнее]        │
+│ [Book now]   [More details]        │
 └─────────────────────────────────────────────┘
 ```
 
-**Модели оплаты:**
+**Payment models:**
 
-| Модель | Цена | Когда использовать |
+| Model | Price | When to use |
 |--------|------|-------------------|
-| **CPM (cost per mille)** | 300AED  за 1000 показов | Узнаваемость бренда |
-| **CPC (cost per click)** | 30AED  за клик | Трафик на страницу склада |
-| **CPA (cost per action)** | 500AED  за заявку | Только за результат |
+| **CPM (cost per mille)** | 300AED  per 1000 impressions | Brand awareness |
+| **CPC (cost per click)** | 30AED  per click | Traffic to facility page |
+| **CPA (cost per action)** | 500AED  per request | Only for results |
 
-**Рекомендация для MVP:** CPC или фиксированная стоимость слота (проще имплементировать).
-
----
-
-#### 3. Приоритет в поиске на карте
-
-**Как работает:**
-- При масштабировании карты промо-склады показываются первыми
-- Специальный цвет маркера (золотой вместо стандартного)
-- При кластеризации промо-склады всегда видны
-
-**Визуальное отличие:**
-```
-Стандартный маркер:  🔵  (синий пин)
-Промо-маркер:        ⭐  (золотая звезда)
-```
-
-**Модель оплаты:**
-- 200AED /день за приоритетный маркер на карте
-- Или включено в пакет "ТОП-размещение"
+**Recommendation for MVP:** CPC or fixed slot cost (easier to implement).
 
 ---
 
-#### 4. Баннеры на главной странице
+#### 3. Priority in map search
 
-**Формат:**
-- Горизонтальный баннер в топе главной страницы
-- Размер: 1200×300px
-- Клик → переход на страницу склада
+**How it works:**
+- When zooming the map, promo facilities are shown first
+- Special marker color (gold instead of standard)
+- When clustering, promo facilities are always visible
 
-**Пример:**
+**Visual difference:**
+```
+Standard marker:  🔵  (blue pin)
+Promo marker:        ⭐  (gold star)
+```
+
+**Payment model:**
+- 200AED /day for priority marker on map
+- Or included in package "TOP placement"
+
+---
+
+#### 4. Banners on home page
+
+**Format:**
+- Horizontal banner at the top of the home page
+- Size: 1200×300px
+- Click → redirect to facility page
+
+**Example:**
 ```
 ┌───────────────────────────────────────────────────────┐
-│ [Фото склада + логотип]                               │
+│ [Facility photo + logo]                               │
 │                                                        │
-│ Храните вещи рядом с домом!                           │
-│ Склад "Мой Бокс" — от 2 500AED /мес                     │
-│ м. Пролетарская, 5 мин пешком                         │
+│ Store things near home!                                │
+│ Facility "My Box" — from 2,500 AED/month              │
+│ Marina metro, 5 min walk                               │
 │                                                        │
-│                               [Смотреть боксы →]      │
+│                               [View boxes →]           │
 └───────────────────────────────────────────────────────┘
 ```
 
-**Модель оплаты:**
-- 15 000AED /неделя за главный баннер
-- Ротация: максимум 3 оператора в неделю
+**Payment model:**
+- 15 000AED /week for main banner
+- Rotation: maximum 3 operators per week
 
 ---
 
-### Комплексные пакеты продвижения
+### Comprehensive Promotion Packages
 
-#### Пакет "Старт" (для новых операторов)
+#### "Starter" Package (for new operators)
 
-**Что входит:**
-- 7 дней в топе каталога
-- Приоритетный маркер на карте (7 дней)
-- Бейдж "Новинка" на карточке
+**What's included:**
+- 7 days in catalog top
+- Priority marker on map (7 days)
+- "New" badge on card
 
-**Цена:** 5 000AED   
-**Цель:** Помочь новым операторам набрать первые заявки
-
----
-
-#### Пакет "Буст" (для акций и спецпредложений)
-
-**Что входит:**
-- 30 дней в топе каталога
-- Рекламная карточка (10 000 показов)
-- Приоритет на карте (30 дней)
-- Email-рассылка (упоминание в дайджесте пользователям района)
-
-**Цена:** 20 000AED /месяц  
-**Цель:** Максимальная видимость для заполнения боксов
+**Price:** 5,000 AED
+**Goal:** Help new operators get first requests
 
 ---
 
-#### Пакет "Premium" (для крупных операторов)
+#### "Boost" Package (for promotions and special offers)
 
-**Что входит:**
-- Постоянное топ-размещение (365 дней)
-- Баннер на главной (1 неделя в квартал)
-- Рекламные карточки (безлимит показов)
-- Персональный менеджер
-- Приоритетная поддержка
+**What's included:**
+- 30 days in catalog top
+- Promoted card (10,000 impressions)
+- Map priority (30 days)
+- Email newsletter (mention in area digest to users)
 
-**Цена:** 100 000AED /год  
-**Цель:** Максимальное присутствие на платформе
+**Price:** 20,000 AED/month
+**Goal:** Maximum visibility for filling boxes
 
 ---
 
-### Таргетинг рекламных слотов (для будущих версий)
+#### "Premium" Package (for large operators)
 
-**Возможности таргетинга:**
+**What's included:**
+- Permanent top placement (365 days)
+- Homepage banner (1 week per quarter)
+- Promoted cards (unlimited impressions)
+- Personal manager
+- Priority support
 
-| Параметр | Пример |
+**Price:** 100,000 AED/year
+**Goal:** Maximum platform presence
+
+---
+
+### Ad Slot Targeting (for future versions)
+
+**Targeting capabilities:**
+
+| Parameter | Example |
 |----------|--------|
-| **География** | Показывать только пользователям в радиусе 5 км |
-| **Время суток** | Усилить показы с 18:00 до 22:00 (после работы) |
-| **День недели** | Больше показов в выходные |
-| **Размер бокса** | Если пользователь ищет боксы >10м² |
-| **Ценовой диапазон** | Показывать только тем, кто смотрит премиум-боксы |
+| **Geography** | Show only to users within 5km radius |
+| **Time of Day** | Boost impressions 18:00-22:00 (after work) |
+| **Day of Week** | More impressions on weekends |
+| **Box Size** | If user searches for boxes >10m² |
+| **Price Range** | Show only to those viewing premium boxes |
 
-**Применимость:** v2.0+ (требует сложной аналитики)
+**Applicability:** v2.0+ (requires complex analytics)
 
 ---
 
-### Плюсы модели Promoted Listings
+### Promoted Listings Model Advantages
 
-| Преимущество | Описание |
+| Advantage | Description |
 |--------------|----------|
-| **Quick monetization** | Можно запустить быстро (не требует сложной интеграции) |
-| **No transaction dependency** | Доход не зависит от объёма бронирований |
-| **High margin** | Стоимость промо-слота = почти чистая прибыль (минимальные расходы) |
-| **Value for operators** | Операторы видят прямой эффект (больше просмотров) |
-| **Scalable** | Можно продавать неограниченное количество слотов |
+| **Quick monetization** | Can launch quickly (doesn't require complex integration) |
+| **No transaction dependency** | Revenue doesn't depend on booking volume |
+| **High margin** | Promo slot cost = almost pure profit (minimal expenses) |
+| **Value for operators** | Operators see direct effect (more views) |
+| **Scalable** | Can sell unlimited number of slots |
 
 ---
 
-### Минусы модели Promoted Listings
+### Promoted Listings Model Disadvantages
 
-| Недостаток | Описание | Как минимизировать |
+| Disadvantage | Description | How to Minimize |
 |------------|----------|-------------------|
-| **User experience risk** | Слишком много рекламы → хуже UX | Ограничить: максимум 20% слотов рекламные |
-| **Cannibalization** | Органические результаты менее видны | Чёткое разделение: реклама vs органика |
-| **Only for top operators** | Малые операторы не могут позволить | Пакет "Старт" по низкой цене |
-| **Requires traffic** | Эффективно только при большом трафике | Запускать после набора аудитории |
-| **Ad fatigue** | Пользователи игнорируют рекламу | Ротация, разные форматы |
+| **User experience risk** | Too much advertising → worse UX | Limit: maximum 20% slots are ads |
+| **Cannibalization** | Organic results less visible | Clear separation: ads vs organic |
+| **Only for top operators** | Small operators can't afford | "Starter" package at low price |
+| **Requires traffic** | Effective only with high traffic | Launch after building audience |
+| **Ad fatigue** | Users ignore advertising | Rotation, different formats |
 
 ---
 
-### Применимость в MVP
+### Applicability in MVP
 
-❌ **НЕ ВКЛЮЧАЕМ В MVP**
+❌ **NOT INCLUDED IN MVP**
 
-**Почему:**
-1. **Low priority:** В MVP важнее доказать комиссионную модель
-2. **Requires traffic:** Промо эффективны только при >1000 визитов/день (MVP стартует с малого трафика)
-3. **Complex ad system:** Нужна инфраструктура для управления рекламными слотами, биллинга, статистики
-4. **Risk of bad UX:** На старте важнее органический рост и доверие
+**Why:**
+1. **Low priority:** In MVP it's more important to prove commission model
+2. **Requires traffic:** Promos effective only with >1000 visits/day (MVP starts with low traffic)
+3. **Complex ad system:** Need infrastructure for ad slot management, billing, statistics
+4. **Risk of bad UX:** At start, organic growth and trust are more important
 
-**Когда запускать:**
-- **v1.5 (месяцы 4-6):** Базовое топ-размещение (фиксированная цена за день/неделю)
-- **v2.0 (месяцы 7-12):** Рекламные карточки, баннеры, таргетинг
+**When to launch:**
+- **v1.5 (months 4-6):** Basic top placement (fixed price per day/week)
+- **v2.0 (months 7-12):** Promoted cards, banners, targeting
 
-**Критерии готовности:**
-- ✅ >500 активных пользователей/день
-- ✅ >50 операторов на платформе
-- ✅ Стабильный трафик (не падает month-over-month)
+**Readiness criteria:**
+- ✅ >500 active users/day
+- ✅ >50 operators on platform
+- ✅ Stable traffic (not declining month-over-month)
 
 ---
 
-## 2.4. Партнёрский API (B2B API Model)
+## 2.4. Partner API (B2B API Model)
 
-### Описание модели
-**Суть:** Предоставление API третьим сторонам для интеграции данных о складах в их сервисы.
+### Model Description
+**Essence:** Providing API to third parties for integrating storage facility data into their services.
 
-**Базовая логика:**
+**Basic Logic:**
 ```
-Партнёр интегрирует API → Показывает наши склады в своём сервисе → Платформа берёт плату за API-доступ
+Partner integrates API → Shows our facilities in their service → Platform charges for API access
 ```
 
 ---
 
-### Кто может быть партнёрами
+### Who Can Be Partners
 
-#### 1. Риелторские платформы
-**Сценарий:**
-- Пользователь снимает квартиру через Циан/Авито
-- Ему предлагают "Нужен склад для вещей?" → показ складов рядом
-- Клик → редирект на нашу платформу или бронирование через API
+#### 1. Real Estate Platforms
+**Scenario:**
+- User rents apartment through Property Finder/Dubizzle
+- They're offered "Need storage for belongings?" → show nearby facilities
+- Click → redirect to our platform or booking via API
 
-**Ценность для партнёра:**
-- Дополнительный сервис для клиентов
-- Возможность монетизации (партнёр может брать свою комиссию)
-
----
-
-#### 2. Сервисы переездов
-**Примеры:** Грузовичкоф, Газелькин, Яндекс.Про (грузоперевозки)
-
-**Сценарий:**
-- Пользователь заказывает грузчиков для переезда
-- "Куда отвезти вещи, которые не влезли?" → подбор склада
-- Интеграция в мобильное приложение
-
-**Ценность для партнёра:**
-- Комплексное решение "переезд + хранение"
-- Увеличение среднего чека
+**Value for partner:**
+- Additional service for clients
+- Monetization opportunity (partner can take their commission)
 
 ---
 
-#### 3. Маркетплейсы мебели
-**Примеры:** IKEA, Hoff, онлайн-магазины мебели
+#### 2. Moving Services
+**Examples:** Local movers, transport services, logistics apps
 
-**Сценарий:**
-- Клиент заказал новую мебель, но старую ещё не вывез
-- "Нужно временно хранить старую мебель?" → склад на 1-2 месяца
+**Scenario:**
+- User orders movers for relocation
+- "Where to take belongings that don't fit?" → facility selection
+- Integration in mobile app
 
-**Ценность для партнёра:**
-- Решение pain point клиента
-- Стимул быстрее купить (не нужно ждать вывоза старой мебели)
-
----
-
-#### 4. Корпоративные платформы
-**Примеры:** HR-системы, relocation-сервисы
-
-**Сценарий:**
-- Компания переводит сотрудника в другой город
-- Нужно хранение вещей на период релокации (1-6 месяцев)
-- API для автоматического подбора складов по корпоративным критериям
-
-**Ценность для партнёра:**
-- Автоматизация relocation process
-- Корпоративные тарифы (опт)
+**Value for partner:**
+- Complete solution "moving + storage"
+- Average check increase
 
 ---
 
-### Функциональность API
+#### 3. Furniture Marketplaces
+**Examples:** IKEA, Home Centre, online furniture stores
 
-#### Базовый набор эндпоинтов
+**Scenario:**
+- Client ordered new furniture but hasn't removed old yet
+- "Need temporary storage for old furniture?" → facility for 1-2 months
+
+**Value for partner:**
+- Solves customer pain point
+- Incentive to buy faster (no need to wait for old furniture removal)
+
+---
+
+#### 4. Corporate Platforms
+**Examples:** HR systems, relocation services
+
+**Scenario:**
+- Company relocates employee to another city
+- Need storage during relocation period (1-6 months)
+- API for automatic facility selection by corporate criteria
+
+**Value for partner:**
+- Relocation process automation
+- Corporate rates (bulk)
+
+---
+
+### API Functionality
+
+#### Basic Endpoint Set
 
 ```javascript
-// 1. Поиск складов
+// 1. Search facilities
 GET /api/v1/warehouses/search
 Query params: {
-  lat: 55.7558,
-  lng: 37.6173,
-  radius: 5000, // метров
-  min_size: 3, // м²
+  lat: 25.2048,
+  lng: 55.2708,
+  radius: 5000, // meters
+  min_size: 3, // m²
   max_size: 10,
   min_price: 2000,
   max_price: 5000,
@@ -1189,155 +1189,155 @@ Query params: {
 }
 Response: Array<Warehouse>
 
-// 2. Детали склада
+// 2. Facility details
 GET /api/v1/warehouses/{id}
-Response: Warehouse (полная информация)
+Response: Warehouse (full information)
 
-// 3. Доступные боксы
+// 3. Available boxes
 GET /api/v1/warehouses/{id}/boxes
 Query params: { available_only: true }
 Response: Array<Box>
 
-// 4. Создание бронирования
+// 4. Create booking
 POST /api/v1/bookings
 Body: {
   box_id: 123,
   user_email: "user@example.com",
   start_date: "2025-12-01",
   duration_months: 3,
-  partner_ref: "partner_booking_456" // реферальный ID партнёра
+  partner_ref: "partner_booking_456" // partner referral ID
 }
-Response: Booking (с tracking_id)
+Response: Booking (with tracking_id)
 
-// 5. Статус бронирования
+// 5. Booking status
 GET /api/v1/bookings/{id}
-Response: Booking (текущий статус)
+Response: Booking (current status)
 ```
 
 ---
 
-#### Расширенный набор (для премиум-партнёров)
+#### Extended Set (for premium partners)
 
 ```javascript
-// 6. Подбор бокса по параметрам (AI)
+// 6. AI box selection by parameters
 POST /api/v1/ai/box-finder
 Body: {
-  description: "Нужно хранить мебель из 2-комнатной квартиры",
-  lat: 55.7558,
-  lng: 37.6173,
+  description: "Need to store furniture from 2-bedroom apartment",
+  lat: 25.2048,
+  lng: 55.2708,
   budget: 15000
 }
-Response: Array<BoxRecommendation> (топ-3 с AI-скорингом)
+Response: Array<BoxRecommendation> (top-3 with AI scoring)
 
-// 7. Массовое бронирование (для корпоратов)
+// 7. Bulk booking (for corporate)
 POST /api/v1/bookings/bulk
 Body: Array<BookingRequest>
 Response: Array<Booking>
 
-// 8. Вебхуки для статусов
+// 8. Status webhooks
 POST https://partner.com/webhook/booking-confirmed
 Body: { booking_id, status, details }
 ```
 
 ---
 
-### Модели оплаты API
+### API Payment Models
 
-#### Модель 1: Pay-per-request (за запрос)
+#### Model 1: Pay-per-request
 
-**Тарификация:**
+**Pricing:**
 
-| Тип запроса | Цена |
+| Request Type | Price |
 |-------------|------|
-| Search (поиск складов) | 0.50AED  |
-| Get warehouse details | 1AED  |
-| Get boxes | 1AED  |
-| Create booking | 50AED  (единоразово при создании) |
-| AI Box Finder | 10AED  |
+| Search (facility search) | 0.50 AED |
+| Get warehouse details | 1 AED |
+| Get boxes | 1 AED |
+| Create booking | 50 AED (one-time on creation) |
+| AI Box Finder | 10 AED |
 
-**Пример расчёта:**
+**Calculation Example:**
 ```
-Партнёр делает:
-- 10 000 поисков/месяц → 5 000AED 
-- 2 000 просмотров деталей → 2 000AED 
-- 500 бронирований → 25 000AED 
+Partner makes:
+- 10,000 searches/month → 5,000 AED
+- 2,000 detail views → 2,000 AED
+- 500 bookings → 25,000 AED
 ─────────────────────────────
-Итого: 32 000AED /месяц
+Total: 32,000 AED/month
 ```
 
-**Плюсы:**
-- Справедливая модель: платишь только за использование
-- Масштабируется с ростом партнёра
+**Pros:**
+- Fair model: pay only for usage
+- Scales with partner growth
 
-**Минусы:**
-- Непредсказуемость для партнёра
-- Сложность биллинга (подсчёт каждого запроса)
+**Cons:**
+- Unpredictability for partner
+- Billing complexity (counting each request)
 
 ---
 
-#### Модель 2: Subscription (подписка)
+#### Model 2: Subscription
 
-**Тарифы:**
+**Tiers:**
 
-| Tier | Цена/мес | Запросов/мес | Бронирований/мес | Поддержка |
+| Tier | Price/month | Requests/month | Bookings/month | Support |
 |------|----------|--------------|------------------|-----------|
-| **Starter** | 10 000AED  | 5 000 | 50 | Email |
-| **Business** | 50 000AED  | 50 000 | 500 | Priority |
-| **Enterprise** | 200 000AED  | Unlimited | Unlimited | Dedicated manager + SLA |
+| **Starter** | 10,000 AED | 5,000 | 50 | Email |
+| **Business** | 50,000 AED | 50,000 | 500 | Priority |
+| **Enterprise** | 200,000 AED | Unlimited | Unlimited | Dedicated manager + SLA |
 
-**Плюсы:**
-- Предсказуемый доход для платформы
-- Простой биллинг
+**Pros:**
+- Predictable revenue for platform
+- Simple billing
 
-**Минусы:**
-- Барьер входа для малых партнёров
-
----
-
-#### Модель 3: Revenue share (доля от транзакций)
-
-**Схема:**
-```
-Бронирование через API партнёра:
-├─ Сумма: 15 000AED 
-├─ Комиссия оператору (12%): 1 800AED 
-├─ Доля платформы: 1 200AED  (8%)
-└─ Доля партнёра: 600AED  (4%)
-```
-
-**Как работает:**
-- Партнёр получает процент от каждого бронирования, сделанного через его API
-- Платформа отслеживает через `partner_ref` в API-запросе
-
-**Плюсы:**
-- Win-win: все зарабатывают на результате
-- Нет фиксированных платежей для партнёра
-
-**Минусы:**
-- Сложность учёта и выплат
-- Зависимость от объёма транзакций
+**Cons:**
+- Entry barrier for small partners
 
 ---
 
-### Рекомендуемая модель для запуска
+#### Model 3: Revenue share
 
-**Гибридная модель:**
-- **Базовая подписка:** 10 000AED /мес (доступ к API, до 5 000 запросов, до 50 бронирований)
-- **Сверхлимитные запросы:** +0.50AED  за запрос
-- **Revenue share:** +2% от каждого бронирования сверх лимита
+**Scheme:**
+```
+Booking via partner API:
+├─ Amount: 15,000 AED
+├─ Operator commission (12%): 1,800 AED
+├─ Platform share: 1,200 AED (8%)
+└─ Partner share: 600 AED (4%)
+```
 
-**Почему гибридная:**
-- Гарантированный доход (подписка)
-- Масштабируемость (pay-per-request)
-- Стимул для партнёра (revenue share)
+**How it works:**
+- Partner receives percentage from each booking made through their API
+- Platform tracks via `partner_ref` in API request
+
+**Pros:**
+- Win-win: everyone earns on results
+- No fixed payments for partner
+
+**Cons:**
+- Accounting and payout complexity
+- Dependence on transaction volume
 
 ---
 
-### Технические требования для API
+### Recommended Launch Model
 
-#### Аутентификация
+**Hybrid model:**
+- **Base subscription:** 10,000 AED/month (API access, up to 5,000 requests, up to 50 bookings)
+- **Over-limit requests:** +0.50 AED per request
+- **Revenue share:** +2% from each booking over limit
+
+**Why hybrid:**
+- Guaranteed revenue (subscription)
+- Scalability (pay-per-request)
+- Partner incentive (revenue share)
+
+---
+
+### Technical Requirements for API
+
+#### Authentication
 ```
-API Key + Secret Key (HMAC-подпись)
+API Key + Secret Key (HMAC signature)
 Header: Authorization: Bearer {api_key}
 ```
 
@@ -1358,340 +1358,340 @@ Enterprise: 2000 req/min
 
 ---
 
-### Плюсы модели B2B API
+### B2B API Model Advantages
 
-| Преимущество | Описание |
+| Advantage | Description |
 |--------------|----------|
-| **New distribution channel** | Доступ к аудитории партнёров (мультипликация охвата) |
-| **High ARPU** | Корпоративные клиенты платят больше, чем B2C |
-| **Recurring revenue** | Подписочная модель = предсказуемый MRR |
-| **Scalability** | API масштабируется автоматически |
-| **Brand exposure** | Партнёры популяризируют нашу платформу |
+| **New distribution channel** | Access to partner audiences (reach multiplication) |
+| **High ARPU** | Corporate clients pay more than B2C |
+| **Recurring revenue** | Subscription model = predictable MRR |
+| **Scalability** | API scales automatically |
+| **Brand exposure** | Partners popularize our platform |
 
 ---
 
-### Минусы модели B2B API
+### B2B API Model Disadvantages
 
-| Недостаток | Описание | Как минимизировать |
+| Disadvantage | Description | How to Minimize |
 |------------|----------|-------------------|
-| **Complex integration** | Партнёрам нужно время на интеграцию (3-6 месяцев) | Готовые SDK (JS, Python), детальная документация |
-| **Support overhead** | Техническая поддержка партнёров | Dedicated manager для Enterprise |
-| **Dependency risk** | Если API сломается — пострадают партнёры | SLA 99.9%, мониторинг, алерты |
-| **Requires stable product** | API можно запускать только после стабилизации core | Запуск не раньше v2.0 |
-| **Cannibalization** | Пользователи могут бронировать через партнёров (мы теряем прямой контакт) | Revenue share компенсирует |
+| **Complex integration** | Partners need time for integration (3-6 months) | Ready SDKs (JS, Python), detailed documentation |
+| **Support overhead** | Partner technical support | Dedicated manager for Enterprise |
+| **Dependency risk** | If API breaks — partners suffer | SLA 99.9%, monitoring, alerts |
+| **Requires stable product** | API can launch only after core stabilization | Launch not earlier than v2.0 |
+| **Cannibalization** | Users may book through partners (we lose direct contact) | Revenue share compensates |
 
 ---
 
-### Применимость в MVP
+### Applicability in MVP
 
-❌ **НЕ ВКЛЮЧАЕМ В MVP**
+❌ **NOT INCLUDED IN MVP**
 
-**Почему:**
-1. **Product not ready:** API требует стабильного, протестированного продукта
-2. **No data:** Нужна статистика (conversion rates, pricing) для демо партнёрам
-3. **Complex sales cycle:** B2B-продажи занимают месяцы (нужны кейсы, презентации)
-4. **Resource intensive:** Требуется отдельная команда для работы с партнёрами
+**Why:**
+1. **Product not ready:** API requires stable, tested product
+2. **No data:** Need statistics (conversion rates, pricing) for partner demos
+3. **Complex sales cycle:** B2B sales take months (need case studies, presentations)
+4. **Resource intensive:** Requires dedicated team for partner management
 
-**Когда запускать:**
-- **v2.0 (месяцы 9-12):** Первая версия API для 2-3 пилотных партнёров
-- **v3.0 (год 2):** Полноценная B2B-программа с SDK, документацией, партнёрской программой
+**When to launch:**
+- **v2.0 (months 9-12):** First API version for 2-3 pilot partners
+- **v3.0 (year 2):** Full B2B program with SDK, documentation, partner program
 
-**Критерии готовности:**
-- ✅ API стабилен (uptime >99%)
-- ✅ >1000 бронирований/месяц (есть что показать партнёрам)
-- ✅ Есть success stories операторов
-- ✅ Юридическая база для B2B-контрактов
-
----
-
-## 2.5. Дополнительные источники дохода (Future Revenue Streams)
-
-Эти модели **НЕ входят в MVP**, но рассматриваются для будущих версий продукта.
+**Readiness criteria:**
+- ✅ API stable (uptime >99%)
+- ✅ >1000 bookings/month (have something to show partners)
+- ✅ Have operator success stories
+- ✅ Legal framework for B2B contracts
 
 ---
 
-### 1. Комиссия от онлайн-платежей (PSP Fee)
+## 2.5. Additional Revenue Streams (Future Revenue Streams)
 
-**Описание:**
-Когда внедрим онлайн-оплату, платформа может взимать дополнительную комиссию за процессинг платежей.
+These models **NOT included in MVP**, but considered for future product versions.
 
-**Как работает:**
+---
+
+### 1. Online Payment Commission (PSP Fee)
+
+**Description:**
+When we implement online payments, platform can charge additional commission for payment processing.
+
+**How it works:**
 ```
-Пользователь оплачивает бокс онлайн:
-├─ Сумма бронирования: 15 000AED 
-├─ Комиссия PSP (Stripe/ЮKassa): 2.5% = 375AED 
-├─ Дополнительная комиссия платформы: 0.5% = 75AED 
-└─ Оператор получает: 15 000AED  - 375AED  - 75AED  = 14 550AED 
+User pays for box online:
+├─ Booking amount: 15,000 AED
+├─ PSP commission (Stripe/Telr): 2.5% = 375 AED
+├─ Additional platform commission: 0.5% = 75 AED
+└─ Operator receives: 15,000 AED - 375 AED - 75 AED = 14,550 AED
 ```
 
-**Или прозрачная модель:**
+**Or transparent model:**
 ```
-Пользователь платит: 15 000AED 
-Комиссия за онлайн-оплату (3%): 450AED 
+User pays: 15,000 AED
+Online payment fee (3%): 450 AED
 ─────────────────────────────
-Итого к оплате: 15 450AED 
+Total to pay: 15,450 AED
 
-Распределение:
-├─ Оператор: 15 000AED 
-├─ PSP (Stripe): 375AED 
-└─ Платформа: 75AED 
+Distribution:
+├─ Operator: 15,000 AED
+├─ PSP (Stripe): 375 AED
+└─ Platform: 75 AED
 ```
 
-**Ожидаемый доход:**
-- При GMV 500 000AED /мес и 0.5% take rate → 2 500AED /мес
-- Небольшой, но стабильный источник
+**Expected revenue:**
+- At GMV 500,000 AED/month and 0.5% take rate → 2,500 AED/month
+- Small but stable source
 
-**Применимость:** v2.0 (после внедрения онлайн-оплаты)
+**Applicability:** v2.0 (after online payment implementation)
 
 ---
 
-### 2. Страховые услуги
+### 2. Insurance Services
 
-**Описание:**
-Партнёрство со страховыми компаниями для предложения страхования вещей на складе.
+**Description:**
+Partnership with insurance companies to offer storage insurance.
 
-**Как работает:**
+**How it works:**
 ```
-Пользователь бронирует бокс →
-Предложение: "Застраховать вещи на сумму до 500 000AED ?"
-├─ Стоимость страховки: 3% от суммы в год
-├─ Пользователь платит: 15 000AED  × 3% = 450AED /год
-└─ Платформа получает комиссию от страховой: 20-30% = 90-135AED 
+User books a box →
+Offer: "Insure belongings up to 500,000 AED?"
+├─ Insurance cost: 3% of amount per year
+├─ User pays: 15,000 AED × 3% = 450 AED/year
+└─ Platform receives commission from insurer: 20-30% = 90-135 AED
 ```
 
-**Типы страхования:**
+**Insurance types:**
 
-| Риск | Страховая сумма | Стоимость/год | Комиссия платформы |
+| Risk | Coverage Amount | Cost/year | Platform Commission |
 |------|-----------------|---------------|-------------------|
-| Базовая (пожар, затопление) | до 100 000AED  | 1% = 1 000AED  | 200AED  (20%) |
-| Стандартная (+ кража) | до 300 000AED  | 2% = 6 000AED  | 1 200AED  (20%) |
-| Премиум (+ ущерб) | до 1 000 000AED  | 3% = 30 000AED  | 6 000AED  (20%) |
+| Basic (fire, flood) | up to 100,000 AED | 1% = 1,000 AED | 200 AED (20%) |
+| Standard (+ theft) | up to 300,000 AED | 2% = 6,000 AED | 1,200 AED (20%) |
+| Premium (+ damage) | up to 1,000,000 AED | 3% = 30,000 AED | 6,000 AED (20%) |
 
-**Ожидаемый доход:**
-- При penetration rate 15% (15% пользователей покупают страховку)
-- 100 бронирований/мес × 15% × 500AED  комиссия = 7 500AED /мес
+**Expected revenue:**
+- At 15% penetration rate (15% users buy insurance)
+- 100 bookings/month × 15% × 500 AED commission = 7,500 AED/month
 
-**Применимость:** v2.0-v3.0
-
----
-
-### 3. Логистика и доставка вещей до склада
-
-**Описание:**
-Интеграция с курьерскими/грузоперевозочными сервисами для доставки вещей на склад.
-
-**Сценарий:**
-```
-Пользователь бронирует бокс →
-"Нужна доставка вещей на склад?" →
-Выбор:
-  ├─ Самостоятельно
-  ├─ Грузчики (2 человека + машина): 3 500AED 
-  └─ Курьер (для небольших вещей): 1 200AED 
-```
-
-**Модель монетизации:**
-- Платформа берёт комиссию 10-15% от стоимости доставки
-- Или фиксированная наценка: доставка стоит 3 000AED , пользователю показываем 3 500AED 
-
-**Партнёры:**
-- Яндекс.Про (грузоперевозки)
-- Грузовичкоф
-- Деловые Линии
-- Локальные грузчики
-
-**Ожидаемый доход:**
-- 30% пользователей заказывают доставку
-- Средний чек доставки: 3 000AED 
-- Комиссия 15%: 450AED 
-- 100 бронирований/мес × 30% × 450AED  = 13 500AED /мес
-
-**Применимость:** v2.0+
+**Applicability:** v2.0-v3.0
 
 ---
 
-### 4. Маркетплейс дополнительных услуг
+### 3. Logistics and Delivery to Facility
 
-**Описание:**
-Платформа как агрегатор не только складов, но и сопутствующих услуг.
+**Description:**
+Integration with courier/transport services for delivering belongings to facility.
 
-**Услуги:**
+**Scenario:**
+```
+User books a box →
+"Need delivery to facility?" →
+Choice:
+  ├─ Self-delivery
+  ├─ Movers (2 people + vehicle): 3,500 AED
+  └─ Courier (for small items): 1,200 AED
+```
 
-| Услуга | Описание | Комиссия платформы |
+**Monetization model:**
+- Platform takes 10-15% commission on delivery cost
+- Or fixed markup: delivery costs 3,000 AED, user pays 3,500 AED
+
+**Partners:**
+- Local transport services
+- Moving companies
+- Courier services
+- Logistics providers
+
+**Expected revenue:**
+- 30% users order delivery
+- Average delivery check: 3,000 AED
+- 15% commission: 450 AED
+- 100 bookings/month × 30% × 450 AED = 13,500 AED/month
+
+**Applicability:** v2.0+
+
+---
+
+### 4. Additional Services Marketplace
+
+**Description:**
+Platform as aggregator not only of facilities, but also related services.
+
+**Services:**
+
+| Service | Description | Platform Commission |
 |--------|----------|-------------------|
-| **Упаковочные материалы** | Продажа коробок, пузырчатой плёнки, скотча | 20% |
-| **Монтаж мебели** | Разборка/сборка при переезде | 15% |
-| **Клининг** | Уборка квартиры после вывоза вещей | 10% |
-| **Оценка антиквариата** | Для страхования ценных вещей | 25% |
-| **Услуги грузчиков** | Погрузка/выгрузка | 15% |
+| **Packing Materials** | Sale of boxes, bubble wrap, tape | 20% |
+| **Furniture Assembly** | Disassembly/assembly during moving | 15% |
+| **Cleaning** | Apartment cleaning after moving out | 10% |
+| **Antique Appraisal** | For insuring valuable items | 25% |
+| **Movers** | Loading/unloading | 15% |
 
-**Как работает:**
-- Партнёры размещают свои услуги на платформе
-- Пользователь заказывает услугу через платформу
-- Платформа берёт комиссию с каждой транзакции
+**How it works:**
+- Partners list their services on platform
+- User orders service through platform
+- Platform takes commission from each transaction
 
-**Ожидаемый доход:**
-- Сложно спрогнозировать без пилота
-- Потенциально: 5 000-15 000AED /мес (если 10% пользователей покупают доп. услуги)
+**Expected revenue:**
+- Hard to forecast without pilot
+- Potentially: 5,000-15,000 AED/month (if 10% users buy additional services)
 
-**Применимость:** v3.0 (требует отдельной marketplace-инфраструктуры)
-
----
-
-### 5. White-label решение для крупных операторов
-
-**Описание:**
-Продажа технологической платформы крупным сетям складов как SaaS.
-
-**Что входит:**
-- Наш фронтенд и бэкенд "под ключ"
-- Оператор получает свой брендированный сайт
-- Управление боксами, бронированиями, аналитикой
-- Белая маркировка (white label)
-
-**Модель оплаты:**
-- Setup fee: 500 000AED  (единоразово)
-- Ежемесячная подписка: 50 000AED /мес
-- Или процент от GMV: 3-5%
-
-**Целевая аудитория:**
-- Крупные сети складов (>10 локаций)
-- Франшизы
-
-**Ожидаемый доход:**
-- 1 клиент = 600 000AED /год
-- 5 клиентов = 3 000 000AED /год
-
-**Применимость:** v3.0+ (требует отдельного продукта)
+**Applicability:** v3.0 (requires separate marketplace infrastructure)
 
 ---
 
-### 6. Data & Analytics as a Service (для B2B)
+### 5. White-Label Solution for Large Operators
 
-**Описание:**
-Продажа агрегированных данных и инсайтов о рынке self-storage.
+**Description:**
+Selling technology platform to large facility chains as SaaS.
 
-**Кто покупает:**
-- Инвесторы (куда открывать новые склады)
-- Девелоперы (спрос на склады в районе)
-- Банки (оценка бизнеса операторов для кредитования)
-- Маркетинговые агентства
+**What's included:**
+- Our frontend and backend "turnkey"
+- Operator gets their branded website
+- Box management, bookings, analytics
+- White label branding
 
-**Что продаём:**
+**Payment model:**
+- Setup fee: 500,000 AED (one-time)
+- Monthly subscription: 50,000 AED/month
+- Or GMV percentage: 3-5%
+
+**Target audience:**
+- Large facility chains (>10 locations)
+- Franchises
+
+**Expected revenue:**
+- 1 client = 600,000 AED/year
+- 5 clients = 3,000,000 AED/year
+
+**Applicability:** v3.0+ (requires separate product)
+
+---
+
+### 6. Data & Analytics as a Service (for B2B)
+
+**Description:**
+Selling aggregated data and insights about self-storage market.
+
+**Who buys:**
+- Investors (where to open new facilities)
+- Developers (facility demand in area)
+- Banks (operator business assessment for lending)
+- Marketing agencies
+
+**What we sell:**
 ```
-Отчёт "Рынок self-storage в Москве, Q4 2025":
-├─ Средние цены по районам
-├─ Динамика спроса (рост/падение)
-├─ Популярные размеры боксов
-├─ Occupancy rates по операторам
-├─ Прогноз на следующий квартал
-└─ Рекомендации для инвестиций
+Report "Self-Storage Market in Dubai, Q4 2025":
+├─ Average prices by area
+├─ Demand dynamics (growth/decline)
+├─ Popular box sizes
+├─ Occupancy rates by operator
+├─ Next quarter forecast
+└─ Investment recommendations
 ```
 
-**Модель оплаты:**
-- Разовые отчёты: 50 000-200 000AED 
-- Подписка на квартальные отчёты: 150 000AED /год
-- API доступ к данным: 300 000AED /год
+**Payment model:**
+- One-time reports: 50,000-200,000 AED
+- Quarterly report subscription: 150,000 AED/year
+- Data API access: 300,000 AED/year
 
-**Ожидаемый доход:**
-- 5 клиентов × 150 000AED  = 750 000AED /год
+**Expected revenue:**
+- 5 clients × 150,000 AED = 750,000 AED/year
 
-**Применимость:** v3.0+ (требует большой базы данных)
+**Applicability:** v3.0+ (requires large database)
 
 ---
 
-### Сравнительная таблица дополнительных источников
+### Comparative Table of Additional Revenue Streams
 
-| Источник | Сложность внедрения | Потенциальный доход | Применимость | Приоритет |
+| Source | Implementation Complexity | Potential Revenue | Applicability | Priority |
 |----------|-------------------|-------------------|--------------|-----------|
-| **PSP Fee** | Средняя | Низкий (2-5kAED /мес) | v2.0 | ⭐⭐ |
-| **Страхование** | Средняя | Средний (5-10kAED /мес) | v2.0 | ⭐⭐⭐ |
-| **Доставка** | Низкая | Средний (10-20kAED /мес) | v2.0 | ⭐⭐⭐⭐ |
-| **Маркетплейс услуг** | Высокая | Средний (5-15kAED /мес) | v3.0 | ⭐⭐ |
-| **White-label SaaS** | Очень высокая | Высокий (500k-3MAED /год) | v3.0+ | ⭐⭐⭐⭐ |
-| **Data & Analytics** | Высокая | Высокий (500k-2MAED /год) | v3.0+ | ⭐⭐⭐ |
+| **PSP Fee** | Medium | Low (2-5k AED/month) | v2.0 | ⭐⭐ |
+| **Insurance** | Medium | Medium (5-10k AED/month) | v2.0 | ⭐⭐⭐ |
+| **Delivery** | Low | Medium (10-20k AED/month) | v2.0 | ⭐⭐⭐⭐ |
+| **Services Marketplace** | High | Medium (5-15k AED/month) | v3.0 | ⭐⭐ |
+| **White-label SaaS** | Very High | High (500k-3M AED/year) | v3.0+ | ⭐⭐⭐⭐ |
+| **Data & Analytics** | High | High (500k-2M AED/year) | v3.0+ | ⭐⭐⭐ |
 
 ---
 
-### Рекомендации по внедрению дополнительных источников
+### Recommendations for Implementing Additional Revenue Streams
 
-#### Фаза 1 (v2.0): Low-hanging fruit
-1. **Доставка вещей** — простая интеграция с курьерами, понятная ценность для пользователей
-2. **Страхование** — партнёрство со страховой, минимальная техническая интеграция
+#### Phase 1 (v2.0): Low-hanging fruit
+1. **Delivery services** — simple courier integration, clear value for users
+2. **Insurance** — insurance partner partnership, minimal technical integration
 
-#### Фаза 2 (v2.5): Medium effort, medium reward
-3. **PSP Fee** — вводится автоматически с онлайн-оплатой
+#### Phase 2 (v2.5): Medium effort, medium reward
+3. **PSP Fee** — introduced automatically with online payments
 
-#### Фаза 3 (v3.0): High effort, high reward
-4. **White-label SaaS** — новый продукт для B2B-сегмента
-5. **Data & Analytics** — монетизация накопленных данных
+#### Phase 3 (v3.0): High effort, high reward
+4. **White-label SaaS** — new product for B2B segment
+5. **Data & Analytics** — monetizing accumulated data
 
-#### Не планируем в ближайшие 2 года:
-- Маркетплейс услуг (слишком сложная инфраструктура, низкий ROMI)
-
----
-
-**Конец Файла 2 (Разделы 2.3-2.5)**
+#### Not planned for next 2 years:
+- Services marketplace (too complex infrastructure, low ROMI)
 
 ---
 
-**Статус:** Все модели монетизации (разделы 2.1-2.5) готовы  
-**Следующий файл:** Разделы 3-4 (Монетизация в MVP + Конкурентный анализ)# Pricing & Monetization Strategy (MVP v1)
-## Part 3: Монетизация в MVP + Конкурентный анализ
+**End of Section 2 (Sections 2.3-2.5)**
 
 ---
 
-# 3. Монетизация в MVP
-
-## 3.1. Что реально реализовать в MVP
-
-### Обзор MVP-scope по монетизации
-
-Основываясь на анализе всех возможных моделей монетизации (разделы 2.1-2.5), для MVP выбраны **2 механики**, которые обеспечивают:
-- ✅ Быстрый запуск (минимальная техническая сложность)
-- ✅ Proof of concept (проверка готовности операторов платить)
-- ✅ Простоту для операторов (low friction)
-- ✅ Alignment of interests (платформа зарабатывает вместе с операторами)
+**Status:** All monetization models (sections 2.1-2.5) complete
+**Next:** Sections 3-4 (Monetization in MVP + Competitive Analysis)# Pricing & Monetization Strategy (MVP v1)
+## Part 3: Monetization in MVP + Competitive Analysis
 
 ---
 
-### Механика 1: Комиссия с подтверждённых бронирований
+# 3. Monetization in MVP
 
-#### Что входит в MVP
+## 3.1. What is Feasible to Implement in MVP
 
-**Базовая функциональность:**
+### MVP Monetization Scope Overview
+
+Based on analysis of all possible monetization models (sections 2.1-2.5), **2 mechanics** selected for MVP that provide:
+- ✅ Quick launch (minimal technical complexity)
+- ✅ Proof of concept (testing operators' willingness to pay)
+- ✅ Simplicity for operators (low friction)
+- ✅ Alignment of interests (platform earns with operators)
+
+---
+
+### Mechanic 1: Commission on Confirmed Bookings
+
+#### What's Included in MVP
+
+**Basic functionality:**
 
 ```
-Пользователь бронирует бокс
+User books a box
     ↓
-Оператор подтверждает бронирование
+Operator confirms booking
     ↓
-Система автоматически фиксирует комиссию
+System automatically records commission
     ↓
-Оператор видит начисление в ЛК
+Operator sees charge in dashboard
     ↓
-Выплаты комиссии — офлайн (банковский перевод по запросу)
+Commission payouts — offline (bank transfer on request)
 ```
 
-**Параметры комиссии в MVP:**
+**MVP Commission Parameters:**
 
-| Параметр | Значение | Обоснование |
+| Parameter | Value | Rationale |
 |----------|----------|-------------|
-| **Ставка комиссии** | 12% от суммы бронирования | Средняя ставка между конкурентами (10-15%) |
-| **Кто платит** | Оператор (Supply-side fee) | Стандарт индустрии, прозрачность для пользователя |
-| **Когда взимается** | При подтверждении бронирования | Только за результат (confirmed bookings) |
-| **Минимальная комиссия** | Нет | Упрощение для MVP |
-| **Градация по объёму** | Нет | Все операторы платят одинаково (простота) |
+| **Commission Rate** | 12% of booking amount | Average rate among competitors (10-15%) |
+| **Who Pays** | Operator (Supply-side fee) | Industry standard, user transparency |
+| **When Charged** | On booking confirmation | Only for results (confirmed bookings) |
+| **Minimum Commission** | None | Simplification for MVP |
+| **Volume Tiers** | None | All operators pay same (simplicity) |
 
-**Пример расчёта:**
+**Calculation Example:**
 ```
-Бронирование:
-├─ Бокс 6м²: 4 000AED /мес
-├─ Срок: 3 месяца
-├─ Сумма бронирования: 12 000AED 
+Booking:
+├─ Box 6m²: 4,000 AED/month
+├─ Period: 3 months
+├─ Booking amount: 12,000 AED
 │
-├─ Комиссия платформы (12%): 1 440AED 
-└─ Оператор получает: 10 560AED 
+├─ Platform commission (12%): 1,440 AED
+└─ Operator receives: 10,560 AED
 ```
 
 ---
@@ -1705,13 +1705,13 @@ Enterprise: 2000 req/min
 **They are included here for future reference and to illustrate the eventual billing system (post-MVP).**
 
 ---
-#### Технические требования (CONCEPTUAL - для будущей автоматизации)
+#### Technical requirements (CONCEPTUAL - for future automation)
 
-**1. Автоматический расчёт комиссии (Post-MVP automation)**
+**1. Automatic commission calculation (Post-MVP automation)**
 
-При изменении статуса бронирования:
+When booking status changes:
 ```sql
--- Когда booking.status меняется с 'pending' → 'confirmed'
+-- When booking.status changes from 'pending' → 'confirmed'
 INSERT INTO transactions (
   booking_id,
   operator_id,
@@ -1733,121 +1733,121 @@ INSERT INTO transactions (
 );
 ```
 
-**2. Dashboard для оператора**
+**2. Dashboard for operator**
 
-В ЛК оператора раздел "Финансы":
+In operator dashboard section "Finances":
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  💰 Баланс и комиссии                             │
+│  💰 Balance and commissions                        │
 ├──────────────────────────────────────────────────┤
-│  Текущий баланс: 25 340AED                          │
-│  Ожидает подтверждения: 3 200AED                    │
-│  Доступно к выводу: 22 140AED                       │
-│                                                   │
-│  [Запросить выплату]                              │
+│  Current balance: 25,340 AED                       │
+│  Awaiting confirmation: 3,200 AED                  │
+│  Available for withdrawal: 22,140 AED              │
+│                                                    │
+│  [Request payout]                                  │
 ├──────────────────────────────────────────────────┤
-│  📊 Статистика за месяц                          │
-│  • Подтверждённых бронирований: 12               │
-│  • Сумма бронирований: 180 000AED                   │
-│  • Комиссия платформы: 21 600AED                    │
-│  • Вы получили: 158 400AED                          │
+│  📊 Statistics for the month                       │
+│  • Confirmed bookings: 12                          │
+│  • Booking amount: 180,000 AED                     │
+│  • Platform commission: 21,600 AED                 │
+│  • You received: 158,400 AED                       │
 ├──────────────────────────────────────────────────┤
-│  📜 История транзакций                           │
-│  [Таблица с последними 20 транзакциями]          │
-│  [Скачать отчёт за период]                       │
+│  📜 Transaction history                           │
+│  [Table with last 20 transactions]          │
+│  [Download report for period]                       │
 └──────────────────────────────────────────────────┘
 ```
 
-**Таблица транзакций:**
+**Transaction table:**
 
-| Дата | Бронирование | Сумма | Комиссия (12%) | К получению | Статус |
+| Date | Booking | Amount | Commission (12%) | To receive | Status |
 |------|--------------|-------|----------------|-------------|--------|
-| 05.12.2025 | #B-1234 | 15 000AED  | 1 800AED  | 13 200AED  | ✅ Выплачено |
-| 03.12.2025 | #B-1228 | 8 000AED  | 960AED  | 7 040AED  | ⏳ Ожидает |
-| 01.12.2025 | #B-1215 | 24 000AED  | 2 880AED  | 21 120AED  | ✅ Выплачено |
+| 05.12.2025 | #B-1234 | 15 000AED  | 1 800AED  | 13 200AED  | ✅ Paid |
+| 03.12.2025 | #B-1228 | 8 000AED  | 960AED  | 7 040AED  | ⏳ Pending |
+| 01.12.2025 | #B-1215 | 24 000AED  | 2 880AED  | 21 120AED  | ✅ Paid |
 
-**3. Уведомления**
+**3. Notifications**
 
-Email оператору при начислении комиссии:
+Email to operator on commission charge:
 ```
-Subject: Новое бронирование подтверждено — комиссия начислена
+Subject: New booking confirmed — commission charged
 
-Здравствуйте, [Имя оператора]!
+Hello, [Operator name]!
 
-Бронирование #B-1234 подтверждено.
+Booking #B-1234 confirmed.
 
-Детали:
-• Склад: Склад на Выхино
-• Бокс: M (6м²)
-• Сумма: 12 000AED  (3 месяца × 4 000AED )
-• Комиссия платформы: 1 440AED  (12%)
-• Вы получите: 10 560AED 
+Details:
+• Facility: Facility in Business Bay
+• Box: M (6m²)
+• Amount: 12,000 AED (3 months × 4,000 AED)
+• Platform commission: 1,440 AED (12%)
+• You will receive: 10,560 AED
 
-Баланс доступен для вывода в личном кабинете.
+Balance available for withdrawal in dashboard.
 
-[Перейти в ЛК]
+[Go to Dashboard]
 ```
 
-**4. Процесс выплат (офлайн в MVP)**
+**4. Payout process (offline in MVP)**
 
-В MVP выплаты не автоматизированы:
-- Оператор нажимает "Запросить выплату" в ЛК
-- Заявка попадает в админ-панель
-- Админ делает банковский перевод вручную
-- Статус меняется на "Выплачено"
+In MVP, payouts are not automated:
+- Operator clicks "Request payout" in dashboard
+- Request goes to admin panel
+- Admin makes bank transfer manually
+- Status changes to "Paid"
 
-**Почему офлайн:**
-- Интеграция с payment gateway (ЮKassa, Stripe) требует времени
-- В MVP важнее проверить гипотезу (операторы готовы платить комиссию)
-- Автоматизация выплат — v2.0
+**Why offline:**
+- Integration with payment gateway (Telr, Stripe) takes time
+- In MVP it's more important to test hypothesis (operators willing to pay commission)
+- Payout automation — v2.0
 
 ---
 
-### Механика 2: Базовая версия Operator Pro (опционально)
+### Mechanism 2: Basic version of Operator Pro (optional)
 
-#### Что входит в MVP (упрощённая версия)
+#### What's included in MVP (simplified version)
 
-**Тарифы:**
+**Tiers:**
 
-| Tier | Цена | Функции |
+| Tier | Price | Features |
 |------|------|---------|
-| **Basic** | 0AED /мес | • Размещение складов<br>• Получение заявок<br>• Базовая статистика (просмотры, клики) |
-| **Standard** | AED 2,990/мес | • Всё из Basic +<br>• Расширенная аналитика (воронка конверсии)<br>• AI Price Recommender (базовый)<br>• Приоритетная поддержка |
+| **Basic** | 0 AED/month | • Facility listings<br>• Receive requests<br>• Basic statistics (views, clicks) |
+| **Standard** | 2,990 AED/month | • Everything from Basic +<br>• Advanced analytics (conversion funnel)<br>• AI Price Recommender (basic)<br>• Priority support |
 
-**Что НЕ входит в MVP:**
-- ❌ Pro-тариф (слишком сложная аналитика)
-- ❌ Динамический прайсинг AI
-- ❌ API доступ
-- ❌ Приоритетное размещение (это промо-слоты, не в MVP)
+**What's NOT included in MVP:**
+- ❌ Pro tier (too complex analytics)
+- ❌ Dynamic AI pricing
+- ❌ API access
+- ❌ Priority placement (these are promo slots, not in MVP)
 
 ---
 
-#### Функциональность Standard в MVP
+#### Standard functionality in MVP
 
-**1. Расширенная аналитика**
+**1. Advanced analytics**
 
-Dashboard с дополнительными метриками:
+Dashboard with additional metrics:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  📊 Конверсионная воронка                       │
+│  📊 Conversion funnel                           │
 ├─────────────────────────────────────────────────┤
-│  Просмотры страницы склада:      850            │
+│  Facility page views:            850            │
 │  ↓ 10%                                          │
-│  Клики "Забронировать":          85             │
+│  "Book Now" clicks:              85             │
 │  ↓ 40%                                          │
-│  Отправленные заявки:            34             │
+│  Requests submitted:             34             │
 │  ↓ 60%                                          │
-│  Подтверждённые бронирования:    20             │
+│  Confirmed bookings:             20             │
 │                                                  │
-│  Итоговая конверсия: 2.35%                      │
+│  Total conversion: 2.35%                        │
 └─────────────────────────────────────────────────┘
 ```
 
-**Динамика загрузки:**
+**Occupancy dynamics:**
 ```
-График (линия):
+Chart (line):
 100% ├─────────────────────────────────────
      │                              ┌───
  75% │                        ┌─────┘
@@ -1856,73 +1856,73 @@ Dashboard с дополнительными метриками:
      │      ┌─────┘
  25% ├──────┘
      └─────────────────────────────────────
-      Янв  Фев  Мар  Апр  Май  Июн
+      Jan  Feb  Mar  Apr  May  Jun
 
-Загрузка боксов по месяцам
+Box occupancy by month
 ```
 
-**2. AI Price Recommender (базовый)**
+**2. AI Price Recommender (basic)**
 
-Простое сравнение с рынком:
+Simple market comparison:
 
 ```
 ┌──────────────────────────────────────────────┐
-│  💡 AI Рекомендация по ценам                  │
+│  💡 AI Price Recommendation                   │
 ├──────────────────────────────────────────────┤
-│  Ваш бокс S (3м²): 2 500AED /мес                │
-│  Средняя в районе: 2 800AED /мес                │
+│  Your box S (3m²): 2,500 AED/month            │
+│  Area average: 2,800 AED/month                │
 │                                               │
-│  📊 Ваша цена на 11% ниже рынка              │
+│  📊 Your price is 11% below market            │
 │                                               │
-│  Рекомендация:                                │
-│  Вы можете поднять цену до 2 700AED             │
-│  без значительной потери конверсии.           │
+│  Recommendation:                              │
+│  You can raise price to 2,700 AED             │
+│  without significant conversion loss.         │
 │                                               │
-│  Ожидаемый эффект:                            │
-│  • Рост дохода: +8%                          │
-│  • Снижение бронирований: -3%                │
+│  Expected effect:                             │
+│  • Revenue growth: +8%                        │
+│  • Booking decrease: -3%                      │
 │                                               │
-│  [Применить] [Игнорировать]                   │
+│  [Apply] [Ignore]                             │
 └──────────────────────────────────────────────┘
 ```
 
-**Как работает в MVP:**
-- Простой запрос к БД: средняя цена боксов аналогичного размера в радиусе 5 км
-- Если цена оператора на ±15% от средней → показываем рекомендацию
-- Без сложных ML-моделей (это v2.0)
+**How it works in MVP:**
+- Simple DB query: average price of similar size boxes within 5km radius
+- If operator price is ±15% from average → show recommendation
+- Without complex ML models (that's v2.0)
 
 ---
 
-#### Оплата подписки Standard в MVP
+#### Standard subscription payment in MVP
 
-**Процесс:**
-1. Оператор выбирает тариф Standard в ЛК
-2. Платформа генерирует счёт на оплату (офлайн)
-3. Оператор переводит AED 2,990 на расчётный счёт
-4. Админ вручную активирует подписку
-5. Подписка действует 30 дней
+**Process:**
+1. Operator selects Standard tier in dashboard
+2. Platform generates invoice (offline)
+3. Operator transfers 2,990 AED to bank account
+4. Admin manually activates subscription
+5. Subscription valid for 30 days
 
-**Почему офлайн:**
-- Автоматическая рекуррентная оплата требует интеграции с PSP
-- В MVP достаточно ручного процесса (5-10 операторов)
-- Автоматизация — v2.0
+**Why offline:**
+- Automatic recurring payment requires PSP integration
+- In MVP manual process is sufficient (5-10 operators)
+- Automation — v2.0
 
 ---
 
-### Сводная таблица: Что в MVP, что нет
+### Summary table: What's in MVP, what's not
 
-| Механика монетизации | В MVP? | Комментарий |
+| Monetization mechanism | In MVP? | Comment |
 |---------------------|--------|-------------|
-| **Комиссия с бронирований** | ✅ Да | Основная модель, 12% от суммы |
-| **Подписка Basic (free)** | ✅ Да | Бесплатный доступ для всех операторов |
-| **Подписка Standard** | ⚠️ Упрощённая | Базовая аналитика + AI Price Recommender (простой) |
-| **Подписка Pro** | ❌ Нет | Слишком сложная аналитика для MVP |
-| **Промо-слоты** | ❌ Нет | Требует трафика (>1000 визитов/день) |
-| **Партнёрский API** | ❌ Нет | Требует стабильного продукта |
-| **PSP Fee** | ❌ Нет | Онлайн-оплата не в MVP |
-| **Страхование** | ❌ Нет | Требует партнёрства со страховыми |
-| **Доставка** | ❌ Нет | Не критично для MVP |
-| **Маркетплейс услуг** | ❌ Нет | Слишком сложно |
+| **Commission from bookings** | ✅ Yes | Primary model, 12% of amount |
+| **Basic subscription (free)** | ✅ Yes | Free access for all operators |
+| **Standard subscription** | ⚠️ Simplified | Basic analytics + AI Price Recommender (simple) |
+| **Pro subscription** | ❌ No | Too complex analytics for MVP |
+| **Promo slots** | ❌ No | Requires traffic (>1000 visits/day) |
+| **Partner API** | ❌ No | Requires stable product |
+| **PSP Fee** | ❌ No | Online payment not in MVP |
+| **Insurance** | ❌ No | Requires partnership with insurers |
+| **Delivery** | ❌ No | Not critical for MVP |
+| **Services marketplace** | ❌ No | Too complex |
 
 ---
 
@@ -1935,9 +1935,9 @@ Dashboard с дополнительными метриками:
 **They are included here for future reference and to illustrate the eventual billing system (post-MVP).**
 
 ---
-### Техническая архитектура монетизации (CONCEPTUAL - Post-MVP)
+### Monetization Technical Architecture (CONCEPTUAL - Post-MVP)
 
-#### Таблица `transactions`
+#### Table `transactions`
 
 ```sql
 CREATE TABLE transactions (
@@ -1945,22 +1945,22 @@ CREATE TABLE transactions (
   booking_id INTEGER REFERENCES bookings(id),
   operator_id INTEGER REFERENCES operators(id),
   
-  -- Финансы
+  -- Finances
   booking_amount DECIMAL(10,2) NOT NULL,
   commission_rate DECIMAL(5,4) NOT NULL, -- 0.1200 = 12%
   commission_amount DECIMAL(10,2) NOT NULL,
   operator_payout DECIMAL(10,2) NOT NULL,
   
-  -- Статус
+  -- Status
   status VARCHAR(50) NOT NULL, -- pending_payout, paid, cancelled
   payout_method VARCHAR(50), -- bank_transfer
-  payout_reference VARCHAR(255), -- номер платёжки
+  payout_reference VARCHAR(255), -- payment number
   
-  -- Даты
+  -- Dates
   created_at TIMESTAMP DEFAULT NOW(),
   paid_at TIMESTAMP,
   
-  -- Метаданные
+  -- Metadata
   notes TEXT
 );
 
@@ -1968,27 +1968,27 @@ CREATE INDEX idx_transactions_operator ON transactions(operator_id);
 CREATE INDEX idx_transactions_status ON transactions(status);
 ```
 
-#### Таблица `subscriptions` (для Standard)
+#### Table `subscriptions` (for Standard)
 
 ```sql
 CREATE TABLE subscriptions (
   id SERIAL PRIMARY KEY,
   operator_id INTEGER REFERENCES operators(id) UNIQUE,
   
-  -- Тариф
+  -- Tariff
   tier VARCHAR(50) NOT NULL, -- basic, standard, pro
   price DECIMAL(10,2) NOT NULL,
   
-  -- Период
+  -- Period
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   status VARCHAR(50) NOT NULL, -- active, expired, cancelled
   
-  -- Оплата
+  -- Payment
   payment_method VARCHAR(50), -- bank_transfer, online (v2.0)
   payment_reference VARCHAR(255),
   
-  -- История
+  -- History
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -1996,1718 +1996,1718 @@ CREATE TABLE subscriptions (
 
 ---
 
-## 3.2. Что НЕ входит в MVP (технически)
+## 3.2. What is NOT Included in MVP (technically)
 
 **CRITICAL:** The following are explicitly OUT OF SCOPE for MVP v1 technical implementation.
 
-### Онлайн-оплата и эквайринг
+### Online Payments and Acquiring
 
-**Что не реализуем:**
-- ❌ Интеграция с ЮKassa, Stripe, PayPal
-- ❌ Автоматическое удержание комиссии при онлайн-оплате
-- ❌ Рекуррентные платежи для подписок
-- ❌ Split-payment (автоматическое распределение средств между платформой и оператором)
+**What we don't implement:**
+- ❌ Integration with Telr, Stripe, PayPal
+- ❌ Automatic commission deduction with online payments
+- ❌ Recurring payments for subscriptions
+- ❌ Split-payment (automatic fund distribution between platform and operator)
 
-**Почему:**
-- **Техническая сложность:** интеграция с PSP занимает 3-4 недели
-- **Юридические вопросы:** требуется договор с банком-эквайером, бухгалтерский учёт
-- **Не критично для MVP:** бронирования можно фиксировать без онлайн-оплаты (заявки + офлайн-оплата оператору)
+**Why:**
+- **Technical complexity:** PSP integration takes 3-4 weeks
+- **Legal issues:** requires contract with acquiring bank, accounting
+- **Not critical for MVP:** bookings can be recorded without online payment (requests + offline payment to operator)
 
-**Когда внедрим:** v2.0 (после проверки гипотезы монетизации)
-
----
-
-### Партнёрский API
-
-**Что не реализуем:**
-- ❌ REST API для интеграции сторонних сервисов
-- ❌ SDK для партнёров (JavaScript, Python)
-- ❌ Webhook-уведомления для партнёров
-- ❌ B2B-тарифы и SLA
-
-**Почему:**
-- **Продукт не готов:** API требует стабильного, протестированного продукта (uptime >99%)
-- **Нет данных:** партнёрам нужны кейсы, статистика конверсии → появится через 3-6 месяцев
-- **Долгий sales cycle:** B2B-продажи занимают месяцы
-
-**Когда внедрим:** v2.0-v3.0 (месяцы 9-18)
+**When to implement:** v2.0 (after monetization hypothesis validation)
 
 ---
 
-### Расширенная реклама и промо
+### Partner API
 
-**Что не реализуем:**
-- ❌ Платные промо-слоты в каталоге
-- ❌ Рекламные карточки
-- ❌ Баннеры на главной
-- ❌ Таргетированная реклама
+**What we don't implement:**
+- ❌ REST API for third-party service integration
+- ❌ Partner SDKs (JavaScript, Python)
+- ❌ Webhook notifications for partners
+- ❌ B2B pricing tiers and SLA
 
-**Почему:**
-- **Требует трафика:** промо эффективны только при >1000 визитов/день
-- **Риск плохого UX:** на старте важнее органический рост, а не реклама
-- **Сложная система:** нужна инфраструктура для управления слотами, биллинга, A/B-тестов
+**Why:**
+- **Product not ready:** API requires stable, tested product (uptime >99%)
+- **No data:** partners need case studies, conversion statistics → will appear in 3-6 months
+- **Long sales cycle:** B2B sales take months
 
-**Когда внедрим:** v1.5-v2.0 (месяцы 6-9)
-
----
-
-### Дополнительные сервисы
-
-**Что не реализуем:**
-- ❌ Страхование вещей
-- ❌ Доставка и логистика
-- ❌ Маркетплейс сопутствующих услуг (упаковка, грузчики)
-- ❌ White-label SaaS для операторов
-
-**Почему:**
-- **Не core product:** в MVP фокус на основной ценности (поиск и бронирование складов)
-- **Требует партнёрств:** нужны договоры со страховыми, курьерами и т.д.
-- **Отвлекает ресурсы:** лучше сделать хорошо core, чем плохо всё сразу
-
-**Когда внедрим:** v2.0+ (месяцы 9-18)
+**When to implement:** v2.0-v3.0 (months 9-18)
 
 ---
 
-## 3.3. Обоснование выбора MVP-scope
+### Advanced Advertising and Promotions
 
-### Технические ограничения
+**What we don't implement:**
+- ❌ Paid promo slots in catalog
+- ❌ Promoted cards
+- ❌ Homepage banners
+- ❌ Targeted advertising
 
-| Фактор | Ограничение | Влияние на MVP-scope |
+**Why:**
+- **Requires traffic:** promos effective only at >1000 visits/day
+- **Bad UX risk:** at start, organic growth more important than ads
+- **Complex system:** need infrastructure for slot management, billing, A/B tests
+
+**When to implement:** v1.5-v2.0 (months 6-9)
+
+---
+
+### Additional Services
+
+**What we don't implement:**
+- ❌ Belongings insurance
+- ❌ Delivery and logistics
+- ❌ Related services marketplace (packing, movers)
+- ❌ White-label SaaS for operators
+
+**Why:**
+- **Not core product:** MVP focuses on core value (facility search and booking)
+- **Requires partnerships:** need contracts with insurance, couriers, etc.
+- **Resource distraction:** better to do core well than everything poorly
+
+**When to implement:** v2.0+ (months 9-18)
+
+---
+
+## 3.3. MVP Scope Selection Rationale
+
+### Technical Constraints
+
+| Factor | Constraint | Impact on MVP Scope |
 |--------|-------------|---------------------|
-| **Время разработки** | 3 месяца на MVP | Приоритет простым механикам (комиссия офлайн) |
-| **Размер команды** | 2-3 разработчика | Невозможно сделать сложную аналитику и API одновременно |
-| **Бюджет** | Ограничен | Отказ от дорогих интеграций (PSP, AI-инфраструктура) |
-| **Инфраструктура** | Базовая (без масштабирования) | API для партнёров требует высокого uptime |
+| **Development Time** | 3 months for MVP | Priority to simple mechanics (offline commission) |
+| **Team Size** | 2-3 developers | Can't do complex analytics and API simultaneously |
+| **Budget** | Limited | Reject expensive integrations (PSP, AI infrastructure) |
+| **Infrastructure** | Basic (no scaling) | Partner API requires high uptime |
 
 ---
 
-### Бизнес-приоритеты
+### Business Priorities
 
-#### Приоритет 1: Proof of Concept монетизации
-**Главный вопрос:** Готовы ли операторы платить комиссию?
+#### Priority 1: Monetization Proof of Concept
+**Main Question:** Are operators willing to pay commission?
 
-**Что нужно для ответа:**
-- ✅ Фиксировать комиссию с бронирований
-- ✅ Показывать операторам прозрачную финансовую отчётность
-- ✅ Собрать feedback от первых 5-10 операторов
+**What's needed for answer:**
+- ✅ Record commission from bookings
+- ✅ Show operators transparent financial reporting
+- ✅ Collect feedback from first 5-10 operators
 
-**Что НЕ нужно:**
-- ❌ Сложная аналитика (Standard-подписка)
-- ❌ Промо-слоты
+**What's NOT needed:**
+- ❌ Complex analytics (Standard subscription)
+- ❌ Promo slots
 - ❌ API
 
-**Вывод:** Комиссия с бронирований — достаточно для проверки гипотезы.
+**Conclusion:** Booking commission is sufficient for hypothesis validation.
 
 ---
 
-#### Приоритет 2: Минимизация трения для операторов
-**Цель:** Операторы должны легко подключиться и получить первые заявки.
+#### Priority 2: Minimize Friction for Operators
+**Goal:** Operators should easily connect and get first requests.
 
-**Low friction подход:**
-- ✅ Basic-тариф бесплатный (нет барьера входа)
-- ✅ Комиссия только с результата (подтверждённые бронирования)
-- ✅ Прозрачная ставка 12% (без градаций и сложных формул)
+**Low friction approach:**
+- ✅ Basic tier free (no entry barrier)
+- ✅ Commission only on results (confirmed bookings)
+- ✅ Transparent rate 12% (no tiers and complex formulas)
 
-**Что усложняет:**
-- ❌ Обязательная подписка (барьер входа)
-- ❌ Онлайн-оплата (нужны реквизиты, НДС, договоры)
-- ❌ Множество тарифов (сложность выбора)
+**What complicates:**
+- ❌ Mandatory subscription (entry barrier)
+- ❌ Online payment (need details, VAT, contracts)
+- ❌ Multiple pricing tiers (choice complexity)
 
-**Вывод:** Простая комиссионная модель + опциональная подписка Standard.
-
----
-
-#### Приоритет 3: Фокус на качестве core product
-**Главное в MVP:** Пользователи должны легко находить и бронировать склады.
-
-**На что тратим ресурсы:**
-- ✅ Удобный поиск и фильтры
-- ✅ AI Box Finder (уникальная фича)
-- ✅ Карта с кластеризацией
-- ✅ Простое бронирование
-
-**На что НЕ тратим:**
-- ❌ Сложная аналитика (можно добавить позже)
-- ❌ Промо-слоты (не влияет на UX пользователей)
-- ❌ API (не влияет на B2C-сценарий)
-
-**Вывод:** Монетизация должна быть простой, чтобы не отвлекать от разработки core функций.
+**Conclusion:** Simple commission model + optional subscription Standard.
 
 ---
 
-### Валидация гипотез в MVP
+#### Priority 3: Focus on core product quality
+**Main thing in MVP:** Users should easily find and book facilities.
 
-**Гипотеза 1:** Операторы готовы платить 12% комиссию за качественные лиды
-- **Как проверяем:** Retention rate операторов через 30/60/90 дней
-- **Критерий успеха:** >70% операторов не отключаются после первой комиссии
-- **Что нужно:** Комиссия с бронирований ✅
+**What we spend resources on:**
+- ✅ Convenient search and filters
+- ✅ AI Box Finder (unique feature)
+- ✅ Map with clustering
+- ✅ Simple booking
 
-**Гипотеза 2:** Аналитика повышает готовность платить за подписку
-- **Как проверяем:** Conversion rate Basic → Standard
-- **Критерий успеха:** >15% операторов апгрейдятся в первые 3 месяца
-- **Что нужно:** Standard-подписка с базовой аналитикой ✅
+**What we DON'T spend on:**
+- ❌ Complex analytics (can be added later)
+- ❌ Promo slots (doesn't affect user UX)
+- ❌ API (doesn't affect B2C scenario)
 
-**Гипотеза 3:** AI-функции повышают конверсию
-- **Как проверяем:** A/B тест (с AI Box Finder vs без)
-- **Критерий успеха:** +20% конверсия в бронирования
-- **Что нужно:** AI Box Finder ✅ (не требует сложной монетизации)
+**Conclusion:** Monetization should be simple to not distract from core function development.
 
-**Гипотезы, которые НЕ проверяем в MVP:**
-- ❌ Операторы готовы платить за промо (нужен трафик)
-- ❌ Партнёры заинтересованы в API (нужны кейсы и статистика)
-- ❌ Пользователи готовы покупать страховку (не core)
+---
+
+### Hypothesis validation in MVP
+
+**Hypothesis 1:** Operators are willing to pay 12% commission for quality leads
+- **How we test:** Operator retention rate after 30/60/90 days
+- **Success criterion:** >70% operators don't churn after first commission
+- **What's needed:** Commission from bookings ✅
+
+**Hypothesis 2:** Analytics increases willingness to pay for subscription
+- **How we test:** Conversion rate Basic → Standard
+- **Success criterion:** >15% operators upgrade in first 3 months
+- **What's needed:** Standard subscription with basic analytics ✅
+
+**Hypothesis 3:** AI features increase conversion
+- **How we test:** A/B test (with AI Box Finder vs without)
+- **Success criterion:** +20% conversion to bookings
+- **What's needed:** AI Box Finder ✅ (doesn't require complex monetization)
+
+**Hypotheses we DON'T test in MVP:**
+- ❌ Operators are willing to pay for promo (traffic needed)
+- ❌ Partners interested in API (cases and statistics needed)
+- ❌ Users willing to buy insurance (not core)
 
 ---
 
 ### Time-to-Market
 
-**Сравнение сроков разработки:**
+**Development timeline comparison:**
 
-| Механика | Срок разработки | Влияние на запуск MVP |
+| Mechanism | Development time | Impact on MVP launch |
 |----------|----------------|----------------------|
-| **Комиссия (офлайн)** | 1 неделя | ✅ Не замедляет |
-| **Подписка Standard (упрощённая)** | 2 недели | ✅ Не критично |
-| **Онлайн-оплата** | 4 недели | ⚠️ Замедляет на 1 месяц |
-| **Промо-слоты** | 3 недели | ⚠️ Замедляет |
-| **Партнёрский API** | 6 недель | ❌ Недопустимо |
-| **Сложная аналитика (Pro)** | 4 недели | ⚠️ Замедляет |
+| **Commission (offline)** | 1 week | ✅ Doesn't slow down |
+| **Standard subscription (simplified)** | 2 weeks | ✅ Not critical |
+| **Online payment** | 4 weeks | ⚠️ Delays by 1 month |
+| **Promo slots** | 3 weeks | ⚠️ Delays |
+| **Partner API** | 6 weeks | ❌ Unacceptable |
+| **Complex analytics (Pro)** | 4 weeks | ⚠️ Delays |
 
-**Вывод:**
-- Комиссия + Standard (упрощённая) = +3 недели к MVP
-- Всё остальное = от +4 недель (неприемлемо)
+**Conclusion:**
+- Commission + Standard (simplified) = +3 weeks to MVP
+- Everything else = from +4 weeks (unacceptable)
 
-**Стратегия:**
-1. **MVP (месяцы 1-3):** Комиссия офлайн, Basic бесплатный
-2. **MVP+ (месяц 4):** Добавить Standard-подписку (если есть запрос от операторов)
-3. **v2.0 (месяцы 6-9):** Онлайн-оплата, промо-слоты
-4. **v3.0 (месяцы 12-18):** API, сложная аналитика, доп. услуги
+**Strategy:**
+1. **MVP (months 1-3):** Commission (offline), Basic free
+2. **MVP+ (month 4):** Add Standard subscription (if there's demand from operators)
+3. **v2.0 (months 6-9):** Online payment, promo slots
+4. **v3.0 (months 12-18):** API, advanced analytics, additional services
 
 ---
 
-# 4. Конкурентный анализ монетизации
+# 4. Competitive Monetization Analysis
 
-## 4.1. Монетизация топовых self-storage агрегаторов
+## 4.1. Top Self-Storage Aggregators' Monetization
 
-### Международные конкуренты
+### International Competitors
 
-#### SpareFoot (США)
+#### SpareFoot (USA)
 
-**Позиционирование:** Крупнейший агрегатор self-storage в США (>10 000 локаций)
+**Positioning:** Largest self-storage aggregator in USA (>10,000 locations)
 
-**Модель монетизации:**
+**Monetization model:**
 
-| Механика | Детали |
+| Mechanism | Details |
 |----------|--------|
-| **Комиссия с бронирований** | 30-50% от первого месяца аренды (!) |
-| **Pay-per-lead** | $30-80 за квалифицированный лид (зависит от района) |
-| **Подписка для операторов** | $199-499/мес за Premium-размещение |
-| **Промо-слоты** | $500-2000/мес за топ-размещение в районе |
+| **Commission from bookings** | 30-50% of first month rental (!) |
+| **Pay-per-lead** | $30-80 per qualified lead (depends on area) |
+| **Operator subscription** | $199-499/month for Premium placement |
+| **Promo slots** | $500-2000/month for top placement in area |
 
-**Особенности:**
-- Очень высокая комиссия (30-50%), но операторы платят, т.к. SpareFoot — монополист
-- Фокус на Pay-per-lead, а не revenue share
-- Операторы платят ЗА ЛИДА, а не за результат
+**Features:**
+- Very high commission (30-50%), but operators pay because SpareFoot is monopolist
+- Focus on Pay-per-lead, not revenue share
+- Operators pay FOR LEAD, not for result
 
-**Плюсы модели:**
-- Предсказуемый доход для SpareFoot
-- Операторы платят за качество лидов, а не за конверсию
+**Model pros:**
+- Predictable revenue for SpareFoot
+- Operators pay for lead quality, not for conversion
 
-**Минусы модели:**
-- Высокий барьер входа (операторы рискуют платить за нецелевые лиды)
-- Не alignment of interests (SpareFoot зарабатывает, даже если оператор не закрыл сделку)
+**Model cons:**
+- High entry barrier (operators risk paying for non-target leads)
+- No alignment of interests (SpareFoot earns even if operator doesn't close deal)
 
 ---
 
-#### Storemates (Великобритания)
+#### Storemates (UK)
 
-**Позиционирование:** Агрегатор self-storage в UK
+**Positioning:** Self-storage aggregator in UK
 
-**Модель монетизации:**
+**Monetization model:**
 
-| Механика | Детали |
+| Mechanism | Details |
 |----------|--------|
-| **Комиссия с бронирований** | 15-20% от суммы бронирования |
-| **Подписка для операторов** | £99-299/мес (зависит от количества локаций) |
-| **Revenue share** | 10% от всех платежей клиента на протяжении аренды |
-| **Онлайн-оплата** | Платформа обрабатывает платежи → берёт комиссию |
+| **Commission from bookings** | 15-20% of booking amount |
+| **Operator subscription** | £99-299/month (depends on number of locations) |
+| **Revenue share** | 10% of all customer payments throughout rental |
+| **Online payment** | Platform processes payments → takes commission |
 
-**Особенности:**
-- Комиссия взимается не только с первого месяца, но и с продлений (recurring revenue!)
-- Платформа интегрирована с оплатой → оператор получает деньги через платформу
+**Features:**
+- Commission charged not only on first month, but also on renewals (recurring revenue!)
+- Platform integrated with payment → operator receives money through platform
 
-**Плюсы модели:**
-- Высокая LTV клиента (платформа зарабатывает на протяжении всей аренды)
-- Простота для оператора (не нужно отдельно обрабатывать платежи)
+**Model pros:**
+- High customer LTV (platform earns throughout entire rental)
+- Simplicity for operator (no need to process payments separately)
 
-**Минусы модели:**
-- Зависимость оператора от платформы (все деньги идут через платформу)
-- Высокий churn риск, если качество сервиса падает
+**Model cons:**
+- Operator dependency on platform (all money goes through platform)
+- High churn risk if service quality drops
 
 ---
 
-### Российские конкуренты
+### Regional Competitors
 
-#### "Место" (Россия)
+#### "Mesto" (Russia/Regional)
 
-**Позиционирование:** Один из крупнейших агрегаторов self-storage в России
+**Positioning:** One of largest self-storage aggregators in region
 
-**Модель монетизации:**
+**Monetization model:**
 
-| Механика | Детали |
+| Mechanism | Details |
 |----------|--------|
-| **Подписка для операторов** | 5 000-15 000AED /мес (зависит от города и количества складов) |
-| **Комиссия** | Нет (!) — операторы платят только подписку |
-| **Промо-размещение** | +50% к подписке за топ-позицию |
+| **Operator subscription** | 5,000-15,000 AED/month (depends on city and number of facilities) |
+| **Commission** | None (!) — operators pay only subscription |
+| **Promo placement** | +50% to subscription for top position |
 
-**Особенности:**
-- Подписочная модель БЕЗ комиссии с бронирований
-- Операторы платят за размещение, а не за результат
-- Низкий барьер входа (5 000AED /мес доступно малым операторам)
+**Features:**
+- Subscription model WITHOUT commission from bookings
+- Operators pay for placement, not for results
+- Low entry barrier (5,000 AED/month accessible to small operators)
 
-**Плюсы модели:**
-- Предсказуемый MRR для платформы
-- Операторы не сопротивляются (нет "отъёма маржи")
+**Model pros:**
+- Predictable MRR for platform
+- Operators don't resist (no "taking margin")
 
-**Минусы модели:**
-- Нет alignment of interests (платформа получает деньги, даже если заявок нет)
-- Низкая мотивация улучшать качество трафика
+**Model cons:**
+- No alignment of interests (platform gets money even if no requests)
+- Low motivation to improve traffic quality
 
 ---
 
-#### "Чердак" (Россия)
+#### "Cherdak" (Regional)
 
-**Позиционирование:** Агрегатор + собственная сеть складов
+**Positioning:** Aggregator + own facility network
 
-**Модель монетизации:**
+**Monetization model:**
 
-| Механика | Детали |
+| Mechanism | Details |
 |----------|--------|
-| **Собственные склады** | Прямые продажи (100% маржа) |
-| **Партнёрские склады** | 10-15% комиссия с бронирований |
-| **Франшиза** | Продажа франшизы "Чердак" за 1-3 млнAED  |
+| **Own facilities** | Direct sales (100% margin) |
+| **Partner facilities** | 10-15% commission from bookings |
+| **Franchise** | Selling "Cherdak" franchise for 1-3M AED |
 
-**Особенности:**
-- Гибридная модель: агрегатор + собственная сеть
-- Приоритет собственным складам в выдаче
-- Партнёрские склады — вторичный источник дохода
+**Features:**
+- Hybrid model: aggregator + own network
+- Priority to own facilities in results
+- Partner facilities — secondary revenue source
 
-**Плюсы модели:**
-- Высокая маржа на собственных складах
-- Контроль качества (собственная сеть)
+**Model pros:**
+- High margin on own facilities
+- Quality control (own network)
 
-**Минусы модели:**
-- Конфликт интересов (платформа конкурирует с партнёрами)
-- Тяжёлая asset модель (нужен капитал на открытие складов)
+**Model cons:**
+- Conflict of interest (platform competes with partners)
+- Heavy asset model (need capital to open facilities)
 
 ---
 
-### Европейские платформы
+### European Platforms
 
-#### Storemore (Франция/Германия)
+#### Storemore (France/Germany)
 
-**Модель монетизации:**
+**Monetization model:**
 
-| Механика | Детали |
+| Mechanism | Details |
 |----------|--------|
-| **Комиссия** | 10-12% от суммы бронирования |
-| **Подписка** | €50-150/мес за расширенную аналитику |
-| **Онлайн-оплата** | +2% за процессинг платежей |
+| **Commission** | 10-12% of booking amount |
+| **Subscription** | €50-150/month for advanced analytics |
+| **Online payment** | +2% for payment processing |
 
-**Особенности:**
-- Умеренная комиссия (10-12%) — баланс между конкурентами
-- Онлайн-оплата через платформу (удобство для пользователей)
+**Features:**
+- Moderate commission (10-12%) — balance between competitors
+- Online payment through platform (convenience for users)
 
 ---
 
-## 4.2. Сравнительная таблица моделей
+## 4.2. Comparative Model Table
 
-### Международные vs российские vs наш MVP
+### International vs Regional vs Our MVP
 
-| Параметр | SpareFoot (США) | Storemates (UK) | "Место" (РФ) | "Чердак" (РФ) | **Наш MVP** |
+| Parameter | SpareFoot (USA) | Storemates (UK) | "Mesto" (Regional) | "Cherdak" (Regional) | **Our MVP** |
 |----------|----------------|----------------|--------------|---------------|-------------|
-| **Комиссия с бронирований** | 30-50% первого месяца | 15-20% всех платежей | ❌ Нет | 10-15% | ✅ 12% |
-| **Подписка для операторов** | $199-499/мес | £99-299/мес | 5 000-15 000AED /мес | ❌ Нет | ✅ 0-AED 2,990/мес |
-| **Онлайн-оплата** | ✅ Да | ✅ Да | ⚠️ Частично | ⚠️ Частично | ❌ Не в MVP |
-| **Промо-слоты** | ✅ $500-2000/мес | ✅ Да | ✅ +50% к подписке | ❌ Нет | ❌ Не в MVP |
-| **API для партнёров** | ✅ Да | ✅ Да | ❌ Нет | ❌ Нет | ❌ Не в MVP |
-| **Pay-per-lead** | ✅ $30-80/лид | ❌ Нет | ❌ Нет | ❌ Нет | ❌ Не в MVP |
-| **Барьер входа** | Высокий | Средний | Низкий | Средний | **Очень низкий** |
-| **Alignment of interests** | ❌ Нет (pay-per-lead) | ✅ Да (revenue share) | ❌ Нет (фикс подписка) | ✅ Да | ✅ **Да** |
+| **Commission from bookings** | 30-50% of first month | 15-20% of all payments | ❌ None | 10-15% | ✅ 12% |
+| **Operator subscription** | $199-499/month | £99-299/month | 5,000-15,000 AED/month | ❌ None | ✅ 0-2,990 AED/month |
+| **Online payment** | ✅ Yes | ✅ Yes | ⚠️ Partial | ⚠️ Partial | ❌ Not in MVP |
+| **Promo slots** | ✅ $500-2000/month | ✅ Yes | ✅ +50% to subscription | ❌ No | ❌ Not in MVP |
+| **Partner API** | ✅ Yes | ✅ Yes | ❌ No | ❌ No | ❌ Not in MVP |
+| **Pay-per-lead** | ✅ $30-80/lead | ❌ No | ❌ No | ❌ No | ❌ Not in MVP |
+| **Entry barrier** | High | Medium | Low | Medium | **Very low** |
+| **Alignment of interests** | ❌ No (pay-per-lead) | ✅ Yes (revenue share) | ❌ No (fixed subscription) | ✅ Yes | ✅ **Yes** |
 
 ---
 
-### Детальное сравнение моделей
+### Detailed Model Comparison
 
-#### Модель 1: Высокая комиссия с первого месяца (SpareFoot)
+#### Model 1: High commission from first month (SpareFoot)
 
-**Плюсы:**
-- Высокий доход с каждого лида
-- Быстрая окупаемость CAC
+**Pros:**
+- High revenue from each lead
+- Fast CAC payback
 
-**Минусы:**
-- Сильное сопротивление операторов
-- Работает только при монополии (нет альтернатив)
-- Не масштабируется в конкурентном рынке
+**Cons:**
+- Strong operator resistance
+- Works only with monopoly (no alternatives)
+- Doesn't scale in competitive market
 
-**Применимость в России:** ❌ Неприменимо (рынок фрагментирован, операторы не примут 30-50%)
-
----
-
-#### Модель 2: Умеренная комиссия + recurring (Storemates)
-
-**Плюсы:**
-- Высокая LTV клиента (платформа зарабатывает на протяжении всей аренды)
-- Alignment of interests (больше продлений = больше дохода для всех)
-
-**Минусы:**
-- Требует онлайн-оплаты через платформу
-- Зависимость оператора (все деньги через нас)
-
-**Применимость в России:** ⚠️ Применимо, но не в MVP (требует эквайринга)
+**Applicability in UAE:** ❌ Not applicable (market fragmented, operators won't accept 30-50%)
 
 ---
 
-#### Модель 3: Только подписка (Место)
+#### Model 2: Moderate commission + recurring (Storemates)
 
-**Плюсы:**
-- Предсказуемый MRR
-- Нет сопротивления операторов
+**Pros:**
+- High customer LTV (platform earns throughout entire rental)
+- Alignment of interests (more renewals = more revenue for all)
 
-**Минусы:**
-- Нет incentive улучшать качество трафика
-- Операторы платят, даже если заявок нет
+**Cons:**
+- Requires online payment through platform
+- Operator dependency (all money through us)
 
-**Применимость в России:** ✅ Работает, но не оптимально (мы выбрали гибридную модель)
-
----
-
-#### Модель 4: Гибридная — склады + агрегатор (Чердак)
-
-**Плюсы:**
-- Высокая маржа на собственных складах
-- Контроль качества
-
-**Минусы:**
-- Конфликт интересов с партнёрами
-- Тяжёлая модель (нужен капитал)
-
-**Применимость в России:** ❌ Не наша стратегия (мы — чистый агрегатор)
+**Applicability in UAE:** ⚠️ Applicable, but not in MVP (requires acquiring)
 
 ---
 
-### Наша модель (MVP)
+#### Model 3: Subscription only (Mesto)
 
-**Что взяли от конкурентов:**
-- ✅ Умеренная комиссия 12% (как Storemates, Чердак)
-- ✅ Бесплатный Basic-тариф (как Место, но с комиссией)
-- ✅ Опциональная подписка для аналитики (как SpareFoot Premium)
+**Pros:**
+- Predictable MRR
+- No operator resistance
 
-**Наше уникальное преимущество:**
-- ✅ Комиссия ТОЛЬКО с подтверждённых бронирований (не pay-per-lead!)
-- ✅ Alignment of interests (зарабатываем вместе с операторами)
-- ✅ Очень низкий барьер входа (Basic бесплатно, комиссия только за результат)
-- ✅ AI-функции (Box Finder, Price Recommender) — нет у конкурентов
+**Cons:**
+- No incentive to improve traffic quality
+- Operators pay even if no requests
 
----
-
-## 4.3. Выводы из конкурентного анализа
-
-### Лучшие практики (что делать)
-
-1. **Умеренная комиссия 10-15%**
-   - SpareFoot берёт 30-50%, но это работает только при монополии
-   - Storemates и Чердак берут 10-20% → это market standard
-   - **Наша ставка 12%** — в середине диапазона ✅
-
-2. **Комиссия с результата, а не за лида**
-   - Pay-per-lead (SpareFoot) создаёт конфликт интересов
-   - Операторы рискуют платить за нецелевые лиды
-   - **Мы берём комиссию ТОЛЬКО с подтверждённых бронирований** ✅
-
-3. **Низкий барьер входа**
-   - Место требует подписку 5 000-15 000AED /мес → барьер для малых операторов
-   - **Наш Basic бесплатный** → нет барьера ✅
-
-4. **Опциональная подписка для премиум-функций**
-   - SpareFoot и Storemates продают Premium-аналитику
-   - **Наш Standard-тариф (AED 2,990/мес)** → дополнительный доход ✅
-
-5. **Прозрачность финансов**
-   - Все успешные платформы дают операторам детальную отчётность
-   - **Раздел "Финансы" в ЛК оператора** ✅
+**Applicability in UAE:** ✅ Works, but not optimal (we chose hybrid model)
 
 ---
 
-### Что избегать (антипаттерны)
+#### Model 4: Hybrid — facilities + aggregator (Cherdak)
 
-1. **❌ Высокая комиссия без ценности**
-   - SpareFoot может брать 30-50%, потому что они монополисты
-   - Мы не монополисты → высокая комиссия = операторы уйдут
+**Pros:**
+- High margin on own facilities
+- Quality control
 
-2. **❌ Подписка без комиссии (модель Место)**
-   - Нет alignment of interests
-   - Платформа не мотивирована давать качественный трафик
+**Cons:**
+- Conflict of interest with partners
+- Heavy model (need capital)
 
-3. **❌ Конфликт интересов (модель Чердак)**
-   - Собственные склады конкурируют с партнёрами
-   - Мы — чистый агрегатор, без своих складов
-
-4. **❌ Pay-per-lead без гарантий**
-   - Оператор платит за лида, даже если он не конвертируется
-   - Риск для оператора → высокое сопротивление
-
-5. **❌ Сложные тарифы с градациями**
-   - Множество уровней запутывает операторов
-   - **Мы держим простоту: Basic (free) + Standard (AED 2,990)** ✅
+**Applicability in UAE:** ❌ Not our strategy (we're pure aggregator)
 
 ---
 
-### Уникальные возможности (наши преимущества)
+### Our Model (MVP)
 
-1. **AI-функции**
-   - ✅ AI Box Finder — нет у конкурентов
-   - ✅ AI Price Recommender — уникальная ценность для операторов
-   - **Monетизация:** можем брать более высокую комиссию, т.к. даём больше ценности
+**What we took from competitors:**
+- ✅ Moderate commission 12% (like Storemates, Cherdak)
+- ✅ Free Basic tier (like Mesto, but with commission)
+- ✅ Optional subscription for analytics (like SpareFoot Premium)
 
-2. **Модель "Win-Win"**
-   - Комиссия только с результата (не pay-per-lead)
-   - Basic бесплатный (нет барьера входа)
-   - Прозрачная отчётность
-   - **Результат:** операторы лояльны, low churn
-
-3. **Фокус на российский рынок**
-   - Международные конкуренты не адаптированы под РФ
-   - "Место" и "Чердак" — локальные, но с устаревшими моделями
-   - **Мы:** современная платформа + AI + справедливая монетизация
-
-4. **Гибкость монетизации**
-   - Можем A/B-тестировать комиссию (10% vs 12% vs 15%)
-   - Можем вводить градации по объёму
-   - Можем добавлять новые revenue streams (промо, API) постепенно
+**Our unique advantage:**
+- ✅ Commission ONLY on confirmed bookings (not pay-per-lead!)
+- ✅ Alignment of interests (earn together with operators)
+- ✅ Very low entry barrier (Basic free, commission only for results)
+- ✅ AI features (Box Finder, Price Recommender) — competitors don't have
 
 ---
 
-### Рекомендации на основе анализа
+## 4.3. Insights from Competitive Analysis
 
-**Для MVP:**
-1. Держим комиссию 12% (market standard)
-2. Basic бесплатный (как у Место, но с комиссией)
-3. Standard (AED 2,990/мес) — опциональный (не обязательный)
-4. Простая, прозрачная модель (без сложных градаций)
+### Best Practices (what to do)
 
-**Для v2.0:**
-1. Тестируем градации комиссии (volume-based pricing)
-2. Добавляем промо-слоты (как у SpareFoot, но дешевле)
-3. Вводим онлайн-оплату + recurring revenue (как Storemates)
+1. **Moderate commission 10-15%**
+   - SpareFoot charges 30-50%, but this works only with monopoly
+   - Storemates and Cherdak charge 10-20% → this is market standard
+   - **Our rate 12%** — in middle of range ✅
 
-**Для v3.0:**
-1. Запускаем API для партнёров (как SpareFoot, Storemates)
-2. Расширяем подписки (Pro-тариф с advanced analytics)
-3. Дополнительные услуги (страхование, доставка)
+2. **Commission on results, not per lead**
+   - Pay-per-lead (SpareFoot) creates conflict of interests
+   - Operators risk paying for non-target leads
+   - **We charge commission ONLY on confirmed bookings** ✅
 
----
+3. **Low entry barrier**
+   - Mesto requires subscription 5,000-15,000 AED/month → barrier for small operators
+   - **Our Basic free** → no barrier ✅
 
-**Конец Файла 3 (Разделы 3-4)**
+4. **Optional subscription for premium features**
+   - SpareFoot and Storemates sell Premium analytics
+   - **Our Standard tier (2,990 AED/month)** → additional revenue ✅
 
----
-
-**Статус:** Монетизация в MVP + Конкурентный анализ готовы  
-**Следующий файл:** Разделы 5-6 (Unit-экономика + Риски)# Pricing & Monetization Strategy (MVP v1)
-## Part 4: Unit-экономика + Риски
+5. **Financial transparency**
+   - All successful platforms give operators detailed reporting
+   - **"Finances" section in operator dashboard** ✅
 
 ---
 
-# 5. Расчёт unit-экономики
+### What to Avoid (anti-patterns)
 
-## 5.1. Ключевые метрики и формулы
+1. **❌ High commission without value**
+   - SpareFoot can charge 30-50% because they're monopolists
+   - We're not monopolists → high commission = operators leave
+
+2. **❌ Subscription without commission (Mesto model)**
+   - No alignment of interests
+   - Platform not motivated to provide quality traffic
+
+3. **❌ Conflict of interest (Cherdak model)**
+   - Own facilities compete with partners
+   - We're pure aggregator, without our own facilities
+
+4. **❌ Pay-per-lead without guarantees**
+   - Operator pays for lead even if it doesn't convert
+   - Risk for operator → high resistance
+
+5. **❌ Complex tiers with gradations**
+   - Multiple levels confuse operators
+   - **We keep it simple: Basic (free) + Standard (2,990 AED)** ✅
+
+---
+
+### Unique Opportunities (our advantages)
+
+1. **AI features**
+   - ✅ AI Box Finder — competitors don't have
+   - ✅ AI Price Recommender — unique value for operators
+   - **Monetization:** can charge higher commission because we provide more value
+
+2. **"Win-Win" Model**
+   - Commission only on results (not pay-per-lead)
+   - Basic free (no entry barrier)
+   - Transparent reporting
+   - **Result:** operators loyal, low churn
+
+3. **Focus on UAE market**
+   - International competitors not adapted for UAE
+   - "Mesto" and "Cherdak" — regional, but with outdated models
+   - **We:** modern platform + AI + fair monetization
+
+4. **Monetization flexibility**
+   - Can A/B test commission (10% vs 12% vs 15%)
+   - Can introduce volume gradations
+   - Can add new revenue streams (promo, API) gradually
+
+---
+
+### Recommendations Based on Analysis
+
+**For MVP:**
+1. Keep commission 12% (market standard)
+2. Basic free (like Mesto, but with commission)
+3. Standard (2,990 AED/month) — optional (not mandatory)
+4. Simple, transparent model (without complex gradations)
+
+**For v2.0:**
+1. Test commission gradations (volume-based pricing)
+2. Add promo slots (like SpareFoot, but cheaper)
+3. Introduce online payment + recurring revenue (like Storemates)
+
+**For v3.0:**
+1. Launch API for partners (like SpareFoot, Storemates)
+2. Expand subscriptions (Pro tier with advanced analytics)
+3. Additional services (insurance, delivery)
+
+---
+
+**End of Section 3-4**
+
+---
+
+**Status:** Monetization in MVP + Competitive Analysis complete
+**Next:** Sections 5-6 (Unit Economics + Risks)# Pricing & Monetization Strategy (MVP v1)
+## Part 4: Unit Economics + Risks
+
+---
+
+# 5. Unit Economics Calculation
+
+## 5.1. Key Metrics and Formulas
 
 ---
 
 ### GMV (Gross Merchandise Value)
 
-**Определение:**
-Общий объём всех бронирований (транзакций) через платформу.
+**Definition:**
+Total volume of all bookings (transactions) through platform.
 
-**Формула:**
+**Formula:**
 ```
-GMV = Σ (Сумма бронирования × Количество бронирований)
-```
-
-**Пример расчёта:**
-```
-Месяц 1:
-├─ 10 бронирований по 15 000AED 
-├─ 5 бронирований по 24 000AED 
-└─ 3 бронирования по 36 000AED 
-
-GMV = (10 × 15 000AED ) + (5 × 24 000AED ) + (3 × 36 000AED )
-GMV = 150 000AED  + 120 000AED  + 108 000AED 
-GMV = 378 000AED 
+GMV = Σ (Booking amount × Number of bookings)
 ```
 
-**Целевые значения:**
+**Calculation example:**
+```
+Month 1:
+├─ 10 bookings at 15,000 AED
+├─ 5 bookings at 24,000 AED
+└─ 3 bookings at 36,000 AED
 
-| Период | GMV |
+GMV = (10 × 15,000 AED) + (5 × 24,000 AED) + (3 × 36,000 AED)
+GMV = 150,000 AED + 120,000 AED + 108,000 AED
+GMV = 378,000 AED
+```
+
+**Target values:**
+
+| Period | GMV |
 |--------|-----|
-| Месяц 1 (MVP launch) | 100 000AED  |
-| Месяц 3 | 500 000AED  |
-| Месяц 6 | 1 500 000AED  |
-| Месяц 12 | 5 000 000AED  |
+| Month 1 (MVP launch) | 100,000 AED |
+| Month 3 | 500,000 AED |
+| Month 6 | 1,500,000 AED |
+| Month 12 | 5,000,000 AED |
 
 ---
 
-### Take Rate (комиссия платформы)
+### Take Rate (platform commission)
 
-**Определение:**
-Процент от GMV, который платформа удерживает как комиссию.
+**Definition:**
+Percentage of GMV that platform retains as commission.
 
-**Формула:**
+**Formula:**
 ```
 Take Rate = (Revenue / GMV) × 100%
 ```
 
-**Наша модель:**
+**Our model:**
 ```
-Основная комиссия: 12%
+Base commission: 12%
 Revenue = GMV × 0.12
 ```
 
-**Пример:**
+**Example:**
 ```
-GMV = 500 000AED 
+GMV = 500,000 AED
 Take Rate = 12%
-Revenue = 500 000AED  × 0.12 = 60 000AED 
+Revenue = 500,000 AED × 0.12 = 60,000 AED
 ```
 
-**Динамика Take Rate:**
+**Take Rate dynamics:**
 
-| Версия | Take Rate | Обоснование |
+| Version | Take Rate | Rationale |
 |--------|-----------|-------------|
-| MVP (v1.0) | 12% | Базовая ставка для всех |
-| v1.5 | 10-15% | Градация по объёму бронирований |
-| v2.0 | 8% + подписка | Гибридная модель (низкая комиссия + фикс) |
+| MVP (v1.0) | 12% | Base rate for all |
+| v1.5 | 10-15% | Gradation by booking volume |
+| v2.0 | 8% + subscription | Hybrid model (low commission + fixed) |
 
 ---
 
 ### CAC (Customer Acquisition Cost)
 
-**Определение:**
-Стоимость привлечения одного платящего оператора.
+**Definition:**
+Cost of acquiring one paying operator.
 
-**Формула:**
+**Formula:**
 ```
-CAC = Маркетинговые расходы / Количество новых операторов
-```
-
-**Компоненты маркетинговых расходов:**
-```
-Маркетинг (месяц):
-├─ Контекстная реклама (Яндекс.Директ, Google Ads): 30 000AED 
-├─ SEO (контент, линкбилдинг): 20 000AED 
-├─ Таргетированная реклама (соцсети): 15 000AED 
-├─ Email-маркетинг для операторов: 5 000AED 
-└─ ИТОГО: 70 000AED 
-
-Новых операторов в месяц: 10
-CAC = 70 000AED  / 10 = 7 000AED 
+CAC = Marketing expenses / Number of new operators
 ```
 
-**Целевые значения:**
+**Marketing expense components:**
+```
+Marketing (month):
+├─ Contextual advertising (Google Ads): 30,000 AED
+├─ SEO (content, link building): 20,000 AED
+├─ Targeted advertising (social media): 15,000 AED
+├─ Email marketing for operators: 5,000 AED
+└─ TOTAL: 70,000 AED
 
-| Период | CAC | Комментарий |
+New operators per month: 10
+CAC = 70,000 AED / 10 = 7,000 AED
+```
+
+**Target values:**
+
+| Period | CAC | Comment |
 |--------|-----|-------------|
-| Месяц 1-3 | 10 000AED  | Высокий на старте (холодная аудитория) |
-| Месяц 4-6 | 7 000AED  | Снижается с ростом органики |
-| Месяц 7-12 | 5 000AED  | Органический рост + рекомендации |
+| Month 1-3 | 10,000 AED | High at start (cold audience) |
+| Month 4-6 | 7,000 AED | Decreases with organic growth |
+| Month 7-12 | 5,000 AED | Organic growth + referrals |
 
 ---
 
 ### LTV (Lifetime Value)
 
-**Определение:**
-Общий доход от оператора за весь период его работы на платформе.
+**Definition:**
+Total revenue from operator over entire period of their work on platform.
 
-**Формула (для операторов):**
+**Formula (for operators):**
 ```
-LTV = ARPU × Среднее количество месяцев работы × Retention Rate
-```
-
-**Детальный расчёт:**
-
-```
-Допустим, средний оператор:
-├─ ARPU: 2 000AED /мес (комиссия + подписка)
-├─ Работает на платформе: 18 месяцев
-├─ Retention Rate: 80% (20% churn в год)
-
-LTV = 2 000AED  × 18 × 0.8 = 28 800AED 
+LTV = ARPU × Average number of months active × Retention Rate
 ```
 
-**Прогноз LTV по этапам:**
+**Detailed calculation:**
 
-| Период | ARPU | Retention | Lifetime (мес) | LTV |
+```
+Assume average operator:
+├─ ARPU: 2,000 AED/month (commission + subscription)
+├─ Works on platform: 18 months
+├─ Retention Rate: 80% (20% churn per year)
+
+LTV = 2,000 AED × 18 × 0.8 = 28,800 AED
+```
+
+**LTV forecast by stages:**
+
+| Period | ARPU | Retention | Lifetime (months) | LTV |
 |--------|------|-----------|----------------|-----|
-| MVP (v1.0) | 1 500AED  | 70% | 12 мес | 12 600AED  |
-| v1.5 | 2 000AED  | 75% | 15 мес | 22 500AED  |
-| v2.0+ | 3 000AED  | 80% | 18 мес | 43 200AED  |
+| MVP (v1.0) | 1,500 AED | 70% | 12 months | 12,600 AED |
+| v1.5 | 2,000 AED | 75% | 15 months | 22,500 AED |
+| v2.0+ | 3,000 AED | 80% | 18 months | 43,200 AED |
 
 ---
 
 ### ARPU (Average Revenue Per User)
 
-**Определение:**
-Средний доход с одного активного оператора в месяц.
+**Definition:**
+Average revenue from one active operator per month.
 
-**Формула:**
+**Formula:**
 ```
-ARPU = Общий Revenue / Количество активных операторов
-```
-
-**Компоненты ARPU:**
-```
-ARPU (оператор в месяц):
-├─ Комиссия с бронирований: 1 200AED 
-│   (Средний оператор: 5 бронирований × 2 000AED /бронирование × 12% = 1 200AED )
-├─ Подписка Pro: 300AED 
-│   (10% операторов × AED 2,990 = ~300AED  на оператора)
-└─ ИТОГО ARPU: 1 500AED /мес
+ARPU = Total Revenue / Number of active operators
 ```
 
-**Динамика ARPU:**
+**ARPU components:**
+```
+ARPU (operator per month):
+├─ Commission from bookings: 1,200 AED
+│   (Average operator: 5 bookings × 2,000 AED/booking × 12% = 1,200 AED)
+├─ Pro subscription: 300 AED
+│   (10% operators × 2,990 AED = ~300 AED per operator)
+└─ TOTAL ARPU: 1,500 AED/month
+```
 
-| Период | ARPU | Драйверы роста |
+**ARPU dynamics:**
+
+| Period | ARPU | Growth drivers |
 |--------|------|----------------|
-| Месяц 1-3 | 1 000AED  | Мало бронирований на оператора |
-| Месяц 4-6 | 1 500AED  | Рост трафика + первые Pro-подписки |
-| Месяц 7-12 | 2 500AED  | Больше бронирований + выше adoption Pro |
-| Год 2 | 4 000AED  | Промо-слоты + API + доп. сервисы |
+| Month 1-3 | 1,000 AED | Few bookings per operator |
+| Month 4-6 | 1,500 AED | Traffic growth + first Pro subscriptions |
+| Month 7-12 | 2,500 AED | More bookings + higher Pro adoption |
+| Year 2 | 4,000 AED | Promo slots + API + additional services |
 
 ---
 
-### Payback Period (срок окупаемости)
+### Payback Period
 
-**Определение:**
-Через сколько месяцев доход от оператора окупает стоимость его привлечения.
+**Definition:**
+How many months revenue from operator pays back acquisition cost.
 
-**Формула:**
+**Formula:**
 ```
 Payback Period = CAC / ARPU
 ```
 
-**Пример:**
+**Example:**
 ```
-CAC = 7 000AED 
-ARPU = 1 500AED /мес
+CAC = 7,000 AED
+ARPU = 1,500 AED/month
 
-Payback Period = 7 000AED  / 1 500AED  = 4.7 месяцев
+Payback Period = 7,000 AED / 1,500 AED = 4.7 months
 ```
 
-**Целевое значение:** <6 месяцев
+**Target value:** <6 months
 
 **Benchmark:**
-- SaaS B2B: 6-12 месяцев
-- Marketplace: 3-6 месяцев
-- Наша цель: 4-5 месяцев
+- SaaS B2B: 6-12 months
+- Marketplace: 3-6 months
+- Our goal: 4-5 months
 
 ---
 
 ### LTV/CAC Ratio
 
-**Определение:**
-Соотношение пожизненной ценности клиента к стоимости его привлечения.
+**Definition:**
+Ratio of customer lifetime value to acquisition cost.
 
-**Формула:**
+**Formula:**
 ```
 LTV/CAC = LTV / CAC
 ```
 
-**Пример:**
+**Example:**
 ```
-LTV = 22 500AED 
-CAC = 7 000AED 
+LTV = 22,500 AED
+CAC = 7,000 AED
 
-LTV/CAC = 22 500AED  / 7 000AED  = 3.2
+LTV/CAC = 22,500 AED / 7,000 AED = 3.2
 ```
 
-**Интерпретация:**
+**Interpretation:**
 
-| Ratio | Оценка | Действия |
+| Ratio | Assessment | Actions |
 |-------|--------|----------|
-| <1 | ❌ Убыточно | Срочно снижать CAC или повышать LTV |
-| 1-2 | ⚠️ Выживание | Оптимизировать unit-экономику |
-| 3+ | ✅ Здорово | Масштабировать маркетинг |
-| 5+ | ✅✅ Отлично | Агрессивный рост |
+| <1 | ❌ Unprofitable | Urgently reduce CAC or increase LTV |
+| 1-2 | ⚠️ Survival | Optimize unit economics |
+| 3+ | ✅ Great | Scale marketing |
+| 5+ | ✅✅ Excellent | Aggressive growth |
 
-**Наша цель:** LTV/CAC > 3 к месяцу 6
+**Our goal:** LTV/CAC > 3 by month 6
 
 ---
 
-## 5.2. Модель расчётов для операторов
+## 5.2. Calculation Model for Operators
 
-### Средний чек бронирования
+### Average Booking Amount
 
-**Факторы:**
-- Размер бокса (м²)
-- Продолжительность аренды (месяцы)
-- Локация (центр vs окраина)
+**Factors:**
+- Box size (m²)
+- Rental duration (months)
+- Location (center vs outskirts)
 
-**Сегментация боксов:**
+**Box segmentation:**
 
-| Размер | Цена/мес | Типичная продолжительность | Средний чек |
+| Size | Price/month | Typical duration | Average amount |
 |--------|----------|---------------------------|-------------|
-| S (2-4 м²) | 2 500AED  | 3 месяца | 7 500AED  |
-| M (5-8 м²) | 4 000AED  | 6 месяцев | 24 000AED  |
-| L (9-15 м²) | 7 000AED  | 6 месяцев | 42 000AED  |
-| XL (16-25 м²) | 12 000AED  | 12 месяцев | 144 000AED  |
+| S (2-4 m²) | 2,500 AED | 3 months | 7,500 AED |
+| M (5-8 m²) | 4,000 AED | 6 months | 24,000 AED |
+| L (9-15 m²) | 7,000 AED | 6 months | 42,000 AED |
+| XL (16-25 m²) | 12,000 AED | 12 months | 144,000 AED |
 
-**Средневзвешенный чек:**
+**Weighted average amount:**
 ```
-Распределение бронирований:
-├─ S: 30% × 7 500AED  = 2 250AED 
-├─ M: 40% × 24 000AED  = 9 600AED 
-├─ L: 20% × 42 000AED  = 8 400AED 
-└─ XL: 10% × 144 000AED  = 14 400AED 
+Booking distribution:
+├─ S: 30% × 7,500 AED = 2,250 AED
+├─ M: 40% × 24,000 AED = 9,600 AED
+├─ L: 20% × 42,000 AED = 8,400 AED
+└─ XL: 10% × 144,000 AED = 14,400 AED
 
-Средний чек = 34 650AED 
+Average amount = 34,650 AED
 ```
 
-**Упрощённо для расчётов:** Средний чек = **30 000AED **
+**Simplified for calculations:** Average amount = **30,000 AED**
 
 ---
 
-### Частота повторных бронирований
+### Repeat Booking Frequency
 
-**Модели поведения пользователей:**
+**User behavior models:**
 
 **1. One-time users (70%)**
-- Сценарий: Переезд, ремонт (одноразовая потребность)
-- Частота: 1 раз в 2-3 года
-- LTV (пользователь): ~30 000AED 
+- Scenario: Moving, renovation (one-time need)
+- Frequency: 1 time per 2-3 years
+- LTV (user): ~30,000 AED
 
 **2. Occasional users (20%)**
-- Сценарий: Сезонное хранение (лыжи, велосипеды)
-- Частота: 1 раз в год
-- LTV (пользователь): ~90 000AED  (3 года × 30 000AED )
+- Scenario: Seasonal storage (skis, bicycles)
+- Frequency: 1 time per year
+- LTV (user): ~90,000 AED (3 years × 30,000 AED)
 
 **3. Regular users (10%)**
-- Сценарий: Постоянное хранение (малый бизнес, архивы)
-- Частота: Продление аренды каждые 12 месяцев
-- LTV (пользователь): ~180 000AED  (6 лет × 30 000AED )
+- Scenario: Permanent storage (small business, archives)
+- Frequency: Rental renewal every 12 months
+- LTV (user): ~180,000 AED (6 years × 30,000 AED)
 
-**Вывод:** Repeat booking rate = **15-20%**
+**Conclusion:** Repeat booking rate = **15-20%**
 
 ---
 
-### Retention rate операторов
+### Operator Retention Rate
 
-**Факторы, влияющие на retention:**
+**Factors affecting retention:**
 
-| Фактор | Влияние | Как улучшить |
+| Factor | Impact | How to improve |
 |--------|---------|--------------|
-| Качество лидов | +++++ | Улучшить AI Box Finder, pre-qualification |
-| Объём заявок | +++++ | Маркетинг, SEO |
-| Соотношение комиссия/ценность | ++++ | Показывать ROI, снизить комиссию для топ-операторов |
-| Удобство платформы | +++ | UX улучшения, автоматизация |
-| Техподдержка | ++ | Быстрые ответы, проактивная помощь |
+| Lead quality | +++++ | Improve AI Box Finder, pre-qualification |
+| Request volume | +++++ | Marketing, SEO |
+| Commission/value ratio | ++++ | Show ROI, reduce commission for top operators |
+| Platform convenience | +++ | UX improvements, automation |
+| Technical support | ++ | Fast responses, proactive help |
 
-**Прогноз retention:**
+**Retention forecast:**
 
-| Период | Monthly Churn | Annual Retention | Комментарий |
+| Period | Monthly Churn | Annual Retention | Comment |
 |--------|---------------|------------------|-------------|
-| Месяц 1-3 | 10-15% | 55-60% | Высокий churn на старте (тестируют платформу) |
-| Месяц 4-6 | 5-8% | 70-75% | Стабилизация |
-| Месяц 7-12 | 3-5% | 80-85% | Лояльная база |
+| Month 1-3 | 10-15% | 55-60% | High churn at start (testing platform) |
+| Month 4-6 | 5-8% | 70-75% | Stabilization |
+| Month 7-12 | 3-5% | 80-85% | Loyal base |
 
-**Цель:** Annual retention >80% к концу года
+**Goal:** Annual retention >80% by year end
 
 ---
 
-### Revenue per operator (пример)
+### Revenue per Operator (example)
 
-**Сценарий: Средний оператор с 2 складами**
+**Scenario: Average operator with 2 facilities**
 
 ```
-Оператор "Мой Бокс":
-├─ Склад 1 (30 боксов, заполняемость 80%):
-│   ├─ Средняя цена бокса: 4 500AED /мес
-│   ├─ Занято боксов: 24
-│   ├─ Месячный revenue: 108 000AED 
-│   └─ Комиссия платформе (12%): 12 960AED 
+Operator "My Box":
+├─ Facility 1 (30 boxes, 80% occupancy):
+│   ├─ Average box price: 4,500 AED/month
+│   ├─ Occupied boxes: 24
+│   ├─ Monthly revenue: 108,000 AED
+│   └─ Platform commission (12%): 12,960 AED
 │
-├─ Склад 2 (20 боксов, заполняемость 70%):
-│   ├─ Средняя цена бокса: 5 000AED /мес
-│   ├─ Занято боксов: 14
-│   ├─ Месячный revenue: 70 000AED 
-│   └─ Комиссия платформе (12%): 8 400AED 
+├─ Facility 2 (20 boxes, 70% occupancy):
+│   ├─ Average box price: 5,000 AED/month
+│   ├─ Occupied boxes: 14
+│   ├─ Monthly revenue: 70,000 AED
+│   └─ Platform commission (12%): 8,400 AED
 │
-├─ Подписка Pro: AED 2,990/мес
+├─ Pro subscription: 2,990 AED/month
 │
-└─ ИТОГО платформе от оператора: 24 350AED /мес
+└─ TOTAL to platform from operator: 24,350 AED/month
 
-ARPU = 24 350AED /мес
-LTV (18 мес × 80% retention) = 350 640AED 
+ARPU = 24,350 AED/month
+LTV (18 months × 80% retention) = 350,640 AED
 ```
 
-**Сегментация операторов по ARPU:**
+**Operator segmentation by ARPU:**
 
-| Сегмент | Складов | ARPU/мес | % операторов |
+| Segment | Facilities | ARPU/month | % operators |
 |---------|---------|----------|--------------|
-| Micro (1 склад, <20 боксов) | 1 | 800AED  | 40% |
-| Small (1-2 склада, 20-50 боксов) | 1-2 | 2 500AED  | 40% |
-| Medium (3-5 складов) | 3-5 | 8 000AED  | 15% |
-| Large (5+ складов) | 5+ | 25 000AED  | 5% |
+| Micro (1 facility, <20 boxes) | 1 | 800 AED | 40% |
+| Small (1-2 facilities, 20-50 boxes) | 1-2 | 2,500 AED | 40% |
+| Medium (3-5 facilities) | 3-5 | 8,000 AED | 15% |
+| Large (5+ facilities) | 5+ | 25,000 AED | 5% |
 
-**Средневзвешенный ARPU:**
+**Weighted average ARPU:**
 ```
-(0.4 × 800AED ) + (0.4 × 2 500AED ) + (0.15 × 8 000AED ) + (0.05 × 25 000AED )
-= 320AED  + 1 000AED  + 1 200AED  + 1 250AED 
-= 3 770AED /мес
+(0.4 × 800 AED) + (0.4 × 2,500 AED) + (0.15 × 8,000 AED) + (0.05 × 25,000 AED)
+= 320 AED + 1,000 AED + 1,200 AED + 1,250 AED
+= 3,770 AED/month
 ```
 
-**Оценка для MVP (консервативная):** ARPU = **1 500-2 000AED /мес**
+**MVP estimate (conservative):** ARPU = **1,500-2,000 AED/month**
 
 ---
 
-## 5.3. Модель расчётов для платформы
+## 5.3. Calculation Model for Platform
 
-### Комиссионный доход
+### Commission Revenue
 
-**Формула:**
+**Formula:**
 ```
 Commission Revenue = GMV × Take Rate
 ```
 
-**Прогноз по месяцам:**
+**Monthly forecast:**
 
-| Месяц | Операторов | Бронирований | Средний чек | GMV | Take Rate | Revenue |
+| Month | Operators | Bookings | Average amount | GMV | Take Rate | Revenue |
 |-------|-----------|--------------|-------------|-----|-----------|---------|
-| 1 | 5 | 5 | 20 000AED  | 100 000AED  | 12% | 12 000AED  |
-| 2 | 8 | 12 | 25 000AED  | 300 000AED  | 12% | 36 000AED  |
-| 3 | 12 | 20 | 25 000AED  | 500 000AED  | 12% | 60 000AED  |
-| 6 | 30 | 60 | 25 000AED  | 1 500 000AED  | 12% | 180 000AED  |
-| 12 | 80 | 200 | 25 000AED  | 5 000 000AED  | 12% | 600 000AED  |
+| 1 | 5 | 5 | 20,000 AED | 100,000 AED | 12% | 12,000 AED |
+| 2 | 8 | 12 | 25,000 AED | 300,000 AED | 12% | 36,000 AED |
+| 3 | 12 | 20 | 25,000 AED | 500,000 AED | 12% | 60,000 AED |
+| 6 | 30 | 60 | 25,000 AED | 1,500,000 AED | 12% | 180,000 AED |
+| 12 | 80 | 200 | 25,000 AED | 5,000,000 AED | 12% | 600,000 AED |
 
 ---
 
-### Подписочный доход
+### Subscription Revenue
 
-**Формула:**
+**Formula:**
 ```
 Subscription Revenue = (Pro subscribers × Pro price) + (Enterprise × Enterprise price)
 ```
 
-**Прогноз:**
+**Forecast:**
 
-| Месяц | Операторов | Pro subscribers (15%) | Pro Revenue | Enterprise | Ent. Revenue | Total Sub Revenue |
+| Month | Operators | Pro subscribers (15%) | Pro Revenue | Enterprise | Ent. Revenue | Total Sub Revenue |
 |-------|-----------|----------------------|-------------|------------|--------------|-------------------|
-| 1 | 5 | 0 | 0AED  | 0 | 0AED  | 0AED  |
-| 3 | 12 | 2 | 5 980AED  | 0 | 0AED  | 5 980AED  |
-| 6 | 30 | 5 | 14 950AED  | 0 | 0AED  | 14 950AED  |
-| 12 | 80 | 15 | 44 850AED  | 2 | 19 980AED  | 64 830AED  |
+| 1 | 5 | 0 | 0 AED | 0 | 0 AED | 0 AED |
+| 3 | 12 | 2 | 5,980 AED | 0 | 0 AED | 5,980 AED |
+| 6 | 30 | 5 | 14,950 AED | 0 | 0 AED | 14,950 AED |
+| 12 | 80 | 15 | 44,850 AED | 2 | 19,980 AED | 64,830 AED |
 
-**Примечание:** Enterprise-тариф появится в v2.0 (9 990AED /мес)
+**Note:** Enterprise tier will appear in v2.0 (9,990 AED/month)
 
 ---
 
-### Общий доход (Total Revenue)
+### Total Revenue
 
-**Формула:**
+**Formula:**
 ```
 Total Revenue = Commission Revenue + Subscription Revenue + Other Revenue
 ```
 
-**Прогноз:**
+**Forecast:**
 
-| Месяц | Commission | Subscription | Other | Total Revenue |
+| Month | Commission | Subscription | Other | Total Revenue |
 |-------|-----------|--------------|-------|---------------|
-| 1 | 12 000AED  | 0AED  | 0AED  | 12 000AED  |
-| 3 | 60 000AED  | 5 980AED  | 0AED  | 65 980AED  |
-| 6 | 180 000AED  | 14 950AED  | 0AED  | 194 950AED  |
-| 12 | 600 000AED  | 64 830AED  | 0AED  | 664 830AED  |
+| 1 | 12,000 AED | 0 AED | 0 AED | 12,000 AED |
+| 3 | 60,000 AED | 5,980 AED | 0 AED | 65,980 AED |
+| 6 | 180,000 AED | 14,950 AED | 0 AED | 194,950 AED |
+| 12 | 600,000 AED | 64,830 AED | 0 AED | 664,830 AED |
 
-**Other Revenue** (появится в v2.0+):
-- Промо-слоты
+**Other Revenue** (will appear in v2.0+):
+- Promo slots
 - API subscriptions
 - PSP fee
 
 ---
 
-### Операционные расходы
+### Operating Expenses
 
-**Структура OPEX:**
+**OPEX structure:**
 
-| Статья расходов | Месяц 1-3 | Месяц 4-6 | Месяц 7-12 | Комментарий |
+| Expense category | Month 1-3 | Month 4-6 | Month 7-12 | Comment |
 |----------------|-----------|-----------|------------|-------------|
-| **Инфраструктура** | 20 000AED  | 30 000AED  | 50 000AED  | Серверы, CDN, DB |
-| **Маркетинг** | 70 000AED  | 100 000AED  | 150 000AED  | Контекст, SEO, SMM |
-| **SaaS/Tools** | 10 000AED  | 15 000AED  | 20 000AED  | Email, analytics, CRM |
-| **Поддержка** | 30 000AED  | 50 000AED  | 80 000AED  | 1-2 менеджера |
-| **Разработка** | 0AED  | 50 000AED  | 100 000AED  | Доработки, фиксы |
-| **ИТОГО OPEX** | **130 000AED ** | **245 000AED ** | **400 000AED ** |
+| **Infrastructure** | 20,000 AED | 30,000 AED | 50,000 AED | Servers, CDN, DB |
+| **Marketing** | 70,000 AED | 100,000 AED | 150,000 AED | Context, SEO, SMM |
+| **SaaS/Tools** | 10,000 AED | 15,000 AED | 20,000 AED | Email, analytics, CRM |
+| **Support** | 30,000 AED | 50,000 AED | 80,000 AED | 1-2 managers |
+| **Development** | 0 AED | 50,000 AED | 100,000 AED | Improvements, fixes |
+| **TOTAL OPEX** | **130,000 AED** | **245,000 AED** | **400,000 AED** |
 
-**Примечание:** Зарплата core team (разработчики, дизайнеры) не включена, т.к. это CAPEX или equity.
+**Note:** Core team salaries (developers, designers) not included as this is CAPEX or equity.
 
 ---
 
-### Unit-экономика: сводка
+### Unit Economics: Summary
 
-**Месяц 3 (конец MVP):**
+**Month 3 (end of MVP):**
 ```
-Revenue:           65 980AED 
-OPEX:             130 000AED 
+Revenue:           65,980 AED
+OPEX:             130,000 AED
 ────────────────────────────
-Profit:          -64 020AED   (убыток)
+Profit:          -64,020 AED (loss)
 
-Unit-метрики:
-├─ ARPU: 1 500AED 
-├─ CAC: 7 000AED 
-├─ LTV: 22 500AED 
+Unit metrics:
+├─ ARPU: 1,500 AED
+├─ CAC: 7,000 AED
+├─ LTV: 22,500 AED
 ├─ LTV/CAC: 3.2x ✅
-└─ Payback: 4.7 месяцев ✅
+└─ Payback: 4.7 months ✅
 ```
 
-**Вывод:** Unit-экономика здоровая (LTV/CAC > 3), но нужно время для выхода на прибыльность.
+**Conclusion:** Unit economics healthy (LTV/CAC > 3), but need time to reach profitability.
 
 ---
 
-**Месяц 6:**
+**Month 6:**
 ```
-Revenue:          194 950AED 
-OPEX:             245 000AED 
+Revenue:          194,950 AED
+OPEX:             245,000 AED
 ────────────────────────────
-Profit:          -50 050AED   (убыток снижается)
+Profit:          -50,050 AED (loss decreasing)
 
-Unit-метрики:
-├─ ARPU: 2 000AED 
-├─ CAC: 5 500AED 
-├─ LTV: 30 000AED 
+Unit metrics:
+├─ ARPU: 2,000 AED
+├─ CAC: 5,500 AED
+├─ LTV: 30,000 AED
 ├─ LTV/CAC: 5.5x ✅✅
-└─ Payback: 2.8 месяцев ✅✅
+└─ Payback: 2.8 months ✅✅
 ```
 
 ---
 
-**Месяц 12:**
+**Month 12:**
 ```
-Revenue:          664 830AED 
-OPEX:             400 000AED 
+Revenue:          664,830 AED
+OPEX:             400,000 AED
 ────────────────────────────
-Profit:          +264 830AED   (прибыль!)
+Profit:          +264,830 AED (profit!)
 
-Unit-метрики:
-├─ ARPU: 3 000AED 
-├─ CAC: 4 000AED 
-├─ LTV: 43 200AED 
+Unit metrics:
+├─ ARPU: 3,000 AED
+├─ CAC: 4,000 AED
+├─ LTV: 43,200 AED
 ├─ LTV/CAC: 10.8x ✅✅✅
-└─ Payback: 1.3 месяца ✅✅✅
+└─ Payback: 1.3 months ✅✅✅
 ```
 
-**Вывод:** К концу года выходим на прибыльность.
+**Conclusion:** By end of year reaching profitability.
 
 ---
 
-## 5.4. Прогноз по этапам роста
+## 5.4. Growth Stage Projections
 
 ---
 
-### Этап 1: MVP Launch (месяцы 1-3)
+### Stage 1: MVP Launch (months 1-3)
 
-**Цели:**
-- ✅ Доказать работоспособность монетизации
-- ✅ Привлечь первых 10-15 операторов
-- ✅ Получить первые 50 бронирований
+**Goals:**
+- ✅ Prove monetization viability
+- ✅ Attract first 10-15 operators
+- ✅ Get first 50 bookings
 
-**Метрики:**
+**Metrics:**
 
-| Метрика | Значение |
+| Metric | Value |
 |---------|----------|
-| GMV | 500 000AED  (за 3 месяца) |
-| Revenue | 60 000AED  |
-| Операторы | 12 |
-| ARPU | 1 500AED /мес |
-| CAC | 7 000AED  |
+| GMV | 500,000 AED (for 3 months) |
+| Revenue | 60,000 AED |
+| Operators | 12 |
+| ARPU | 1,500 AED/month |
+| CAC | 7,000 AED |
 | LTV/CAC | 3.2x |
-| Burn rate | -64 000AED /мес |
+| Burn rate | -64,000 AED/month |
 
-**Экономика:**
+**Economics:**
 ```
-Cumulative (3 месяца):
-├─ Revenue: 60 000AED 
-├─ OPEX: 390 000AED 
-└─ Net: -330 000AED 
+Cumulative (3 months):
+├─ Revenue: 60,000 AED
+├─ OPEX: 390,000 AED
+└─ Net: -330,000 AED
 
-Финансирование нужно: ~400 000AED  на 3 месяца
+Funding needed: ~400,000 AED for 3 months
 ```
 
 ---
 
-### Этап 2: Growth (месяцы 4-9)
+### Stage 2: Growth (months 4-9)
 
-**Цели:**
-- ✅ Масштабировать количество операторов до 50
-- ✅ Увеличить GMV до 1MAED /мес
-- ✅ Запустить промо-слоты (v1.5)
-- ✅ Выйти на break-even
+**Goals:**
+- ✅ Scale number of operators to 50
+- ✅ Increase GMV to 1M AED/month
+- ✅ Launch promo slots (v1.5)
+- ✅ Reach break-even
 
-**Метрики (месяц 6):**
+**Metrics (month 6):**
 
-| Метрика | Значение |
+| Metric | Value |
 |---------|----------|
-| GMV | 1 500 000AED /мес |
-| Revenue | 195 000AED /мес |
-| Операторы | 30 |
-| ARPU | 2 000AED /мес |
-| CAC | 5 500AED  |
+| GMV | 1,500,000 AED/month |
+| Revenue | 195,000 AED/month |
+| Operators | 30 |
+| ARPU | 2,000 AED/month |
+| CAC | 5,500 AED |
 | LTV/CAC | 5.5x |
-| Burn rate | -50 000AED /мес |
+| Burn rate | -50,000 AED/month |
 
-**Экономика:**
+**Economics:**
 ```
-Cumulative (месяцы 4-9):
-├─ Revenue: 900 000AED 
-├─ OPEX: 1 200 000AED 
-└─ Net: -300 000AED 
+Cumulative (months 4-9):
+├─ Revenue: 900,000 AED
+├─ OPEX: 1,200,000 AED
+└─ Net: -300,000 AED
 
-Финансирование нужно: ещё 300 000AED 
+Funding needed: additional 300,000 AED
 ```
 
 ---
 
-### Этап 3: Scale (месяцы 10-18)
+### Stage 3: Scale (months 10-18)
 
-**Цели:**
-- ✅ Масштабировать до 100+ операторов
-- ✅ GMV 5MAED /мес
-- ✅ Запустить API (v2.0)
-- ✅ Стабильная прибыль
+**Goals:**
+- ✅ Scale to 100+ operators
+- ✅ GMV 5M AED/month
+- ✅ Launch API (v2.0)
+- ✅ Stable profit
 
-**Метрики (месяц 12):**
+**Metrics (month 12):**
 
-| Метрика | Значение |
+| Metric | Value |
 |---------|----------|
-| GMV | 5 000 000AED /мес |
-| Revenue | 665 000AED /мес |
-| Операторы | 80 |
-| ARPU | 3 000AED /мес |
-| CAC | 4 000AED  |
+| GMV | 5,000,000 AED/month |
+| Revenue | 665,000 AED/month |
+| Operators | 80 |
+| ARPU | 3,000 AED/month |
+| CAC | 4,000 AED |
 | LTV/CAC | 10.8x |
-| Profit | +265 000AED /мес |
+| Profit | +265,000 AED/month |
 
-**Экономика:**
+**Economics:**
 ```
-Cumulative (месяцы 10-18):
-├─ Revenue: 5 000 000AED 
-├─ OPEX: 3 000 000AED 
-└─ Net: +2 000 000AED  ✅
+Cumulative (months 10-18):
+├─ Revenue: 5,000,000 AED
+├─ OPEX: 3,000,000 AED
+└─ Net: +2,000,000 AED ✅
 
-Самоокупаемость достигнута!
+Self-sustainability achieved!
 ```
 
 ---
 
-### Сводная таблица по этапам
+### Summary Table by Stages
 
-| Этап | Период | GMV (cumul) | Revenue | OPEX | Net | LTV/CAC |
+| Stage | Period | GMV (cumul) | Revenue | OPEX | Net | LTV/CAC |
 |------|--------|-------------|---------|------|-----|---------|
-| **MVP** | M1-3 | 500kAED  | 60kAED  | 390kAED  | -330kAED  | 3.2x |
-| **Growth** | M4-9 | 7MAED  | 900kAED  | 1.2MAED  | -300kAED  | 5.5x |
-| **Scale** | M10-18 | 40MAED  | 5MAED  | 3MAED  | +2MAED  | 10.8x |
+| **MVP** | M1-3 | 500k AED | 60k AED | 390k AED | -330k AED | 3.2x |
+| **Growth** | M4-9 | 7M AED | 900k AED | 1.2M AED | -300k AED | 5.5x |
+| **Scale** | M10-18 | 40M AED | 5M AED | 3M AED | +2M AED | 10.8x |
 
-**Общее финансирование на 18 месяцев:** ~700 000AED  (seed capital)
-
----
-
-### Чувствительность модели
-
-**Что если GMV ниже прогноза на 30%?**
-
-```
-Месяц 12:
-├─ GMV: 3.5MAED  (вместо 5MAED )
-├─ Revenue: 465kAED  (вместо 665kAED )
-├─ OPEX: 400kAED  (не меняется)
-└─ Profit: +65kAED  (вместо +265kAED )
-
-Вывод: Всё равно прибыльны, но медленнее рост.
-```
-
-**Что если CAC выше на 50%?**
-
-```
-CAC = 6 000AED  (вместо 4 000AED )
-LTV = 43 200AED 
-LTV/CAC = 7.2x (вместо 10.8x)
-
-Вывод: Всё ещё здоровая экономика (>3x), но нужно оптимизировать маркетинг.
-```
-
-**Что если Churn выше на 10%?**
-
-```
-Retention: 70% (вместо 80%)
-LTV = 30 240AED  (вместо 43 200AED )
-LTV/CAC = 7.6x (вместо 10.8x)
-
-Вывод: Нужно срочно улучшать retention (качество лидов, поддержка).
-```
+**Total funding for 18 months:** ~700,000 AED (seed capital)
 
 ---
 
-# 6. Риски и ограничения монетизации
+### Model Sensitivity
 
-## 6.1. Сопротивление операторов комиссиям
+**What if GMV is 30% below forecast?**
 
-### Описание риска
+```
+Month 12:
+├─ GMV: 3.5M AED (instead of 5M AED)
+├─ Revenue: 465k AED (instead of 665k AED)
+├─ OPEX: 400k AED (unchanged)
+└─ Profit: +65k AED (instead of +265k AED)
 
-**Проблема:**
-Операторы могут воспринимать комиссию 12% как "слишком высокую" и отказываться от платформы.
+Conclusion: Still profitable, but slower growth.
+```
 
-**Типичные возражения:**
-- "Почему я должен делиться 12% дохода?"
-- "На Авито я размещаюсь бесплатно"
-- "У конкурента комиссия 8%"
-- "Я могу сам привлекать клиентов"
+**What if CAC is 50% higher?**
+
+```
+CAC = 6,000 AED (instead of 4,000 AED)
+LTV = 43,200 AED
+LTV/CAC = 7.2x (instead of 10.8x)
+
+Conclusion: Still healthy economics (>3x), but need to optimize marketing.
+```
+
+**What if Churn is 10% higher?**
+
+```
+Retention: 70% (instead of 80%)
+LTV = 30,240 AED (instead of 43,200 AED)
+LTV/CAC = 7.6x (instead of 10.8x)
+
+Conclusion: Need to urgently improve retention (lead quality, support).
+```
 
 ---
 
-### Вероятность и влияние
+# 6. Monetization Risks and Limitations
 
-| Параметр | Оценка | Обоснование |
+## 6.1. Operator Resistance to Commissions
+
+### Risk Description
+
+**Problem:**
+Operators may perceive 12% commission as "too high" and refuse the platform.
+
+**Typical objections:**
+- "Why should I share 12% of revenue?"
+- "On classifieds I list for free"
+- "Competitor has 8% commission"
+- "I can attract clients myself"
+
+---
+
+### Probability and Impact
+
+| Parameter | Assessment | Rationale |
 |----------|--------|-------------|
-| **Вероятность** | Средняя (50%) | Операторы в РФ не привыкли к комиссионным моделям в этой индустрии |
-| **Влияние** | Высокое | Без операторов нет платформы |
-| **Приоритет** | 🔴 Критический | Нужны превентивные меры |
+| **Probability** | Medium (50%) | Operators in UAE not used to commission models in this industry |
+| **Impact** | High | Without operators no platform |
+| **Priority** | 🔴 Critical | Preventive measures needed |
 
 ---
 
-### Стратегии минимизации
+### Mitigation Strategies
 
 #### 1. Value-based positioning
 
-**Подход:**
-Показать ROI: сколько оператор зарабатывает vs сколько платит.
+**Approach:**
+Show ROI: how much operator earns vs how much they pay.
 
-**Пример коммуникации:**
+**Communication example:**
 ```
-"Вы заплатили комиссию 12 000AED , но получили:
-├─ 10 новых клиентов
-├─ Заработали: 100 000AED 
-├─ ROI: 733% (в 8.3 раза больше комиссии)
-└─ Средняя стоимость лида: 1 200AED  (ниже, чем в Яндекс.Директ)"
+"You paid 12,000 AED commission, but received:
+├─ 10 new clients
+├─ Earned: 100,000 AED
+├─ ROI: 733% (8.3x more than commission)
+└─ Average lead cost: 1,200 AED (lower than Google Ads)"
 ```
 
-**Инструменты:**
-- Dashboard с визуализацией ROI
-- Еженедельные email-отчёты: "Ваши результаты за неделю"
+**Tools:**
+- Dashboard with ROI visualization
+- Weekly email reports: "Your weekly results"
 
 ---
 
-#### 2. Градация комиссии по объёму
+#### 2. Volume-based commission gradation
 
-**Модель (для v1.5):**
+**Model (for v1.5):**
 
-| Бронирований/мес | Комиссия |
+| Bookings/month | Commission |
 |------------------|----------|
 | 1-5 | 12% |
 | 6-15 | 10% |
 | 16+ | 8% |
 
-**Логика:**
-- Стимул для операторов расти на платформе
-- Лояльность крупных партнёров
+**Logic:**
+- Incentive for operators to grow on platform
+- Loyalty of large partners
 
 ---
 
-#### 3. Первые 3 бронирования бесплатно
+#### 3. First 3 bookings free
 
-**Подход:**
-"Попробуйте бесплатно, платите только если довольны"
+**Approach:**
+"Try for free, pay only if satisfied"
 
-**Механика:**
+**Mechanism:**
 ```
-Оператор регистрируется →
-Первые 3 подтверждённых бронирования: 0% комиссия →
-С 4-го бронирования: стандартная комиссия 12%
+Operator registers →
+First 3 confirmed bookings: 0% commission →
+From 4th booking: standard 12% commission
 ```
 
-**Эффект:**
-- Снижает барьер входа
-- Доказывает ценность до первой оплаты
+**Effect:**
+- Lowers entry barrier
+- Proves value before first payment
 
 ---
 
-#### 4. Сравнение с альтернативами
+#### 4. Comparison with alternatives
 
-**Таблица для презентации операторам:**
+**Table for operator presentation:**
 
-| Канал привлечения | Стоимость лида | Конверсия | Стоимость клиента |
+| Acquisition channel | Lead cost | Conversion | Customer cost |
 |-------------------|----------------|-----------|-------------------|
-| **Яндекс.Директ** | 1 500AED  | 5% | 30 000AED  |
-| **Авито** | 500AED  | 2% | 25 000AED  |
-| **Наша платформа (комиссия 12%)** | 0AED  | 10% | **Только 12% от сделки** |
+| **Google Ads** | 1,500 AED | 5% | 30,000 AED |
+| **Classifieds** | 500 AED | 2% | 25,000 AED |
+| **Our platform (12% commission)** | 0 AED | 10% | **Only 12% of deal** |
 
-**Вывод:** "Вы платите только за результат, без аванса"
-
----
-
-#### 5. Гибкость на старте
-
-**Подход:**
-Индивидуальные условия для первых 20 операторов.
-
-**Пример:**
-- "Комиссия 8% на первые 6 месяцев"
-- "Первые 10 000AED  GMV — без комиссии"
-
-**Цель:**
-- Набрать критическую массу операторов
-- Собрать кейсы для последующих продаж
+**Conclusion:** "You pay only for results, no advance"
 
 ---
 
-## 6.2. Низкое количество заявок в начале
+#### 5. Flexibility at start
 
-### Описание риска
+**Approach:**
+Individual terms for first 20 operators.
 
-**Проблема:**
-В первые месяцы после запуска трафик будет низким → мало заявок → операторы разочаруются и уйдут.
+**Example:**
+- "8% commission for first 6 months"
+- "First 10,000 AED GMV — no commission"
 
-**Цикл смерти:**
+**Goal:**
+- Build critical mass of operators
+- Collect case studies for future sales
+
+---
+
+## 6.2. Low Booking Volume Initially
+
+### Risk Description
+
+**Problem:**
+In first months after launch traffic will be low → few requests → operators disappointed and leave.
+
+**Death spiral:**
 ```
-Мало трафика → Мало заявок → Операторы уходят → 
-Меньше складов → Хуже выбор → Ещё меньше трафика
+Low traffic → Few requests → Operators leave →
+Fewer facilities → Worse selection → Even less traffic
 ```
 
 ---
 
-### Вероятность и влияние
+### Probability and Impact
 
-| Параметр | Оценка | Обоснование |
+| Parameter | Assessment | Rationale |
 |----------|--------|-------------|
-| **Вероятность** | Высокая (70%) | Холодный старт любого marketplace |
-| **Влияние** | Критическое | Без трафика нет бизнеса |
-| **Приоритет** | 🔴 Критический | Нужен план борьбы с chicken-and-egg problem |
+| **Probability** | High (70%) | Cold start of any marketplace |
+| **Impact** | Critical | Without traffic no business |
+| **Priority** | 🔴 Critical | Need plan to fight chicken-and-egg problem |
 
 ---
 
-### Стратегии минимизации
+### Mitigation Strategies
 
-#### 1. Seed трафик через платную рекламу
+#### 1. Seed traffic through paid advertising
 
-**Бюджет:** 50 000AED /мес на старте
+**Budget:** 50,000 AED/month at start
 
-**Каналы:**
-- Яндекс.Директ: "склад для хранения вещей Dubai"
-- Google Ads: аналогично
-- Таргетированная реклама: ретаргетинг пользователей, искавших переезды, склады
+**Channels:**
+- Google Ads: "storage facility Dubai"
+- Similar targeting
+- Retargeting advertising: retargeting users who searched for moves, facilities
 
-**Цель:**
-- 500+ визитов/день к концу месяца 1
-- 10-15 заявок/неделя
-
----
-
-#### 2. SEO с первого дня
-
-**Стратегия:**
-- SEO-страницы: "Склады в районе X", "Склады у метро Y"
-- Контент-маркетинг: статьи "Как выбрать склад", "Стоимость хранения в Москве"
-- Обратные ссылки: размещение на Яндекс.Картах, 2GIS, отраслевых порталах
-
-**Цель:**
-- Органический трафик 30% к месяцу 3
+**Goal:**
+- 500+ visits/day by end of month 1
+- 10-15 requests/week
 
 ---
 
-#### 3. Гарантия минимума заявок
+#### 2. SEO from day one
 
-**Подход:**
-"Если вы не получите минимум 5 заявок в первые 2 месяца — вернём комиссию"
+**Strategy:**
+- SEO pages: "Facilities in area X", "Facilities near metro Y"
+- Content marketing: articles "How to choose facility", "Storage cost in Dubai"
+- Backlinks: placement on Google Maps, industry portals
 
-**Механика:**
+**Goal:**
+- Organic traffic 30% by month 3
+
+---
+
+#### 3. Minimum requests guarantee
+
+**Approach:**
+"If you don't receive minimum 5 requests in first 2 months — we refund commission"
+
+**Mechanism:**
 ```
-Оператор подключается →
-Через 2 месяца: если <5 заявок →
-Возврат всех комиссий + бонус (1 месяц Pro бесплатно)
-```
-
-**Эффект:**
-- Снижает риск для оператора
-- Показывает уверенность платформы
-
----
-
-#### 4. Прямые продажи (outbound sales)
-
-**Подход:**
-Активно звонить/писать операторам, не дожидаясь их регистрации.
-
-**Скрипт:**
-```
-"Здравствуйте! Мы запускаем платформу для поиска складов.
-У нас уже 500+ пользователей ищут боксы в вашем районе.
-Хотите получать заявки бесплатно в первые 3 месяца?"
+Operator connects →
+After 2 months: if <5 requests →
+Refund all commissions + bonus (1 month Pro free)
 ```
 
-**Цель:**
-- Подключить 20 операторов за первый месяц
+**Effect:**
+- Reduces risk for operator
+- Shows platform confidence
 
 ---
 
-#### 5. Партнёрства с релокационными сервисами
+#### 4. Direct sales (outbound)
 
-**Идея:**
-Договориться с сервисами переездов, чтобы они рекомендовали наш сервис.
+**Approach:**
+Actively call/email operators, not waiting for their registration.
 
-**Пример:**
-- "Грузовичкоф": после заказа переезда → "Нужно хранение? Вот 10% скидка на склад"
-- Комиссия партнёру: 5% от бронирования
+**Script:**
+```
+"Hello! We're launching platform for finding facilities.
+We already have 500+ users searching for boxes in your area.
+Want to receive requests free for first 3 months?"
+```
 
----
-
-## 6.3. Регуляторные ограничения
-
-### Описание риска
-
-**Проблема:**
-Разные требования к комиссионным моделям, налогообложению, договорам в разных странах/регионах.
-
-**Примеры:**
-- **Налоги:** НДС на комиссию, требования к отчётности
-- **Договоры:** Нужны ли агентские договоры с каждым оператором?
-- **Данные:** GDPR (Европа), 152-ФЗ (РФ) — хранение персональных данных
-- **Платежи:** Требования к эквайрингу, split-платежам
+**Goal:**
+- Connect 20 operators in first month
 
 ---
 
-### Вероятность и влияние
+#### 5. Partnerships with relocation services
 
-| Параметр | Оценка | Обоснование |
+**Idea:**
+Partner with moving services so they recommend our service.
+
+**Example:**
+- Moving company: after moving order → "Need storage? Here's 10% discount on facility"
+- Partner commission: 5% of booking
+
+---
+
+## 6.3. Regulatory Constraints
+
+### Risk Description
+
+**Problem:**
+Different requirements for commission models, taxation, contracts in different countries/regions.
+
+**Examples:**
+- **Taxes:** VAT on commission, reporting requirements
+- **Contracts:** Are agency agreements needed with each operator?
+- **Data:** GDPR (Europe), local laws — personal data storage
+- **Payments:** Requirements for acquiring, split payments
+
+---
+
+### Probability and Impact
+
+| Parameter | Assessment | Rationale |
 |----------|--------|-------------|
-| **Вероятность** | Средняя (40%) | Зависит от страны/региона |
-| **Влияние** | Среднее-Высокое | Может потребовать изменения модели |
-| **Приоритет** | ⚠️ Важно | Нужна юридическая экспертиза |
+| **Probability** | Medium (40%) | Depends on country/region |
+| **Impact** | Medium-High | May require model changes |
+| **Priority** | ⚠️ Important | Legal expertise needed |
 
 ---
 
-### Стратегии минимизации
+### Mitigation Strategies
 
-#### 1. Юридический аудит до запуска
+#### 1. Legal audit before launch
 
-**Действия:**
-- Проконсультироваться с юристом по налогам и договорам
-- Подготовить шаблоны договоров:
-  - Пользовательское соглашение
-  - Оферта для операторов
-  - Политика конфиденциальности
+**Actions:**
+- Consult with lawyer on taxes and contracts
+- Prepare contract templates:
+  - User agreement
+  - Offer for operators
+  - Privacy policy
 
 ---
 
-#### 2. Прозрачная схема налогообложения
+#### 2. Transparent taxation scheme
 
-**Модель для РФ:**
+**Model for UAE:**
 ```
-Оператор — плательщик НДС:
-├─ GMV: 15 000AED  (включая НДС 20% = 2 500AED )
-├─ Комиссия платформы: 1 800AED  (включая НДС 300AED )
-└─ Оператору: 13 200AED 
+Operator — VAT payer:
+├─ GMV: 15,000 AED (including VAT 5% = 750 AED)
+├─ Platform commission: 1,800 AED (including VAT 90 AED)
+└─ To operator: 13,200 AED
 
-Платформа:
-├─ Получает: 1 800AED 
-├─ Платит НДС государству: 300AED 
-└─ Чистый доход: 1 500AED 
+Platform:
+├─ Receives: 1,800 AED
+├─ Pays VAT to government: 90 AED
+└─ Net income: 1,710 AED
 ```
 
-**Важно:**
-- Все расчёты с учётом НДС
-- Автоматическое формирование актов и счетов-фактур
+**Important:**
+- All calculations include VAT
+- Automatic generation of invoices
 
 ---
 
-#### 3. Compliance с GDPR/152-ФЗ
+#### 3. Compliance with GDPR/local laws
 
-**Требования:**
-- ✅ Согласие на обработку персональных данных
-- ✅ Право на удаление данных (GDPR Article 17)
-- ✅ Шифрование персональных данных в БД
-- ✅ Логирование доступа к данным
+**Requirements:**
+- ✅ Consent for personal data processing
+- ✅ Right to data deletion (GDPR Article 17)
+- ✅ Personal data encryption in DB
+- ✅ Data access logging
 
-**Инструменты:**
+**Tools:**
 - Cookie consent banner
-- Privacy Policy (на русском и английском)
-- Data retention policy (удаление через 3 года после последней активности)
+- Privacy Policy (in Arabic and English)
+- Data retention policy (deletion after 3 years of last activity)
 
 ---
 
-#### 4. Гибкость модели под разные юрисдикции
+#### 4. Model flexibility for different jurisdictions
 
-**Подход:**
-Если расширяемся в другие страны — адаптируем модель.
+**Approach:**
+If expanding to other countries — adapt model.
 
-**Пример:**
-- **Казахстан:** Комиссия 10% (ниже из-за меньшей покупательной способности)
-- **Беларусь:** Подписочная модель (проще с налогами)
+**Example:**
+- **Saudi Arabia:** Commission 10% (lower due to market differences)
+- **Other GCC:** Subscription model (simpler with taxes)
 
 ---
 
-## 6.4. Конкурентное давление на цены
+## 6.4. Competitive Pricing Pressure
 
-### Описание риска
+### Risk Description
 
-**Проблема:**
-Конкуренты могут демпинговать (снижать комиссию до 5-8%), чтобы переманить операторов.
+**Problem:**
+Competitors may undercut (reduce commission to 5-8%) to poach operators.
 
-**Сценарий:**
+**Scenario:**
 ```
-Конкурент запускается с комиссией 8% →
-Наши операторы: "Почему у вас 12%, а у них 8%?" →
-Отток операторов к конкуренту
+Competitor launches with 8% commission →
+Our operators: "Why do you have 12%, when they have 8%?" →
+Operator outflow to competitor
 ```
 
 ---
 
-### Вероятность и влияние
+### Probability and Impact
 
-| Параметр | Оценка | Обоснование |
+| Parameter | Assessment | Rationale |
 |----------|--------|-------------|
-| **Вероятность** | Средняя (50%) | Если рынок привлекательный, появятся конкуренты |
-| **Влияние** | Среднее | Можем потерять долю рынка |
-| **Приоритет** | ⚠️ Важно | Нужна стратегия дифференциации |
+| **Probability** | Medium (50%) | If market attractive, competitors will appear |
+| **Impact** | Medium | May lose market share |
+| **Priority** | ⚠️ Important | Differentiation strategy needed |
 
 ---
 
-### Стратегии минимизации
+### Mitigation Strategies
 
-#### 1. Фокус на качестве, а не на цене
+#### 1. Focus on quality, not price
 
-**Позиционирование:**
-"Мы не самые дешёвые, но мы даём лучших клиентов"
+**Positioning:**
+"We're not the cheapest, but we provide the best customers"
 
-**Доказательства:**
-- Конверсия заявок в бронирования: у нас 60%, у конкурентов 30%
-- Средний чек выше (за счёт AI Box Finder подбираем более подходящие боксы)
-- LTV клиента выше (наши пользователи чаще продлевают аренду)
-
----
-
-#### 2. Lock-in через аналитику и AI
-
-**Стратегия:**
-Операторы, использующие Pro-подписку (аналитика, AI), не захотят уходить.
-
-**Механизм:**
-```
-Оператор использует AI Price Recommender 6 месяцев →
-Увеличил revenue на 15% →
-"Конкурент даёт комиссию 8%, но у него нет такой аналитики" →
-Остаётся у нас
-```
-
-**Инструменты:**
-- Эксклюзивные AI-функции (которых нет у конкурентов)
-- Интеграция с CRM оператора (сложно мигрировать)
+**Proof:**
+- Request to booking conversion: we have 60%, competitors 30%
+- Higher average amount (AI Box Finder matches better boxes)
+- Higher customer LTV (our users renew more often)
 
 ---
 
-#### 3. Долгосрочные контракты со скидкой
+#### 2. Lock-in through analytics and AI
 
-**Модель:**
+**Strategy:**
+Operators using Pro subscription (analytics, AI) won't want to leave.
+
+**Mechanism:**
 ```
-Годовой контракт:
-├─ Комиссия: 10% (вместо 12%)
-├─ Оператор обязуется не уходить 12 месяцев
-└─ Штраф за досрочное расторжение: возврат скидки
+Operator uses AI Price Recommender for 6 months →
+Increased revenue by 15% →
+"Competitor offers 8% commission, but doesn't have such analytics" →
+Stays with us
 ```
 
-**Эффект:**
-- Предсказуемость для платформы
-- Защита от переманивания конкурентами
+**Tools:**
+- Exclusive AI features (competitors don't have)
+- CRM integration for operator (difficult to migrate)
 
 ---
 
-#### 4. Эксклюзивные партнёрства
+#### 3. Long-term contracts with discount
 
-**Идея:**
-Договориться с топ-операторами об эксклюзивности.
-
-**Предложение:**
+**Model:**
 ```
-"Мы даём вам:
-├─ Комиссия 8% (вместо 12%)
-├─ Приоритетное размещение (бесплатно)
-├─ Персональный менеджер
-└─ Взамен: вы не размещаетесь у конкурентов 12 месяцев"
+Annual contract:
+├─ Commission: 10% (instead of 12%)
+├─ Operator commits not to leave for 12 months
+└─ Penalty for early termination: discount refund
 ```
 
-**Цель:**
-- Закрепить ключевых операторов
-- Уменьшить выбор для конкурентов
+**Effect:**
+- Predictability for platform
+- Protection from competitor poaching
 
 ---
 
-## 6.5. Технические риски
+#### 4. Exclusive partnerships
 
-### Описание риска
+**Idea:**
+Agreement with top operators on exclusivity.
 
-**Проблема:**
-Баги, downtime, проблемы с интеграциями могут привести к потере доверия и денег.
+**Offer:**
+```
+"We give you:
+├─ 8% commission (instead of 12%)
+├─ Priority placement (free)
+├─ Personal manager
+└─ In return: you don't list with competitors for 12 months"
+```
 
-**Примеры:**
-- Комиссия рассчитывается неправильно → оператор переплатил
-- Платёжный gateway не работает → пользователь не может оплатить
-- API падает → партнёры не могут интегрироваться
+**Goal:**
+- Lock in key operators
+- Reduce options for competitors
 
 ---
 
-### Вероятность и влияние
+## 6.5. Technical Risks
 
-| Параметр | Оценка | Обоснование |
+### Risk Description
+
+**Problem:**
+Bugs, downtime, integration issues can lead to loss of trust and money.
+
+**Examples:**
+- Commission calculated incorrectly → operator overpaid
+- Payment gateway not working → user can't pay
+- API down → partners can't integrate
+
+---
+
+### Probability and Impact
+
+| Parameter | Assessment | Rationale |
 |----------|--------|-------------|
-| **Вероятность** | Средняя (40%) | MVP всегда имеет баги |
-| **Влияние** | Высокое | Потеря доверия = потеря операторов |
-| **Приоритет** | 🔴 Критический | Нужна надёжная архитектура |
+| **Probability** | Medium (40%) | MVP always has bugs |
+| **Impact** | High | Loss of trust = loss of operators |
+| **Priority** | 🔴 Critical | Reliable architecture needed |
 
 ---
 
-### Стратегии минимизации
+### Mitigation Strategies
 
-#### 1. Тщательное тестирование биллинга
+#### 1. Thorough billing testing
 
-**Подход:**
-- Unit-тесты для расчёта комиссий
-- E2E тесты для всего флоу (бронирование → комиссия → выплата)
-- Ручное тестирование каждого релиза
+**Approach:**
+- Unit tests for commission calculation
+- E2E tests for entire flow (booking → commission → payout)
+- Manual testing of each release
 
-**Checklist перед запуском:**
+**Pre-launch checklist:**
 ```
-✅ Комиссия рассчитывается правильно для всех сценариев
-✅ Транзакции логируются корректно
-✅ Отчёты для операторов совпадают с реальными данными
-✅ Email-уведомления отправляются вовремя
-```
-
----
-
-#### 2. Мониторинг и алерты
-
-**Инструменты:**
-- Sentry / Rollbar: отслеживание ошибок
-- UptimeRobot: мониторинг uptime (алерт если сайт упал)
-- Custom alerts: если расчёт комиссии завис → алерт в Slack
-
-**Цель:** Узнать о проблеме до того, как оператор пожалуется.
-
----
-
-#### 3. Ручная проверка в первые месяцы
-
-**Подход:**
-- Первые 100 транзакций → ручная проверка каждой
-- Оператор жалуется на неправильную комиссию → разбираемся в течение 24 часов
-
-**Цель:** Выявить edge cases до масштабирования.
-
----
-
-#### 4. Резервный план для платежей
-
-**Если payment gateway упал:**
-```
-Plan A: Основной gateway (ЮKassa)
-Plan B: Резервный gateway (Тинькофф)
-Plan C: Офлайн-оплата (по счёту)
+✅ Commission calculated correctly for all scenarios
+✅ Transactions logged correctly
+✅ Reports for operators match real data
+✅ Email notifications sent on time
 ```
 
-**Коммуникация:**
-"Извините за временные неудобства. Вы можете оплатить по счёту, мы вышлем вам на email."
+---
+
+#### 2. Monitoring and alerts
+
+**Tools:**
+- Sentry / Rollbar: error tracking
+- UptimeRobot: uptime monitoring (alert if site down)
+- Custom alerts: if commission calculation stuck → alert in Slack
+
+**Goal:** Learn about problem before operator complains.
 
 ---
 
-### Итоговая таблица рисков
+#### 3. Manual check in first months
 
-| Риск | Вероятность | Влияние | Приоритет | Основная стратегия минимизации |
+**Approach:**
+- First 100 transactions → manual check of each
+- Operator complains about incorrect commission → investigate within 24 hours
+
+**Goal:** Identify edge cases before scaling.
+
+---
+
+#### 4. Backup plan for payments
+
+**If payment gateway down:**
+```
+Plan A: Primary gateway (Telr)
+Plan B: Backup gateway (Stripe)
+Plan C: Offline payment (by invoice)
+```
+
+**Communication:**
+"Sorry for temporary inconvenience. You can pay by invoice, we'll send to your email."
+
+---
+
+### Risk Summary Table
+
+| Risk | Probability | Impact | Priority | Main mitigation strategy |
 |------|-------------|---------|-----------|-------------------------------|
-| **Сопротивление комиссиям** | Средняя | Высокое | 🔴 | Value-based positioning, градация, free trial |
-| **Мало заявок** | Высокая | Критическое | 🔴 | Платная реклама, SEO, гарантии |
-| **Регуляторные ограничения** | Средняя | Среднее-Высокое | ⚠️ | Юридический аудит, compliance |
-| **Конкурентное давление** | Средняя | Среднее | ⚠️ | Дифференциация через AI, качество |
-| **Технические риски** | Средняя | Высокое | 🔴 | Тестирование, мониторинг, резервы |
+| **Commission resistance** | Medium | High | 🔴 | Value-based positioning, gradation, free trial |
+| **Few requests** | High | Critical | 🔴 | Paid ads, SEO, guarantees |
+| **Regulatory constraints** | Medium | Medium-High | ⚠️ | Legal audit, compliance |
+| **Competitive pressure** | Medium | Medium | ⚠️ | Differentiation through AI, quality |
+| **Technical risks** | Medium | High | 🔴 | Testing, monitoring, backups |
 
 ---
 
-**Конец Файла 4 (Разделы 5-6)**
+**End of Section 5-6**
 
 ---
 
-**Статус:** Разделы 5-6 готовы  
-**Следующий файл:** Разделы 7-8 (Рекомендации + Roadmap монетизации)# Pricing & Monetization Strategy (MVP v1)
-## Part 5: Рекомендации и Roadmap
+**Status:** Sections 5-6 complete
+**Next:** Sections 7-8 (Recommendations + Monetization Roadmap)# Pricing & Monetization Strategy (MVP v1)
+## Part 5: Recommendations and Roadmap
 
 ---
 
-# 7. Рекомендации и стратегия развития монетизации
+# 7. Recommendations and Monetization Growth Strategy
 
-## 7.1. Как масштабировать монетизационную модель
+## 7.1. How to Scale Monetization Model
 
-### От MVP к v2.0: Эволюция модели
+### From MVP to v2.0: Model Evolution
 
-**Общая стратегия:**
+**Overall strategy:**
 ```
 MVP (v1.0)           v1.5                v2.0                v3.0
     │                 │                   │                   │
-Комиссия 12%    + Промо-слоты      + Гибридная модель   + B2B API
+Commission 12%    + Promo slots      + Hybrid model       + B2B API
     │                 │                   │                   │
-Basic Pro       + Улучшенный Pro    + Enterprise tier    + White-label
+Basic Pro       + Enhanced Pro      + Enterprise tier    + White-label
     │                 │                   │                   │
-Один рынок      + 2-3 города        + 10+ городов       + Международная экспансия
+One market      + 2-3 cities        + 10+ cities         + International expansion
 ```
 
 ---
 
-### Фаза 1: Оптимизация базовой модели (месяцы 1-6)
+### Phase 1: Basic Model Optimization (months 1-6)
 
-**Цель:** Найти оптимальные параметры комиссии и подписки.
+**Goal:** Find optimal commission and subscription parameters.
 
-#### A/B тесты для проведения
+#### A/B Tests to Run
 
-**Тест 1: Оптимальная ставка комиссии**
+**Test 1: Optimal Commission Rate**
 ```
-Группа A: 10% комиссия
-Группа B: 12% комиссия (контроль)
-Группа C: 15% комиссия
+Group A: 10% commission
+Group B: 12% commission (control)
+Group C: 15% commission
 
-Метрики:
+Metrics:
 ├─ Operator signup rate
-├─ Churn rate через 3 месяца
-├─ NPS операторов
+├─ Churn rate after 3 months
+├─ NPS operators
 └─ Revenue per operator
 ```
 
-**Ожидаемый результат:** Найти sweet spot между revenue и retention.
+**Expected result:** Find sweet spot between revenue and retention.
 
 ---
 
-**Тест 2: Ценообразование Pro-подписки**
+**Test 2: Pro Subscription Pricing**
 ```
-Группа A: 1 990AED /мес
-Группа B: AED 2,990/мес (контроль)
-Группа C: 4 990AED /мес
+Group A: 1,990 AED/month
+Group B: 2,990 AED/month (control)
+Group C: 4,990 AED/month
 
-Метрики:
+Metrics:
 ├─ Conversion rate (Basic → Pro)
-├─ Churn rate Pro-подписчиков
+├─ Churn rate of Pro subscribers
 └─ ARPU
 ```
 
 ---
 
-**Тест 3: Trial период**
+**Test 3: Trial Period**
 ```
-Группа A: 14 дней trial
-Группа B: 30 дней trial (контроль)
-Группа C: 60 дней trial
+Group A: 14 days trial
+Group B: 30 days trial (control)
+Group C: 60 days trial
 
-Метрики:
+Metrics:
 ├─ Trial → Paid conversion
 ├─ Time to conversion
 └─ LTV
@@ -3715,1456 +3715,1456 @@ Basic Pro       + Улучшенный Pro    + Enterprise tier    + White-label
 
 ---
 
-#### Динамическая корректировка параметров
+#### Dynamic Parameter Adjustment
 
-**Сценарий 1: Если Churn >20%**
+**Scenario 1: If Churn >20%**
 ```
-Действия:
-├─ Снизить комиссию на 2% (12% → 10%)
-├─ Ввести градацию: первые 5 бронирований 8%
-├─ Продлить бесплатный период до 5 бронирований
-└─ Усилить коммуникацию ROI
-```
-
----
-
-**Сценарий 2: Если Conversion to Pro <10%**
-```
-Действия:
-├─ Снизить цену Pro до 1 990AED /мес
-├─ Добавить больше бесплатных фич в Basic (повысить baseline)
-├─ Улучшить Pro-фичи (добавить что-то действительно ценное)
-└─ Запустить кампанию: "Попробуйте Pro 60 дней бесплатно"
+Actions:
+├─ Reduce commission by 2% (12% → 10%)
+├─ Introduce gradation: first 5 bookings at 8%
+├─ Extend free period to 5 bookings
+└─ Strengthen ROI communication
 ```
 
 ---
 
-**Сценарий 3: Если LTV/CAC <3**
+**Scenario 2: If Conversion to Pro <10%**
 ```
-Проблема: либо CAC слишком высокий, либо LTV низкий
+Actions:
+├─ Reduce Pro price to 1,990 AED/month
+├─ Add more free features to Basic (raise baseline)
+├─ Improve Pro features (add truly valuable features)
+└─ Launch campaign: "Try Pro free for 60 days"
+```
 
-Действия:
-├─ Оптимизировать маркетинг (снизить CAC):
-│   ├─ Фокус на органику (SEO)
-│   ├─ Реферальная программа
-│   └─ Партнёрства
+---
+
+**Scenario 3: If LTV/CAC <3**
+```
+Problem: either CAC too high or LTV too low
+
+Actions:
+├─ Optimize marketing (reduce CAC):
+│   ├─ Focus on organic (SEO)
+│   ├─ Referral program
+│   └─ Partnerships
 │
-└─ Повысить LTV:
-    ├─ Улучшить retention (качество лидов)
-    ├─ Upsell на Pro
-    └─ Cross-sell доп. услуги
+└─ Increase LTV:
+    ├─ Improve retention (lead quality)
+    ├─ Upsell to Pro
+    └─ Cross-sell additional services
 ```
 
 ---
 
-### Фаза 2: Добавление новых revenue streams (месяцы 7-12)
+### Phase 2: Adding New Revenue Streams (months 7-12)
 
-**Приоритизация:**
-1. ✅ **Промо-слоты** (быстрый win, низкая сложность)
-2. ✅ **Онлайн-оплата + PSP fee** (требует интеграции)
-3. ✅ **Доставка вещей** (партнёрство с курьерами)
-4. ⏳ **Страхование** (требует партнёра-страховщика)
-5. ⏳ **B2B API** (требует стабильного продукта)
-
----
-
-#### Промо-слоты (v1.5)
-
-**Запуск:** Месяц 6-7
-
-**Базовая модель:**
-```
-Топ-размещение:
-├─ 1 день: 500AED 
-├─ 1 неделя: 3 000AED  (скидка 15%)
-└─ 1 месяц: 10 000AED  (скидка 33%)
-```
-
-**Ограничения для UX:**
-- Максимум 3 промо-склада на страницу каталога (20% от показов)
-- Чёткая маркировка "Реклама"
-
-**Ожидаемый доход:**
-```
-10 операторов × 10 000AED /мес = 100 000AED /мес
-Это +15-20% к общему revenue
-```
+**Prioritization:**
+1. ✅ **Promo slots** (quick win, low complexity)
+2. ✅ **Online payment + PSP fee** (requires integration)
+3. ✅ **Item delivery** (partnership with couriers)
+4. ⏳ **Insurance** (requires insurance partner)
+5. ⏳ **B2B API** (requires stable product)
 
 ---
 
-#### Онлайн-оплата + PSP fee (v2.0)
+#### Promo Slots (v1.5)
 
-**Запуск:** Месяц 9-10
+**Launch:** Month 6-7
 
-**Модель:**
+**Base model:**
 ```
-Пользователь оплачивает онлайн:
-├─ Сумма бронирования: 15 000AED 
-├─ Комиссия PSP (ЮKassa 2.5%): 375AED 
-├─ Комиссия платформы (0.5%): 75AED 
-└─ Оператору: 14 550AED 
-
-Revenue платформы:
-├─ Основная комиссия (10%): 1 500AED 
-├─ PSP fee (0.5%): 75AED 
-└─ Итого: 1 575AED 
+Top placement:
+├─ 1 day: 500 AED
+├─ 1 week: 3,000 AED (15% discount)
+└─ 1 month: 10,000 AED (33% discount)
 ```
 
-**Преимущества:**
-- ✅ Дополнительный revenue stream
-- ✅ Снижает friction для пользователей (всё онлайн)
-- ✅ Автоматизация выплат операторам
+**UX restrictions:**
+- Maximum 3 promo facilities per catalog page (20% of displays)
+- Clear "Advertisement" marking
 
-**Ожидаемый доход:**
+**Expected revenue:**
 ```
-Penetration rate онлайн-оплаты: 40%
-GMV 5MAED  × 40% = 2MAED 
-PSP fee: 2MAED  × 0.5% = 10 000AED /мес
+10 operators × 10,000 AED/month = 100,000 AED/month
+This is +15-20% to total revenue
 ```
 
 ---
 
-### Фаза 3: Географическая экспансия (год 2)
+#### Online Payment + PSP Fee (v2.0)
 
-**Стратегия масштабирования:**
+**Launch:** Month 9-10
+
+**Model:**
+```
+User pays online:
+├─ Booking amount: 15,000 AED
+├─ PSP commission (Telr 2.5%): 375 AED
+├─ Platform commission (0.5%): 75 AED
+└─ To operator: 14,550 AED
+
+Platform revenue:
+├─ Main commission (10%): 1,500 AED
+├─ PSP fee (0.5%): 75 AED
+└─ Total: 1,575 AED
+```
+
+**Benefits:**
+- ✅ Additional revenue stream
+- ✅ Reduces friction for users (all online)
+- ✅ Automated payouts to operators
+
+**Expected revenue:**
+```
+Online payment penetration rate: 40%
+GMV 5M AED × 40% = 2M AED
+PSP fee: 2M AED × 0.5% = 10,000 AED/month
+```
+
+---
+
+### Phase 3: Geographic Expansion (year 2)
+
+**Scaling strategy:**
 ```
 Dubai (Year 1)
     ↓
-Санкт-Петербург (месяц 13-15)
+Abu Dhabi (months 13-15)
     ↓
-5 городов-миллионников (месяц 16-20)
+5 GCC cities (months 16-20)
     ↓
-Региональные центры (месяц 21-24)
+Regional centers (months 21-24)
 ```
 
 ---
 
-#### Адаптация модели под регионы
+#### Regional Model Adaptation
 
-**Проблема:** Покупательная способность и конкуренция различаются.
+**Problem:** Purchasing power and competition vary.
 
-**Решение:** Гибкое ценообразование по регионам
+**Solution:** Flexible regional pricing
 
-| Город | Комиссия | Pro (мес) | Обоснование |
+| City | Commission | Pro (month) | Rationale |
 |-------|----------|-----------|-------------|
-| **Dubai** | 10% | AED 2,990 | Базовая ставка |
-| **СПб** | 10% | AED 2,990 | Аналогично Москве |
-| **Sharjah, Екб** | 8% | 1 990AED  | Ниже покупательная способность |
-| **Регионы** | 8% | 1 490AED  | Минимальная ставка |
+| **Dubai** | 10% | 2,990 AED | Base rate |
+| **Abu Dhabi** | 10% | 2,990 AED | Similar to Dubai |
+| **Sharjah, Ajman** | 8% | 1,990 AED | Lower purchasing power |
+| **Regional** | 8% | 1,490 AED | Minimum rate |
 
 ---
 
-#### Стратегия запуска в новом городе
+#### New City Launch Strategy
 
-**Этап 1: Подготовка (месяц -1)**
+**Stage 1: Preparation (month -1)**
 ```
-├─ Исследование рынка:
-│   ├─ Сколько складов в городе?
-│   ├─ Кто основные игроки?
-│   └─ Средние цены
+├─ Market research:
+│   ├─ How many facilities in city?
+│   ├─ Who are main players?
+│   └─ Average prices
 │
-├─ Прямые продажи операторам:
-│   ├─ Обзвонить топ-10 складов
-│   ├─ Предложить: 3 месяца без комиссии
-│   └─ Цель: подключить 5-7 операторов до запуска
+├─ Direct sales to operators:
+│   ├─ Call top-10 facilities
+│   ├─ Offer: 3 months no commission
+│   └─ Goal: connect 5-7 operators before launch
 │
-└─ SEO-подготовка:
-    ├─ Создать SEO-страницы для города
-    └─ Добавить на Яндекс.Карты, 2GIS
+└─ SEO preparation:
+    ├─ Create SEO pages for city
+    └─ Add to Google Maps, local directories
 ```
 
-**Этап 2: Запуск (месяц 1)**
+**Stage 2: Launch (month 1)**
 ```
-├─ Контекстная реклама (бюджет 30 000AED ):
-│   ├─ "склад для хранения [город]"
-│   └─ Ретаргетинг на переезды
+├─ Contextual advertising (budget 30,000 AED):
+│   ├─ "storage facility [city]"
+│   └─ Retargeting for relocations
 │
 ├─ PR:
-│   ├─ Пресс-релиз: "Платформа X запустилась в [город]"
-│   └─ Партнёрства с локальными медиа
+│   ├─ Press release: "Platform X launched in [city]"
+│   └─ Partnerships with local media
 │
-└─ Цель: 50 заявок в первый месяц
+└─ Goal: 50 requests in first month
 ```
 
-**Этап 3: Рост (месяцы 2-6)**
+**Stage 3: Growth (months 2-6)**
 ```
-├─ Органический рост через SEO
-├─ Добавление новых операторов (outbound sales)
-└─ Оптимизация юнит-экономики
+├─ Organic growth through SEO
+├─ Adding new operators (outbound sales)
+└─ Unit economics optimization
 ```
 
 ---
 
-### Фаза 4: B2B и Enterprise (год 2-3)
+### Phase 4: B2B and Enterprise (years 2-3)
 
-**Целевые сегменты:**
-1. **Крупные сети складов (5+ локаций)**
-2. **Корпоративные клиенты (релокация сотрудников)**
-3. **Партнёры (риелторы, сервисы переездов)**
+**Target segments:**
+1. **Large facility chains (5+ locations)**
+2. **Corporate clients (employee relocation)**
+3. **Partners (realtors, moving services)**
 
 ---
 
-#### Модель для корпоративных клиентов
+#### Model for Corporate Clients
 
-**Пример: Компания делает relocation 50 сотрудников в год**
+**Example: Company relocates 50 employees per year**
 
 ```
-Тариф Enterprise:
-├─ Фиксированная подписка: 200 000AED /год
-├─ Комиссия: 5% (вместо 10%)
-├─ Включено:
-│   ├─ Персональный менеджер
-│   ├─ API для интеграции с HR-системой
-│   ├─ Корпоративные тарифы на боксы (-10%)
-│   └─ Приоритетная поддержка 24/7
+Enterprise Tier:
+├─ Fixed subscription: 200,000 AED/year
+├─ Commission: 5% (instead of 10%)
+├─ Included:
+│   ├─ Personal manager
+│   ├─ API for HR system integration
+│   ├─ Corporate box rates (-10%)
+│   └─ Priority support 24/7
 │
-└─ Revenue для платформы:
-    ├─ Подписка: 200 000AED 
-    ├─ Комиссия (50 бронирований × 30k × 5%): 75 000AED 
-    └─ Итого: 275 000AED /год
+└─ Platform revenue:
+    ├─ Subscription: 200,000 AED
+    ├─ Commission (50 bookings × 30k × 5%): 75,000 AED
+    └─ Total: 275,000 AED/year
 ```
 
-**LTV корпоративного клиента:** 500 000AED + (2+ года)
+**Corporate client LTV:** 500,000 AED+ (2+ years)
 
 ---
 
-## 7.2. Как расширять тарифы операторов
+## 7.2. How to Expand Operator Tiers
 
-### Эволюция тарифной сетки
+### Tier Evolution
 
-**Текущая (MVP):**
+**Current (MVP):**
 ```
-Basic (Free) → Pro (AED 2,990/мес)
-```
-
-**v1.5 (месяцы 6-9):**
-```
-Basic (Free) → Standard (1 990AED /мес) → Pro (4 990AED /мес)
+Basic (Free) → Pro (2,990 AED/month)
 ```
 
-**v2.0 (месяцы 10-18):**
+**v1.5 (months 6-9):**
 ```
-Basic (Free) → Standard (1 990AED /мес) → Pro (4 990AED /мес) → Enterprise (Custom)
+Basic (Free) → Standard (1,990 AED/month) → Pro (4,990 AED/month)
+```
+
+**v2.0 (months 10-18):**
+```
+Basic (Free) → Standard (1,990 AED/month) → Pro (4,990 AED/month) → Enterprise (Custom)
 ```
 
 ---
 
-### Детализация тарифов v2.0
+### v2.0 Tier Details
 
 #### Basic (Free)
-**Для кого:** Новые операторы, тестирующие платформу
+**For whom:** New operators testing platform
 
-**Что входит:**
-- ✅ Размещение складов (до 2)
-- ✅ Размещение боксов (безлимит)
-- ✅ Получение заявок
-- ✅ Базовая статистика
-- ✅ До 10 фото на склад
+**What's included:**
+- ✅ Facility listings (up to 2)
+- ✅ Box listings (unlimited)
+- ✅ Receive requests
+- ✅ Basic statistics
+- ✅ Up to 10 photos per facility
 
-**Ограничения:**
-- ❌ Комиссия 12% (выше, чем у платных)
-- ❌ Без аналитики
-- ❌ Без AI-рекомендаций
-- ❌ Стандартная позиция в каталоге
+**Limitations:**
+- ❌ 12% commission (higher than paid)
+- ❌ No analytics
+- ❌ No AI recommendations
+- ❌ Standard catalog position
 
 ---
 
-#### Standard (1 990AED /мес)
-**Для кого:** Малые операторы (1-2 склада, 10-30 заявок/мес)
+#### Standard (1,990 AED/month)
+**For whom:** Small operators (1-2 facilities, 10-30 requests/month)
 
-**Что входит:**
-- ✅ Всё из Basic +
-- ✅ Комиссия снижена до 10%
-- ✅ Расширенная аналитика:
-  - Конверсионная воронка
-  - Динамика по месяцам
-  - Сравнение с рынком
-- ✅ AI Price Recommender (базовый)
-- ✅ До 25 фото на склад
-- ✅ Приоритетная поддержка (24 часа)
+**What's included:**
+- ✅ Everything from Basic +
+- ✅ Commission reduced to 10%
+- ✅ Extended analytics:
+  - Conversion funnel
+  - Monthly dynamics
+  - Market comparison
+- ✅ AI Price Recommender (basic)
+- ✅ Up to 25 photos per facility
+- ✅ Priority support (24 hours)
 
-**ROI для оператора:**
+**ROI for operator:**
 ```
-Экономия на комиссии:
-├─ GMV: 200 000AED /мес
-├─ Комиссия Basic (12%): 24 000AED 
-├─ Комиссия Standard (10%): 20 000AED 
-├─ Экономия: 4 000AED /мес
+Commission savings:
+├─ GMV: 200,000 AED/month
+├─ Basic commission (12%): 24,000 AED
+├─ Standard commission (10%): 20,000 AED
+├─ Savings: 4,000 AED/month
 │
-Стоимость подписки: 1 990AED /мес
+Subscription cost: 1,990 AED/month
 ─────────────────────────────────
-Чистая экономия: 2 010AED /мес
+Net savings: 2,010 AED/month
 
-+ Дополнительная ценность: аналитика, AI
++ Additional value: analytics, AI
 ```
 
 ---
 
-#### Pro (4 990AED /мес)
-**Для кого:** Средние операторы (3-5 складов, 50+ заявок/мес)
+#### Pro (4,990 AED/month)
+**For whom:** Medium operators (3-5 facilities, 50+ requests/month)
 
-**Что входит:**
-- ✅ Всё из Standard +
-- ✅ Комиссия снижена до 8%
-- ✅ Продвинутая аналитика:
-  - Heatmap активности
+**What's included:**
+- ✅ Everything from Standard +
+- ✅ Commission reduced to 8%
+- ✅ Advanced analytics:
+  - Activity heatmap
   - Revenue forecasting
   - Retention analysis
-  - Когортный анализ
-- ✅ AI Price Recommender (продвинутый):
+  - Cohort analysis
+- ✅ AI Price Recommender (advanced):
   - Dynamic pricing
-  - Автоматические уведомления
-  - A/B тестирование цен
-- ✅ Приоритетное размещение в каталоге (топ-5)
-- ✅ До 50 фото + видео
-- ✅ Поддержка 4 часа
-- ✅ API доступ (100k requests/мес)
+  - Automatic notifications
+  - A/B price testing
+- ✅ Priority catalog placement (top-5)
+- ✅ Up to 50 photos + video
+- ✅ 4-hour support
+- ✅ API access (100k requests/month)
 
-**ROI для оператора:**
+**ROI for operator:**
 ```
-Экономия на комиссии:
-├─ GMV: 800 000AED /мес
-├─ Комиссия Basic (12%): 96 000AED 
-├─ Комиссия Pro (8%): 64 000AED 
-├─ Экономия: 32 000AED /мес
+Commission savings:
+├─ GMV: 800,000 AED/month
+├─ Basic commission (12%): 96,000 AED
+├─ Pro commission (8%): 64,000 AED
+├─ Savings: 32,000 AED/month
 │
-Стоимость подписки: 4 990AED /мес
+Subscription cost: 4,990 AED/month
 ─────────────────────────────────
-Чистая экономия: 27 010AED /мес
+Net savings: 27,010 AED/month
 
-+ AI повышает revenue на 10-15%
-+ Приоритет в каталоге → больше заявок
++ AI increases revenue by 10-15%
++ Priority in catalog → more requests
 ```
 
 ---
 
 #### Enterprise (Custom pricing)
-**Для кого:** Крупные сети (5+ складов, 100+ заявок/мес)
+**For whom:** Large chains (5+ facilities, 100+ requests/month)
 
-**Что входит:**
-- ✅ Всё из Pro +
-- ✅ Комиссия индивидуальная (5-7%)
-- ✅ Персональный менеджер
-- ✅ White-label отчётность
-- ✅ API безлимит + webhooks
-- ✅ Custom интеграции (CRM, ERP)
+**What's included:**
+- ✅ Everything from Pro +
+- ✅ Individual commission (5-7%)
+- ✅ Personal manager
+- ✅ White-label reporting
+- ✅ Unlimited API + webhooks
+- ✅ Custom integrations (CRM, ERP)
 - ✅ SLA 99.9% uptime
-- ✅ Приоритетная поддержка 24/7 (телефон)
-- ✅ Ежеквартальные стратегические сессии
+- ✅ Priority support 24/7 (phone)
+- ✅ Quarterly strategic sessions
 
-**Ценообразование:**
+**Pricing:**
 ```
-Base: 50 000AED /мес
-+ 5% комиссия от GMV
+Base: 50,000 AED/month
++ 5% commission on GMV
 ```
 
-**Пример:**
+**Example:**
 ```
-Сеть из 10 складов:
-├─ GMV: 5 000 000AED /мес
-├─ Комиссия (5%): 250 000AED 
-├─ Подписка: 50 000AED 
-└─ Итого: 300 000AED /мес
+Network of 10 facilities:
+├─ GMV: 5,000,000 AED/month
+├─ Commission (5%): 250,000 AED
+├─ Subscription: 50,000 AED
+└─ Total: 300,000 AED/month
 
-Revenue для платформы: 3 600 000AED /год от одного клиента
+Platform revenue: 3,600,000 AED/year from one client
 ```
 
 ---
 
-### Сравнительная таблица всех тарифов
+### Comparative Tier Table
 
-| Функция | Basic | Standard | Pro | Enterprise |
+| Feature | Basic | Standard | Pro | Enterprise |
 |---------|-------|----------|-----|------------|
-| **Цена** | Free | 1 990AED  | 4 990AED  | 50 000AED + |
-| **Комиссия** | 12% | 10% | 8% | 5-7% |
-| **Складов** | До 2 | До 5 | Безлимит | Безлимит |
-| **Фото** | 10 | 25 | 50 + видео | Безлимит |
-| **Аналитика** | Базовая | Расширенная | Полная + AI | Полная + Custom |
-| **AI Pricing** | ❌ | Базовый | Продвинутый | Продвинутый + Auto |
-| **Приоритет** | ❌ | ❌ | Топ-5 | Топ-1 |
-| **API** | ❌ | ❌ | 100k req | Безлимит |
-| **Поддержка** | Email 48ч | Email 24ч | Email/Chat 4ч | 24/7 телефон |
-| **Менеджер** | ❌ | ❌ | ❌ | ✅ Персональный |
+| **Price** | Free | 1,990 AED | 4,990 AED | 50,000 AED+ |
+| **Commission** | 12% | 10% | 8% | 5-7% |
+| **Facilities** | Up to 2 | Up to 5 | Unlimited | Unlimited |
+| **Photos** | 10 | 25 | 50 + video | Unlimited |
+| **Analytics** | Basic | Extended | Full + AI | Full + Custom |
+| **AI Pricing** | ❌ | Basic | Advanced | Advanced + Auto |
+| **Priority** | ❌ | ❌ | Top-5 | Top-1 |
+| **API** | ❌ | ❌ | 100k req | Unlimited |
+| **Support** | Email 48h | Email 24h | Email/Chat 4h | 24/7 phone |
+| **Manager** | ❌ | ❌ | ❌ | ✅ Personal |
 
 ---
 
-### Стратегия Upsell: Basic → Standard → Pro
+### Upsell Strategy: Basic → Standard → Pro
 
-**Триггеры для Upsell:**
+**Upsell Triggers:**
 
 #### Basic → Standard
 
-**Триггер 1: Объём GMV превысил порог**
+**Trigger 1: GMV volume exceeded threshold**
 ```
-Условие: GMV > 150 000AED /мес
+Condition: GMV > 150,000 AED/month
 
 Email:
-"Вы достигли 150 000AED  оборота!
-Переходите на Standard и экономьте 2 000AED /мес на комиссии.
-+ Получите AI-рекомендации по ценам бесплатно на 30 дней."
+"You've reached 150,000 AED turnover!
+Upgrade to Standard and save 2,000 AED/month on commission.
++ Get AI price recommendations free for 30 days."
 ```
 
 ---
 
-**Триггер 2: Просмотры аналитики в Basic**
+**Trigger 2: Analytics views in Basic**
 ```
-Условие: Оператор 5+ раз заходил в раздел "Статистика"
+Condition: Operator visited "Statistics" section 5+ times
 
 Email:
-"Мы видим, что вы часто анализируете данные.
-В Standard вы получите в 10 раз больше инсайтов:
-- Конверсионная воронка
-- Сравнение с конкурентами
-- AI-рекомендации по ценам
-Попробуйте бесплатно 30 дней."
+"We see you frequently analyze data.
+In Standard you'll get 10x more insights:
+- Conversion funnel
+- Competitor comparison
+- AI price recommendations
+Try free for 30 days."
 ```
 
 ---
 
-**Триггер 3: Добавление 2-го склада**
+**Trigger 3: Adding 2nd facility**
 ```
-Условие: Оператор добавил 2-й склад
+Condition: Operator added 2nd facility
 
 Email:
-"Поздравляем! Вы растёте.
-С подпиской Standard вы сможете:
-- Управлять до 5 складов
-- Снизить комиссию на 2%
-- Получить расширенную аналитику по каждому складу"
+"Congratulations! You're growing.
+With Standard subscription you can:
+- Manage up to 5 facilities
+- Reduce commission by 2%
+- Get extended analytics per facility"
 ```
 
 ---
 
 #### Standard → Pro
 
-**Триггер 1: Высокий объём заявок**
+**Trigger 1: High request volume**
 ```
-Условие: >50 заявок в месяц
+Condition: >50 requests per month
 
 In-app notification:
-"У вас 50+ заявок в месяц!
-С Pro вы сэкономите ещё 2% на комиссии.
-При вашем обороте это 10 000AED /мес.
-+ Приоритетное размещение → ещё больше заявок"
+"You have 50+ requests per month!
+With Pro you'll save another 2% on commission.
+At your turnover that's 10,000 AED/month.
++ Priority placement → even more requests"
 ```
 
 ---
 
-**Триггер 2: Использование всех фичей Standard**
+**Trigger 2: Using all Standard features**
 ```
-Условие: Оператор активно пользуется AI Price Recommender
+Condition: Operator actively uses AI Price Recommender
 
 Email:
-"Вы используете AI-рекомендации на максимум!
-В Pro вы получите:
-- Автоматические уведомления об оптимальных ценах
-- A/B тестирование цен
-- Revenue forecasting на 6 месяцев вперёд
-Upgrade со скидкой 30% на первый месяц"
+"You're using AI recommendations to the max!
+In Pro you'll get:
+- Automatic notifications about optimal prices
+- A/B price testing
+- Revenue forecasting 6 months ahead
+Upgrade with 30% discount for first month"
 ```
 
 ---
 
 #### Pro → Enterprise
 
-**Триггер: Крупная сеть**
+**Trigger: Large chain**
 ```
-Условие: 5+ складов или GMV >3MAED /мес
+Condition: 5+ facilities or GMV >3M AED/month
 
-Personal outreach (звонок менеджера):
-"Здравствуйте! Мы видим, что вы крупный оператор.
-У нас есть специальные условия для сетей:
-- Персональный менеджер
-- Комиссия 5% (вместо 8%)
-- Custom интеграции
-Давайте обсудим индивидуальный план?"
+Personal outreach (manager call):
+"Hello! We see you're a major operator.
+We have special terms for chains:
+- Personal manager
+- 5% commission (instead of 8%)
+- Custom integrations
+Let's discuss a customized plan?"
 ```
 
 ---
 
-## 7.3. Как повышать ARPU и LTV
+## 7.3. How to Increase ARPU and LTV
 
-### Стратегия повышения ARPU
+### ARPU Increase Strategy
 
-**Текущий ARPU (MVP):** 1 500AED /мес  
-**Цель (v2.0):** 4 000AED /мес
-
----
-
-#### Тактика 1: Увеличение adoption платных тарифов
-
-**Текущий:** 10-15% операторов на платных тарифах  
-**Цель:** 40-50%
-
-**Как добиться:**
-- Улучшить onboarding: показывать ценность Pro с первого дня
-- Free trial: 60 дней вместо 30
-- Value-based messaging: "Операторы на Pro зарабатывают на 30% больше"
-- Social proof: "87% операторов с 3+ складами используют Pro"
+**Current ARPU (MVP):** 1,500 AED/month
+**Goal (v2.0):** 4,000 AED/month
 
 ---
 
-#### Тактика 2: Увеличение среднего тарифа
+#### Tactic 1: Increase Paid Tier Adoption
 
-**Текущий:** Средний платящий оператор платит AED 2,990/мес (Standard)  
-**Цель:** Средний платящий оператор платит 3 500AED /мес
+**Current:** 10-15% operators on paid tiers
+**Goal:** 40-50%
 
-**Как добиться:**
-- Добавить больше ценности в Pro (API, advanced AI)
-- Делать Pro must-have для операторов с 3+ складами
-- Bundling: "Pro + промо-слот = 9 990AED /мес (вместо 14 990AED )"
+**How to achieve:**
+- Improve onboarding: show Pro value from day one
+- Free trial: 60 days instead of 30
+- Value-based messaging: "Operators on Pro earn 30% more"
+- Social proof: "87% of operators with 3+ facilities use Pro"
 
 ---
 
-#### Тактика 3: Cross-sell дополнительных услуг
+#### Tactic 2: Increase Average Tier
 
-**Новые revenue streams (v2.0+):**
+**Current:** Average paying operator pays 2,990 AED/month (Standard)
+**Goal:** Average paying operator pays 3,500 AED/month
 
-| Услуга | ARPU impact | Penetration | ARPU прирост |
+**How to achieve:**
+- Add more value to Pro (API, advanced AI)
+- Make Pro must-have for operators with 3+ facilities
+- Bundling: "Pro + promo slot = 9,990 AED/month (instead of 14,990 AED)"
+
+---
+
+#### Tactic 3: Cross-sell Additional Services
+
+**New revenue streams (v2.0+):**
+
+| Service | ARPU impact | Penetration | ARPU increase |
 |--------|-------------|-------------|--------------|
-| Промо-слоты | 10 000AED /мес | 15% | +1 500AED  |
-| API доступ | 5 000AED /мес | 5% | +250AED  |
-| Доставка вещей (комиссия) | 500AED /мес | 30% | +150AED  |
-| Страхование (комиссия) | 200AED /мес | 20% | +40AED  |
-| **Итого дополнительно** | — | — | **+1 940AED ** |
+| Promo slots | 10,000 AED/month | 15% | +1,500 AED |
+| API access | 5,000 AED/month | 5% | +250 AED |
+| Item delivery (commission) | 500 AED/month | 30% | +150 AED |
+| Insurance (commission) | 200 AED/month | 20% | +40 AED |
+| **Total additional** | — | — | **+1,940 AED** |
 
-**Общий ARPU с cross-sell:** 1 500AED  + 1 940AED  = **3 440AED /мес**
+**Total ARPU with cross-sell:** 1,500 AED + 1,940 AED = **3,440 AED/month**
 
 ---
 
-#### Тактика 4: Повышение среднего GMV на оператора
+#### Tactic 4: Increase Average GMV per Operator
 
-**Как увеличить GMV:**
-- Улучшить качество трафика (более целевые пользователи)
-- AI Box Finder → больше конверсия → больше бронирований
-- Помочь операторам оптимизировать цены (AI Price Recommender) → выше средний чек
+**How to increase GMV:**
+- Improve traffic quality (more targeted users)
+- AI Box Finder → higher conversion → more bookings
+- Help operators optimize prices (AI Price Recommender) → higher average ticket
 
-**Пример:**
+**Example:**
 ```
-Оператор сейчас:
-├─ 20 бронирований/мес × 20 000AED  = 400 000AED  GMV
-└─ Комиссия 12%: 48 000AED 
+Operator currently:
+├─ 20 bookings/month × 20,000 AED = 400,000 AED GMV
+└─ Commission 12%: 48,000 AED
 
-После AI Price Recommender (поднял цены на 15%):
-├─ 18 бронирований/мес × 23 000AED  = 414 000AED  GMV
-└─ Комиссия 12%: 49 680AED 
+After AI Price Recommender (raised prices 15%):
+├─ 18 bookings/month × 23,000 AED = 414,000 AED GMV
+└─ Commission 12%: 49,680 AED
 
-Прирост revenue: +1 680AED /мес на оператора
-```
-
----
-
-### Стратегия повышения LTV
-
-**Текущий LTV (MVP):** 22 500AED   
-**Цель (v2.0):** 50 000AED +
-
----
-
-#### Тактика 1: Снижение Churn через retention программы
-
-**Целевой Churn:** <5% в месяц (Annual retention >80%)
-
-**Программа удержания:**
-
-**Месяц 1:**
-- Welcome email: "Как начать получать заявки"
-- Персональный звонок: помощь в настройке
-- Быстрый win: помочь получить первую заявку за 7 дней
-
-**Месяц 3:**
-- Health check: анализ аккаунта
-- "У вас 10 заявок за 3 месяца, вот как получить больше"
-- Offer: "Попробуйте Pro бесплатно 30 дней"
-
-**Месяц 6:**
-- Success review: "Вы заработали 500 000AED  через платформу"
-- Запрос отзыва/кейса
-- Offer: Upgrade на Pro со скидкой
-
-**Месяц 12:**
-- Annual review: "Ваши результаты за год"
-- Персональная консультация по росту
-- Offer: Долгосрочный контракт со скидкой
-
----
-
-**Risk alerts (для предотвращения ухода):**
-```
-Триггеры риска:
-├─ Нет заявок 30 дней → звонок менеджера
-├─ Снижение заявок на 50% → анализ причин
-├─ Оператор удалил склад → exit interview
-└─ Не заходил в ЛК 14 дней → реактивация email
+Revenue increase: +1,680 AED/month per operator
 ```
 
 ---
 
-#### Тактика 2: Увеличение lifetime через контракты
+### LTV Increase Strategy
 
-**Проблема:** Месячная подписка → легко отменить
-
-**Решение:** Стимулировать годовые контракты
-
-**Модель:**
-```
-Monthly: AED 2,990/мес (итого 35 880AED /год)
-Annual: 29 900AED /год (скидка 17%, экономия 5 980AED )
-
-Дополнительный бонус:
-+ 1 месяц промо-слота бесплатно (ценность 10 000AED )
-```
-
-**Эффект:**
-- Prepayment → гарантированный revenue
-- Снижение churn (сложнее уйти mid-contract)
-- LTV увеличивается с 18 месяцев до 24+ месяцев
+**Current LTV (MVP):** 22,500 AED
+**Goal (v2.0):** 50,000 AED+
 
 ---
 
-#### Тактика 3: Создание switching costs
+#### Tactic 1: Reduce Churn Through Retention Programs
 
-**Идея:** Сделать так, чтобы оператору было сложно/невыгодно уйти
+**Target Churn:** <5% per month (Annual retention >80%)
 
-**Механизмы:**
+**Retention program:**
+
+**Month 1:**
+- Welcome email: "How to start receiving requests"
+- Personal call: setup assistance
+- Quick win: help get first request in 7 days
+
+**Month 3:**
+- Health check: account analysis
+- "You have 10 requests in 3 months, here's how to get more"
+- Offer: "Try Pro free for 30 days"
+
+**Month 6:**
+- Success review: "You earned 500,000 AED through platform"
+- Request for testimonial/case study
+- Offer: Upgrade to Pro with discount
+
+**Month 12:**
+- Annual review: "Your results for the year"
+- Personal growth consultation
+- Offer: Long-term contract with discount
+
+---
+
+**Risk alerts (to prevent churn):**
+```
+Risk triggers:
+├─ No requests for 30 days → manager call
+├─ 50% request drop → analyze reasons
+├─ Operator deleted facility → exit interview
+└─ Haven't logged in for 14 days → reactivation email
+```
+
+---
+
+#### Tactic 2: Increase Lifetime Through Contracts
+
+**Problem:** Monthly subscription → easy to cancel
+
+**Solution:** Incentivize annual contracts
+
+**Model:**
+```
+Monthly: 2,990 AED/month (total 35,880 AED/year)
+Annual: 29,900 AED/year (17% discount, saving 5,980 AED)
+
+Additional bonus:
++ 1 month promo slot free (value 10,000 AED)
+```
+
+**Effect:**
+- Prepayment → guaranteed revenue
+- Reduced churn (harder to leave mid-contract)
+- LTV increases from 18 months to 24+ months
+
+---
+
+#### Tactic 3: Create Switching Costs
+
+**Idea:** Make it difficult/unprofitable for operator to leave
+
+**Mechanisms:**
 
 **A. Data lock-in**
 ```
-Оператор накопил:
-├─ 18 месяцев аналитики
-├─ AI обучился на его данных (персональные рекомендации)
-└─ История клиентов и бронирований
+Operator accumulated:
+├─ 18 months of analytics
+├─ AI trained on their data (personalized recommendations)
+└─ Customer and booking history
 
-Уход на другую платформу = потеря всей этой ценности
+Switching to another platform = losing all this value
 ```
 
-**B. Интеграции**
+**B. Integrations**
 ```
-Оператор интегрировал:
-├─ API с его CRM
-├─ Автоматические уведомления в его систему
+Operator integrated:
+├─ API with their CRM
+├─ Automatic notifications to their system
 └─ Custom workflows
 
-Уход = нужно всё переделывать заново
+Leaving = need to redo everything
 ```
 
 **C. Loyalty rewards**
 ```
-Программа лояльности:
-├─ За каждый год на платформе: -1% комиссия (до минимума 7%)
-├─ После 2 лет: персональный менеджер бесплатно
-└─ После 3 лет: custom интеграции бесплатно
+Loyalty program:
+├─ For each year on platform: -1% commission (minimum 7%)
+├─ After 2 years: personal manager free
+└─ After 3 years: custom integrations free
 ```
 
 ---
 
-#### Тактика 4: Expansion revenue
+#### Tactic 4: Expansion Revenue
 
-**Идея:** Доход от оператора растёт со временем (не только retention, но и expansion)
+**Idea:** Revenue from operator grows over time (not just retention, but expansion)
 
-**Модель:**
+**Model:**
 ```
-Год 1:
-├─ Basic → Standard (месяц 3)
-├─ ARPU: 1 500AED /мес
-└─ Annual revenue: 18 000AED 
+Year 1:
+├─ Basic → Standard (month 3)
+├─ ARPU: 1,500 AED/month
+└─ Annual revenue: 18,000 AED
 
-Год 2:
-├─ Standard → Pro (месяц 15)
-├─ + Промо-слоты (месяц 18)
-├─ ARPU: 4 000AED /мес
-└─ Annual revenue: 48 000AED 
+Year 2:
+├─ Standard → Pro (month 15)
+├─ + Promo slots (month 18)
+├─ ARPU: 4,000 AED/month
+└─ Annual revenue: 48,000 AED
 
-Год 3:
-├─ Pro → Enterprise (месяц 28)
+Year 3:
+├─ Pro → Enterprise (month 28)
 ├─ + API subscription
-├─ ARPU: 10 000AED /мес
-└─ Annual revenue: 120 000AED 
+├─ ARPU: 10,000 AED/month
+└─ Annual revenue: 120,000 AED
 
-LTV (3 года): 186 000AED 
+LTV (3 years): 186,000 AED
 ```
 
-**Net Revenue Retention (NRR):** >120% (доход от когорты растёт год к году)
+**Net Revenue Retention (NRR):** >120% (cohort revenue grows year over year)
 
 ---
 
-## 7.4. Приоритизация функций для монетизации
+## 7.4. Monetization Feature Prioritization
 
 ### Feature Scoring Matrix
 
-Каждая функция оценивается по 4 критериям:
+Each feature is scored on 4 criteria:
 
-| Критерий | Вес | Описание |
+| Criterion | Weight | Description |
 |----------|-----|----------|
-| **Revenue potential** | 35% | Насколько функция увеличит доход |
-| **Development cost** | 25% | Сложность и время разработки |
-| **Strategic fit** | 20% | Соответствие долгосрочной стратегии |
-| **Time to market** | 20% | Как быстро можно запустить |
+| **Revenue potential** | 35% | How much feature will increase revenue |
+| **Development cost** | 25% | Complexity and development time |
+| **Strategic fit** | 20% | Alignment with long-term strategy |
+| **Time to market** | 20% | How quickly can be launched |
 
-**Оценка:** 1-10 баллов по каждому критерию
+**Scoring:** 1-10 points per criterion
 
 ---
 
-### Оценка функций для v1.5-v2.0
+### Feature Scoring for v1.5-v2.0
 
-| Функция | Revenue (35%) | Dev Cost (25%) | Strategic (20%) | TTM (20%) | Total Score |
+| Feature | Revenue (35%) | Dev Cost (25%) | Strategic (20%) | TTM (20%) | Total Score |
 |---------|---------------|----------------|-----------------|-----------|-------------|
-| **Промо-слоты** | 8 | 9 | 7 | 9 | **8.2** 🥇 |
-| **Онлайн-оплата** | 7 | 6 | 9 | 6 | **7.0** |
+| **Promo slots** | 8 | 9 | 7 | 9 | **8.2** 🥇 |
+| **Online payment** | 7 | 6 | 9 | 6 | **7.0** |
 | **AI Dynamic Pricing** | 9 | 5 | 9 | 5 | **7.2** 🥈 |
-| **Доставка вещей** | 6 | 8 | 6 | 8 | **6.8** |
+| **Item delivery** | 6 | 8 | 6 | 8 | **6.8** |
 | **B2B API** | 7 | 4 | 8 | 4 | **5.9** |
-| **Страхование** | 5 | 7 | 5 | 7 | **5.9** |
+| **Insurance** | 5 | 7 | 5 | 7 | **5.9** |
 | **White-label** | 8 | 3 | 7 | 3 | **5.7** |
-| **Маркетплейс услуг** | 6 | 4 | 5 | 4 | **5.0** |
+| **Services marketplace** | 6 | 4 | 5 | 4 | **5.0** |
 
 ---
 
-### Roadmap приоритетов
+### Priority Roadmap
 
-**Квартал 3 (месяцы 7-9) — v1.5:**
-1. 🥇 **Промо-слоты** (Score: 8.2) — быстрый revenue, низкая сложность
-2. 🥈 **AI Dynamic Pricing** (Score: 7.2) — high impact, требует данных (к этому времени будут)
+**Quarter 3 (months 7-9) — v1.5:**
+1. 🥇 **Promo slots** (Score: 8.2) — quick revenue, low complexity
+2. 🥈 **AI Dynamic Pricing** (Score: 7.2) — high impact, requires data (will have by then)
 
-**Квартал 4 (месяцы 10-12) — v2.0:**
-3. **Онлайн-оплата** (Score: 7.0) — стратегически важно, средняя сложность
-4. **Доставка вещей** (Score: 6.8) — быстро, партнёрская модель
+**Quarter 4 (months 10-12) — v2.0:**
+3. **Online payment** (Score: 7.0) — strategically important, medium complexity
+4. **Item delivery** (Score: 6.8) — quick, partnership model
 
-**Год 2, Квартал 1 (месяцы 13-15):**
-5. **B2B API** (Score: 5.9) — стратегически важно для scale
-6. **Страхование** (Score: 5.9) — дополнительный revenue stream
+**Year 2, Quarter 1 (months 13-15):**
+5. **B2B API** (Score: 5.9) — strategically important for scale
+6. **Insurance** (Score: 5.9) — additional revenue stream
 
-**Год 2, Квартал 2+ (месяцы 16+):**
-7. **White-label** (Score: 5.7) — высокий ARPU, но узкий сегмент
-8. **Маркетплейс услуг** (Score: 5.0) — низкий приоритет, сложная инфраструктура
+**Year 2, Quarter 2+ (months 16+):**
+7. **White-label** (Score: 5.7) — high ARPU, but narrow segment
+8. **Services marketplace** (Score: 5.0) — low priority, complex infrastructure
 
 ---
 
-### Критерии отбора (Go/No-Go Decision)
+### Selection Criteria (Go/No-Go Decision)
 
-**Go (запускаем в следующий релиз):**
+**Go (launch in next release):**
 - ✅ Total Score >6.5
 - ✅ Revenue potential >6
-- ✅ Есть ресурсы команды (dev capacity)
-- ✅ Нет критических блокеров
+- ✅ Team resources available (dev capacity)
+- ✅ No critical blockers
 
-**No-Go (откладываем):**
+**No-Go (postpone):**
 - ❌ Total Score <5.5
-- ❌ Development cost <5 (слишком дорого)
-- ❌ Нет стратегического fit (<6)
+- ❌ Development cost <5 (too expensive)
+- ❌ No strategic fit (<6)
 
 ---
 
-# 8. Roadmap монетизации (v1.0 → v2.0 → v3.0)
+# 8. Monetization Roadmap (v1.0 → v2.0 → v3.0)
 
-## 8.1. MVP (v1.0) — Launch Phase (месяцы 1-3)
+## 8.1. MVP (v1.0) — Launch Phase (months 1-3)
 
-### Механики монетизации
+### Monetization Mechanics
 
 **Primary:**
-- ✅ Комиссия 12% с подтверждённых бронирований
-- ✅ Operator Pro: AED 2,990/мес (базовая аналитика + AI Price Recommender)
+- ✅ 12% commission on confirmed bookings
+- ✅ Operator Pro: 2,990 AED/month (basic analytics + AI Price Recommender)
 
-**Не входит:**
-- ❌ Промо-слоты
-- ❌ Онлайн-оплата
+**Not included:**
+- ❌ Promo slots
+- ❌ Online payment
 - ❌ API
-- ❌ Дополнительные сервисы
+- ❌ Additional services
 
 ---
 
-### Целевые метрики
+### Target Metrics
 
-| Метрика | Целевое значение | Комментарий |
+| Metric | Target value | Comment |
 |---------|------------------|-------------|
-| GMV (3 месяца cumulative) | 500 000AED  | ~5-10 операторов |
-| Revenue | 60 000AED  | Take rate 12% |
-| Операторов (total) | 12-15 | Из них 10 с бронированиями |
+| GMV (3 months cumulative) | 500,000 AED | ~5-10 operators |
+| Revenue | 60,000 AED | Take rate 12% |
+| Operators (total) | 12-15 | Of which 10 with bookings |
 | Pro subscribers | 2-3 | Conversion ~15-20% |
-| ARPU | 1 500AED /мес | Комиссия + подписки |
-| CAC | 7 000AED  | Высокий на старте |
-| LTV/CAC | 3.2x | Здоровая экономика |
+| ARPU | 1,500 AED/month | Commission + subscriptions |
+| CAC | 7,000 AED | High at start |
+| LTV/CAC | 3.2x | Healthy economics |
 
 ---
 
-### Сроки реализации
+### Implementation Timeline
 
-**Разработка:** 3-4 недели  
-**Тестирование:** 1 неделя  
-**Запуск:** Начало месяца 1
-
----
-
-## 8.2. Version 1.5 — Growth Phase (месяцы 4-9)
-
-### Новые механики монетизации
-
-**Добавляем:**
-1. ✅ **Промо-слоты** (месяц 6)
-   - Топ-размещение: 500AED /день, 3 000AED /неделя, 10 000AED /месяц
-   - Ограничение: макс 3 промо-склада на страницу
-   
-2. ✅ **Градация комиссии** (месяц 5)
-   - 1-5 бронирований: 12%
-   - 6-15 бронирований: 10%
-   - 16+ бронирований: 8%
-
-3. ✅ **Улучшенная Pro-подписка** (месяц 7)
-   - Добавлена Revenue forecasting
-   - Добавлен Competitor benchmarking
-   - Цена остаётся: AED 2,990/мес
-
-4. ✅ **Доставка вещей (партнёрская)** (месяц 8)
-   - Комиссия 15% от стоимости доставки
-   - Партнёр: локальные курьеры
+**Development:** 3-4 weeks
+**Testing:** 1 week
+**Launch:** Beginning of month 1
 
 ---
 
-### Целевые метрики
+## 8.2. Version 1.5 — Growth Phase (months 4-9)
 
-| Метрика | Целевое значение (месяц 6) | Целевое значение (месяц 9) |
+### New Monetization Mechanics
+
+**Adding:**
+1. ✅ **Promo slots** (month 6)
+   - Top placement: 500 AED/day, 3,000 AED/week, 10,000 AED/month
+   - Restriction: max 3 promo facilities per page
+
+2. ✅ **Commission gradation** (month 5)
+   - 1-5 bookings: 12%
+   - 6-15 bookings: 10%
+   - 16+ bookings: 8%
+
+3. ✅ **Enhanced Pro subscription** (month 7)
+   - Added Revenue forecasting
+   - Added Competitor benchmarking
+   - Price remains: 2,990 AED/month
+
+4. ✅ **Item delivery (partnership)** (month 8)
+   - 15% commission on delivery cost
+   - Partner: local couriers
+
+---
+
+### Target Metrics
+
+| Metric | Target value (month 6) | Target value (month 9) |
 |---------|---------------------------|---------------------------|
-| GMV/месяц | 1 500 000AED  | 2 500 000AED  |
-| Revenue/месяц | 195 000AED  | 320 000AED  |
-| Операторов | 30 | 50 |
+| GMV/month | 1,500,000 AED | 2,500,000 AED |
+| Revenue/month | 195,000 AED | 320,000 AED |
+| Operators | 30 | 50 |
 | Pro subscribers | 5-8 | 10-15 |
-| Промо-слоты (active) | 5 | 10 |
-| ARPU | 2 000AED /мес | 2 500AED /мес |
+| Promo slots (active) | 5 | 10 |
+| ARPU | 2,000 AED/month | 2,500 AED/month |
 
 ---
 
-### Ожидаемый эффект
+### Expected Effect
 
-**Revenue breakdown (месяц 9):**
+**Revenue breakdown (month 9):**
 ```
-Комиссия (weighted average 10%):
-├─ 2 500 000AED  × 10% = 250 000AED 
+Commission (weighted average 10%):
+├─ 2,500,000 AED × 10% = 250,000 AED
 
-Подписки Pro:
-├─ 12 операторов × AED 2,990 = 35 880AED 
+Pro subscriptions:
+├─ 12 operators × 2,990 AED = 35,880 AED
 
-Промо-слоты:
-├─ 10 операторов × 10 000AED  = 100 000AED  (не все на месяц, avg 5k)
-├─ Average: 50 000AED /мес
+Promo slots:
+├─ 10 operators × 10,000 AED = 100,000 AED (not all monthly, avg 5k)
+├─ Average: 50,000 AED/month
 
-Доставка (комиссия):
-├─ 30% penetration × 100 заявок × 3 000AED  × 15%
-├─ = 13 500AED /мес
+Delivery (commission):
+├─ 30% penetration × 100 requests × 3,000 AED × 15%
+├─ = 13,500 AED/month
 
 ──────────────────────────────
-Total Revenue: 349 380AED /мес
+Total Revenue: 349,380 AED/month
 ```
 
-**Прирост revenue vs месяц 3:** +430% 🚀
+**Revenue growth vs month 3:** +430% 🚀
 
 ---
 
-### Сроки реализации
+### Implementation Timeline
 
-**Месяц 4-5:** Разработка градации комиссии  
-**Месяц 6:** Запуск промо-слотов  
-**Месяц 7:** Улучшение Pro  
-**Месяц 8-9:** Интеграция доставки
+**Month 4-5:** Commission gradation development
+**Month 6:** Promo slots launch
+**Month 7:** Pro enhancement
+**Month 8-9:** Delivery integration
 
 ---
 
-## 8.3. Version 2.0 — Scale Phase (месяцы 10-18)
+## 8.3. Version 2.0 — Scale Phase (months 10-18)
 
-### Расширенные механики
+### Extended Mechanics
 
-**Добавляем:**
+**Adding:**
 
-1. ✅ **Онлайн-оплата + PSP fee** (месяц 10)
-   - Интеграция ЮKassa / Stripe
-   - Комиссия платформы: +0.5% от транзакции
-   - Автоматические split-платежи
+1. ✅ **Online payment + PSP fee** (month 10)
+   - Telr / Stripe integration
+   - Platform commission: +0.5% on transaction
+   - Automatic split payments
 
-2. ✅ **B2B API** (месяц 12)
-   - Starter: 10 000AED /мес (5k requests)
-   - Business: 50 000AED /мес (50k requests)
-   - Enterprise: 200 000AED /мес (unlimited)
+2. ✅ **B2B API** (month 12)
+   - Starter: 10,000 AED/month (5k requests)
+   - Business: 50,000 AED/month (50k requests)
+   - Enterprise: 200,000 AED/month (unlimited)
 
-3. ✅ **Гибридная модель** (месяц 11)
-   - Базовая комиссия снижена до 8%
-   - Обязательная мин. подписка: 1 000AED /мес (для Basic)
-   - Итого: операторы платят 8% + 1 000AED /мес минимум
+3. ✅ **Hybrid model** (month 11)
+   - Base commission reduced to 8%
+   - Mandatory min subscription: 1,000 AED/month (for Basic)
+   - Total: operators pay 8% + 1,000 AED/month minimum
 
-4. ✅ **Тариф Enterprise** (месяц 14)
+4. ✅ **Enterprise Tier** (month 14)
    - Custom pricing
-   - Персональный менеджер
+   - Personal manager
    - White-label reporting
    - SLA 99.9%
 
-5. ✅ **Страхование вещей** (месяц 15)
-   - Партнёрство со страховой компанией
-   - Комиссия: 20% от страховой премии
+5. ✅ **Item insurance** (month 15)
+   - Partnership with insurance company
+   - Commission: 20% of insurance premium
 
-6. ✅ **Географическая экспансия** (месяц 16)
-   - Запуск в СПб
-   - Адаптация цен под регион
+6. ✅ **Geographic expansion** (month 16)
+   - Launch in Abu Dhabi
+   - Regional price adaptation
 
 ---
 
-### Целевые метрики
+### Target Metrics
 
-| Метрика | Целевое значение (месяц 12) | Целевое значение (месяц 18) |
+| Metric | Target value (month 12) | Target value (month 18) |
 |---------|----------------------------|----------------------------|
-| GMV/месяц | 5 000 000AED  | 10 000 000AED  |
-| Revenue/месяц | 665 000AED  | 1 300 000AED  |
-| Операторов | 80 | 150 |
+| GMV/month | 5,000,000 AED | 10,000,000 AED |
+| Revenue/month | 665,000 AED | 1,300,000 AED |
+| Operators | 80 | 150 |
 | Pro/Enterprise subscribers | 15/2 | 30/5 |
 | API clients | 2-3 | 5-8 |
-| ARPU | 3 000AED /мес | 4 000AED /мес |
-| Profit | +265 000AED /мес | +700 000AED /мес |
+| ARPU | 3,000 AED/month | 4,000 AED/month |
+| Profit | +265,000 AED/month | +700,000 AED/month |
 
 ---
 
-### Ожидаемый эффект
+### Expected Effect
 
-**Revenue breakdown (месяц 18):**
+**Revenue breakdown (month 18):**
 ```
-Комиссия (weighted average 8%):
-├─ 10 000 000AED  × 8% = 800 000AED 
+Commission (weighted average 8%):
+├─ 10,000,000 AED × 8% = 800,000 AED
 
-Подписки:
-├─ Standard (40 ops × 1 000AED ): 40 000AED 
-├─ Pro (30 ops × 4 990AED ): 149 700AED 
-├─ Enterprise (5 ops × 50 000AED ): 250 000AED 
-├─ Subtotal: 439 700AED 
+Subscriptions:
+├─ Standard (40 ops × 1,000 AED): 40,000 AED
+├─ Pro (30 ops × 4,990 AED): 149,700 AED
+├─ Enterprise (5 ops × 50,000 AED): 250,000 AED
+├─ Subtotal: 439,700 AED
 
-Промо-слоты:
-├─ 20 операторов × avg 7 500AED  = 150 000AED 
+Promo slots:
+├─ 20 operators × avg 7,500 AED = 150,000 AED
 
 API subscriptions:
-├─ 8 клиентов × avg 40 000AED  = 320 000AED 
+├─ 8 clients × avg 40,000 AED = 320,000 AED
 
 PSP fee:
-├─ 50% транзакций онлайн × 5M GMV × 0.5%
-├─ = 12 500AED 
+├─ 50% transactions online × 5M GMV × 0.5%
+├─ = 12,500 AED
 
-Доставка:
-├─ 40% penetration × 400 заявок × 3k × 15%
-├─ = 72 000AED 
+Delivery:
+├─ 40% penetration × 400 requests × 3k × 15%
+├─ = 72,000 AED
 
-Страхование:
-├─ 20% penetration × 400 заявок × 1 500AED  × 20%
-├─ = 24 000AED 
+Insurance:
+├─ 20% penetration × 400 requests × 1,500 AED × 20%
+├─ = 24,000 AED
 
 ──────────────────────────────
-Total Revenue: 1 818 200AED /мес
+Total Revenue: 1,818,200 AED/month
 ```
 
 **Profit margin:** ~40%
 
 ---
 
-### Сроки реализации
+### Implementation Timeline
 
-**Q4 (месяцы 10-12):** Онлайн-оплата, гибридная модель, API  
-**Q1 Год 2 (месяцы 13-15):** Enterprise, страхование, СПб  
-**Q2 Год 2 (месяцы 16-18):** Масштабирование, новые города
-
----
-
-## 8.4. Version 3.0 — Maturity Phase (месяцы 19-24+)
-
-### Продвинутые механики
-
-**Добавляем:**
-
-1. ✅ **White-label SaaS** (месяц 20)
-   - Продажа платформы крупным сетям
-   - Setup: 500 000AED 
-   - Monthly: 50 000AED /мес
-   - Target: 3-5 клиентов в год
-
-2. ✅ **Data & Analytics as a Service** (месяц 22)
-   - Продажа рыночной аналитики инвесторам
-   - Квартальные отчёты: 150 000AED 
-   - API доступ к данным: 300 000AED /год
-
-3. ✅ **Маркетплейс дополнительных услуг** (месяц 24)
-   - Упаковочные материалы
-   - Грузчики
-   - Клининг
-   - Комиссия: 15-20%
-
-4. ✅ **Международная экспансия** (месяц 24+)
-   - Казахстан, Беларусь
-   - Адаптация модели под местные рынки
+**Q4 (months 10-12):** Online payment, hybrid model, API
+**Q1 Year 2 (months 13-15):** Enterprise, insurance, Abu Dhabi
+**Q2 Year 2 (months 16-18):** Scaling, new cities
 
 ---
 
-### Целевые метрики
+## 8.4. Version 3.0 — Maturity Phase (months 19-24+)
 
-| Метрика | Целевое значение (месяц 24) |
+### Advanced Mechanics
+
+**Adding:**
+
+1. ✅ **White-label SaaS** (month 20)
+   - Selling platform to large chains
+   - Setup: 500,000 AED
+   - Monthly: 50,000 AED/month
+   - Target: 3-5 clients per year
+
+2. ✅ **Data & Analytics as a Service** (month 22)
+   - Selling market analytics to investors
+   - Quarterly reports: 150,000 AED
+   - API data access: 300,000 AED/year
+
+3. ✅ **Additional services marketplace** (month 24)
+   - Packing materials
+   - Movers
+   - Cleaning
+   - Commission: 15-20%
+
+4. ✅ **International expansion** (month 24+)
+   - Saudi Arabia, other GCC countries
+   - Local market model adaptation
+
+---
+
+### Target Metrics
+
+| Metric | Target value (month 24) |
 |---------|----------------------------|
-| GMV/месяц | 20 000 000AED  |
-| Revenue/месяц | 2 500 000AED  |
-| Операторов | 300+ |
-| ARPU | 5 000AED /мес |
+| GMV/month | 20,000,000 AED |
+| Revenue/month | 2,500,000 AED |
+| Operators | 300+ |
+| ARPU | 5,000 AED/month |
 | Profit margin | 50%+ |
 | Cities | 15+ |
 
 ---
 
-### Ожидаемый эффект
+### Expected Effect
 
-**Revenue breakdown (месяц 24):**
+**Revenue breakdown (month 24):**
 ```
 Core business:
-├─ Комиссия: 1 200 000AED 
-├─ Подписки: 800 000AED 
-├─ Промо: 200 000AED 
-└─ Subtotal: 2 200 000AED 
+├─ Commission: 1,200,000 AED
+├─ Subscriptions: 800,000 AED
+├─ Promo: 200,000 AED
+└─ Subtotal: 2,200,000 AED
 
 New streams:
-├─ API: 150 000AED 
-├─ White-label (5 клиентов): 250 000AED 
-├─ Data/Analytics: 50 000AED 
-├─ Маркетплейс: 100 000AED 
-└─ Subtotal: 550 000AED 
+├─ API: 150,000 AED
+├─ White-label (5 clients): 250,000 AED
+├─ Data/Analytics: 50,000 AED
+├─ Marketplace: 100,000 AED
+└─ Subtotal: 550,000 AED
 
 ──────────────────────────────
-Total Revenue: 2 750 000AED /мес
+Total Revenue: 2,750,000 AED/month
 ```
 
-**Annual run rate:** 33MAED /год
+**Annual run rate:** 33M AED/year
 
 ---
 
-## 8.5. Roadmap-таблица (сводная)
+## 8.5. Roadmap Summary Table
 
-| Версия | Период | Механики монетизации | Ожидаемый эффект (Revenue/мес) | Комментарий |
+| Version | Period | Monetization mechanics | Expected effect (Revenue/month) | Comment |
 |--------|--------|---------------------|-------------------------------|-------------|
-| **v1.0 (MVP)** | M1-3 | • Комиссия 12%<br>• Pro AED 2,990/мес | 20 000AED  → 60 000AED  | Proof of concept |
-| **v1.5** | M4-9 | + Промо-слоты<br>+ Градация комиссии<br>+ Доставка | 60 000AED  → 350 000AED  | Диверсификация |
-| **v2.0** | M10-18 | + Онлайн-оплата<br>+ B2B API<br>+ Гибридная модель<br>+ Enterprise<br>+ Страхование<br>+ СПб | 350 000AED  → 1 800 000AED  | Scale + прибыльность |
-| **v3.0** | M19-24+ | + White-label SaaS<br>+ Data/Analytics<br>+ Маркетплейс<br>+ Международная экспансия | 1 800 000AED  → 2 750 000AED + | Maturity + новые рынки |
+| **v1.0 (MVP)** | M1-3 | • Commission 12%<br>• Pro 2,990 AED/month | 20,000 AED → 60,000 AED | Proof of concept |
+| **v1.5** | M4-9 | + Promo slots<br>+ Commission gradation<br>+ Delivery | 60,000 AED → 350,000 AED | Diversification |
+| **v2.0** | M10-18 | + Online payment<br>+ B2B API<br>+ Hybrid model<br>+ Enterprise<br>+ Insurance<br>+ Abu Dhabi | 350,000 AED → 1,800,000 AED | Scale + profitability |
+| **v3.0** | M19-24+ | + White-label SaaS<br>+ Data/Analytics<br>+ Marketplace<br>+ International expansion | 1,800,000 AED → 2,750,000 AED+ | Maturity + new markets |
 
 ---
 
-## Заключение
+## Conclusion
 
-### Ключевые выводы
+### Key Takeaways
 
-1. **MVP фокусируется на proof of concept:**
-   - Комиссия 12% + базовая Pro-подписка
-   - Цель: доказать готовность операторов платить
-   - Break-even к месяцу 6-9
+1. **MVP focuses on proof of concept:**
+   - 12% commission + basic Pro subscription
+   - Goal: prove operators' willingness to pay
+   - Break-even by month 6-9
 
-2. **Эволюция через диверсификацию:**
-   - v1.5: промо-слоты, доставка
-   - v2.0: онлайн-оплата, API, гибридная модель
-   - v3.0: white-label, data, маркетплейс
+2. **Evolution through diversification:**
+   - v1.5: promo slots, delivery
+   - v2.0: online payment, API, hybrid model
+   - v3.0: white-label, data, marketplace
 
-3. **Unit-экономика здоровая:**
-   - LTV/CAC >3x с первых месяцев
-   - Payback period <6 месяцев
-   - Profit margin 40-50% к концу года
+3. **Unit economics healthy:**
+   - LTV/CAC >3x from first months
+   - Payback period <6 months
+   - Profit margin 40-50% by year end
 
-4. **Риски управляемы:**
-   - Сопротивление комиссиям → value-based positioning
-   - Мало заявок → платная реклама + SEO
-   - Конкуренты → дифференциация через AI
+4. **Risks manageable:**
+   - Commission resistance → value-based positioning
+   - Few requests → paid advertising + SEO
+   - Competitors → AI differentiation
 
-5. **Масштабирование возможно:**
-   - Географическая экспансия (15+ городов)
+5. **Scaling possible:**
+   - Geographic expansion (15+ cities)
    - B2B (API, Enterprise, white-label)
-   - Новые revenue streams (страхование, данные)
+   - New revenue streams (insurance, data)
 
 ---
 
-### Критические факторы успеха
+### Critical Success Factors
 
-✅ **Качество лидов** — главное value proposition  
-✅ **AI как конкурентное преимущество** — уникальность  
-✅ **Прозрачность и доверие** — основа отношений с операторами  
-✅ **Быстрая итерация** — тестирование гипотез каждые 2-3 месяца  
-✅ **Фокус на retention** — удерживать операторов важнее, чем привлекать новых
-
----
-
-**Конец документа Part 5 (Разделы 7-8)**
+✅ **Lead quality** — main value proposition
+✅ **AI as competitive advantage** — uniqueness
+✅ **Transparency and trust** — foundation of operator relationships
+✅ **Fast iteration** — hypothesis testing every 2-3 months
+✅ **Focus on retention** — keeping operators more important than acquiring new ones
 
 ---
 
-**Следующий шаг:** Консолидация всех частей в единый финальный документ
+**End of Document Part 5 (Sections 7-8)**
+
+---
+
+**Next step:** Consolidate all parts into final unified document
 ---
 ---
 
-# Приложения
+# Appendices
 
-## Приложение A: Глоссарий терминов
+## Appendix A: Glossary of Terms
 
-### Бизнес-метрики
+### Business Metrics
 
-| Термин | Определение | Формула/Пример |
+| Term | Definition | Formula/Example |
 |--------|-------------|----------------|
-| **GMV** | Gross Merchandise Value — общий объём всех транзакций через платформу | Σ(сумма бронирования × количество) |
-| **Take Rate** | Процент от GMV, который платформа удерживает как комиссию | (Revenue / GMV) × 100% |
-| **ARPU** | Average Revenue Per User — средний доход с одного активного оператора | Total Revenue / Active Operators |
-| **CAC** | Customer Acquisition Cost — стоимость привлечения одного оператора | Marketing Spend / New Operators |
-| **LTV** | Lifetime Value — общий доход от оператора за весь период работы | ARPU × Lifetime (months) × Retention Rate |
-| **LTV/CAC** | Соотношение ценности клиента к стоимости привлечения | LTV / CAC (цель: >3x) |
-| **Churn Rate** | Процент операторов, прекративших работу в период | (Ушедшие / Всего) × 100% |
-| **Retention Rate** | Процент операторов, продолжающих работу | 100% - Churn Rate |
-| **MRR** | Monthly Recurring Revenue — ежемесячный повторяющийся доход | Σ(все подписки за месяц) |
-| **ARR** | Annual Recurring Revenue — годовой повторяющийся доход | MRR × 12 |
-| **NRR** | Net Revenue Retention — удержание дохода с учётом expansion | ((Starting MRR + Expansion - Churn) / Starting MRR) × 100% |
-| **Payback Period** | Срок окупаемости затрат на привлечение оператора | CAC / ARPU (в месяцах) |
+| **GMV** | Gross Merchandise Value — total volume of all transactions through platform | Σ(booking amount × quantity) |
+| **Take Rate** | Percentage of GMV platform retains as commission | (Revenue / GMV) × 100% |
+| **ARPU** | Average Revenue Per User — average revenue from one active operator | Total Revenue / Active Operators |
+| **CAC** | Customer Acquisition Cost — cost of acquiring one operator | Marketing Spend / New Operators |
+| **LTV** | Lifetime Value — total revenue from operator over entire working period | ARPU × Lifetime (months) × Retention Rate |
+| **LTV/CAC** | Ratio of customer value to acquisition cost | LTV / CAC (goal: >3x) |
+| **Churn Rate** | Percentage of operators who stopped working in period | (Left / Total) × 100% |
+| **Retention Rate** | Percentage of operators continuing to work | 100% - Churn Rate |
+| **MRR** | Monthly Recurring Revenue — monthly recurring income | Σ(all subscriptions per month) |
+| **ARR** | Annual Recurring Revenue — yearly recurring income | MRR × 12 |
+| **NRR** | Net Revenue Retention — revenue retention including expansion | ((Starting MRR + Expansion - Churn) / Starting MRR) × 100% |
+| **Payback Period** | Time to recoup operator acquisition costs | CAC / ARPU (in months) |
 
 ---
 
-### Операционные термины
+### Operational Terms
 
-| Термин | Определение |
+| Term | Definition |
 |--------|-------------|
-| **Оператор** | Владелец или управляющий складом self-storage, размещающий свои боксы на платформе |
-| **Арендатор** | Конечный пользователь, бронирующий бокс для хранения вещей |
-| **Бокс** | Единица хранения на складе (обычно измеряется в м²) |
-| **Бронирование** | Заявка пользователя на аренду бокса |
-| **Подтверждённое бронирование** | Бронирование, которое оператор подтвердил (с этого момента начисляется комиссия) |
-| **GMV на бронирование** | Сумма, которую пользователь платит за весь период аренды |
-| **Комиссия платформы** | Процент от GMV, который платформа удерживает |
-| **Split-платёж** | Автоматическое разделение платежа между оператором и платформой при онлайн-оплате |
-| **Промо-слот** | Платное размещение склада в топе результатов поиска |
-| **Free trial** | Бесплатный пробный период подписки (обычно 30-60 дней) |
-| **Upsell** | Переход оператора на более дорогой тариф (например, Basic → Pro) |
-| **Cross-sell** | Продажа дополнительных услуг (промо, доставка, страхование) |
+| **Operator** | Owner or manager of self-storage facility listing boxes on platform |
+| **Tenant** | End user booking box for item storage |
+| **Box** | Storage unit at facility (usually measured in m²) |
+| **Booking** | User request to rent box |
+| **Confirmed booking** | Booking operator confirmed (commission starts from this moment) |
+| **GMV per booking** | Amount user pays for entire rental period |
+| **Platform commission** | Percentage of GMV platform retains |
+| **Split payment** | Automatic payment division between operator and platform for online payments |
+| **Promo slot** | Paid facility placement at top of search results |
+| **Free trial** | Free subscription trial period (usually 30-60 days) |
+| **Upsell** | Operator move to higher tier (e.g., Basic → Pro) |
+| **Cross-sell** | Selling additional services (promo, delivery, insurance) |
 
 ---
 
-### Технические термины
+### Technical Terms
 
-| Термин | Определение |
+| Term | Definition |
 |--------|-------------|
-| **PSP** | Payment Service Provider — провайдер платёжных услуг (ЮKassa, Stripe) |
-| **API** | Application Programming Interface — интерфейс для программной интеграции |
-| **Webhook** | Уведомление о событии, отправляемое автоматически через HTTP |
-| **CPM** | Cost Per Mille — стоимость за 1000 показов рекламы |
-| **CPC** | Cost Per Click — стоимость за клик по рекламе |
-| **CPA** | Cost Per Action — стоимость за целевое действие (заявка, бронирование) |
-| **CPL** | Cost Per Lead — стоимость за лид (заявку) |
-| **SLA** | Service Level Agreement — соглашение об уровне обслуживания (например, 99.9% uptime) |
-| **White-label** | Решение под брендом клиента (без упоминания оригинального поставщика) |
-| **Revenue share** | Модель, при которой доход делится между платформой и партнёром |
+| **PSP** | Payment Service Provider — payment services provider (Telr, Stripe) |
+| **API** | Application Programming Interface — interface for programmatic integration |
+| **Webhook** | Event notification sent automatically via HTTP |
+| **CPM** | Cost Per Mille — cost per 1000 ad impressions |
+| **CPC** | Cost Per Click — cost per ad click |
+| **CPA** | Cost Per Action — cost per target action (request, booking) |
+| **CPL** | Cost Per Lead — cost per lead (request) |
+| **SLA** | Service Level Agreement — service level agreement (e.g., 99.9% uptime) |
+| **White-label** | Solution under client's brand (without original provider mention) |
+| **Revenue share** | Model where revenue is split between platform and partner |
 
 ---
 
-## Приложение B: Примеры расчётов
+## Appendix B: Calculation Examples
 
-### Пример 1: Расчёт комиссии для оператора
+### Example 1: Operator Commission Calculation
 
-**Исходные данные:**
-- Бокс: M (6м²)
-- Цена: 4 000AED /месяц
-- Срок аренды: 6 месяцев
-- Комиссия платформы: 12%
+**Input data:**
+- Box: M (6m²)
+- Price: 4,000 AED/month
+- Rental period: 6 months
+- Platform commission: 12%
 
-**Расчёт:**
+**Calculation:**
 ```
-GMV (сумма бронирования):
-4 000AED /мес × 6 мес = 24 000AED 
+GMV (booking amount):
+4,000 AED/month × 6 months = 24,000 AED
 
-Комиссия платформы:
-24 000AED  × 12% = 2 880AED 
+Platform commission:
+24,000 AED × 12% = 2,880 AED
 
-Оператор получает:
-24 000AED  - 2 880AED  = 21 120AED 
+Operator receives:
+24,000 AED - 2,880 AED = 21,120 AED
 
-Эффективная цена для оператора:
-21 120AED  / 6 мес = 3 520AED /мес
+Effective price for operator:
+21,120 AED / 6 months = 3,520 AED/month
 ```
 
 ---
 
-### Пример 2: ROI подписки Operator Pro
+### Example 2: Operator Pro Subscription ROI
 
-**Сценарий:** Оператор с 2 складами, 20 боксов
+**Scenario:** Operator with 2 facilities, 20 boxes
 
-**Без Pro (Basic):**
+**Without Pro (Basic):**
 ```
-Месячный GMV: 200 000AED 
-Комиссия (12%): 24 000AED 
-Стоимость подписки: 0AED 
+Monthly GMV: 200,000 AED
+Commission (12%): 24,000 AED
+Subscription cost: 0 AED
 ────────────────────────────
-Затраты на платформу: 24 000AED /мес
+Platform costs: 24,000 AED/month
 ```
 
-**С Pro (Standard):**
+**With Pro (Standard):**
 ```
-Месячный GMV: 200 000AED 
-Комиссия (10%): 20 000AED 
-Стоимость подписки: 1 990AED 
+Monthly GMV: 200,000 AED
+Commission (10%): 20,000 AED
+Subscription cost: 1,990 AED
 ────────────────────────────
-Затраты на платформу: 21 990AED /мес
+Platform costs: 21,990 AED/month
 
-Экономия: 24 000AED  - 21 990AED  = 2 010AED /мес
-+ Бонус: AI-рекомендации повышают revenue на 10-15%
+Savings: 24,000 AED - 21,990 AED = 2,010 AED/month
++ Bonus: AI recommendations increase revenue by 10-15%
 ```
 
-**Вывод:** Pro окупается за счёт сниженной комиссии + даёт дополнительные инструменты
+**Conclusion:** Pro pays for itself through reduced commission + provides additional tools
 
 ---
 
-### Пример 3: LTV оператора
+### Example 3: Operator LTV
 
-**Дано:**
-- ARPU: 2 000AED /мес
-- Средний срок работы: 18 месяцев
+**Given:**
+- ARPU: 2,000 AED/month
+- Average working period: 18 months
 - Annual retention: 80%
 
-**Расчёт:**
+**Calculation:**
 ```
 LTV = ARPU × Lifetime × Retention
-LTV = 2 000AED  × 18 × 0.8
-LTV = 28 800AED 
+LTV = 2,000 AED × 18 × 0.8
+LTV = 28,800 AED
 ```
 
 ---
 
-### Пример 4: Payback Period
+### Example 4: Payback Period
 
-**Дано:**
-- CAC: 7 000AED 
-- ARPU: 1 500AED /мес
+**Given:**
+- CAC: 7,000 AED
+- ARPU: 1,500 AED/month
 
-**Расчёт:**
+**Calculation:**
 ```
 Payback Period = CAC / ARPU
-Payback = 7 000AED  / 1 500AED 
-Payback = 4.67 месяцев
+Payback = 7,000 AED / 1,500 AED
+Payback = 4.67 months
 ```
 
-**Интерпретация:** Затраты на привлечение окупятся через ~5 месяцев
+**Interpretation:** Acquisition costs will pay back in ~5 months
 
 ---
 
-### Пример 5: Break-even analysis
+### Example 5: Break-even Analysis
 
-**Дано (месяц 3):**
-- GMV: 500 000AED 
+**Given (month 3):**
+- GMV: 500,000 AED
 - Take rate: 12%
-- Pro subscribers: 2 (по AED 2,990)
-- OPEX: 130 000AED 
+- Pro subscribers: 2 (at 2,990 AED)
+- OPEX: 130,000 AED
 
-**Расчёт:**
+**Calculation:**
 ```
 Revenue:
-├─ Комиссия: 500 000AED  × 12% = 60 000AED 
-├─ Подписки: 2 × AED 2,990 = 5 980AED 
-└─ Итого: 65 980AED 
+├─ Commission: 500,000 AED × 12% = 60,000 AED
+├─ Subscriptions: 2 × 2,990 AED = 5,980 AED
+└─ Total: 65,980 AED
 
 Profit/Loss:
-65 980AED  - 130 000AED  = -64 020AED  (убыток)
+65,980 AED - 130,000 AED = -64,020 AED (loss)
 
 Break-even GMV:
-130 000AED  / 12% = 1 083 333AED 
+130,000 AED / 12% = 1,083,333 AED
 ```
 
-**Вывод:** Нужно достичь GMV ~1.1MAED /мес для break-even
+**Conclusion:** Need to reach GMV ~1.1M AED/month for break-even
 
 ---
 
-## Приложение C: Конкурентная таблица (детально)
+## Appendix C: Competitive Table (Detailed)
 
-### Международные конкуренты
+### International Competitors
 
-| Компания | Страна | Модель монетизации | Ставки | Дополнительно |
+| Company | Country | Monetization model | Rates | Additional |
 |----------|--------|-------------------|--------|---------------|
-| **SpareFoot** | США | CPL (за лид) | $35/лид (avg)<br>$40-80 (hot leads)<br>$5-15 (cold leads) | + Premium listings ($200-500/мес)<br>+ Featured operator ($1000+/мес) |
-| **Storemates** | UK | Subscription | Bronze: £150/мес (до 20 заявок)<br>Silver: £250/мес (до 50)<br>Gold: £400/мес (до 100)<br>+ £5 за сверхлимитные | + Priority listing: +£100/мес<br>+ API: £500/мес |
-| **StoreHub** | AU | Hybrid | Subscription: $99/мес<br>+ Revenue share: 5%<br>+ Processing fee: 2% | Гибридная модель популярна у операторов |
-| **StorageFront** | США | Commission | 10-15% от GMV | Фокус на крупные сети |
+| **SpareFoot** | USA | CPL (per lead) | $35/lead (avg)<br>$40-80 (hot leads)<br>$5-15 (cold leads) | + Premium listings ($200-500/month)<br>+ Featured operator ($1000+/month) |
+| **Storemates** | UK | Subscription | Bronze: £150/month (up to 20 requests)<br>Silver: £250/month (up to 50)<br>Gold: £400/month (up to 100)<br>+ £5 per over-limit | + Priority listing: +£100/month<br>+ API: £500/month |
+| **StoreHub** | AU | Hybrid | Subscription: $99/month<br>+ Revenue share: 5%<br>+ Processing fee: 2% | Hybrid model popular with operators |
+| **StorageFront** | USA | Commission | 10-15% of GMV | Focus on large chains |
 
 ---
 
-### Российские конкуренты
+### Regional Competitors
 
-| Компания | Модель | Особенности | Оценочные ставки |
+| Company | Model | Features | Estimated rates |
 |----------|--------|-------------|------------------|
-| **Место** (место.online) | Предположительно commission + промо | Бесплатное размещение<br>Платные опции для продвижения | ~8-10% комиссия (оценка) |
-| **Чердак** (cherdak.io) | Агрегатор + собственная сеть | 80% своих складов<br>Агрегация — вторичная функция | Неизвестно |
-| **Авито** | Freemium | Бесплатные объявления<br>Платное продвижение | Поднятие: 150-500AED <br>Premium: 1 000AED /нед<br>Турбо: 3 000AED /мес |
+| **Mesto** (mesto.online) | Presumably commission + promo | Free listing<br>Paid promo options | ~8-10% commission (estimate) |
+| **Cherdak** (cherdak.io) | Aggregator + own network | 80% own facilities<br>Aggregation — secondary function | Unknown |
+| **Classifieds** | Freemium | Free listings<br>Paid promotion | Boost: 150-500 AED<br>Premium: 1,000 AED/week<br>Turbo: 3,000 AED/month |
 
 ---
 
-### Сравнение с нашей платформой
+### Comparison with Our Platform
 
-| Параметр | SpareFoot | Storemates | Наша платформа (MVP) | Наша платформа (v2.0) |
+| Parameter | SpareFoot | Storemates | Our platform (MVP) | Our platform (v2.0) |
 |----------|-----------|------------|---------------------|---------------------|
-| **Базовая модель** | CPL | Subscription | Commission 12% | Hybrid (8% + 1kAED  sub) |
-| **Барьер входа** | Средний | Высокий | Низкий (free basic) | Низкий |
-| **AI-функции** | Базовые | Нет | ✅ Box Finder + Price Recommender | ✅ Advanced AI |
-| **Прозрачность** | Средняя | Высокая | Очень высокая | Очень высокая |
-| **Для малых операторов** | ❌ | ❌ | ✅ | ✅ |
-| **API** | ✅ | ✅ | ❌ (в v2.0) | ✅ |
+| **Base model** | CPL | Subscription | Commission 12% | Hybrid (8% + 1k AED sub) |
+| **Entry barrier** | Medium | High | Low (free basic) | Low |
+| **AI features** | Basic | None | ✅ Box Finder + Price Recommender | ✅ Advanced AI |
+| **Transparency** | Medium | High | Very high | Very high |
+| **For small operators** | ❌ | ❌ | ✅ | ✅ |
+| **API** | ✅ | ✅ | ❌ (in v2.0) | ✅ |
 
 ---
 
-## Приложение D: Чек-лист запуска монетизации
+## Appendix D: Monetization Launch Checklist
 
-### За 4 недели до запуска
+### 4 Weeks Before Launch
 
-**Техническая подготовка:**
-- [ ] Таблица `transactions` создана и протестирована
-- [ ] Таблица `subscriptions` создана
-- [ ] API эндпоинты для финансов разработаны
-- [ ] Автоматический расчёт комиссий реализован (триггер на `confirmed`)
-- [ ] Dashboard оператора: раздел "Финансы" готов
-- [ ] Email-шаблоны готовы (новая транзакция, trial, и т.д.)
-- [ ] Система уведомлений настроена
+**Technical Preparation:**
+- [ ] `transactions` table created and tested
+- [ ] `subscriptions` table created
+- [ ] Finance API endpoints developed
+- [ ] Automatic commission calculation implemented (trigger on `confirmed`)
+- [ ] Operator dashboard: "Finances" section ready
+- [ ] Email templates ready (new transaction, trial, etc.)
+- [ ] Notification system configured
 
-**Юридическая подготовка:**
-- [ ] Оферта для операторов утверждена юристом
-- [ ] Политика конфиденциальности обновлена
-- [ ] Согласие на обработку персональных данных
-- [ ] Шаблон договора с оператором (если требуется)
-- [ ] Налоговая схема согласована с бухгалтером
+**Legal Preparation:**
+- [ ] Operator agreement approved by lawyer
+- [ ] Privacy policy updated
+- [ ] Personal data processing consent
+- [ ] Operator contract template (if required)
+- [ ] Tax scheme agreed with accountant
 
-**Документация:**
-- [ ] FAQ для операторов: "Как работает комиссия?"
-- [ ] Калькулятор комиссии на сайте
-- [ ] Pricing page готова
-- [ ] Сравнение тарифов Basic vs Pro
-
----
-
-### За 2 недели до запуска
-
-**Тестирование:**
-- [ ] Unit-тесты расчёта комиссий (все edge cases)
-- [ ] E2E тесты: бронирование → комиссия → отображение в ЛК
-- [ ] Тест email-уведомлений
-- [ ] Тест отчётности (скачать Excel)
-- [ ] Стресс-тест: 100 транзакций одновременно
-
-**Коммуникация с операторами:**
-- [ ] Email всем текущим операторам: "Запускаем монетизацию"
-- [ ] Объяснить ценность: ROI, прозрачность
-- [ ] Предложить спецусловия: "Первые 3 бронирования бесплатно"
-- [ ] Провести вебинар или Q&A сессию
-
-**Маркетинг:**
-- [ ] Landing page "Для операторов" обновлена
-- [ ] Кейсы / testimonials от пилотных операторов
-- [ ] Видео-туториал: "Как зарабатывать на платформе"
+**Documentation:**
+- [ ] FAQ for operators: "How commission works?"
+- [ ] Commission calculator on website
+- [ ] Pricing page ready
+- [ ] Basic vs Pro tier comparison
 
 ---
 
-### Неделя запуска
+### 2 Weeks Before Launch
 
-**Мониторинг:**
-- [ ] Настроить алерты на ошибки в расчётах комиссий
-- [ ] Dashboard для команды: real-time метрики (GMV, revenue, churn)
-- [ ] Sentry / Rollbar для отслеживания багов
+**Testing:**
+- [ ] Unit tests for commission calculation (all edge cases)
+- [ ] E2E tests: booking → commission → display in dashboard
+- [ ] Email notification tests
+- [ ] Reporting tests (download Excel)
+- [ ] Stress test: 100 simultaneous transactions
 
-**Поддержка:**
-- [ ] Горячая линия для операторов (телефон + email)
-- [ ] FAQ обновлён с реальными вопросами
-- [ ] Команда готова к быстрому реагированию
+**Operator Communication:**
+- [ ] Email to all current operators: "Launching monetization"
+- [ ] Explain value: ROI, transparency
+- [ ] Offer special terms: "First 3 bookings free"
+- [ ] Conduct webinar or Q&A session
 
-**Запуск:**
-- [ ] Soft launch: включить монетизацию для 3-5 пилотных операторов
-- [ ] Наблюдать 48 часов
-- [ ] Если всё ОК → Full launch для всех операторов
-
----
-
-### После запуска (первая неделя)
-
-**Мониторинг метрик:**
-- [ ] Ежедневный отчёт: GMV, Revenue, Transactions
-- [ ] Churn rate: сколько операторов ушло после первой комиссии?
-- [ ] NPS операторов после первой комиссии
-- [ ] Количество жалоб / вопросов в поддержку
-
-**Итерация:**
-- [ ] Собрать feedback от операторов
-- [ ] Выявить проблемы (баги, непонимание, возражения)
-- [ ] Внести корректировки (если нужно снизить комиссию или улучшить UX)
-
-**Коммуникация:**
-- [ ] Thank you email операторам: "Спасибо за доверие"
-- [ ] Поделиться первыми результатами: "Мы обработали X бронирований на сумму YAED "
+**Marketing:**
+- [ ] "For Operators" landing page updated
+- [ ] Case studies / testimonials from pilot operators
+- [ ] Video tutorial: "How to earn on platform"
 
 ---
 
-### Первый месяц
+### Launch Week
 
-**Анализ результатов:**
-- [ ] Сравнить фактические метрики с прогнозом
-- [ ] Если Churn >20% → анализ причин и action plan
-- [ ] Если Conversion to Pro <10% → A/B тесты цены/фичей
-- [ ] Если GMV ниже прогноза → усилить маркетинг
+**Monitoring:**
+- [ ] Configure alerts for commission calculation errors
+- [ ] Team dashboard: real-time metrics (GMV, revenue, churn)
+- [ ] Sentry / Rollbar for bug tracking
 
-**Оптимизация:**
-- [ ] A/B тест: оптимальная ставка комиссии (10% vs 12% vs 15%)
-- [ ] A/B тест: цена Pro (1 990AED  vs AED 2,990 vs 4 990AED )
-- [ ] Улучшение коммуникации ROI в dashboard
+**Support:**
+- [ ] Operator hotline (phone + email)
+- [ ] FAQ updated with real questions
+- [ ] Team ready for quick response
 
-**Подготовка к v1.5:**
-- [ ] Анализ данных для приоритизации следующих фич
-- [ ] Начать разработку промо-слотов (если метрики хорошие)
+**Launch:**
+- [ ] Soft launch: enable monetization for 3-5 pilot operators
+- [ ] Monitor for 48 hours
+- [ ] If all OK → Full launch for all operators
 
 ---
 
-## Финальные замечания
+### After Launch (First Week)
 
-### Ключевые принципы успешной монетизации
+**Metrics Monitoring:**
+- [ ] Daily report: GMV, Revenue, Transactions
+- [ ] Churn rate: how many operators left after first commission?
+- [ ] Operator NPS after first commission
+- [ ] Number of complaints / support questions
 
-1. **Прозрачность превыше всего**
-   - Операторы должны понимать каждую filsу комиссии
-   - Никаких скрытых платежей
+**Iteration:**
+- [ ] Collect operator feedback
+- [ ] Identify problems (bugs, misunderstanding, objections)
+- [ ] Make adjustments (reduce commission or improve UX if needed)
+
+**Communication:**
+- [ ] Thank you email to operators: "Thank you for trust"
+- [ ] Share first results: "We processed X bookings worth Y AED"
+
+---
+
+### First Month
+
+**Results Analysis:**
+- [ ] Compare actual metrics with forecast
+- [ ] If Churn >20% → analyze reasons and action plan
+- [ ] If Conversion to Pro <10% → A/B test price/features
+- [ ] If GMV below forecast → strengthen marketing
+
+**Optimization:**
+- [ ] A/B test: optimal commission rate (10% vs 12% vs 15%)
+- [ ] A/B test: Pro price (1,990 AED vs 2,990 AED vs 4,990 AED)
+- [ ] Improve ROI communication in dashboard
+
+**Prepare for v1.5:**
+- [ ] Analyze data to prioritize next features
+- [ ] Start developing promo slots (if metrics good)
+
+---
+
+## Final Notes
+
+### Key Principles for Successful Monetization
+
+1. **Transparency above all**
+   - Operators must understand every line of commission
+   - No hidden fees
 
 2. **Value first, price second**
-   - Сначала доказываем ценность (качественные лиды)
-   - Потом говорим о цене
+   - First prove value (quality leads)
+   - Then talk about price
 
 3. **Iterate based on data**
-   - Тестировать гипотезы каждые 2-3 месяца
-   - Не бояться менять ставки, если метрики плохие
+   - Test hypotheses every 2-3 months
+   - Don't fear changing rates if metrics poor
 
 4. **Retention > Acquisition**
-   - Удерживать операторов важнее, чем привлекать новых
-   - Focus на quality of service
+   - Keeping operators more important than attracting new ones
+   - Focus on quality of service
 
 5. **Scale gradually**
-   - Не запускать все модели монетизации сразу
-   - MVP → v1.5 → v2.0 с интервалом 3-6 месяцев
+   - Don't launch all monetization models at once
+   - MVP → v1.5 → v2.0 with 3-6 month intervals
 
 ---
 
-### Контрольные вопросы для self-check
+### Self-Check Questions
 
-**Перед запуском MVP спросите себя:**
-- ✅ Операторы понимают, сколько они будут платить?
-- ✅ Мы можем доказать ROI (вы зарабатываете больше, чем платите)?
-- ✅ Технически всё работает и протестировано?
-- ✅ У нас есть plan B, если churn будет высоким?
-- ✅ Команда готова к быстрому реагированию на проблемы?
+**Before MVP launch ask yourself:**
+- ✅ Do operators understand how much they'll pay?
+- ✅ Can we prove ROI (you earn more than you pay)?
+- ✅ Is everything technically working and tested?
+- ✅ Do we have plan B if churn high?
+- ✅ Is team ready for quick problem response?
 
-**Через 3 месяца после запуска:**
+**3 months after launch:**
 - ✅ LTV/CAC >3x?
 - ✅ Churn <20%?
-- ✅ Операторы довольны (NPS >30)?
-- ✅ Revenue растёт month-over-month?
-- ✅ Мы готовы масштабироваться в v1.5?
+- ✅ Operators satisfied (NPS >30)?
+- ✅ Revenue growing month-over-month?
+- ✅ Are we ready to scale to v1.5?
 
 ---
 
-## Благодарности и контакты
+## Acknowledgments and Contacts
 
-**Создан:** Product Strategy Team  
-**Дата:** December 2025  
-**Версия:** 1.0 Final
+**Created by:** Product Strategy Team
+**Date:** December 2025
+**Version:** 1.0 Final
 
-**Для вопросов и предложений:**
+**For questions and suggestions:**
 - Email: product@[company].com
 - Slack: #monetization-strategy
 
-**Связанные документы:**
+**Related documents:**
 - Product Brief v1.0
 - Technical Specification MVP
 - Competitive Analysis
@@ -5173,16 +5173,16 @@ Break-even GMV:
 
 ---
 
-**Конец документа**
+**End of document**
 
 © 2025 Self-Storage Aggregator Platform. All rights reserved.
 
 ---
 
-**Статус документа:** ✅ COMPLETE  
-**Общий объём:** ~190 страниц (при печати)  
-**Слов:** ~45,000  
-**Готовность к презентации:** YES
+**Document status:** ✅ COMPLETE
+**Total volume:** ~190 pages (when printed)
+**Words:** ~45,000
+**Presentation ready:** YES
 
 
 
@@ -5203,7 +5203,7 @@ This document has been updated to clearly separate **monetization strategy** (bu
    - 📝 MVP Reality: Commission tracked manually/offline; invoicing done manually
 
 2. **Subscription Tiers (Basic/Standard)**
-   - ✅ STRATEGY: Operators may commercially subscribe to Standard tier (2,990AED /мес)
+   - ✅ STRATEGY: Operators may commercially subscribe to Standard tier (2,990AED /month)
    - ❌ IMPLEMENTATION: Subscription billing automation, recurring payments, PSP integration are OUT of MVP
    - 📝 MVP Reality: Subscriptions handled offline (manual invoice → bank transfer → manual activation)
 
@@ -5213,7 +5213,7 @@ This document has been updated to clearly separate **monetization strategy** (bu
    - MVP focuses on strategy validation, not billing infrastructure
 
 4. **Payment Processing**
-   - ❌ Online payment gateways (ЮKassa, Stripe) — OUT of MVP
+   - ❌ Online payment gateways (Telr, Stripe) — OUT of MVP
    - ❌ Automated payouts to operators — OUT of MVP
    - ❌ Split-payment systems — OUT of MVP
    - ❌ Webhooks, cronjobs for billing — OUT of MVP

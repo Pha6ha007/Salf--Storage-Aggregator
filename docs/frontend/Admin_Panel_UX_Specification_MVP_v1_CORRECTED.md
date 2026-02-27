@@ -19,7 +19,7 @@
 
 ---
 
-## ⚠️ CRITICAL: Document Positioning
+## CRITICAL: Document Positioning
 
 **This document describes the UX/UI behavior of the Admin (Operator) Panel.**
 
@@ -71,11 +71,11 @@ The Administrative Panel is the management interface for platform administrators
 
 | Function | UI Components | Implementation Priority |
 |----------|---------------|------------------------|
-| **Content Moderation** | Warehouse approval screens, photo review interfaces | 🔴 Critical |
-| **Operator Management** | Verification workflows, approval/blocking interfaces | 🔴 Critical |
-| **Quality Control** | Complaint management screens, quality metrics dashboards | 🟡 High |
-| **Analytics** | Basic metrics dashboard (counts only, no revenue in MVP) | 🟢 Medium |
-| **Security** | User/operator blocking interfaces, audit log viewers | 🔴 Critical |
+| **Content Moderation** | Warehouse approval screens, photo review interfaces | Critical |
+| **Operator Management** | Verification workflows, approval/blocking interfaces | Critical |
+| **Quality Control** | Complaint management screens, quality metrics dashboards | High |
+| **Analytics** | Basic metrics dashboard (counts only, no revenue in MVP) | Medium |
+| **Security** | User/operator blocking interfaces, audit log viewers | Critical |
 
 **Note:** Functional requirements for these features are defined in Functional Specification. This document describes only the UI/UX implementation.
 
@@ -115,7 +115,7 @@ The Administrative Panel is the management interface for platform administrators
 
 ## 1.2. Administrator Roles & Access
 
-**⚠️ CANONICAL SOURCE:** Admin roles and permissions are defined in:
+**CANONICAL SOURCE:** Admin roles and permissions are defined in:
 - `Functional_Specification_MVP_v1_CORRECTED.md` — Section "User Roles"
 - `security_and_compliance_plan_mvp_v1.md` — Section "Authorization Model"
 
@@ -136,31 +136,31 @@ In MVP v1, there is a single unified `admin` role with full system access.
 
 ## 1.3. MVP v1 Scope
 
-**⚠️ CANONICAL SOURCE:** MVP scope is defined in `Functional_Specification_MVP_v1_CORRECTED.md`
+**CANONICAL SOURCE:** MVP scope is defined in `Functional_Specification_MVP_v1_CORRECTED.md`
 
-### ✅ Included in MVP v1 (UI/UX to Implement)
+### Included in MVP v1 (UI/UX to Implement)
 
-- ✅ Basic dashboard with count metrics
-- ✅ User management (view, block/unblock)
-- ✅ Operator verification workflow (approve/reject)
-- ✅ Warehouse moderation (approve/reject, basic photo review)
-- ✅ Booking list view (read-only)
-- ✅ Complaint management (view, respond, status workflow)
-- ✅ System logs viewer (search, filter)
-- ✅ Platform settings (basic configuration)
+- Basic dashboard with count metrics
+- User management (view, block/unblock)
+- Operator verification workflow (approve/reject)
+- Warehouse moderation (approve/reject, basic photo review)
+- Booking list view (read-only)
+- Complaint management (view, respond, status workflow)
+- System logs viewer (search, filter)
+- Platform settings (basic configuration)
 
-### ❌ NOT in MVP v1 (Do Not Implement)
+### NOT in MVP v1 (Do Not Implement)
 
-- ❌ AI-powered content moderation
-- ❌ Revenue/financial analytics
-- ❌ Advanced BI dashboards
-- ❌ Bulk operations (> 10 items)
-- ❌ CSV export functionality
-- ❌ Advanced analytics (cohort analysis, revenue trends)
-- ❌ Ticketing system
-- ❌ 2FA for admins
-- ❌ Audit trail visualization
-- ❌ Grafana/Prometheus integration
+- AI-powered content moderation
+- Revenue/financial analytics
+- Advanced BI dashboards
+- Bulk operations (> 10 items)
+- CSV export functionality
+- Advanced analytics (cohort analysis, revenue trends)
+- Ticketing system
+- 2FA for admins
+- Audit trail visualization
+- Grafana/Prometheus integration
 
 **Reference:** See Functional Specification for complete scope definition and future roadmap.
 
@@ -225,40 +225,40 @@ The admin panel is organized into 8 primary modules (UI perspective):
 ### Main Navigation (Sidebar)
 
 ```
-🏠 Dashboard
+Dashboard
    └─ Overview metrics
 
-👥 Users
+Users
    ├─ All Users
    └─ Blocked Users
 
-🏢 Operators
+Operators
    ├─ Pending Verification
    ├─ Approved Operators
    └─ Blocked Operators
 
-🏪 Warehouses
+Warehouses
    ├─ Pending Moderation
    ├─ Active Warehouses
    └─ Rejected Warehouses
 
-📋 Bookings
+Bookings
    └─ All Bookings (read-only)
 
-📞 Complaints
+Complaints
    ├─ New Complaints
    ├─ In Progress
    └─ Resolved
 
-📊 Analytics
+Analytics
    └─ Platform Metrics (basic counts only)
 
-⚙️ Settings
+Settings
    ├─ Categories
    ├─ Attributes
    └─ Global Settings
 
-📜 System Logs
+System Logs
    └─ Activity Logs
 ```
 
@@ -290,23 +290,23 @@ The admin panel is organized into 8 primary modules (UI perspective):
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐         │
-│  │  📊 Users    │ │  🏢 Operators│ │  🏪 Warehouses│         │
-│  │  1,234       │ │  156         │ │  342          │         │
-│  │  +12 today   │ │  +3 pending  │ │  +5 pending   │         │
+│  │  Users       │ │  Operators   │ │  Warehouses  │         │
+│  │  1,234       │ │  156         │ │  342         │         │
+│  │  +12 today   │ │  +3 pending  │ │  +5 pending  │         │
 │  └──────────────┘ └──────────────┘ └──────────────┘         │
 │                                                               │
 │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐         │
-│  │  📋 Bookings │ │  📞 Complaints│ │  ⚠️  Alerts   │         │
-│  │  2,891       │ │  23 open     │ │  2 critical   │         │
-│  │  +45 today   │ │  +5 new      │ │  View →       │         │
+│  │  Bookings    │ │  Complaints  │ │  Alerts      │         │
+│  │  2,891       │ │  23 open     │ │  2 critical  │         │
+│  │  +45 today   │ │  +5 new      │ │  View →      │         │
 │  └──────────────┘ └──────────────┘ └──────────────┘         │
 │                                                               │
 │  Recent Activity                                              │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ 🟢 New operator registered: "SkładOK"       2 min ago   ││
-│  │ 🟡 Warehouse needs review: "Склад Вяхино"  15 min ago  ││
-│  │ 🔴 Critical complaint: Complaint #5412     1 hour ago  ││
-│  │ 🟢 Warehouse approved: "Storage Pro"       2 hours ago ││
+│  │  New operator registered: "StoreIt Dubai"   2 min ago   ││
+│  │  Warehouse needs review: "Al Quoz Storage"  15 min ago  ││
+│  │  Critical complaint: Complaint #5412        1 hour ago  ││
+│  │  Warehouse approved: "Storage Pro Dubai"    2 hours ago ││
 │  └─────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -324,7 +324,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 - Open complaints count
 - Critical alerts count
 
-**⚠️ NOT in MVP:**
+**NOT in MVP:**
 - Revenue metrics
 - Conversion rates
 - Retention analysis
@@ -356,7 +356,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 
 # 4. Module 2: User Management
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 4.1. User List View
 
@@ -373,9 +373,9 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌──────┬──────────────┬─────────────┬─────────┬──────────┐│
 │  │ ID   │ Name         │ Email       │ Role    │ Status   ││
 │  ├──────┼──────────────┼─────────────┼─────────┼──────────┤│
-│  │ 1234 │ Ahmed Al-Rashid  │ ivan@...    │ user    │ ●Active  ││
-│  │ 1235 │ Мария Иванова│ maria@...   │ operator│ ●Active  ││
-│  │ 1236 │ Петр Сидоров │ petr@...    │ user    │ ●Blocked ││
+│  │ 1234 │ Ahmed Al-Ali │ ahmed@...   │ user    │ ● Active ││
+│  │ 1235 │ Sarah Khan   │ sarah@...   │ operator│ ● Active ││
+│  │ 1236 │ Omar Hassan  │ omar@...    │ user    │ ● Blocked││
 │  └──────┴──────────────┴─────────────┴─────────┴──────────┘│
 │                                                               │
 │  Showing 1-20 of 1,234   [<] 1 2 3 4 ... 62 [>]            │
@@ -399,15 +399,15 @@ The admin panel is organized into 8 primary modules (UI perspective):
 **UI Layout:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ User Details: Ahmed Al-Rashid                   [Block] [Delete]│
+│ User Details: Ahmed Al-Ali                  [Block] [Delete]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  Basic Information                                            │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ ID: 1234                                                 ││
-│  │ Name: Ahmed Al-Rashid                                        ││
-│  │ Email: ivan@example.com       ✓ Verified                ││
-│  │ Phone: +7 916 123-45-67                                 ││
+│  │ Name: Ahmed Al-Ali                                       ││
+│  │ Email: ahmed@example.com      ✓ Verified                ││
+│  │ Phone: +971 50 123 4567                                 ││
 │  │ Role: user                                               ││
 │  │ Status: Active                                           ││
 │  │ Registered: 2025-01-15 14:30                            ││
@@ -416,8 +416,8 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │                                                               │
 │  Bookings History                                             │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ #BK-1234  Склад Выхино  2025-02-01  3 months  Confirmed││
-│  │ #BK-1189  Storage Pro   2024-11-15  6 months  Completed││
+│  │ #BK-1234  Al Quoz Storage   2025-02-01  3 months  Confirmed││
+│  │ #BK-1189  Storage Pro Dubai 2024-11-15  6 months  Completed││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Activity Log                                                 │
@@ -439,7 +439,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 - **Unblock User:** `POST /api/v1/admin/users/{id}/unblock`
 - **Delete User (soft):** `DELETE /api/v1/admin/users/{id}`
 
-**⚠️ Business Logic:** Defined in Functional Specification
+**Business Logic:** Defined in Functional Specification
 - Cannot delete user with active bookings
 - Block requires confirmation dialog
 - Blocking user triggers notification (if notification system enabled)
@@ -448,7 +448,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 
 # 5. Module 3: Operator Management
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 5.1. Operator Verification Workflow
 
@@ -461,8 +461,8 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌──────┬──────────────┬─────────────────┬──────┬─────────┐│
 │  │ ID   │ Company      │ Owner           │ Date │ Actions ││
 │  ├──────┼──────────────┼─────────────────┼──────┼─────────┤│
-│  │ 5011 │ СкладОК      │ ivan@skladok.ru │ 2 hr │ Review  ││
-│  │ 5012 │ Storage Pro  │ info@spro.ru    │ 1 day│ Review  ││
+│  │ 5011 │ StoreIt Dubai│ info@storeit.ae │ 2 hr │ Review  ││
+│  │ 5012 │ Storage Pro  │ info@spro.ae    │ 1 day│ Review  ││
 │  └──────┴──────────────┴─────────────────┴──────┴─────────┘│
 │                                                               │
 └─────────────────────────────────────────────────────────────┘
@@ -478,31 +478,31 @@ The admin panel is organized into 8 primary modules (UI perspective):
 **UI Layout:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Operator Verification: СкладОК             [Approve] [Reject]│
+│ Operator Verification: StoreIt Dubai       [Approve] [Reject]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  Company Information                                          │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Company Name: СкладОК                                    ││
-│  │ Tax ID (INN): 7707123456                                ││
-│  │ Legal Address: Dubai, ул. Примерная, 10                ││
-│  │ Contact Email: info@skladok.ru                          ││
-│  │ Contact Phone: +7 495 123-45-67                         ││
+│  │ Company Name: StoreIt Dubai                              ││
+│  │ Trade License: 123456                                    ││
+│  │ Legal Address: Dubai, Al Quoz Industrial 4              ││
+│  │ Contact Email: info@storeit.ae                          ││
+│  │ Contact Phone: +971 4 123 4567                          ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Owner Information                                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Name: Иван Иванов                                        ││
-│  │ Email: ivan@skladok.ru       ✓ Verified                 ││
-│  │ Phone: +7 916 123-45-67                                 ││
+│  │ Name: Mohammed Al-Rashid                                 ││
+│  │ Email: mohammed@storeit.ae   ✓ Verified                 ││
+│  │ Phone: +971 50 123 4567                                 ││
 │  │ Registered: 2025-12-14 10:00                            ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Verification Documents                                       │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ 📄 Tax Registration Certificate.pdf    [View]           ││
-│  │ 📄 Business License.pdf                [View]           ││
-│  │ 📄 ID Card Scan.pdf                    [View]           ││
+│  │  Trade License Certificate.pdf         [View]           ││
+│  │  Business Registration.pdf             [View]           ││
+│  │  Emirates ID Scan.pdf                  [View]           ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Admin Notes                                                  │
@@ -520,7 +520,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 **Approval Action:**
 1. Admin reviews documents
 2. Clicks [Approve]
-3. Confirmation dialog: "Approve operator СкладОК?"
+3. Confirmation dialog: "Approve operator StoreIt Dubai?"
 4. API call: `POST /api/v1/admin/operators/{id}/approve`
 5. Status changes to `approved`
 6. Operator receives email notification (if enabled)
@@ -533,7 +533,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 5. Status changes to `rejected`
 6. Operator receives email with rejection reason
 
-**⚠️ Business Rules:** See Functional Specification
+**Business Rules:** See Functional Specification
 - Operators must be verified before warehouses are reviewed
 - Approved operators can immediately create warehouses
 
@@ -560,7 +560,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 
 # 6. Module 4: Warehouse Moderation
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 6.1. Pending Warehouses List
 
@@ -573,7 +573,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌──────┬─────────────────┬───────────────┬──────┬────────┐│
 │  │ ID   │ Name            │ Operator      │ Date │ Actions││
 │  ├──────┼─────────────────┼───────────────┼──────┼────────┤│
-│  │ W101 │ Склад Выхино    │ СкладОК       │ 3 hr │ Review ││
+│  │ W101 │ Al Quoz Storage │ StoreIt Dubai │ 3 hr │ Review ││
 │  │ W102 │ Storage Premium │ Storage Pro   │ 1 day│ Review ││
 │  └──────┴─────────────────┴───────────────┴──────┴────────┘│
 │                                                               │
@@ -590,14 +590,14 @@ The admin panel is organized into 8 primary modules (UI perspective):
 **UI Layout:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Warehouse Review: Склад Выхино             [Approve] [Reject]│
+│ Warehouse Review: Al Quoz Storage          [Approve] [Reject]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
 │  Basic Information                                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Name: Склад Выхино                                       ││
-│  │ Address: Dubai, ул. Ферганская, 10                     ││
-│  │ Operator: СкладОК (ID: 5011)         ✓ Verified         ││
+│  │ Name: Al Quoz Storage                                    ││
+│  │ Address: Dubai, Al Quoz Industrial Area 4, Street 10    ││
+│  │ Operator: StoreIt Dubai (ID: 5011)   ✓ Verified         ││
 │  │ Description: [Full description text]                     ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
@@ -610,14 +610,14 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  Location                                                     │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ [Map showing warehouse location marker]                 ││
-│  │ Coordinates: 55.7558, 37.6173                           ││
+│  │ Coordinates: 25.1204, 55.2084                           ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Boxes                                                        │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ S (2m²) - 2,500 AED /month - 5 boxes available            ││
-│  │ M (5m²) - 4,500 AED /month - 10 boxes available           ││
-│  │ L (10m²) - 8,000 AED /month - 3 boxes available           ││
+│  │ S (2m²) - 250 AED/month - 5 boxes available             ││
+│  │ M (5m²) - 450 AED/month - 10 boxes available            ││
+│  │ L (10m²) - 800 AED/month - 3 boxes available            ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Admin Notes (Internal)                                       │
@@ -638,12 +638,12 @@ The admin panel is organized into 8 primary modules (UI perspective):
   - Quality (not blurry, well-lit)
   - Relevance (actual warehouse, not stock photos)
   - Compliance (no prohibited content)
-- ❌ No AI moderation in MVP v1
+- No AI moderation in MVP v1
 
 **Approval:**
 1. Admin reviews all info and photos
 2. Clicks [Approve]
-3. Confirmation: "Approve warehouse Склад Выхино?"
+3. Confirmation: "Approve warehouse Al Quoz Storage?"
 4. API call: `POST /api/v1/admin/warehouses/{id}/approve`
 5. Warehouse status → `active` (visible to public)
 
@@ -656,7 +656,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 6. Warehouse status → `rejected`
 7. Operator notified with reason
 
-**⚠️ Canonical Statuses:**
+**Canonical Statuses:**
 - See `full_database_specification_mvp_v1_CANONICAL.md` for warehouse status values
 - Statuses: `draft`, `pending`, `active`, `rejected`, `hidden`
 
@@ -664,7 +664,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 
 # 7. Module 5: Booking Management (Read-Only)
 
-**⚠️ FUNCTIONAL REQUIREMENT:** Admins have read-only access to bookings in MVP v1
+**FUNCTIONAL REQUIREMENT:** Admins have read-only access to bookings in MVP v1
 
 ## 7.1. Booking List View
 
@@ -681,9 +681,9 @@ The admin panel is organized into 8 primary modules (UI perspective):
 │  ┌─────────┬────────────┬──────────────┬─────────┬────────┐│
 │  │ ID      │ User       │ Warehouse    │ Status  │ Date   ││
 │  ├─────────┼────────────┼──────────────┼─────────┼────────┤│
-│  │ BK-1234 │ Иван П.    │ Склад Выхино │ Confirm │ 12-14  ││
-│  │ BK-1233 │ Мария И.   │ Storage Pro  │ Pending │ 12-13  ││
-│  │ BK-1232 │ Петр С.    │ Склад БЦ     │ Cancelled│ 12-12 ││
+│  │ BK-1234 │ Ahmed A.   │ Al Quoz Stor │ Confirm │ 12-14  ││
+│  │ BK-1233 │ Sarah K.   │ Storage Pro  │ Pending │ 12-13  ││
+│  │ BK-1232 │ Omar H.    │ Dubai Store  │ Cancelled│ 12-12 ││
 │  └─────────┴────────────┴──────────────┴─────────┴────────┘│
 │                                                               │
 │  Showing 1-20 of 2,891   [<] 1 2 3 ... 145 [>]             │
@@ -694,7 +694,7 @@ The admin panel is organized into 8 primary modules (UI perspective):
 - `GET /api/v1/admin/bookings` (see API Blueprint)
 - Supports pagination, search, status filter
 
-**⚠️ Canonical Booking Statuses:**
+**Canonical Booking Statuses:**
 Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - `pending` — Awaiting operator confirmation
 - `confirmed` — Operator approved
@@ -706,8 +706,8 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - Click row → View booking details (read-only)
 - Filters by status
 - Search by booking number, user name, warehouse name
-- ❌ No admin actions on bookings in MVP v1
-- ❌ No bulk operations
+- No admin actions on bookings in MVP v1
+- No bulk operations
 
 ---
 
@@ -728,16 +728,16 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │                                                               │
 │  Customer                                                     │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Name: Ahmed Al-Rashid                                        ││
-│  │ Email: ivan@example.com                                  ││
-│  │ Phone: +7 916 123-45-67                                 ││
+│  │ Name: Ahmed Al-Ali                                       ││
+│  │ Email: ahmed@example.com                                 ││
+│  │ Phone: +971 50 123 4567                                 ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Warehouse & Box                                              │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Warehouse: Склад Выхино (ID: W101)                      ││
+│  │ Warehouse: Al Quoz Storage (ID: W101)                   ││
 │  │ Box: M (5m²)                                             ││
-│  │ Price: 4,500 AED /month                                    ││
+│  │ Price: 450 AED/month                                     ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Booking Details                                              │
@@ -745,7 +745,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │  │ Start Date: 2025-02-01                                   ││
 │  │ Duration: 3 months                                       ││
 │  │ End Date: 2025-05-01                                    ││
-│  │ Total Price: 13,500 AED                                    ││
+│  │ Total Price: 1,350 AED                                   ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Timeline                                                     │
@@ -760,15 +760,15 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - `GET /api/v1/admin/bookings/{id}` (see API Blueprint)
 
 **Admin Actions:**
-- ❌ Cannot modify booking status in MVP v1
-- ❌ Cannot cancel bookings (only operators/users can cancel)
+- Cannot modify booking status in MVP v1
+- Cannot cancel bookings (only operators/users can cancel)
 - View-only access for support and monitoring purposes
 
 ---
 
 # 8. Module 6: Complaints & Support
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 8.1. Complaints List
 
@@ -783,9 +783,9 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │  ┌──────┬─────────────┬──────────────┬──────────┬────────┐│
 │  │ ID   │ From        │ Subject      │ Status   │ Date   ││
 │  ├──────┼─────────────┼──────────────┼──────────┼────────┤│
-│  │ C5412│ Иван П.     │ Склад dirty  │ 🔴 New   │ 1 hr   ││
-│  │ C5411│ Мария И.    │ No access    │ 🟡 InProg│ 2 days ││
-│  │ C5410│ Петр С.     │ Refund issue │ 🟢 Resolv│ 5 days ││
+│  │ C5412│ Ahmed A.    │ Warehouse dirty│ New    │ 1 hr   ││
+│  │ C5411│ Sarah K.    │ No access    │ InProg   │ 2 days ││
+│  │ C5410│ Omar H.     │ Refund issue │ Resolved │ 5 days ││
 │  └──────┴─────────────┴──────────────┴──────────┴────────┘│
 │                                                               │
 └─────────────────────────────────────────────────────────────┘
@@ -802,22 +802,22 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 **UI Layout:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Complaint #C5412                     [Mark In Progress] [Resolve]│
+│ Complaint #C5412                   [Mark In Progress] [Resolve]│
 ├─────────────────────────────────────────────────────────────┤
 │                                                               │
-│  Status: 🔴 New                                               │
+│  Status: New                                                  │
 │                                                               │
-│  From: Ahmed Al-Rashid (ivan@example.com, +7 916 123-45-67)     │
+│  From: Ahmed Al-Ali (ahmed@example.com, +971 50 123 4567)   │
 │  Created: 2025-12-15 10:30                                   │
-│  Warehouse: Склад Выхино (W101)                              │
+│  Warehouse: Al Quoz Storage (W101)                           │
 │                                                               │
-│  Subject: Склад грязный                                       │
+│  Subject: Warehouse is dirty                                  │
 │                                                               │
 │  Description:                                                 │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │ Здравствуйте! Я забронировал бокс M на вашем складе,    ││
-│  │ но при осмотре обнаружил, что он очень грязный.          ││
-│  │ Требую уборку или возврат денег.                         ││
+│  │ Hello! I booked a medium box at your warehouse,         ││
+│  │ but when I inspected it, I found it was very dirty.     ││
+│  │ I request cleaning or a refund.                         ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Admin Response:                                              │
@@ -849,7 +849,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 7. User receives email with response
 8. When issue resolved, admin clicks [Resolve] → status → `resolved`
 
-**⚠️ Status Values:**
+**Status Values:**
 Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - `new` — Just submitted
 - `in_progress` — Admin investigating
@@ -859,7 +859,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 
 # 9. Module 7: System Logs
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 9.1. Log Viewer
 
@@ -899,19 +899,19 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - System errors (API errors, payment failures)
 - Security events (failed logins, suspicious activity)
 
-**⚠️ Log Retention:**
+**Log Retention:**
 - MVP v1: 90 days retention
 - See `Logging_Strategy_&_Log_Taxonomy_MVP_v1.md` for detailed log specifications
 
 **Export:**
-- ❌ CSV export NOT in MVP v1 (planned for v1.5)
+- CSV export NOT in MVP v1 (planned for v1.5)
 - Admins can manually copy-paste if needed
 
 ---
 
 # 10. Module 8: Platform Settings
 
-**⚠️ FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
+**FUNCTIONAL REQUIREMENTS:** Defined in Functional Specification
 
 ## 10.1. Category Management
 
@@ -977,8 +977,8 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │  General Settings                                             │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ Platform Name: [Self-Storage Aggregator]                ││
-│  │ Support Email: [support@storagecompare.ae]                 ││
-│  │ Support Phone: [+7 495 123-45-67]                       ││
+│  │ Support Email: [support@storagecompare.ae]              ││
+│  │ Support Phone: [+971 4 123 4567]                        ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 │  Booking Settings                                             │
@@ -991,7 +991,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 │  Moderation Settings                                          │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │ ☑ Require photo moderation                              ││
-│  │ ☑ Auto-approve operators (❌ NOT recommended)           ││
+│  │ ☐ Auto-approve operators (NOT recommended)              ││
 │  └─────────────────────────────────────────────────────────┘│
 │                                                               │
 └─────────────────────────────────────────────────────────────┘
@@ -1011,7 +1011,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 
 # 11. Analytics & Reporting (MVP Scope)
 
-**⚠️ MVP LIMITATION:** Only basic count metrics in MVP v1
+**MVP LIMITATION:** Only basic count metrics in MVP v1
 
 ## 11.1. Platform Metrics Dashboard
 
@@ -1054,7 +1054,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 - Moderation queue sizes
 - Basic growth percentage
 
-**❌ NOT in MVP v1:**
+**NOT in MVP v1:**
 - Revenue analytics
 - Conversion funnels
 - Cohort analysis
@@ -1072,7 +1072,7 @@ Reference: `full_database_specification_mvp_v1_CANONICAL.md`
 
 # 12. API Reference Summary
 
-**⚠️ IMPORTANT:** This section provides UI-relevant API endpoint references only. Complete API specifications are in `api_design_blueprint_mvp_v1_CANONICAL.md`.
+**IMPORTANT:** This section provides UI-relevant API endpoint references only. Complete API specifications are in `api_design_blueprint_mvp_v1_CANONICAL.md`.
 
 ## 12.1. Admin Endpoints Overview
 
@@ -1142,13 +1142,13 @@ GET /api/v1/admin/logs                         # System logs
 ```
 
 **For complete request/response schemas, validation rules, and error codes:**
-→ See `api_design_blueprint_mvp_v1_CANONICAL.md`
+See `api_design_blueprint_mvp_v1_CANONICAL.md`
 
 ---
 
 # 13. Security Considerations (UI/UX)
 
-**⚠️ CANONICAL SOURCE:** Security requirements are fully defined in `security_and_compliance_plan_mvp_v1.md`
+**CANONICAL SOURCE:** Security requirements are fully defined in `security_and_compliance_plan_mvp_v1.md`
 
 ## 13.1. Authentication
 
@@ -1192,11 +1192,11 @@ GET /api/v1/admin/logs                         # System logs
 **Confirmation Dialog Example:**
 ```
 ┌─────────────────────────────────────────┐
-│ ⚠️  Confirm Action                      │
+│  Confirm Action                         │
 ├─────────────────────────────────────────┤
 │                                         │
 │ Are you sure you want to block         │
-│ operator "СкладОК"?                     │
+│ operator "StoreIt Dubai"?               │
 │                                         │
 │ This action will:                       │
 │ • Prevent operator login               │
@@ -1256,7 +1256,7 @@ GET /api/v1/admin/logs                         # System logs
 **Breakpoints:**
 - Desktop: 1280px+ (primary target for admin panel)
 - Tablet: 768px-1279px (functional, but not priority)
-- Mobile: <768px (❌ Not optimized for mobile in MVP)
+- Mobile: <768px (Not optimized for mobile in MVP)
 
 **Recommendation:** Admin panel optimized for desktop use; mobile support can be post-MVP.
 
@@ -1293,7 +1293,7 @@ GET /api/v1/admin/logs                         # System logs
 │  ┌─────┬─────────────────┬───────────────┬──────┬─────────┐│
 │  │ [ ] │ Name            │ Operator      │ Date │ Actions ││
 │  ├─────┼─────────────────┼───────────────┼──────┼─────────┤│
-│  │ [☑] │ Склад Выхино    │ СкладОК       │ 3 hr │ Review  ││
+│  │ [☑] │ Al Quoz Storage │ StoreIt Dubai │ 3 hr │ Review  ││
 │  │ [☑] │ Storage Premium │ Storage Pro   │ 1 day│ Review  ││
 │  │ [ ] │ ...             │ ...           │ ...  │ ...     ││
 │  └─────┴─────────────────┴───────────────┴──────┴─────────┘│
@@ -1308,7 +1308,7 @@ GET /api/v1/admin/logs                         # System logs
 - Bulk approve/reject buttons enabled only when items selected
 - Confirmation dialog shows list of items to be affected
 
-**❌ NOT in MVP:**
+**NOT in MVP:**
 - Bulk operations > 10 items
 - CSV import for bulk actions
 - Advanced filtering before bulk action
@@ -1324,10 +1324,10 @@ GET /api/v1/admin/logs                         # System logs
 - Info: Blue toast, auto-dismiss after 3s
 
 **Examples:**
-- ✅ "Warehouse approved successfully"
-- ❌ "Failed to block user. Please try again."
-- ⚠️ "This action cannot be undone"
-- ℹ️ "10 items selected"
+- "Warehouse approved successfully"
+- "Failed to block user. Please try again."
+- "This action cannot be undone"
+- "10 items selected"
 
 **Implementation:**
 - Use library like `react-toastify` or `notistack` (React)
@@ -1337,7 +1337,7 @@ GET /api/v1/admin/logs                         # System logs
 
 # 15. Future Enhancements (Post-MVP)
 
-**⚠️ OUT OF MVP v1 SCOPE**
+**OUT OF MVP v1 SCOPE**
 
 This section lists features **NOT** to be implemented in MVP v1 but considered for future versions.
 
@@ -1502,12 +1502,12 @@ export const userService = {
     const response = await api.get('/admin/users', { params: filters });
     return response.data;
   },
-  
+
   async blockUser(userId: string) {
     const response = await api.post(`/admin/users/${userId}/block`);
     return response.data;
   },
-  
+
   // ... other user-related API calls
 };
 
@@ -1516,10 +1516,10 @@ import { useUsers } from '@/hooks/useUsers';
 
 export function UserListPage() {
   const { data, isLoading, error } = useUsers({ status: 'active' });
-  
+
   if (isLoading) return <Skeleton />;
   if (error) return <ErrorMessage error={error} />;
-  
+
   return (
     <div>
       <h1>Users</h1>
@@ -1560,7 +1560,7 @@ api.interceptors.response.use(
     if (error.response) {
       // Server responded with error
       const { status, data } = error.response;
-      
+
       switch (status) {
         case 401:
           toast.error('Session expired. Please login again.');
@@ -1587,7 +1587,7 @@ api.interceptors.response.use(
       // Network error
       toast.error('Network error. Please check your connection.');
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -1622,34 +1622,34 @@ export const useAuth = create<AuthState>((set) => ({
   user: null,
   token: localStorage.getItem('token'),
   isAuthenticated: !!localStorage.getItem('token'),
-  
+
   login: async (email, password) => {
     const response = await authService.login(email, password);
     const { user, tokens } = response.data;
-    
+
     if (user.role !== 'admin') {
       throw new Error('Access denied. Admin role required.');
     }
-    
+
     localStorage.setItem('token', tokens.access_token);
     localStorage.setItem('refresh_token', tokens.refresh_token);
-    
+
     set({ user, token: tokens.access_token, isAuthenticated: true });
   },
-  
+
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     set({ user: null, token: null, isAuthenticated: false });
   },
-  
+
   refreshToken: async () => {
     const refreshToken = localStorage.getItem('refresh_token');
     if (!refreshToken) throw new Error('No refresh token');
-    
+
     const response = await authService.refreshToken(refreshToken);
     const { access_token } = response.data;
-    
+
     localStorage.setItem('token', access_token);
     set({ token: access_token });
   },
@@ -1665,15 +1665,15 @@ import { useAuth } from '@/hooks/useAuth';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user } = useAuth();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   if (user?.role !== 'admin') {
     return <Navigate to="/" replace />;
   }
-  
+
   return <>{children}</>;
 }
 
@@ -1715,20 +1715,20 @@ describe('userService', () => {
     it('should call the correct API endpoint', async () => {
       const userId = '123';
       const mockResponse = { data: { success: true } };
-      
+
       (api.post as jest.Mock).mockResolvedValue(mockResponse);
-      
+
       await userService.blockUser(userId);
-      
+
       expect(api.post).toHaveBeenCalledWith(`/admin/users/${userId}/block`);
     });
-    
+
     it('should handle errors gracefully', async () => {
       const userId = '123';
       const mockError = new Error('Network error');
-      
+
       (api.post as jest.Mock).mockRejectedValue(mockError);
-      
+
       await expect(userService.blockUser(userId)).rejects.toThrow('Network error');
     });
   });
@@ -1756,18 +1756,18 @@ test('admin can approve pending operator', async ({ page }) => {
   await page.fill('input[name="email"]', 'admin@example.com');
   await page.fill('input[name="password"]', 'admin123');
   await page.click('button[type="submit"]');
-  
+
   // Navigate to pending operators
   await page.click('text=Operators');
   await page.click('text=Pending Verification');
-  
+
   // Approve first operator
   await page.click('button:has-text("Review"):first');
   await expect(page.locator('h1')).toContainText('Operator Verification');
-  
+
   await page.click('button:has-text("Approve")');
   await page.click('button:has-text("Confirm")'); // Confirmation dialog
-  
+
   // Verify success
   await expect(page.locator('.toast-success')).toContainText('Operator approved');
 });
@@ -1778,12 +1778,12 @@ test('admin can approve pending operator', async ({ page }) => {
 ## 17.3. Accessibility Testing
 
 **Basic Accessibility Checklist:**
-- ✅ All interactive elements keyboard accessible (Tab, Enter, Esc)
-- ✅ Proper ARIA labels on icons and buttons
-- ✅ Form inputs have associated labels
-- ✅ Error messages announced to screen readers
-- ✅ Color contrast meets WCAG AA standards
-- ✅ Focus indicators visible
+- All interactive elements keyboard accessible (Tab, Enter, Esc)
+- Proper ARIA labels on icons and buttons
+- Form inputs have associated labels
+- Error messages announced to screen readers
+- Color contrast meets WCAG AA standards
+- Focus indicators visible
 
 **Tools:**
 - axe DevTools browser extension
@@ -1904,8 +1904,8 @@ npm run build
 - **Read-Only:** User can view but not modify
 - **Toast:** Brief notification message
 
-**⚠️ For complete canonical glossary:**
-→ See `Unified_Glossary_and_Data_Dictionary_MVP_v1.md`
+**For complete canonical glossary:**
+See `Unified_Glossary_and_Data_Dictionary_MVP_v1.md`
 
 ---
 
@@ -1953,7 +1953,7 @@ npm run build
 - System architecture (defined in Technical Architecture)
 
 **For canonical requirement changes:**
-→ Update the appropriate canonical document first, then reflect UI changes here
+Update the appropriate canonical document first, then reflect UI changes here
 
 ---
 
@@ -1963,12 +1963,12 @@ npm run build
 
 ## Quick Reference Card
 
-**Document Purpose:** UI/UX implementation guide for Admin Panel  
-**Audience:** Frontend developers, designers  
-**Canonical Sources:** Functional Spec, API Blueprint, DB Spec, Architecture  
-**Scope:** MVP v1 (basic admin features)  
-**Tech Stack:** React + TypeScript + Material-UI/Ant Design  
-**Key Limitation:** No revenue analytics, no bulk > 10, no advanced features in MVP  
+**Document Purpose:** UI/UX implementation guide for Admin Panel
+**Audience:** Frontend developers, designers
+**Canonical Sources:** Functional Spec, API Blueprint, DB Spec, Architecture
+**Scope:** MVP v1 (basic admin features)
+**Tech Stack:** React + TypeScript + Material-UI/Ant Design
+**Key Limitation:** No revenue analytics, no bulk > 10, no advanced features in MVP
 
-**Most Important Rule:**  
+**Most Important Rule:**
 When in doubt about business logic, API behavior, or data structure → **CHECK THE CANONICAL DOCUMENTS FIRST** before implementing.
