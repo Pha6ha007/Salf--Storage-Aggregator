@@ -8,6 +8,7 @@ import { GoogleMapsModule } from './shared/google-maps/google-maps.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
+import { BoxesModule } from './modules/boxes/boxes.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -34,6 +35,7 @@ import googleMapsConfig from './config/google-maps.config';
     AuthModule,
     UsersModule,
     WarehousesModule,
+    BoxesModule,
   ],
   controllers: [AppController],
   providers: [
