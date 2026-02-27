@@ -12,6 +12,7 @@ import {
   ApiResponse,
   ApiCookieAuth,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AiService } from './ai.service';
 import { BoxRecommendationRequestDto } from './dto/box-recommendation-request.dto';
 import { BoxRecommendationResponseDto } from './dto/box-recommendation-response.dto';
@@ -31,6 +32,7 @@ export class AiController {
 
   @Post('box-recommendation')
   @Public() // Allow anonymous access
+  @Throttle({ default: { limit: 10, ttl: 60000 } }) // 10 requests per minute (AI)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get AI-powered box size recommendation',

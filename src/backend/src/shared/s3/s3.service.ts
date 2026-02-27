@@ -5,6 +5,7 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  HeadBucketCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { randomBytes } from 'crypto';
@@ -161,6 +162,23 @@ export class S3Service {
       // Fallback: try to extract everything after bucket name
       const parts = url.split(`${this.bucketName}.s3.${this.region}.amazonaws.com/`);
       return parts.length > 1 ? parts[1] : url;
+    }
+  }
+
+  /**
+   * Check S3 connection by checking bucket access
+   * Used for health checks
+   */
+  async checkConnection(): Promise<void> {
+    try {
+      const command = new HeadBucketCommand({
+        Bucket: this.bucketName,
+      });
+      await this.s3Client.send(command);
+      this.logger.debug(`S3 connection check passed for bucket: ${this.bucketName}`);
+    } catch (error) {
+      this.logger.error(`S3 connection check failed: ${error.message}`, error.stack);
+      throw new Error(`S3 connection failed: ${error.message}`);
     }
   }
 }

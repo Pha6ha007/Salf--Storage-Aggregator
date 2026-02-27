@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { WarehousesService } from './warehouses.service';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
@@ -40,6 +41,7 @@ export class WarehousesController {
 
   // Public endpoints
   @Public()
+  @Throttle({ default: { limit: 30, ttl: 60000 } }) // 30 requests per minute (search)
   @Get()
   @ApiOperation({ summary: 'Get all warehouses (public)' })
   @ApiResponse({

@@ -28,15 +28,35 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration
+  // CORS configuration for storagecompare.ae
+  const allowedOrigins = [
+    'https://storagecompare.ae',
+    'https://www.storagecompare.ae',
+    'https://api.storagecompare.ae',
+    configService.get<string>('app.appUrl') || 'http://localhost:3000',
+  ];
+
   app.enableCors({
-    origin: configService.get<string>('app.appUrl') || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   });
 
   // Swagger API documentation
   const config = new DocumentBuilder()
-    .setTitle('Self-Storage Aggregator API')
+    .setTitle('StorageCompare API')
     .setDescription('API for storagecompare.ae platform - MVP v1')
     .setVersion('1.0')
     .addTag('auth', 'Authentication endpoints')
@@ -45,8 +65,18 @@ async function bootstrap() {
     .addTag('boxes', 'Storage box management')
     .addTag('bookings', 'Booking management')
     .addTag('reviews', 'Review management')
+    .addTag('favorites', 'Favorites management')
+    .addTag('crm', 'CRM management')
     .addTag('ai', 'AI-powered features')
-    .addCookieAuth('auth_token')
+    .addTag('media', 'Media management')
+    .addTag('notifications', 'Notifications')
+    .addTag('Health', 'Health checks')
+    .addCookieAuth('auth_token', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'auth_token',
+      description: 'JWT access token stored in httpOnly cookie',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
