@@ -12,6 +12,7 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module';
 import { BoxesModule } from './modules/boxes/boxes.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -43,6 +44,7 @@ import googleMapsConfig from './config/google-maps.config';
     BoxesModule,
     BookingsModule,
     ReviewsModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [
