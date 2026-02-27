@@ -69,7 +69,7 @@ export class BookingsService {
     }
 
     // Snapshot pricing (immutable)
-    const basePricePerMonth = box.priceMonthly;
+    const basePricePerMonth = box.priceMonthly.toNumber();
     const discountAmount = basePricePerMonth * (discountPercentage / 100);
     const monthlyPrice = basePricePerMonth - discountAmount;
     const priceTotal = monthlyPrice * durationMonths;
@@ -96,8 +96,6 @@ export class BookingsService {
           monthlyPrice,
           priceTotal,
           notes: createBookingDto.notes,
-          contactPhone: createBookingDto.contactPhone,
-          contactEmail: createBookingDto.contactEmail,
         },
       });
 
@@ -161,7 +159,7 @@ export class BookingsService {
             firstName: true,
             lastName: true,
             email: true,
-            phoneNumber: true,
+            phone: true,
           },
         },
         warehouse: {
@@ -199,7 +197,7 @@ export class BookingsService {
             firstName: true,
             lastName: true,
             email: true,
-            phoneNumber: true,
+            phone: true,
           },
         },
         warehouse: {
@@ -443,7 +441,6 @@ export class BookingsService {
           where: { id: booking.id },
           data: {
             status: BookingStatus.expired,
-            expiredAt: new Date(),
           },
         });
 

@@ -116,11 +116,11 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: this.configService.get<string>('jwt.accessExpiry'),
+      expiresIn: (this.configService.get<string>('jwt.accessExpiry') || '15m') as any,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: this.configService.get<string>('jwt.refreshExpiry'),
+      expiresIn: (this.configService.get<string>('jwt.refreshExpiry') || '7d') as any,
     });
 
     // Store refresh token in database

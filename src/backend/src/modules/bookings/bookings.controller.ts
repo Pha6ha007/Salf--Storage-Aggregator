@@ -101,7 +101,7 @@ export class BookingsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() cancelBookingDto: CancelBookingDto,
   ) {
-    return this.bookingsService.cancel(id, cancelBookingDto, user.id, undefined, user.role);
+    return this.bookingsService.cancel(id, cancelBookingDto, user.id, undefined, user.role as UserRole);
   }
 }
 
@@ -244,6 +244,6 @@ export class OperatorBookingsController {
       throw new Error('Operator profile not found');
     }
 
-    return this.bookingsService.cancel(id, cancelBookingDto, undefined, operator.id, user.role);
+    return this.bookingsService.cancel(id, cancelBookingDto, undefined, operator.id, user.role as UserRole);
   }
 }

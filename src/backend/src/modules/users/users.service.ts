@@ -30,6 +30,7 @@ export class UsersService {
         lastLoginAt: true,
         createdAt: true,
         updatedAt: true,
+        deletedAt: true,
       },
     });
 
@@ -37,7 +38,8 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    const { deletedAt, ...userProfile } = user;
+    return userProfile;
   }
 
   async updateProfile(userId: string, updateUserDto: UpdateUserDto) {
