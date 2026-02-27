@@ -2372,7 +2372,7 @@ function MobileMenu() {
     <Sheet open={isMobileMenuOpen} onOpenChange={closeMobileMenu}>
       <SheetContent side="left">
         <nav>
-          {/* Menu */}
+          {/* Меню */}
         </nav>
       </SheetContent>
     </Sheet>
@@ -2436,27 +2436,27 @@ function DashboardSidebar() {
       <Button variant="ghost" onClick={toggleSidebar}>
         {isSidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
       </Button>
-      {/* Menu */}
+      {/* Меню */}
     </aside>
   );
 }
 ```
 
 
-### 5.2. Server State (React Query)
+### 5.2. Серверное состояние (React Query)
 
-React Query — **single source of truth** for all data coming from server.
+React Query — **единственный источник истины** для всех данных, приходящих с сервера.
 
-**Key Principles:**
+**Ключевые принципы:**
 
-1. **Do not duplicate server data in Zustand** — this leads to desynchronization
-2. **Use correct query keys** — for precise invalidation
-3. **Configure stale/cache time** — depending on data type
-4. **Use optimistic updates** — for better UX
+1. **Не дублировать серверные данные в Zustand** — это приводит к рассинхронизации
+2. **Использовать правильные query keys** — для точной инвалидации
+3. **Настраивать stale/cache time** — в зависимости от типа данных
+4. **Использовать оптимистичные обновления** — для лучшего UX
 
-#### 5.2.1. Data Caching
+#### 5.2.1. Кэширование данных
 
-**Caching Configuration by Data Type:**
+**Конфигурация кэширования по типам данных:**
 
 ```typescript
 // lib/react-query.ts
@@ -2465,8 +2465,8 @@ import { QueryClient } from '@tanstack/react-query';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes by default
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      staleTime: 5 * 60 * 1000, // 5 минут по умолчанию
+      gcTime: 10 * 60 * 1000, // 10 минут (ранее cacheTime)
       retry: 3,
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       refetchOnWindowFocus: false,
@@ -2479,69 +2479,69 @@ export const queryClient = new QueryClient({
 });
 ```
 
-**Different strategies for different data types:**
+**Различные стратегии для разных типов данных:**
 
 ```typescript
-// Frequently changing data (box availability, current prices)
+// Часто меняющиеся данные (доступность боксов, актуальные цены)
 export function useBoxAvailability(boxId: number) {
   return useQuery({
     queryKey: ['boxes', boxId, 'availability'],
     queryFn: () => boxesApi.getAvailability(boxId),
-    staleTime: 1 * 60 * 1000, // 1 minute - freshness needed
-    gcTime: 5 * 60 * 1000, // 5 minutes in cache
-    refetchInterval: 2 * 60 * 1000, // Auto-refetch every 2 minutes
-    refetchIntervalInBackground: false, // Do not refresh in background
+    staleTime: 1 * 60 * 1000, // 1 минута - нужна актуальность
+    gcTime: 5 * 60 * 1000, // 5 минут в кэше
+    refetchInterval: 2 * 60 * 1000, // Auto-refetch каждые 2 минуты
+    refetchIntervalInBackground: false, // Не обновлять в фоне
   });
 }
 
-// Moderately changing data (warehouse list in search)
+// Средне-меняющиеся данные (список складов в поиске)
 export function useWarehouses(filters: SearchFilters) {
   return useQuery({
     queryKey: ['warehouses', 'search', filters],
     queryFn: () => warehousesApi.search(filters),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 5 * 60 * 1000, // 5 минут
+    gcTime: 10 * 60 * 1000, // 10 минут
     enabled: true,
   });
 }
 
-// Rarely changing data (warehouse details, reviews)
+// Редко меняющиеся данные (детали склада, отзывы)
 export function useWarehouse(id: number) {
   return useQuery({
     queryKey: ['warehouses', id],
     queryFn: () => warehousesApi.getById(id),
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 60 * 60 * 1000, // 1 hour
+    staleTime: 30 * 60 * 1000, // 30 минут
+    gcTime: 60 * 60 * 1000, // 1 час
     enabled: !!id,
   });
 }
 
-// Static data (attribute list, directories)
+// Статические данные (список атрибутов, справочники)
 export function useWarehouseAttributes() {
   return useQuery({
     queryKey: ['attributes', 'warehouses'],
     queryFn: () => attributesApi.getAll(),
-    staleTime: Infinity, // Never stale
-    gcTime: Infinity, // Always keep in memory
+    staleTime: Infinity, // Никогда не устаревают
+    gcTime: Infinity, // Хранить всегда в памяти
   });
 }
 
-// User data (bookings, profile)
+// Данные пользователя (бронирования, профиль)
 export function useUserBookings() {
   const { user } = useAuthStore();
   
   return useQuery({
     queryKey: ['bookings', 'user', user?.id],
     queryFn: () => bookingsApi.getUserBookings(),
-    staleTime: 1 * 60 * 1000, // 1 minute - freshness important
+    staleTime: 1 * 60 * 1000, // 1 минута - важна актуальность
     gcTime: 5 * 60 * 1000,
-    enabled: !!user, // Only for authenticated users
-    refetchOnWindowFocus: true, // Refresh on tab focus
+    enabled: !!user, // Только для авторизованных
+    refetchOnWindowFocus: true, // Обновлять при возврате на вкладку
   });
 }
 ```
 
-**Query Keys Structure:**
+**Query Keys структура:**
 
 ```typescript
 // lib/query-keys.ts
@@ -2586,9 +2586,9 @@ export const queryKeys = {
 ```
 
 
-#### 5.2.2. Invalidation Strategies
+#### 5.2.2. Invalidation стратегии
 
-**Invalidation after mutations:**
+**Инвалидация после мутаций:**
 
 ```typescript
 // hooks/useCreateBooking.ts
@@ -2605,43 +2605,43 @@ export function useCreateBooking() {
     mutationFn: bookingsApi.create,
     
     onSuccess: (newBooking) => {
-      // 1. Invalidate user bookings list
+      // 1. Инвалидируем список бронирований пользователя
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookings.user(),
       });
       
-      // 2. Invalidate box availability
+      // 2. Инвалидируем доступность бокса
       queryClient.invalidateQueries({
         queryKey: queryKeys.boxes.availability(newBooking.box_id),
       });
       
-      // 3. Invalidate box details
+      // 3. Инвалидируем детали бокса
       queryClient.invalidateQueries({
         queryKey: queryKeys.boxes.detail(newBooking.box_id),
       });
       
-      // 4. Invalidate warehouse (update box summary)
+      // 4. Инвалидируем склад (обновить summary боксов)
       queryClient.invalidateQueries({
         queryKey: queryKeys.warehouses.detail(newBooking.warehouse_id),
       });
       
-      // 5. Show notification
-      toast.success('Booking created!');
+      // 5. Показываем уведомление
+      toast.success('Бронирование создано!');
       
-      // 6. Redirect to confirmation page
+      // 6. Редирект на страницу подтверждения
       router.push(`/booking/${newBooking.id}/success`);
     },
     
     onError: (error: any) => {
       const errorMessage = error.response?.data?.error?.message || 
-        'Booking creation error';
+        'Ошибка при создании бронирования';
       toast.error(errorMessage);
     },
   });
 }
 ```
 
-**Partial cache update (without invalidation):**
+**Частичное обновление кэша (без инвалидации):**
 
 ```typescript
 // hooks/useToggleFavorite.ts
@@ -2655,17 +2655,17 @@ export function useToggleFavorite() {
         : favoritesApi.add(warehouseId),
     
     onMutate: async ({ warehouseId, isFavorite }) => {
-      // Cancel outgoing requests for this warehouse
+      // Отменяем исходящие запросы для этого склада
       await queryClient.cancelQueries({ 
         queryKey: queryKeys.warehouses.detail(warehouseId) 
       });
       
-      // Save previous data for rollback
+      // Сохраняем предыдущие данные для rollback
       const previousWarehouse = queryClient.getQueryData(
         queryKeys.warehouses.detail(warehouseId)
       );
       
-      // Optimistically update cache
+      // Оптимистично обновляем кэш
       queryClient.setQueryData(
         queryKeys.warehouses.detail(warehouseId),
         (old: any) => ({
@@ -2674,30 +2674,30 @@ export function useToggleFavorite() {
         })
       );
       
-      // Return context for rollback
+      // Возвращаем context для rollback
       return { previousWarehouse, warehouseId };
     },
     
     onError: (err, variables, context) => {
-      // Rollback changes on error
+      // Откатываем изменения при ошибке
       if (context?.previousWarehouse) {
         queryClient.setQueryData(
           queryKeys.warehouses.detail(context.warehouseId),
           context.previousWarehouse
         );
       }
-      toast.error('Failed to update favorites');
+      toast.error('Не удалось обновить избранное');
     },
     
     onSuccess: (data, variables) => {
-      // Invalidate favorites list
+      // Инвалидируем список избранного
       queryClient.invalidateQueries({
         queryKey: queryKeys.user.favorites(data.user_id),
       });
     },
     
     onSettled: (data, error, variables) => {
-      // Either way, refresh data from server
+      // В любом случае обновляем данные с сервера
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.warehouses.detail(variables.warehouseId) 
       });
@@ -2706,7 +2706,7 @@ export function useToggleFavorite() {
 }
 ```
 
-**Bulk invalidation:**
+**Групповая инвалидация:**
 
 ```typescript
 // hooks/useDeleteWarehouse.ts
@@ -2717,22 +2717,22 @@ export function useDeleteWarehouse() {
     mutationFn: warehousesApi.delete,
     
     onSuccess: (_, deletedId) => {
-      // 1. Remove specific warehouse from cache
+      // 1. Удаляем из кэша конкретный склад
       queryClient.removeQueries({ 
         queryKey: queryKeys.warehouses.detail(deletedId) 
       });
       
-      // 2. Invalidate all warehouse lists
+      // 2. Инвалидируем все списки складов
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.warehouses.lists() 
       });
       
-      // 3. Invalidate favorites (if this warehouse was there)
+      // 3. Инвалидируем избранное (если там был этот склад)
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.user.favorites() 
       });
       
-      toast.success('Warehouse deleted');
+      toast.success('Склад удален');
     },
   });
 }
@@ -2753,21 +2753,21 @@ export default async function WarehousePage({ params }: { params: { id: string }
   const queryClient = new QueryClient();
   const warehouseId = Number(params.id);
   
-  // Prefetch all necessary data on server
+  // Prefetch всех необходимых данных на сервере
   await Promise.all([
-    // Warehouse details
+    // Детали склада
     queryClient.prefetchQuery({
       queryKey: queryKeys.warehouses.detail(warehouseId),
       queryFn: () => warehousesApi.getById(warehouseId),
     }),
     
-    // Warehouse boxes
+    // Боксы склада
     queryClient.prefetchQuery({
       queryKey: queryKeys.boxes.list(warehouseId),
       queryFn: () => boxesApi.getByWarehouse(warehouseId),
     }),
     
-    // Warehouse reviews
+    // Отзывы склада
     queryClient.prefetchQuery({
       queryKey: ['warehouses', warehouseId, 'reviews'],
       queryFn: () => reviewsApi.getByWarehouse(warehouseId),
@@ -2782,7 +2782,7 @@ export default async function WarehousePage({ params }: { params: { id: string }
 }
 ```
 
-**Client-side prefetch on hover:**
+**Client-side prefetch при наведении:**
 
 ```typescript
 // components/WarehouseCard.tsx
@@ -2793,15 +2793,15 @@ function WarehouseCard({ warehouse }: { warehouse: Warehouse }) {
     queryClient.prefetchQuery({
       queryKey: queryKeys.warehouses.detail(warehouse.id),
       queryFn: () => warehousesApi.getById(warehouse.id),
-      staleTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: 10 * 60 * 1000, // 10 минут
     });
   };
   
   return (
     <Link
       href={`/warehouses/${warehouse.id}`}
-      onMouseEnter={prefetchWarehouse} // Prefetch on hover
-      onFocus={prefetchWarehouse} // Prefetch on focus (keyboard navigation)
+      onMouseEnter={prefetchWarehouse} // Prefetch при наведении
+      onFocus={prefetchWarehouse} // Prefetch при фокусе (keyboard navigation)
     >
       {/* ... */}
     </Link>
@@ -2809,7 +2809,7 @@ function WarehouseCard({ warehouse }: { warehouse: Warehouse }) {
 }
 ```
 
-**Prefetch next page:**
+**Prefetch следующей страницы:**
 
 ```typescript
 // components/WarehouseList.tsx
@@ -2820,7 +2820,7 @@ function WarehouseList() {
   
   const { data } = useWarehouses(filters, page);
   
-  // Prefetch next page
+  // Prefetch следующей страницы
   useEffect(() => {
     if (data?.pagination.has_next) {
       queryClient.prefetchQuery({
@@ -2832,7 +2832,7 @@ function WarehouseList() {
   
   return (
     <div>
-      {/* List */}
+      {/* Список */}
       <Pagination page={page} onPageChange={setPage} />
     </div>
   );
@@ -2840,16 +2840,16 @@ function WarehouseList() {
 ```
 
 
-### 5.3. Component Local State
+### 5.3. Локальное состояние компонентов
 
-**When to use `useState`:**
+**Когда использовать `useState`:**
 
-- ✅ UI toggles (show/hide, expand/collapse)
-- ✅ Temporary form values (if not using React Hook Form)
-- ✅ Component state not needed by other components
-- ✅ Computed values depending on props
+- ✅ UI toggles (показать/скрыть, развернуть/свернуть)
+- ✅ Временные значения форм (если не используется React Hook Form)
+- ✅ Состояние компонента, не нужное другим компонентам
+- ✅ Вычисляемые значения, зависящие от props
 
-**Examples:**
+**Примеры:**
 
 ```typescript
 // 1. UI Toggle
@@ -2867,7 +2867,7 @@ function Accordion({ title, children }) {
   );
 }
 
-// 2. Form with local state
+// 2. Форма с локальным состоянием
 function CommentInput({ onSubmit }) {
   const [text, setText] = useState('');
   const [charCount, setCharCount] = useState(0);
@@ -2890,26 +2890,26 @@ function CommentInput({ onSubmit }) {
         value={text}
         onChange={handleChange}
         maxLength={500}
-        placeholder="Your comment..."
+        placeholder="Ваш комментарий..."
       />
       <div className="flex justify-between">
         <span className="text-sm text-gray-500">{charCount}/500</span>
         <button onClick={handleSubmit} disabled={text.length === 0}>
-          Submit
+          Отправить
         </button>
       </div>
     </div>
   );
 }
 
-// 3. Image gallery with selected image
+// 3. Галерея с выбранным изображением
 function ImageGallery({ images }: { images: string[] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   
   return (
     <div>
-      {/* Main image */}
+      {/* Главное изображение */}
       <div className="relative aspect-video">
         <img
           src={images[selectedIndex]}
@@ -2947,7 +2947,7 @@ function ImageGallery({ images }: { images: string[] }) {
   );
 }
 
-// 4. Tabs with local state
+// 4. Tabs с локальным состоянием
 function WarehouseTabs({ warehouseId }: { warehouseId: number }) {
   const [activeTab, setActiveTab] = useState<'boxes' | 'reviews' | 'info'>('boxes');
   
@@ -2961,7 +2961,7 @@ function WarehouseTabs({ warehouseId }: { warehouseId: number }) {
             activeTab === 'boxes' && 'border-b-2 border-primary'
           )}
         >
-          Boxes
+          Боксы
         </button>
         <button
           onClick={() => setActiveTab('reviews')}
@@ -2970,7 +2970,7 @@ function WarehouseTabs({ warehouseId }: { warehouseId: number }) {
             activeTab === 'reviews' && 'border-b-2 border-primary'
           )}
         >
-          Reviews
+          Отзывы
         </button>
         <button
           onClick={() => setActiveTab('info')}
@@ -2979,7 +2979,7 @@ function WarehouseTabs({ warehouseId }: { warehouseId: number }) {
             activeTab === 'info' && 'border-b-2 border-primary'
           )}
         >
-          Information
+          Информация
         </button>
       </div>
       
@@ -2994,24 +2994,24 @@ function WarehouseTabs({ warehouseId }: { warehouseId: number }) {
 ```
 
 
-### 5.4. URL as Source of Truth
+### 5.4. URL как источник истины
 
-**Principles:**
+**Принципы:**
 
-1. **Search filters** — always in URL query params
-2. **Pagination** — page/per_page in URL
-3. **Sorting** — sort/order in URL
-4. **Tabs** — active tab can be in URL
-5. **Modals** — can be added to URL for sharing (optional)
+1. **Фильтры поиска** — всегда в URL query params
+2. **Пагинация** — page/per_page в URL
+3. **Сортировка** — sort/order в URL
+4. **Табы** — активная вкладка может быть в URL
+5. **Модалки** — можно добавлять в URL для шаринга (опционально)
 
-**Advantages:**
+**Преимущества:**
 
-- ✅ Can share link with filters
-- ✅ Browser "Back" button works
-- ✅ Can be bookmarked
-- ✅ SEO-friendly (for public pages)
+- ✅ Можно поделиться ссылкой с фильтрами
+- ✅ Работает кнопка "Назад" в браузере
+- ✅ Можно добавить в закладки
+- ✅ SEO-friendly (для публичных страниц)
 
-**Implementation:**
+**Реализация:**
 
 ```typescript
 // hooks/useURLParams.ts
@@ -3067,7 +3067,7 @@ function SearchPage() {
   
   return (
     <div>
-      {/* Price filter */}
+      {/* Фильтр цены */}
       <PriceRange
         min={priceMin}
         max={priceMax}
@@ -3076,7 +3076,7 @@ function SearchPage() {
         }}
       />
       
-      {/* Pagination */}
+      {/* Пагинация */}
       <Pagination
         page={currentPage}
         onChange={(page) => {
@@ -3089,12 +3089,12 @@ function SearchPage() {
 ```
 
 
-### 5.5. "Single Source of Truth" Principles
+### 5.5. Принципы "Single Source of Truth"
 
-**Hierarchy of Sources of Truth:**
+**Иерархия источников истины:**
 
 ```
-1. URL Parameters (for sharable state)
+1. URL Parameters (для sharable state)
    ↓
 2. React Query Cache (для server state)
    ↓
@@ -3105,27 +3105,27 @@ function SearchPage() {
 
 **Правила:**
 
-✅ **CORRECT:**
-- Серверные данные (warehouseы, боксы, booking) → **только React Query**
-- Filters поиска → **URL + Zustand** (синхронизация)
-- Authentication пользователя → **Zustand** (persist in localStorage)
-- UI toggles (модалки, меню) → **Zustand or Local State**
+✅ **ПРАВИЛЬНО:**
+- Серверные данные (склады, боксы, бронирования) → **только React Query**
+- Фильтры поиска → **URL + Zustand** (синхронизация)
+- Аутентификация пользователя → **Zustand** (persist в localStorage)
+- UI toggles (модалки, меню) → **Zustand или Local State**
 - Временные значения форм → **Local State**
 
-❌ **НЕCORRECT:**
-- ❌ Дублировать серверные данные in Zustand
-- ❌ Хранить вычисляемые значения in state
-- ❌ Хранить данные in нескольких monthsтах одновременно
+❌ **НЕПРАВИЛЬНО:**
+- ❌ Дублировать серверные данные в Zustand
+- ❌ Хранить вычисляемые значения в state
+- ❌ Хранить данные в нескольких местах одновременно
 
-**Examples:**
+**Примеры:**
 
 ```typescript
-// ✅ CORRECT
+// ✅ ПРАВИЛЬНО
 function WarehouseList() {
-  // Filters из Zustand (синхронизированы with URL)
+  // Фильтры из Zustand (синхронизированы с URL)
   const filters = useFilters();
   
-  // Данные warehouses из React Query
+  // Данные складов из React Query
   const { data: warehouses } = useWarehouses(filters);
   
   return (
@@ -3137,60 +3137,60 @@ function WarehouseList() {
   );
 }
 
-// ❌ WRONG - duplicating server data
+// ❌ НЕПРАВИЛЬНО - дублирование серверных данных
 function WarehouseList() {
-  const [warehouses, setWarehouses] = useState([]); // ❌ Duplication
+  const [warehouses, setWarehouses] = useState([]); // ❌ Дублирование
   
   useEffect(() => {
-    fetchWarehouses().then(setWarehouses); // ❌ Manual loading
+    fetchWarehouses().then(setWarehouses); // ❌ Ручная загрузка
   }, []);
   
   return <div>{/* ... */}</div>;
 }
 
-// ✅ CORRECT - computed value
+// ✅ ПРАВИЛЬНО - вычисляемое значение
 function BookingForm() {
   const selectedDuration = 3;
   const pricePerMonth = 5000;
   
-  // Compute on the fly
+  // Вычисляем на лету
   const totalPrice = pricePerMonth * selectedDuration;
   
-  return <div>Total: {totalPrice} AED </div>;
+  return <div>Итого: {totalPrice} AED </div>;
 }
 
-// ❌ WRONG - storing computed in state
+// ❌ НЕПРАВИЛЬНО - хранение вычисляемого в state
 function BookingForm() {
   const [selectedDuration, setSelectedDuration] = useState(3);
   const [pricePerMonth] = useState(5000);
-  const [totalPrice, setTotalPrice] = useState(15000); // ❌ Duplication
+  const [totalPrice, setTotalPrice] = useState(15000); // ❌ Дублирование
   
   useEffect(() => {
-    setTotalPrice(pricePerMonth * selectedDuration); // ❌ Unnecessary synchronization
+    setTotalPrice(pricePerMonth * selectedDuration); // ❌ Лишняя синхронизация
   }, [selectedDuration, pricePerMonth]);
   
-  return <div>Total: {totalPrice} AED </div>;
+  return <div>Итого: {totalPrice} AED </div>;
 }
 ```
 
-**Data Flow Diagram:**
+**Диаграмма потока данных:**
 
 ```
 URL (/search?city=Dubai&price_min=3000)
   ↓
-Filter Store (Zustand) - synchronization on load
+Filter Store (Zustand) - синхронизация при загрузке
   ↓
 useWarehouses(filters) - React Query hook
   ↓
 API Request → Backend → Database
   ↓
-React Query Cache (automatic caching)
+React Query Cache (автоматическое кэширование)
   ↓
-Component (data display)
+Component (отображение данных)
 ```
 
 
-**End of Block 2A (Section 4)**
+**Конец Блока 2A (Раздел 4)**
 
 
 
@@ -3199,49 +3199,49 @@ Component (data display)
 
 
 
-## 6. Data Loading Approach
+## 6. Подход к загрузке данных
 
-### General Concept
+### Общая концепция
 
-Data loading is organized according to the following principles:
+Загрузка данных организована по следующим принципам:
 
-1. **Single API Client** — axios instance with interceptors
-2. **React Query** — server state management
-3. **Type Safety** — TypeScript for all API calls
-4. **Error Handling** — centralized and typed
-5. **Optimization** — caching, prefetching, pagination
+1. **Единый API Client** — axios instance с интерсепторами
+2. **React Query** — управление серверным состоянием
+3. **Типобезопасность** — TypeScript для всех API вызовов
+4. **Обработка ошибок** — централизованная и типизированная
+5. **Оптимизация** — кэширование, prefetching, pagination
 
 
 ### 6.1. API Client Layer
 
-#### 6.1.1. Base axios instance
+#### 6.1.1. Базовый axios instance
 
 **Файл:** `lib/api/client.ts`
 
 ```typescript
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-// Create base axios instance
+// Создаем базовый экземпляр axios
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
-  timeout: 30000, // 30 seconds
+  timeout: 30000, // 30 секунд
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  withCredentials: true, // For sending cookies
+  withCredentials: true, // Для отправки cookies
 });
 
-// Export for use in hooks and API functions
+// Экспорт для использования в хуках и API функциях
 export default apiClient;
 
-// Helper functions for different content types
+// Вспомогательные функции для работы с разными типами контента
 
-// For sending FormData (file upload)
+// Для отправки FormData (загрузка файлов)
 export const createFormDataClient = () => {
   return axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
-    timeout: 120000, // 2 minutes for file upload
+    timeout: 120000, // 2 минуты для загрузки файлов
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -3249,11 +3249,11 @@ export const createFormDataClient = () => {
   });
 };
 
-// For AI requests (longer timeout)
+// Для AI запросов (длительный timeout)
 export const createAIClient = () => {
   return axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
-    timeout: 60000, // 60 seconds for AI requests
+    timeout: 60000, // 60 секунд для AI запросов
     headers: {
       'Content-Type': 'application/json',
     },
@@ -3263,9 +3263,9 @@ export const createAIClient = () => {
 ```
 
 
-#### 6.1.2. Interceptors
+#### 6.1.2. Интерсепторы
 
-**Request Interceptor - adding token and metadata:**
+**Request Interceptor - добавление токена и метаданных:**
 
 ```typescript
 // lib/api/interceptors/request.interceptor.ts
@@ -3276,25 +3276,25 @@ import { v4 as uuidv4 } from 'uuid';
 export function setupRequestInterceptor(client: any) {
   client.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-      // 1. Add authorization token
+      // 1. Добавляем токен авторизации
       const token = getAccessToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
       
-      // 2. Add request ID for tracing
+      // 2. Добавляем request ID для трейсинга
       config.headers['X-Request-ID'] = uuidv4();
       
-      // 3. Add request timestamp
+      // 3. Добавляем timestamp запроса
       config.headers['X-Request-Time'] = new Date().toISOString();
       
-      // 4. Add client information (optional)
+      // 4. Добавляем информацию о клиенте (опционально)
       if (typeof window !== 'undefined') {
         config.headers['X-Client-Platform'] = 'web';
         config.headers['X-Client-Version'] = process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0';
       }
       
-      // 5. Log request in dev mode
+      // 5. Логируем запрос в dev mode
       if (process.env.NODE_ENV === 'development') {
         console.log(`🚀 API Request:`, {
           method: config.method?.toUpperCase(),
@@ -3314,7 +3314,7 @@ export function setupRequestInterceptor(client: any) {
 }
 ```
 
-**Response Interceptor - response handling and refresh token:**
+**Response Interceptor - обработка ответов и refresh token:**
 
 ```typescript
 // lib/api/interceptors/response.interceptor.ts
@@ -3322,7 +3322,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { refreshAccessToken, clearTokens } from '@/lib/auth/tokens';
 import toast from 'react-hot-toast';
 
-// State for handling concurrent 401 requests
+// Состояние для обработки одновременных запросов с 401
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: any) => void;
@@ -3344,9 +3344,9 @@ const processQueue = (error: any, token: string | null = null) => {
 export function setupResponseInterceptor(client: any) {
   client.interceptors.response.use(
     (response: AxiosResponse) => {
-      // Successful response
+      // Успешный ответ
       
-      // Log in dev mode
+      // Логируем в dev mode
       if (process.env.NODE_ENV === 'development') {
         console.log(`✅ API Response:`, {
           url: response.config.url,
@@ -3360,17 +3360,17 @@ export function setupResponseInterceptor(client: any) {
     async (error: AxiosError) => {
       const originalRequest: any = error.config;
       
-      // Log error
+      // Логируем ошибку
       console.error('❌ API Error:', {
         url: originalRequest?.url,
         status: error.response?.status,
         message: error.message,
       });
       
-      // 401 - Unauthorized, try to refresh token
+      // 401 - Unauthorized, пытаемся обновить токен
       if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
-          // If refresh already in progress, add request to queue
+          // Если уже идет обновление токена, добавляем запрос в очередь
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           })
@@ -3387,13 +3387,13 @@ export function setupResponseInterceptor(client: any) {
         isRefreshing = true;
         
         try {
-          // Try to refresh token
+          // Пытаемся обновить токен
           const newToken = await refreshAccessToken();
           
-          // Process request queue
+          // Обрабатываем очередь запросов
           processQueue(null, newToken);
           
-          // Повторяем оригинальный запрос with новым токеном
+          // Повторяем оригинальный запрос с новым токеном
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return client(originalRequest);
         } catch (refreshError) {
@@ -3414,36 +3414,36 @@ export function setupResponseInterceptor(client: any) {
       
       // 403 - Forbidden
       if (error.response?.status === 403) {
-        toast.error('You do not have access to this resource');
+        toast.error('У вас нет доступа к этому ресурсу');
       }
       
       // 404 - Not Found
       if (error.response?.status === 404) {
         const errorData: any = error.response?.data;
-        const errorMessage = errorData?.error?.message || 'Resource not found';
+        const errorMessage = errorData?.error?.message || 'Ресурс не найден';
         toast.error(errorMessage);
       }
       
       // 422 - Validation Error
       if (error.response?.status === 422) {
         const errorData: any = error.response?.data;
-        const errorMessage = errorData?.error?.message || 'Error валидации data';
+        const errorMessage = errorData?.error?.message || 'Ошибка валидации данных';
         toast.error(errorMessage);
       }
       
       // 429 - Rate Limit
       if (error.response?.status === 429) {
-        toast.error('Too many requests. Try again later');
+        toast.error('Слишком много запросов. Попробуйте позже');
       }
       
       // 500+ - Server Error
       if (error.response?.status && error.response.status >= 500) {
-        toast.error('Error server. Мы уже работаем над решением');
+        toast.error('Ошибка сервера. Мы уже работаем над решением');
       }
       
       // Network Error
       if (!error.response && error.message === 'Network Error') {
-        toast.error('Проблема with подключением к интернету');
+        toast.error('Проблема с подключением к интернету');
       }
       
       return Promise.reject(error);
@@ -3467,7 +3467,7 @@ export default apiClient;
 ```
 
 
-#### 6.1.3. Processing ошибок
+#### 6.1.3. Обработка ошибок
 
 **Типизация ошибок API:**
 
@@ -3519,7 +3519,7 @@ export enum ErrorCode {
 }
 ```
 
-**Утилита for обработки ошибок:**
+**Утилита для обработки ошибок:**
 
 ```typescript
 // lib/utils/error-handler.ts
@@ -3543,27 +3543,27 @@ export function handleAPIError(error: unknown): string {
           return apiError.error.message;
           
         case ErrorCode.NOT_FOUND:
-          return apiError.error.message || 'Resource not found';
+          return apiError.error.message || 'Ресурс не найден';
           
         case ErrorCode.UNAUTHORIZED:
           return 'Требуется авторизация';
           
         case ErrorCode.FORBIDDEN:
-          return 'You do not have access to this resource';
+          return 'У вас нет доступа к этому ресурсу';
           
         case ErrorCode.CONFLICT:
-          return apiError.error.message || 'Data conflict';
+          return apiError.error.message || 'Конфликт данных';
           
         case ErrorCode.RATE_LIMIT:
-          return 'Too many requests. Try again later';
+          return 'Слишком много запросов. Попробуйте позже';
           
         default:
-          return apiError.error.message || 'An error occurred';
+          return apiError.error.message || 'Произошла ошибка';
       }
     }
     
-    // Fallback for ошибок без структурированного ответа
-    return error.message || 'An error occurred';
+    // Fallback для ошибок без структурированного ответа
+    return error.message || 'Произошла ошибка';
   }
   
   // Для других типов ошибок
@@ -3574,14 +3574,14 @@ export function handleAPIError(error: unknown): string {
   return 'Неизвестная ошибка';
 }
 
-// Функция for показа ошибки через toast
+// Функция для показа ошибки через toast
 export function showAPIError(error: unknown, defaultMessage?: string) {
   const message = handleAPIError(error);
   toast.error(defaultMessage || message);
 }
 ```
 
-**Usage in React Query:**
+**Использование в React Query:**
 
 ```typescript
 // hooks/useWarehouses.ts
@@ -3601,7 +3601,7 @@ export function useWarehouses(filters: SearchFilters) {
     },
     
     // Альтернативно - не показывать toast автоматически,
-    // а обрабатывать in componentе
+    // а обрабатывать в компоненте
     retry: (failureCount, error: any) => {
       // Не повторять при client errors (4xx кроме 408, 429)
       const status = error.response?.status;
@@ -3704,13 +3704,13 @@ export const queryKeys = {
 
 // Примеры использования:
 
-// Инвалидация всех warehouses
+// Инвалидация всех складов
 queryClient.invalidateQueries({ queryKey: queryKeys.warehouses.all });
 
-// Инвалидация всех списков warehouses (но не деталей)
+// Инвалидация всех списков складов (но не деталей)
 queryClient.invalidateQueries({ queryKey: queryKeys.warehouses.lists() });
 
-// Инвалидация конкретного warehouseа
+// Инвалидация конкретного склада
 queryClient.invalidateQueries({ queryKey: queryKeys.warehouses.detail(123) });
 
 // Инвалидация всех бронирований пользователя
@@ -3718,21 +3718,21 @@ queryClient.invalidateQueries({ queryKey: queryKeys.bookings.user() });
 ```
 
 
-#### 6.2.2. Stale time and cache time
+#### 6.2.2. Stale time и cache time
 
-**Стратегии кэширования по типам data:**
+**Стратегии кэширования по типам данных:**
 
 ```typescript
 // lib/react-query-config.ts
 
 // 1. ОЧЕНЬ ЧАСТО МЕНЯЮЩИЕСЯ (real-time data)
 export const realtimeConfig = {
-  staleTime: 30 * 1000, // 30 seconds
-  gcTime: 2 * 60 * 1000, // 2 minutes
+  staleTime: 30 * 1000, // 30 секунд
+  gcTime: 2 * 60 * 1000, // 2 минуты
   refetchInterval: 1 * 60 * 1000, // Auto-refetch каждую минуту
 };
 
-// Example: доступность boxes in реальном времени
+// Example: доступность боксов в реальном времени
 export function useBoxAvailability(boxId: number) {
   return useQuery({
     queryKey: queryKeys.boxes.availability(boxId),
@@ -3743,8 +3743,8 @@ export function useBoxAvailability(boxId: number) {
 
 // 2. ЧАСТО МЕНЯЮЩИЕСЯ (frequently updated)
 export const frequentConfig = {
-  staleTime: 2 * 60 * 1000, // 2 minutes
-  gcTime: 5 * 60 * 1000, // 5 minutes
+  staleTime: 2 * 60 * 1000, // 2 минуты
+  gcTime: 5 * 60 * 1000, // 5 минут
   refetchOnWindowFocus: true,
 };
 
@@ -3762,12 +3762,12 @@ export function useUserBookings() {
 
 // 3. СРЕДНЕ МЕНЯЮЩИЕСЯ (moderately updated)
 export const moderateConfig = {
-  staleTime: 5 * 60 * 1000, // 5 minutes
-  gcTime: 10 * 60 * 1000, // 10 minutes
+  staleTime: 5 * 60 * 1000, // 5 минут
+  gcTime: 10 * 60 * 1000, // 10 минут
   refetchOnWindowFocus: false,
 };
 
-// Example: результаты поиска warehouses
+// Example: результаты поиска складов
 export function useWarehouses(filters: SearchFilters) {
   return useQuery({
     queryKey: queryKeys.warehouses.list(filters),
@@ -3778,12 +3778,12 @@ export function useWarehouses(filters: SearchFilters) {
 
 // 4. РЕДКО МЕНЯЮЩИЕСЯ (rarely updated)
 export const rareConfig = {
-  staleTime: 30 * 60 * 1000, // 30 minutes
-  gcTime: 60 * 60 * 1000, // 1 hour
+  staleTime: 30 * 60 * 1000, // 30 минут
+  gcTime: 60 * 60 * 1000, // 1 час
   refetchOnWindowFocus: false,
 };
 
-// Example: детали warehouseа
+// Example: детали склада
 export function useWarehouse(id: number) {
   return useQuery({
     queryKey: queryKeys.warehouses.detail(id),
@@ -3795,7 +3795,7 @@ export function useWarehouse(id: number) {
 
 // 5. СТАТИЧЕСКИЕ ДАННЫЕ (static/reference data)
 export const staticConfig = {
-  staleTime: Infinity, // Never stale
+  staleTime: Infinity, // Никогда не устаревают
   gcTime: Infinity, // Хранить всегда
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
@@ -3813,9 +3813,9 @@ export function useWarehouseAttributes() {
 // 6. USER-SPECIFIC DATA (данные пользователя)
 export const userDataConfig = {
   staleTime: 1 * 60 * 1000, // 1 минута
-  gcTime: 5 * 60 * 1000, // 5 minutes
+  gcTime: 5 * 60 * 1000, // 5 минут
   refetchOnWindowFocus: true, // Обновлять при возврате
-  retry: 1, // Меньше retry for приватных data
+  retry: 1, // Меньше retry для приватных данных
 };
 
 // Example: профиль пользователя
@@ -3839,7 +3839,7 @@ export function useCurrentUser() {
 ```typescript
 // lib/react-query-config.ts
 
-// Функция for определения, стоит ли повторять запрос
+// Функция для определения, стоит ли повторять запрос
 export function shouldRetry(failureCount: number, error: any): boolean {
   // Не превышаем максимум попыток
   if (failureCount >= 3) return false;
@@ -3848,29 +3848,29 @@ export function shouldRetry(failureCount: number, error: any): boolean {
   
   // Не повторяем client errors (4xx)
   if (status && status >= 400 && status < 500) {
-    // Исключения: timeout and rate limit можно повторить
+    // Исключения: timeout и rate limit можно повторить
     if (status === 408 || status === 429) {
-      return failureCount < 2; // Максимум 2 повтора for этих случаев
+      return failureCount < 2; // Максимум 2 повтора для этих случаев
     }
     return false; // Остальные 4xx не повторяем
   }
   
-  // Повторяем server errors (5xx) and network errors
+  // Повторяем server errors (5xx) и network errors
   return true;
 }
 
-// Exponential backoff with jitter
+// Exponential backoff с jitter
 export function getRetryDelay(attemptIndex: number): number {
   // Базовая задержка: 1s, 2s, 4s, 8s...
   const baseDelay = Math.min(1000 * 2 ** attemptIndex, 30000);
   
-  // Добавляем случайный jitter ±20% for предотвращения thundering herd
+  // Добавляем случайный jitter ±20% для предотвращения thundering herd
   const jitter = baseDelay * 0.2 * (Math.random() - 0.5);
   
   return baseDelay + jitter;
 }
 
-// Применение in Query Client
+// Применение в Query Client
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -3880,7 +3880,7 @@ export const queryClient = new QueryClient({
   },
 });
 
-// Кастомная retry логика for специфичных запросов
+// Кастомная retry логика для специфичных запросов
 export function useCriticalData() {
   return useQuery({
     queryKey: ['critical', 'data'],
@@ -3888,7 +3888,7 @@ export function useCriticalData() {
     
     // Более агрессивная retry стратегия
     retry: (failureCount, error: any) => {
-      // Для критичных data повторяем даже некоторые 4xx
+      // Для критичных данных повторяем даже некоторые 4xx
       const status = error.response?.status;
       
       if (status === 503 || status === 502) {
@@ -3916,7 +3916,7 @@ export function useCriticalData() {
   });
 }
 
-// Без retry for не критичных запросов
+// Без retry для не критичных запросов
 export function useOptionalData() {
   return useQuery({
     queryKey: ['optional', 'data'],
@@ -3927,11 +3927,11 @@ export function useOptionalData() {
 ```
 
 
-### 6.3. Работа with мутациями
+### 6.3. Работа с мутациями
 
 #### 6.3.1. Optimistic updates
 
-**Оптимистичное обновление for быстрого UX:**
+**Оптимистичное обновление для быстрого UX:**
 
 ```typescript
 // hooks/useToggleFavorite.ts
@@ -3958,12 +3958,12 @@ export function useToggleFavorite() {
     
     // Оптимистичное обновление ДО отправки запроса
     onMutate: async ({ warehouseId, isFavorite }) => {
-      // 1. Отменяем исходящие запросы for этого warehouseа
+      // 1. Отменяем исходящие запросы для этого склада
       await queryClient.cancelQueries({ 
         queryKey: queryKeys.warehouses.detail(warehouseId) 
       });
       
-      // 2. Сохраняем предыдущее состояние for rollback
+      // 2. Сохраняем предыдущее состояние для rollback
       const previousWarehouse = queryClient.getQueryData(
         queryKeys.warehouses.detail(warehouseId)
       );
@@ -3980,7 +3980,7 @@ export function useToggleFavorite() {
         }
       );
       
-      // 4. Также обновляем in списке, если он закэширован
+      // 4. Также обновляем в списке, если он закэширован
       queryClient.setQueriesData(
         { queryKey: queryKeys.warehouses.lists() },
         (oldData: any) => {
@@ -3997,7 +3997,7 @@ export function useToggleFavorite() {
         }
       );
       
-      // Возвращаем context for использования in onError
+      // Возвращаем context для использования в onError
       return { previousWarehouse, warehouseId };
     },
     
@@ -4011,18 +4011,18 @@ export function useToggleFavorite() {
         );
       }
       
-      toast.error('Failed to update favorites');
+      toast.error('Не удалось обновить избранное');
     },
     
-    // Successfullyе выполнение
+    // Успешное выполнение
     onSuccess: (data, variables) => {
       // Можно показать subtle уведомление
-      // toast.success('Добавлено in избранное');
+      // toast.success('Добавлено в избранное');
     },
     
-    // Всегда выполняется после onSuccess or onError
+    // Всегда выполняется после onSuccess или onError
     onSettled: (data, error, variables) => {
-      // Обновляем данные with server for консистентности
+      // Обновляем данные с сервера для консистентности
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.warehouses.detail(variables.warehouseId) 
       });
@@ -4034,7 +4034,7 @@ export function useToggleFavorite() {
 }
 ```
 
-**Оптимистичное обновление for списков:**
+**Оптимистичное обновление для списков:**
 
 ```typescript
 // hooks/useUpdateWarehouse.ts
@@ -4075,7 +4075,7 @@ export function useUpdateWarehouse() {
         (old: any) => ({ ...old, ...data })
       );
       
-      // Оптимистично обновляем in списке
+      // Оптимистично обновляем в списке
       queryClient.setQueryData(
         queryKeys.operator.warehouses(),
         (old: any) => {
@@ -4109,7 +4109,7 @@ export function useUpdateWarehouse() {
         }
       }
       
-      toast.error('Не удалось обновить warehouse');
+      toast.error('Не удалось обновить склад');
     },
     
     onSuccess: () => {
@@ -4131,7 +4131,7 @@ export function useUpdateWarehouse() {
 
 #### 6.3.2. Invalidation после мутаций
 
-**Creation нового ресурса:**
+**Создание нового ресурса:**
 
 ```typescript
 // hooks/useCreateWarehouse.ts
@@ -4143,18 +4143,18 @@ export function useCreateWarehouse() {
     mutationFn: warehousesApi.create,
     
     onSuccess: (newWarehouse) => {
-      // 1. Инвалидируем список warehouses оператора
+      // 1. Инвалидируем список складов оператора
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.operator.warehouses() 
       });
       
-      // 2. Предзаполняем кэш новым warehouseом (избегаем лишний запрос)
+      // 2. Предзаполняем кэш новым складом (избегаем лишний запрос)
       queryClient.setQueryData(
         queryKeys.warehouses.detail(newWarehouse.id),
         newWarehouse
       );
       
-      // 3. Notification
+      // 3. Уведомление
       toast.success('Склад создан!');
       
       // 4. Редирект
@@ -4162,13 +4162,13 @@ export function useCreateWarehouse() {
     },
     
     onError: (error) => {
-      toast.error('Не удалось создать warehouse');
+      toast.error('Не удалось создать склад');
     },
   });
 }
 ```
 
-**Deletion ресурса:**
+**Удаление ресурса:**
 
 ```typescript
 // hooks/useDeleteWarehouse.ts
@@ -4198,14 +4198,14 @@ export function useDeleteWarehouse() {
         queryKey: queryKeys.boxes.all 
       });
       
-      toast.success('Warehouse deleted');
+      toast.success('Склад удален');
       router.push('/operator/warehouses');
     },
   });
 }
 ```
 
-**Сложные мутации with множественной инвалидацией:**
+**Сложные мутации с множественной инвалидацией:**
 
 ```typescript
 // hooks/useCreateBooking.ts
@@ -4217,37 +4217,37 @@ export function useCreateBooking() {
     mutationFn: bookingsApi.create,
     
     onSuccess: (newBooking) => {
-      // 1. Инвалидируем booking пользователя
+      // 1. Инвалидируем бронирования пользователя
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookings.user(),
       });
       
-      // 2. Invalidate box availability
+      // 2. Инвалидируем доступность бокса
       queryClient.invalidateQueries({
         queryKey: queryKeys.boxes.availability(newBooking.box_id),
       });
       
-      // 3. Invalidate box details
+      // 3. Инвалидируем детали бокса
       queryClient.invalidateQueries({
         queryKey: queryKeys.boxes.detail(newBooking.box_id),
       });
       
-      // 4. Инвалидируем список boxes warehouseа
+      // 4. Инвалидируем список боксов склада
       queryClient.invalidateQueries({
         queryKey: queryKeys.boxes.list(newBooking.warehouse_id),
       });
       
-      // 5. Инвалидируем детали warehouseа (summary boxes)
+      // 5. Инвалидируем детали склада (summary боксов)
       queryClient.invalidateQueries({
         queryKey: queryKeys.warehouses.detail(newBooking.warehouse_id),
       });
       
-      // 6. Для оператора - инвалидируем входящие booking
+      // 6. Для оператора - инвалидируем входящие бронирования
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookings.operator(),
       });
       
-      toast.success('Booking created!');
+      toast.success('Бронирование создано!');
       router.push(`/booking/${newBooking.id}/success`);
     },
   });
@@ -4255,9 +4255,9 @@ export function useCreateBooking() {
 ```
 
 
-### 6.4. Pagination and Infinite Scroll
+### 6.4. Пагинация и бесконечная прокрутка
 
-#### Classic Pagination
+#### Классическая пагинация
 
 ```typescript
 // hooks/useWarehouses.ts
@@ -4273,12 +4273,12 @@ export function useWarehouses(
   return useQuery({
     queryKey: queryKeys.warehouses.list({ ...filters, page, per_page: perPage }),
     queryFn: () => warehousesApi.search({ ...filters, page, per_page: perPage }),
-    keepPreviousData: true, // IMPORTANT: show old data while new data loads
+    keepPreviousData: true, // ВАЖНО: показывать старые данные пока загружаются новые
     staleTime: 5 * 60 * 1000,
   });
 }
 
-// In componentе
+// В компоненте
 function WarehouseListWithPagination() {
   const filters = useFilters();
   const [page, setPage] = useState(1);
@@ -4288,7 +4288,7 @@ function WarehouseListWithPagination() {
     page
   );
   
-  // Prefetch next page
+  // Prefetch следующей страницы
   const queryClient = useQueryClient();
   useEffect(() => {
     if (data?.pagination.has_next && !isPreviousData) {
@@ -4303,17 +4303,17 @@ function WarehouseListWithPagination() {
   
   return (
     <div>
-      {/* Warehouse list */}
+      {/* Список складов */}
       <div className={cn(
         'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6',
-        isPreviousData && 'opacity-50' // Loading indicator for new page
+        isPreviousData && 'opacity-50' // Индикация загрузки новой страницы
       )}>
         {data?.data.map((warehouse) => (
           <WarehouseCard key={warehouse.id} warehouse={warehouse} />
         ))}
       </div>
       
-      {/* Pagination */}
+      {/* Пагинация */}
       <div className="mt-8 flex justify-center">
         <Pagination
           currentPage={page}
@@ -4327,11 +4327,11 @@ function WarehouseListWithPagination() {
         />
       </div>
       
-      {/* Loading indicator */}
+      {/* Индикатор загрузки */}
       {isFetching && !isLoading && (
         <div className="fixed bottom-4 right-4">
           <div className="bg-primary text-white px-4 py-2 rounded-lg shadow-lg">
-            Loading...
+            Загрузка...
           </div>
         </div>
       )}
@@ -4341,7 +4341,7 @@ function WarehouseListWithPagination() {
 ```
 
 
-#### Infinite Scroll
+#### Бесконечная прокрутка (Infinite Scroll)
 
 ```typescript
 // hooks/useInfiniteWarehouses.ts
@@ -4357,7 +4357,7 @@ export function useInfiniteWarehouses(filters: SearchFilters, perPage: number = 
       warehousesApi.search({ ...filters, page: pageParam, per_page: perPage }),
     
     getNextPageParam: (lastPage) => {
-      // Return next page number or undefined if no more pages
+      // Возвращаем номер следующей страницы или undefined если страниц больше нет
       if (lastPage.pagination.has_next) {
         return lastPage.pagination.page + 1;
       }
@@ -4369,7 +4369,7 @@ export function useInfiniteWarehouses(filters: SearchFilters, perPage: number = 
   });
 }
 
-// In componentе
+// В компоненте
 function InfiniteWarehouseList() {
   const filters = useFilters();
   
@@ -4382,7 +4382,7 @@ function InfiniteWarehouseList() {
     isError,
   } = useInfiniteWarehouses(filters);
   
-  // Intersection Observer for automatic loading
+  // Intersection Observer для автоматической загрузки
   const loadMoreRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -4394,7 +4394,7 @@ function InfiniteWarehouseList() {
           fetchNextPage();
         }
       },
-      { threshold: 0.1, rootMargin: '100px' } // Load 100px before appearing
+      { threshold: 0.1, rootMargin: '100px' } // Загружать за 100px до появления
     );
     
     observer.observe(loadMoreRef.current);
@@ -4405,7 +4405,7 @@ function InfiniteWarehouseList() {
   if (isLoading) return <LoadingSkeleton />;
   if (isError) return <ErrorState />;
   
-  // Calculate total warehouse count
+  // Подсчет общего количества складов
   const totalCount = data?.pages.reduce(
     (acc, page) => acc + page.data.length,
     0
@@ -4413,12 +4413,12 @@ function InfiniteWarehouseList() {
   
   return (
     <div>
-      {/* Counter */}
+      {/* Счетчик */}
       <div className="mb-4 text-gray-600">
-        Found: {totalCount} {totalCount === 1 ? 'warehouse' : 'warehouses'}
+        Найдено: {totalCount} {totalCount === 1 ? 'склад' : 'складов'}
       </div>
       
-      {/* Warehouse list */}
+      {/* Список складов */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
@@ -4429,26 +4429,26 @@ function InfiniteWarehouseList() {
         ))}
       </div>
       
-      {/* Trigger for loading */}
+      {/* Триггер для загрузки */}
       {hasNextPage && (
         <div ref={loadMoreRef} className="mt-8 flex justify-center">
           {isFetchingNextPage ? (
             <div className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Loading...</span>
+              <span>Загрузка...</span>
             </div>
           ) : (
             <Button onClick={() => fetchNextPage()}>
-              Show more
+              Показать ещё
             </Button>
           )}
         </div>
       )}
       
-      {/* End of list message */}
+      {/* Сообщение о конце списка */}
       {!hasNextPage && totalCount > 0 && (
         <div className="mt-8 text-center text-gray-500">
-          All warehouses загружены
+          Все склады загружены
         </div>
       )}
     </div>
@@ -4457,7 +4457,7 @@ function InfiniteWarehouseList() {
 ```
 
 
-### 6.5. Filtering and Search
+### 6.5. Фильтрация и поиск
 
 #### Debounced search
 
@@ -4479,20 +4479,20 @@ export function useDebounce<T>(value: T, delay: number = 500): T {
   return debouncedValue;
 }
 
-// Component with debounced search
+// Компонент с debounced search
 function SearchBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery, 300);
   const { updateFilter } = useFilterStore();
   
-  // Update filter only when debounced value changes
+  // Обновляем фильтр только когда debounced значение меняется
   useEffect(() => {
     if (debouncedQuery.length >= 2 || debouncedQuery.length === 0) {
       updateFilter('q', debouncedQuery || undefined);
     }
   }, [debouncedQuery, updateFilter]);
   
-  // Autocomplete
+  // Автокомплит
   const { data: suggestions, isLoading: isLoadingSuggestions } = useQuery({
     queryKey: ['search', 'suggestions', debouncedQuery],
     queryFn: () => searchApi.getSuggestions(debouncedQuery),
@@ -4508,7 +4508,7 @@ function SearchBar() {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search by city, district, metro..."
+          placeholder="Поиск по городу, району, метро..."
           className="pl-12 pr-4"
         />
         {isLoadingSuggestions && (
@@ -4516,7 +4516,7 @@ function SearchBar() {
         )}
       </div>
       
-      {/* Tooltips */}
+      {/* Подсказки */}
       {suggestions && suggestions.length > 0 && (
         <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border z-10">
           {suggestions.map((suggestion, idx) => (
@@ -4540,7 +4540,7 @@ function SearchBar() {
 ```
 
 
-### 6.6. Prefetching Strategies
+### 6.6. Prefetching стратегии
 
 #### 6.6.1. Server-side prefetch
 
@@ -4553,7 +4553,7 @@ export default async function WarehousePage({ params }: { params: { id: string }
   const queryClient = new QueryClient();
   const warehouseId = Number(params.id);
   
-  // Prefetch critical data on server
+  // Prefetch критичных данных на сервере
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: queryKeys.warehouses.detail(warehouseId),
@@ -4577,7 +4577,7 @@ export default async function WarehousePage({ params }: { params: { id: string }
 #### 6.6.2. Client-side prefetch
 
 ```typescript
-// Prefetch on hover
+// Prefetch при наведении
 function WarehouseCard({ warehouse }: { warehouse: Warehouse }) {
   const queryClient = useQueryClient();
   
@@ -4604,20 +4604,20 @@ function WarehouseCard({ warehouse }: { warehouse: Warehouse }) {
 #### 6.6.3. Background refresh
 
 ```typescript
-// Автоматическое обновление in фоне
+// Автоматическое обновление в фоне
 export function useOperatorBookings() {
   return useQuery({
     queryKey: queryKeys.bookings.operator(),
     queryFn: () => bookingsApi.getOperatorBookings(),
     staleTime: 1 * 60 * 1000,
-    refetchInterval: 5 * 60 * 1000, // Every 5 minutes
-    refetchIntervalInBackground: true, // Even if tab is inactive
+    refetchInterval: 5 * 60 * 1000, // Каждые 5 минут
+    refetchIntervalInBackground: true, // Даже если вкладка неактивна
   });
 }
 ```
 
 
-**End of Block 2B (Section 5)**
+**Конец Блока 2B (Раздел 5)**
 
 
 
@@ -4626,67 +4626,67 @@ export function useOperatorBookings() {
 
 
 
-## 7. UI Component Organization
+## 7. Организация UI-компонентов
 
-### General Concept
+### Общая концепция
 
-UI components are organized according to the following principles:
+UI-компоненты организованы по следующим принципам:
 
-1. **Atomic Design (adapted)** — hierarchy from simple to complex
-2. **Composition over inheritance** — flexibility through composition
-3. **Reusability** — maximum use of base components
-4. **Type Safety** — TypeScript for all props
-5. **Accessibility** — WCAG 2.1 AA minimum
+1. **Atomic Design (адаптированный)** — иерархия от простых к сложным
+2. **Композиция над наследованием** — гибкость через composition
+3. **Переиспользование** — максимальное использование базовых компонентов
+4. **Типобезопасность** — TypeScript для всех props
+5. **Доступность** — WCAG 2.1 AA минимум
 
 
-### 7.1. Organization Principles
+### 7.1. Принципы организации
 
-#### 7.1.1. Atomic Design (adapted)
+#### 7.1.1. Atomic Design (адаптированный)
 
-We use a simplified version of Atomic Design:
+Мы используем упрощенную версию Atomic Design:
 
 ```
-Atoms - base components
+Atoms (Атомы) - базовые компоненты
   ↓
-Molecules - simple composite components
+Molecules (Молекулы) - простые составные компоненты
   ↓
-Organisms - complex business components
+Organisms (Организмы) - сложные бизнес-компоненты
   ↓
-Templates/Pages - pages and templates
+Templates/Pages - страницы и шаблоны
 ```
 
-**But with pragmatic deviations:**
+**Но с прагматичными отступлениями:**
 
-- Not strict adherence to categories - practicality over dogma
-- Focus on reusability and composition
-- Avoid excessive abstraction "for abstraction's sake"
-- Grouping by domains (modules) is more important than strict categorization
+- Не строгое следование категориям — практичность важнее догм
+- Фокус на переиспользовании и композиции
+- Избегаем излишней абстракции "ради абстракции"
+- Группировка по доменам (modules) важнее строгой категоризации
 
-**Component structure:**
+**Структура компонентов:**
 
 ```
 src/
 ├── components/
-│   ├── ui/              # Base components (atoms) - shadcn/ui
+│   ├── ui/              # Базовые компоненты (atoms) - shadcn/ui
 │   │   ├── button.tsx
 │   │   ├── input.tsx
 │   │   ├── dialog.tsx
 │   │   └── ...
-│   ├── layout/          # Layout components
+│   ├── layout/          # Layout компоненты
 │   │   ├── Header.tsx
 │   │   ├── Footer.tsx
 │   │   ├── Sidebar.tsx
 │   │   └── ...
-│   └── shared/          # Shared composite components
+│   └── shared/          # Shared составные компоненты
 │       ├── EmptyState.tsx
 │       ├── ErrorState.tsx
 │       ├── LoadingSpinner.tsx
 │       └── ...
-├── features/            # Feature-specific components (molecules)
+├── features/            # Feature-specific компоненты (molecules)
 │   ├── search-bar/
 │   ├── filter-panel/
 │   └── booking-flow/
-└── modules/             # Domain modules (organisms)
+└── modules/             # Domain модули (organisms)
     ├── warehouses/
     │   └── components/
     │       ├── WarehouseCard.tsx
@@ -4698,9 +4698,9 @@ src/
 ```
 
 
-#### 7.1.2. Composition vs Inheritance
+#### 7.1.2. Композиция vs наследование
 
-**❌ WRONG - inheritance through props:**
+**❌ НЕПРАВИЛЬНО - наследование через props:**
 
 ```typescript
 // Плохой подход - слишком много props, сложно расширять
@@ -4714,15 +4714,15 @@ interface CardProps {
   actionButton?: string;
   onActionClick?: () => void;
   variant?: 'default' | 'compact' | 'detailed';
-  // ... 10 more props
+  // ... еще 10 пропсов
 }
 
 function Card({ title, description, image, showActions, ... }: CardProps) {
-  // Complex conditional rendering logic
+  // Сложная логика условного рендеринга
 }
 ```
 
-**✅ CORRECT - composition through children:**
+**✅ ПРАВИЛЬНО - композиция через children:**
 
 ```typescript
 // Хороший подход - гибкая композиция
@@ -4749,23 +4749,23 @@ function CardFooter({ children, className }: any) {
 // Usage - полная гибкость
 <Card>
   <CardHeader>
-    <h3>Title</h3>
-    <Badge>New</Badge>
+    <h3>Название</h3>
+    <Badge>Новое</Badge>
   </CardHeader>
   <CardContent>
-    <p>Content</p>
+    <p>Контент</p>
     <img src="..." />
   </CardContent>
   <CardFooter>
-    <Button>Action</Button>
+    <Button>Действие</Button>
   </CardFooter>
 </Card>
 ```
 
 
-### 7.2. Base Components (atoms)
+### 7.2. Базовые компоненты (atoms)
 
-All базовые components берем из **shadcn/ui** (построены на Radix UI).
+Все базовые компоненты берем из **shadcn/ui** (построены на Radix UI).
 
 #### 7.2.1. Button
 
@@ -4826,30 +4826,30 @@ Button.displayName = 'Button';
 export { Button, buttonVariants };
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 // Различные варианты
-<Button variant="default">Book</Button>
-<Button variant="outline" size="sm">Cancel</Button>
-<Button variant="ghost">Learn more</Button>
-<Button variant="destructive" size="lg">Delete</Button>
+<Button variant="default">Забронировать</Button>
+<Button variant="outline" size="sm">Отменить</Button>
+<Button variant="ghost">Подробнее</Button>
+<Button variant="destructive" size="lg">Удалить</Button>
 
 // С иконкой
 <Button>
   <Search className="h-4 w-4 mr-2" />
-  Find
+  Найти
 </Button>
 
 // Как ссылка
 <Button asChild>
-  <Link href="/warehouses">All warehouses</Link>
+  <Link href="/warehouses">Все склады</Link>
 </Button>
 
 // Loading состояние
 <Button disabled={isLoading}>
   {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-  {isLoading ? 'Loading...' : 'Submit'}
+  {isLoading ? 'Загрузка...' : 'Отправить'}
 </Button>
 ```
 
@@ -4947,7 +4947,7 @@ const DialogContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100">
         <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">Закрыть</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -4997,7 +4997,7 @@ export {
 };
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 function BookingDialog({ boxId }: { boxId: number }) {
@@ -5006,13 +5006,13 @@ function BookingDialog({ boxId }: { boxId: number }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Book</Button>
+        <Button>Забронировать</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Box booking</DialogTitle>
+          <DialogTitle>Бронирование бокса</DialogTitle>
           <DialogDescription>
-            Fill out the form to submit a request
+            Заполните форму для отправки заявки
           </DialogDescription>
         </DialogHeader>
         <BookingForm boxId={boxId} onSuccess={() => setIsOpen(false)} />
@@ -5170,23 +5170,23 @@ SelectItem.displayName = 'SelectItem';
 export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectItem };
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 <Select value={sortBy} onValueChange={setSortBy}>
   <SelectTrigger className="w-[180px]">
-    <SelectValue placeholder="Sorting" />
+    <SelectValue placeholder="Сортировка" />
   </SelectTrigger>
   <SelectContent>
-    <SelectItem value="rating">By rating</SelectItem>
-    <SelectItem value="price">By price</SelectItem>
-    <SelectItem value="distance">By distance</SelectItem>
+    <SelectItem value="rating">По рейтингу</SelectItem>
+    <SelectItem value="price">По цене</SelectItem>
+    <SelectItem value="distance">По расстоянию</SelectItem>
   </SelectContent>
 </Select>
 ```
 
 
-### 7.3. Composite Components (molecules)
+### 7.3. Составные компоненты (molecules)
 
 #### 7.3.1. SearchBar
 
@@ -5216,7 +5216,7 @@ export function SearchBar({ defaultValue = '', className, onSearch }: SearchBarP
   const [showSuggestions, setShowSuggestions] = useState(false);
   const debouncedQuery = useDebounce(query, 300);
   
-  // Loading tooltips
+  // Загрузка подсказок
   const { data: suggestions, isLoading: isLoadingSuggestions } = useQuery({
     queryKey: ['search', 'suggestions', debouncedQuery],
     queryFn: () => searchApi.getSuggestions(debouncedQuery),
@@ -5261,7 +5261,7 @@ export function SearchBar({ defaultValue = '', className, onSearch }: SearchBarP
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => suggestions && suggestions.length > 0 && setShowSuggestions(true)}
-          placeholder="City, district, metro..."
+          placeholder="Город, район, метро..."
           className="pl-12 pr-32 h-14 text-base"
         />
         {isLoadingSuggestions && (
@@ -5273,11 +5273,11 @@ export function SearchBar({ defaultValue = '', className, onSearch }: SearchBarP
           size="lg"
         >
           <Search className="h-5 w-5 mr-2" />
-          Find
+          Найти
         </Button>
       </div>
       
-      {/* Tooltips */}
+      {/* Подсказки */}
       {showSuggestions && suggestions && suggestions.length > 0 && (
         <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border z-10">
           {suggestions.map((suggestion, idx) => (
@@ -5336,7 +5336,7 @@ export function PriceDisplay({
   
   return (
     <div className={cn('flex items-baseline gap-2 flex-wrap', className)}>
-      {/* Main price */}
+      {/* Основная цена */}
       <span className={cn(
         'font-bold',
         sizeClasses[size],
@@ -5345,7 +5345,7 @@ export function PriceDisplay({
         {formatPrice(price)} {currency}
       </span>
       
-      {/* Discounted price */}
+      {/* Цена со скидкой */}
       {hasDiscount && (
         <>
           <span className={cn('font-bold text-primary-600', sizeClasses[size])}>
@@ -5357,7 +5357,7 @@ export function PriceDisplay({
         </>
       )}
       
-      {/* Period */}
+      {/* Период */}
       <span className="text-gray-600">
         / {period === 'month' ? 'мес' : 'день'}
       </span>
@@ -5413,7 +5413,7 @@ export function RatingStars({
   
   return (
     <div className={cn('flex items-center gap-1', className)}>
-      {/* Stars */}
+      {/* Звезды */}
       <div className="flex items-center gap-0.5">
         {Array.from({ length: maxRating }, (_, i) => {
           const starValue = i + 1;
@@ -5433,7 +5433,7 @@ export function RatingStars({
                 interactive && 'cursor-pointer hover:scale-110 transition'
               )}
             >
-              {/* Filled star */}
+              {/* Заполненная звезда */}
               <Star
                 className={cn(
                   sizeClasses[size],
@@ -5441,7 +5441,7 @@ export function RatingStars({
                 )}
               />
               
-              {/* Half star */}
+              {/* Половина звезды */}
               {isHalf && (
                 <div className="absolute inset-0 overflow-hidden w-1/2">
                   <Star
@@ -5454,12 +5454,12 @@ export function RatingStars({
         })}
       </div>
       
-      {/* Numeric value */}
+      {/* Числовое значение */}
       <span className="text-sm font-medium text-gray-900">
         {rating.toFixed(1)}
       </span>
       
-      {/* Number of reviews */}
+      {/* Количество отзывов */}
       {showCount && count !== undefined && (
         <span className="text-sm text-gray-500">
           ({count})
@@ -5496,17 +5496,17 @@ export function Pagination({
   hasPrevious = true,
   className,
 }: PaginationProps) {
-  // Generate page array for display
+  // Генерируем массив страниц для отображения
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
     
     if (totalPages <= 7) {
-      // If few pages, show all
+      // Если страниц мало, показываем все
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Otherwise show first, last and surrounding current
+      // Иначе показываем первую, последнюю и окружение текущей
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, '...', totalPages);
       } else if (currentPage >= totalPages - 2) {
@@ -5574,7 +5574,7 @@ export function Pagination({
 ```
 
 
-### 7.4. Complex Components (organisms)
+### 7.4. Комплексные компоненты (organisms)
 
 #### 7.4.1. WarehouseCard
 
@@ -5614,7 +5614,7 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow group">
       <Link href={`/warehouses/${warehouse.id}`}>
-        {/* Image */}
+        {/* Изображение */}
         <div className="relative h-48 bg-gray-100">
           <Image
             src={warehouse.photos[0]?.url || '/placeholder-warehouse.jpg'}
@@ -5623,7 +5623,7 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
           
-          {/* Favorite button */}
+          {/* Кнопка избранного */}
           <button
             onClick={handleFavoriteClick}
             disabled={toggleFavorite.isPending}
@@ -5639,15 +5639,15 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
             />
           </button>
           
-          {/* Badges */}
+          {/* Бейджи */}
           <div className="absolute bottom-3 left-3 flex gap-2 flex-wrap">
             {warehouse.is_verified && (
               <Badge variant="secondary" className="bg-green-100 text-green-800">
-                ✓ Verified
+                ✓ Проверено
               </Badge>
             )}
             {warehouse.attributes.includes('climate_control') && (
-              <Badge variant="secondary">Climate-control</Badge>
+              <Badge variant="secondary">Климат-контроль</Badge>
             )}
             {warehouse.attributes.includes('access_24_7') && (
               <Badge variant="secondary">24/7</Badge>
@@ -5656,18 +5656,18 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
         </div>
         
         <CardContent className="p-4">
-          {/* Name */}
+          {/* Название */}
           <h3 className="text-lg font-semibold mb-2 group-hover:text-primary-600 transition line-clamp-1">
             {warehouse.name}
           </h3>
           
-          {/* Address */}
+          {/* Адрес */}
           <div className="flex items-start gap-2 text-sm text-gray-600 mb-3">
             <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
             <span className="line-clamp-2">{warehouse.address.full_address}</span>
           </div>
           
-          {/* Rating and operating hours */}
+          {/* Рейтинг и время работы */}
           <div className="flex items-center gap-4 text-sm mb-4">
             <RatingStars
               rating={warehouse.rating}
@@ -5682,12 +5682,12 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
             </div>
           </div>
           
-          {/* Available boxes */}
+          {/* Доступные боксы */}
           <div className="text-sm text-gray-600 mb-4">
-            Available boxes: <span className="font-medium text-gray-900">{warehouse.available_boxes_count}</span>
+            Доступно боксов: <span className="font-medium text-gray-900">{warehouse.available_boxes_count}</span>
           </div>
           
-          {/* Price */}
+          {/* Цена */}
           <div className="flex items-center justify-between pt-4 border-t">
             <div>
               <div className="text-sm text-gray-600 mb-1">от</div>
@@ -5695,7 +5695,7 @@ export function WarehouseCard({ warehouse, variant = 'default' }: WarehouseCardP
             </div>
             
             <Button variant="outline" size="sm">
-              Learn more
+              Подробнее
             </Button>
           </div>
         </CardContent>
@@ -5722,20 +5722,20 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const BOX_SIZES = [
-  { value: 'S', label: 'S (up to 3 m²)', description: 'Suitcase, bicycle' },
-  { value: 'M', label: 'M (3-6 m²)', description: 'Room 1-2 rooms. sq.' },
-  { value: 'L', label: 'L (6-10 m²)', description: 'Room 3 rooms. sq.' },
-  { value: 'XL', label: 'XL (10+ m²)', description: 'Entire apartment' },
+  { value: 'S', label: 'S (до 3 м²)', description: 'Чемодан, велосипед' },
+  { value: 'M', label: 'M (3-6 м²)', description: 'Комната 1-2 комн. кв.' },
+  { value: 'L', label: 'L (6-10 м²)', description: 'Комната 3 комн. кв.' },
+  { value: 'XL', label: 'XL (10+ м²)', description: 'Целая квартира' },
 ];
 
 const ATTRIBUTES = [
-  { value: 'climate_control', label: 'Climate-control', icon: '❄️' },
-  { value: 'access_24_7', label: '24/7 Access', icon: '🕐' },
-  { value: 'security', label: 'Security', icon: '🛡️' },
-  { value: 'video_surveillance', label: 'Video surveillance', icon: '📹' },
-  { value: 'parking', label: 'Parking', icon: '🅿️' },
-  { value: 'elevator', label: 'Elevator', icon: '🛗' },
-  { value: 'loading_area', label: 'Loading area', icon: '🚛' },
+  { value: 'climate_control', label: 'Климат-контроль', icon: '❄️' },
+  { value: 'access_24_7', label: 'Доступ 24/7', icon: '🕐' },
+  { value: 'security', label: 'Охрана', icon: '🛡️' },
+  { value: 'video_surveillance', label: 'Видеонаблюдение', icon: '📹' },
+  { value: 'parking', label: 'Парковка', icon: '🅿️' },
+  { value: 'elevator', label: 'Лифт', icon: '🛗' },
+  { value: 'loading_area', label: 'Зона погрузки', icon: '🚛' },
 ];
 
 export function FilterPanel({ className }: { className?: string }) {
@@ -5744,9 +5744,9 @@ export function FilterPanel({ className }: { className?: string }) {
   
   return (
     <div className={cn('space-y-6', className)}>
-      {/* Header */}
+      {/* Заголовок */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Filters</h3>
+        <h3 className="text-lg font-semibold">Фильтры</h3>
         {hasActiveFilters() && (
           <Button 
             variant="ghost" 
@@ -5754,14 +5754,14 @@ export function FilterPanel({ className }: { className?: string }) {
             onClick={clearFilters}
             className="text-primary-600"
           >
-            Reset ({activeCount})
+            Сбросить ({activeCount})
           </Button>
         )}
       </div>
       
-      {/* Price */}
+      {/* Цена */}
       <div>
-        <Label className="text-base font-medium mb-4 block">Price per month</Label>
+        <Label className="text-base font-medium mb-4 block">Цена за месяц</Label>
         <div className="space-y-4">
           <Slider
             value={[filters.price_min || 0, filters.price_max || 50000]}
@@ -5781,9 +5781,9 @@ export function FilterPanel({ className }: { className?: string }) {
         </div>
       </div>
       
-      {/* Box size */}
+      {/* Размер бокса */}
       <div>
-        <Label className="text-base font-medium mb-3 block">Box size</Label>
+        <Label className="text-base font-medium mb-3 block">Размер бокса</Label>
         <div className="space-y-2">
           {BOX_SIZES.map((size) => {
             const isSelected = filters.size?.includes(size.value as any);
@@ -5869,7 +5869,7 @@ export function FilterPanel({ className }: { className?: string }) {
 ```
 
 
-### 7.5. Layout components
+### 7.5. Layout компоненты
 
 #### 7.5.1. Header
 
@@ -5889,7 +5889,7 @@ import { cn } from '@/lib/utils';
 
 const NAVIGATION = [
   { href: '/', label: 'Главная' },
-  { href: '/search', label: 'Search warehouses' },
+  { href: '/search', label: 'Поиск складов' },
   { href: '/about', label: 'О нас' },
   { href: '/contacts', label: 'Контакты' },
 ];
@@ -5975,12 +5975,12 @@ export function Header() {
 ```
 
 
-### 7.6. Reusability componentов
+### 7.6. Переиспользование компонентов
 
 #### 7.6.1. Варианты через props
 
 ```typescript
-// Один component - множество вариантов
+// Один компонент - множество вариантов
 <Button variant="default" size="md">Стандартная</Button>
 <Button variant="outline" size="sm">Контурная</Button>
 <Button variant="ghost" size="lg">Прозрачная</Button>
@@ -5993,7 +5993,7 @@ export function Header() {
 #### 7.6.2. Расширение через composition
 
 ```typescript
-// Расширяем базовый component
+// Расширяем базовый компонент
 function FormInput({ 
   label, 
   error, 
@@ -6027,7 +6027,7 @@ function FormInput({
 #### 7.6.3. Render props pattern
 
 ```typescript
-// Component with render prop
+// Компонент с render prop
 function DataList<T>({ 
   data, 
   renderItem,
@@ -6061,18 +6061,18 @@ function DataList<T>({
 ```
 
 
-**End of Block 2C (Section 6)**
+**Конец Блока 2C (Раздел 6)**
 
-**Block 2 ПОЛНОСТЬЮ ЗАВЕРШЕН!**
-
-
+**Блок 2 ПОЛНОСТЬЮ ЗАВЕРШЕН!**
 
 
 
 
 
 
-## 8. Processing состояний загрузки and ошибок
+
+
+## 8. Обработка состояний загрузки и ошибок
 
 
 
@@ -6080,19 +6080,19 @@ function DataList<T>({
 
 ### 🎯 Implementation Standards (Обязательные правила)
 
-**For frontend-developers: When to use какой loading indicator**
+**Для фронтенд-разработчиков: Когда использовать какой loading indicator**
 
 #### A) Loading State Standards
 
 | Ситуация | Использовать | Почему | Пример |
 |----------|--------------|--------|--------|
-| **Initial page load** | Skeleton loader | Показывает структуру, уменьшает CLS | Warehouse list при первой загрузке |
-| **Background refetch** | Ничего or subtle spinner | Не мешает взаимодействию | React Query background refetch |
-| **User action** | Spinner + disabled state | Явная обратная связь | Button "Book" при клике |
-| **Infinite scroll** | Spinner внизу списка | Понятно что загружается еще | "Loading..." внизу |
-| **Form submission** | Spinner in кнопке + disabled | Предотвращает двойной submit | Button "Submit" with spinner |
-| **Mutation** | Local spinner | Не блокирует весь UI | Добавление in избранное |
-| **Full page transition** | Global loader | Редко, только for навигации | Переход между страницами |
+| **Initial page load** | Skeleton loader | Показывает структуру, уменьшает CLS | Список складов при первой загрузке |
+| **Background refetch** | Ничего или subtle spinner | Не мешает взаимодействию | React Query background refetch |
+| **User action** | Spinner + disabled state | Явная обратная связь | Кнопка "Забронировать" при клике |
+| **Infinite scroll** | Spinner внизу списка | Понятно что загружается еще | "Загрузка..." внизу |
+| **Form submission** | Spinner в кнопке + disabled | Предотвращает двойной submit | Кнопка "Отправить" с spinner |
+| **Mutation** | Local spinner | Не блокирует весь UI | Добавление в избранное |
+| **Full page transition** | Global loader | Редко, только для навигации | Переход между страницами |
 
 **Правила использования:**
 
@@ -6108,7 +6108,7 @@ function WarehouseCard({ id }) {
   return <div>{data.name}</div>;
 }
 
-// ❌ WRONG - Global loading for локальной операции
+// ❌ WRONG - Global loading для локальной операции
 function WarehouseCard({ id }) {
   const { data, isLoading } = useWarehouse(id);
   
@@ -6130,7 +6130,7 @@ if (isLoading) {
 
 if (isRefetching) {
   // Background refetch - ничего не показываем
-  // or subtle indicator
+  // или subtle indicator
 }
 
 // ✅ Use Spinner - User action
@@ -6139,14 +6139,14 @@ if (isRefetching) {
   disabled={isPending}
 >
   {isPending && <Spinner size="sm" />}
-  Book
+  Забронировать
 </Button>
 ```
 
-**3. Минимальная задержка for UX**
+**3. Минимальная задержка для UX**
 
 ```typescript
-// Избегаем flash of loading state for быстрых запросов
+// Избегаем flash of loading state для быстрых запросов
 const MIN_LOADING_TIME = 300; // ms
 
 const [showLoading, setShowLoading] = useState(false);
@@ -6168,7 +6168,7 @@ useEffect(() => {
 
 #### B) Error Mapping Table (API Error → UI Behavior)
 
-**For frontend-developers: Что делать with каждым типом ошибки**
+**Для фронтенд-разработчиков: Что делать с каждым типом ошибки**
 
 | HTTP Status | Error Code | Frontend Behavior | Component | Example |
 |-------------|------------|-------------------|-----------|---------|
@@ -6178,8 +6178,8 @@ useEffect(() => {
 | **404** | `not_found` | Show "Not Found" page/state | NotFoundError | Склад не найден |
 | **409** | `conflict` | Toast with message | Toast | Бокс уже забронирован |
 | **422** | `validation_error` | Highlight invalid fields | Form | Некорректные данные |
-| **429** | `rate_limit_exceeded` | Show "Try again in X sec" | Toast + disabled | Too many requests |
-| **500-599** | `internal_error` | Show retry button | ErrorState | Error server |
+| **429** | `rate_limit_exceeded` | Show "Try again in X sec" | Toast + disabled | Слишком много запросов |
+| **500-599** | `internal_error` | Show retry button | ErrorState | Ошибка сервера |
 | **Network Error** | - | Show "Check connection" | NetworkError | Нет интернета |
 
 **Implementation:**
@@ -6209,7 +6209,7 @@ export function handleAPIError(error: AxiosError, options?: ErrorOptions) {
       
     case 403:
       // No refresh - show error
-      toast.error('You do not have access to this resource');
+      toast.error('У вас нет доступа к этому ресурсу');
       break;
       
     case 404:
@@ -6218,20 +6218,20 @@ export function handleAPIError(error: AxiosError, options?: ErrorOptions) {
       
     case 409:
       // Conflict - show specific message
-      toast.error(apiError.error.message || 'Data conflict');
+      toast.error(apiError.error.message || 'Конфликт данных');
       break;
       
     case 429:
       // Rate limit
       const retryAfter = error.response?.headers['retry-after'] || 60;
-      toast.error(`Too many requests. Try again in ${retryAfter} sec.`);
+      toast.error(`Слишком много запросов. Попробуйте через ${retryAfter} сек.`);
       break;
       
     case 500:
     case 502:
     case 503:
       // Server error - offer retry
-      toast.error('Error server. Try again later.', {
+      toast.error('Ошибка сервера. Попробуйте позже.', {
         action: {
           label: 'Повторить',
           onClick: options?.retry
@@ -6244,7 +6244,7 @@ export function handleAPIError(error: AxiosError, options?: ErrorOptions) {
       if (!error.response) {
         toast.error('Проверьте подключение к интернету');
       } else {
-        toast.error('An error occurred');
+        toast.error('Произошла ошибка');
       }
   }
 }
@@ -6259,15 +6259,15 @@ const createBooking = useMutation({
 
 **Checklist при обработке ошибок:**
 
-- [ ] 400/422 with field_errors → setError() for каждого поля
+- [ ] 400/422 с field_errors → setError() для каждого поля
 - [ ] 400/422 без field_errors → toast.error()
 - [ ] 401 → обрабатывается interceptor (не нужно обрабатывать вручную)
-- [ ] 403 → toast.error() or ErrorState
-- [ ] 404 → NotFoundError component
-- [ ] 409 → toast.error() with сообщением
-- [ ] 429 → toast.error() with retry-after
-- [ ] 5xx → ErrorState with кнопкой retry
-- [ ] Network → NetworkError component
+- [ ] 403 → toast.error() или ErrorState
+- [ ] 404 → NotFoundError компонент
+- [ ] 409 → toast.error() с сообщением
+- [ ] 429 → toast.error() с retry-after
+- [ ] 5xx → ErrorState с кнопкой retry
+- [ ] Network → NetworkError компонент
 
 ---
 
@@ -6330,23 +6330,23 @@ const createBooking = useMutation({
 **Типы loading состояний:**
 
 1. **Initial Loading** — первая загрузка страницы
-2. **Background Refetch** — обновление data in фоне
+2. **Background Refetch** — обновление данных в фоне
 3. **Pagination Loading** — загрузка новой страницы
 4. **Mutation Loading** — выполнение действия
 5. **Optimistic Update** — мгновенное обновление UI
 
-**Principles:**
+**Принципы:**
 
 - Показываем loading только при первой загрузке
-- Background refetch — тонкий индикатор or ничего
-- Skeleton loaders for контента
-- Spinner for быстрых действий (< 2 seconds)
-- Progress bar for длительных операций (> 2 seconds)
+- Background refetch — тонкий индикатор или ничего
+- Skeleton loaders для контента
+- Spinner для быстрых действий (< 2 секунд)
+- Progress bar для длительных операций (> 2 секунд)
 
 
 #### 8.1.2. Skeleton Loaders
 
-**Base Skeleton component:**
+**Базовый Skeleton компонент:**
 
 ```typescript
 // components/shared/Skeleton.tsx
@@ -6391,14 +6391,14 @@ import { Skeleton } from '@/components/shared/Skeleton';
 export function WarehouseCardSkeleton() {
   return (
     <Card className="overflow-hidden">
-      {/* Image */}
+      {/* Изображение */}
       <Skeleton className="h-48 w-full rounded-none" />
       
       <CardContent className="p-4 space-y-4">
-        {/* Name */}
+        {/* Название */}
         <Skeleton className="h-6 w-3/4" />
         
-        {/* Address */}
+        {/* Адрес */}
         <div className="space-y-2">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-2/3" />
@@ -6410,7 +6410,7 @@ export function WarehouseCardSkeleton() {
           <Skeleton className="h-4 w-20" />
         </div>
         
-        {/* Price */}
+        {/* Цена */}
         <div className="flex items-center justify-between pt-4 border-t">
           <Skeleton className="h-8 w-32" />
           <Skeleton className="h-9 w-24" />
@@ -6420,7 +6420,7 @@ export function WarehouseCardSkeleton() {
   );
 }
 
-// List скелетонов
+// Список скелетонов
 export function WarehouseListSkeleton({ count = 9 }: { count?: number }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -6491,7 +6491,7 @@ export function LoadingSpinner({ size = 'md', className, text }: LoadingSpinnerP
 }
 
 // Полноэкранный loading
-export function FullPageLoader({ text = 'Loading...' }: { text?: string }) {
+export function FullPageLoader({ text = 'Загрузка...' }: { text?: string }) {
   return (
     <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
       <LoadingSpinner size="lg" text={text} />
@@ -6522,7 +6522,7 @@ export function ProgressBar({ progress, showLabel = true, className }: ProgressB
       <div className="flex justify-between items-center mb-2">
         {showLabel && (
           <span className="text-sm font-medium text-gray-700">
-            Loading...
+            Загрузка...
           </span>
         )}
         <span className="text-sm text-gray-600">{progress}%</span>
@@ -6537,7 +6537,7 @@ export function ProgressBar({ progress, showLabel = true, className }: ProgressB
   );
 }
 
-// Компонент for загрузки файлов
+// Компонент для загрузки файлов
 export function FileUploadProgress({ fileName, progress }: any) {
   return (
     <div className="p-4 bg-white rounded-lg shadow border">
@@ -6554,7 +6554,7 @@ export function FileUploadProgress({ fileName, progress }: any) {
 
 #### 8.1.5. React Suspense
 
-**Usage with Next.js:**
+**Использование с Next.js:**
 
 ```typescript
 // app/warehouses/[id]/page.tsx
@@ -6573,7 +6573,7 @@ export default function WarehousePage({ params }: { params: { id: string } }) {
 }
 ```
 
-**Streaming SSR with loading.tsx:**
+**Streaming SSR с loading.tsx:**
 
 ```typescript
 // app/search/loading.tsx
@@ -6603,7 +6603,7 @@ export default function SearchLoading() {
 
 #### 8.2.1. Error Boundary
 
-**Base Error Boundary:**
+**Базовый Error Boundary:**
 
 ```typescript
 // components/shared/ErrorBoundary.tsx
@@ -6650,14 +6650,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
           <h2 className="text-2xl font-bold mb-2">Что-то пошло не так</h2>
           <p className="text-gray-600 mb-6 text-center max-w-md">
-            An error occurred while loading this part of the application.
+            Произошла ошибка при загрузке этой части приложения.
           </p>
           <div className="flex gap-3">
             <Button onClick={() => this.setState({ hasError: false, error: null })}>
-              Try again
+              Попробовать снова
             </Button>
             <Button variant="outline" onClick={() => window.location.href = '/'}>
-              To homepage
+              На главную
             </Button>
           </div>
           {process.env.NODE_ENV === 'development' && this.state.error && (
@@ -6698,14 +6698,14 @@ export default function Error({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8">
       <AlertTriangle className="h-16 w-16 text-red-500 mb-6" />
-      <h1 className="text-3xl font-bold mb-2">Error</h1>
+      <h1 className="text-3xl font-bold mb-2">Ошибка</h1>
       <p className="text-gray-600 mb-8 text-center max-w-md">
         Произошла непредвиденная ошибка. Мы уже работаем над её исправлением.
       </p>
       <div className="flex gap-3">
-        <Button onClick={reset}>Try again</Button>
+        <Button onClick={reset}>Попробовать снова</Button>
         <Button variant="outline" onClick={() => window.location.href = '/'}>
-          To homepage
+          На главную
         </Button>
       </div>
       {process.env.NODE_ENV === 'development' && (
@@ -6721,7 +6721,7 @@ export default function Error({
 
 #### 8.2.2. Error State Components
 
-**ErrorState component:**
+**ErrorState компонент:**
 
 ```typescript
 // components/shared/ErrorState.tsx
@@ -6738,7 +6738,7 @@ interface ErrorStateProps {
 }
 
 export function ErrorState({
-  title = 'Error загрузки',
+  title = 'Ошибка загрузки',
   message = 'Не удалось загрузить данные. Попробуйте обновить страницу.',
   onRetry,
   showHomeButton = false,
@@ -6759,7 +6759,7 @@ export function ErrorState({
         {showHomeButton && (
           <Button variant="outline" onClick={() => window.location.href = '/'}>
             <Home className="h-4 w-4 mr-2" />
-            To homepage
+            На главную
           </Button>
         )}
       </div>
@@ -6771,7 +6771,7 @@ export function ErrorState({
 
 #### 8.2.3. Empty States
 
-**EmptyState component:**
+**EmptyState компонент:**
 
 ```typescript
 // components/shared/EmptyState.tsx
@@ -6829,18 +6829,18 @@ export function EmptyState({
 
 ### 🎯 SEO Ownership Matrix (MVP v1)
 
-**For frontend-developers: Какие страницы ОБЯЗАНЫ иметь SEO in MVP**
+**Для фронтенд-разработчиков: Какие страницы ОБЯЗАНЫ иметь SEO в MVP**
 
 | Page | SEO Required | Responsibility | Implementation Level | Reason |
 |------|--------------|----------------|---------------------|--------|
 | **/ (Home)** | ✅ YES | Page (`page.tsx`) | Metadata + Schema.org | Главная точка входа |
-| **/search** | ✅ YES | Page (`page.tsx`) | Metadata + Canonical | Searchовая выдача warehouses |
+| **/search** | ✅ YES | Page (`page.tsx`) | Metadata + Canonical | Поисковая выдача складов |
 | **/warehouses/[id]** | ✅ YES | Page (`page.tsx`) | Full SEO (Metadata + Schema + OG) | Карточка товара |
 | **/about** | ✅ YES | Page (`page.tsx`) | Metadata | Статический контент |
 | **/contacts** | ✅ YES | Page (`page.tsx`) | Metadata | Контакты компании |
 | **/faq** | ✅ YES | Page (`page.tsx`) | Metadata | FAQ |
-| **/terms** | ⚠️ MINIMAL | Page (`page.tsx`) | Basic metadata | Legal page |
-| **/privacy** | ⚠️ MINIMAL | Page (`page.tsx`) | Basic metadata | Legal page |
+| **/terms** | ⚠️ MINIMAL | Page (`page.tsx`) | Basic metadata | Юридическая страница |
+| **/privacy** | ⚠️ MINIMAL | Page (`page.tsx`) | Basic metadata | Юридическая страница |
 | **/dashboard** | ❌ NO | - | robots: noindex | Личный кабинет |
 | **/operator/** | ❌ NO | - | robots: noindex | Приватная зона |
 | **/login** | ❌ NO | - | robots: noindex | Auth страница |
@@ -6855,7 +6855,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const warehouse = await getWarehouse(params.id);
   
   return {
-    title: `${warehouse.name} - Storage rental in ${warehouse.city}`,
+    title: `${warehouse.name} - Аренда склада в ${warehouse.city}`,
     description: warehouse.description.substring(0, 160),
     openGraph: {
       title: warehouse.name,
@@ -6918,7 +6918,7 @@ export default function WarehousePage({ params }) {
 // app/about/page.tsx
 export const metadata: Metadata = {
   title: 'О нас - SelfStorage',
-  description: 'Агрегатор warehouses самостоятельного хранения',
+  description: 'Агрегатор складов самостоятельного хранения',
   robots: {
     index: true,
     follow: true,
@@ -7024,16 +7024,16 @@ Failing to set `noindex` on private pages risks exposing sensitive URLs.
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Self-Storage — Аренда warehouses and boxes for хранения вещей',
-  description: 'Find and book a storage facility near you. Безопасное хранение, гибкие условия, доступные цены.',
-  keywords: ['аренда warehouseа', 'хранение вещей', 'self storage', 'бокс for хранения'],
+  title: 'Self-Storage — Аренда складов и боксов для хранения вещей',
+  description: 'Найдите и забронируйте склад для хранения вещей рядом с вами. Безопасное хранение, гибкие условия, доступные цены.',
+  keywords: ['аренда склада', 'хранение вещей', 'self storage', 'бокс для хранения'],
   
   openGraph: {
     type: 'website',
     locale: 'ru_RU',
     url: 'https://storagecompare.ae',
-    title: 'Self-Storage — Storage facility rental',
-    description: 'Find and book a storage facility near you',
+    title: 'Self-Storage — Аренда складов для хранения вещей',
+    description: 'Найдите и забронируйте склад для хранения вещей рядом с вами',
     siteName: 'Self-Storage',
     images: [
       {
@@ -7047,8 +7047,8 @@ export const metadata: Metadata = {
   
   twitter: {
     card: 'summary_large_image',
-    title: 'Self-Storage — Storage facility rental',
-    description: 'Find and book a storage facility near you',
+    title: 'Self-Storage — Аренда складов для хранения вещей',
+    description: 'Найдите и забронируйте склад для хранения вещей рядом с вами',
     images: ['https://storagecompare.ae/twitter-image.jpg'],
   },
   
@@ -7075,12 +7075,12 @@ export async function generateMetadata({
   const warehouse = await warehousesApi.getById(Number(params.id));
   
   return {
-    title: `${warehouse.name} — Storage rental in ${warehouse.address.city}`,
-    description: `Storage box rental at warehouse "${warehouse.name}". ${warehouse.address.full_address}. Цены from ${warehouse.price_from} AED /мес.`,
+    title: `${warehouse.name} — Аренда склада в ${warehouse.address.city}`,
+    description: `Аренда бокса для хранения вещей на складе "${warehouse.name}". ${warehouse.address.full_address}. Цены от ${warehouse.price_from} AED /мес.`,
     
     openGraph: {
       title: warehouse.name,
-      description: `Storage box rental at warehouse in ${warehouse.address.city}`,
+      description: `Аренда бокса для хранения на складе в ${warehouse.address.city}`,
       images: warehouse.photos.map(photo => ({
         url: photo.url,
         width: 1200,
@@ -7154,7 +7154,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
   
-  // Динамические страницы warehouses
+  // Динамические страницы складов
   const warehouses = await warehousesApi.getAll();
   const warehousePages = warehouses.map((warehouse) => ({
     url: `${baseUrl}/warehouses/${warehouse.id}`,
@@ -7189,16 +7189,16 @@ export default function robots(): MetadataRoute.Robots {
 ```
 
 
-## 10. Accessibility (Accessibility)
+## 10. Доступность (Accessibility)
 
 ### 10.1. WCAG 2.1 AA Compliance
 
 **Основные требования:**
 
-1. **Perceivable** — информация доступна for восприятия
-2. **Operable** — интерфейс работает with клавиатуры
+1. **Perceivable** — информация доступна для восприятия
+2. **Operable** — интерфейс работает с клавиатуры
 3. **Understandable** — информация понятна
-4. **Robust** — совместимость with assistive technologies
+4. **Robust** — совместимость с assistive technologies
 
 
 ### 10.2. Keyboard Navigation
@@ -7251,16 +7251,16 @@ export function FocusTrap({ children }: { children: React.ReactNode }) {
 ```typescript
 // Доступная кнопка
 <button
-  aria-label="Add in избранное"
+  aria-label="Добавить в избранное"
   aria-pressed={isFavorite}
   onClick={handleToggleFavorite}
 >
   <Heart className={isFavorite ? 'fill-red-500' : ''} />
 </button>
 
-// Live region for динамических обновлений
+// Live region для динамических обновлений
 <div aria-live="polite" aria-atomic="true">
-  {searchResults.length} warehouses найдено
+  {searchResults.length} складов найдено
 </div>
 
 // Modal window
@@ -7270,7 +7270,7 @@ export function FocusTrap({ children }: { children: React.ReactNode }) {
   role="dialog"
   aria-modal="true"
 >
-  <DialogTitle id="dialog-title">Header</DialogTitle>
+  <DialogTitle id="dialog-title">Заголовок</DialogTitle>
   <DialogDescription id="dialog-description">
     Описание
   </DialogDescription>
@@ -7291,9 +7291,9 @@ export function VisuallyHidden({ children }: { children: React.ReactNode }) {
 }
 
 // Usage
-<button aria-label="Close">
+<button aria-label="Закрыть">
   <X className="h-5 w-5" aria-hidden="true" />
-  <VisuallyHidden>Close</VisuallyHidden>
+  <VisuallyHidden>Закрыть</VisuallyHidden>
 </button>
 ```
 
@@ -7304,7 +7304,7 @@ export function VisuallyHidden({ children }: { children: React.ReactNode }) {
 // Минимальные требования WCAG AA:
 // - Обычный текст: 4.5:1
 // - Крупный текст (18pt+): 3:1
-// - UI components: 3:1
+// - UI компоненты: 3:1
 
 // tailwind.config.js
 module.exports = {
@@ -7312,7 +7312,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          600: '#0284c7',  // Контраст with белым: 4.5:1
+          600: '#0284c7',  // Контраст с белым: 4.5:1
         },
       },
     },
@@ -7321,7 +7321,7 @@ module.exports = {
 ```
 
 
-**End of Block 3 (Sections 7-9)**
+**Конец Блока 3 (Разделы 7-9)**
 
 
 
@@ -7336,7 +7336,7 @@ module.exports = {
 
 #### 11.1.1. Route-based Code Splitting
 
-**Автоматическое in Next.js App Router:**
+**Автоматическое в Next.js App Router:**
 
 Next.js автоматически разбивает код по маршрутам:
 
@@ -7352,7 +7352,7 @@ app/
 
 #### 11.1.2. Component-based Lazy Loading
 
-**React.lazy for тяжелых componentов:**
+**React.lazy для тяжелых компонентов:**
 
 ```typescript
 // Lazy loading карты (тяжелая библиотека)
@@ -7372,10 +7372,10 @@ function SearchPage() {
 }
 ```
 
-**Dynamic imports for условного рендеринга:**
+**Dynamic imports для условного рендеринга:**
 
 ```typescript
-// Загружаем component только когда он нужен
+// Загружаем компонент только когда он нужен
 import dynamic from 'next/dynamic';
 
 // Модалка загружается только при открытии
@@ -7393,7 +7393,7 @@ function WarehouseDetails() {
   return (
     <div>
       <Button onClick={() => setIsModalOpen(true)}>
-        Book
+        Забронировать
       </Button>
       
       {isModalOpen && (
@@ -7404,10 +7404,10 @@ function WarehouseDetails() {
 }
 ```
 
-**Lazy loading for роутов по ролям:**
+**Lazy loading для роутов по ролям:**
 
 ```typescript
-// Оператор дашборд загружается только for операторов
+// Оператор дашборд загружается только для операторов
 import dynamic from 'next/dynamic';
 
 const OperatorDashboard = dynamic(
@@ -7453,12 +7453,12 @@ module.exports = {
 };
 ```
 
-**Prefetch for навигации:**
+**Prefetch для навигации:**
 
 ```typescript
-// Автоматический prefetch in Next.js Link
+// Автоматический prefetch в Next.js Link
 <Link href="/warehouses/123" prefetch={true}>
-  Посмотреть warehouse
+  Посмотреть склад
 </Link>
 
 // Программный prefetch
@@ -7544,7 +7544,7 @@ export function OptimizedImage({
 }
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 // Фиксированные размеры
@@ -7566,7 +7566,7 @@ export function OptimizedImage({
   />
 </div>
 
-// Priority for LCP (Largest Contentful Paint)
+// Priority для LCP (Largest Contentful Paint)
 <OptimizedImage
   src={heroImage}
   alt="Hero"
@@ -7580,7 +7580,7 @@ export function OptimizedImage({
 #### 11.2.2. Responsive Images
 
 ```typescript
-// Адаптивные размеры for разных устройств
+// Адаптивные размеры для разных устройств
 <OptimizedImage
   src={warehouse.image}
   alt={warehouse.name}
@@ -7604,7 +7604,7 @@ export function OptimizedImage({
 ```
 
 
-#### 11.2.3. Image Gallery with Lazy Loading
+#### 11.2.3. Image Gallery с Lazy Loading
 
 ```typescript
 // components/ImageGallery.tsx
@@ -7613,11 +7613,11 @@ function ImageGallery({ images }: { images: string[] }) {
   
   return (
     <div>
-      {/* Main image - priority */}
+      {/* Главное изображение - priority */}
       <div className="relative h-96">
         <OptimizedImage
           src={images[selectedIndex]}
-          alt={`Image ${selectedIndex + 1}`}
+          alt={`Изображение ${selectedIndex + 1}`}
           fill
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -7684,17 +7684,17 @@ module.exports = withBundleAnalyzer({
 **Правильный импорт иконок:**
 
 ```typescript
-// ❌ BAD - импортирует весь пакет
+// ❌ ПЛОХО - импортирует весь пакет
 import * as Icons from 'lucide-react';
 
-// ✅ GOOD - импортирует только нужные иконки
+// ✅ ХОРОШО - импортирует только нужные иконки
 import { Search, Heart, MapPin } from 'lucide-react';
 
-// ❌ BAD - импортирует весь lodash
+// ❌ ПЛОХО - импортирует весь lodash
 import _ from 'lodash';
 const result = _.debounce(fn, 300);
 
-// ✅ GOOD - импортирует только нужную функцию
+// ✅ ХОРОШО - импортирует только нужную функцию
 import debounce from 'lodash/debounce';
 const result = debounce(fn, 300);
 ```
@@ -7751,7 +7751,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 import { onCLS, onFID, onFCP, onLCP, onTTFB } from 'web-vitals';
 
 function sendToAnalytics(metric: any) {
-  // Отправка in аналитику
+  // Отправка в аналитику
   if (process.env.NODE_ENV === 'production') {
     fetch('/api/analytics', {
       method: 'POST',
@@ -7760,7 +7760,7 @@ function sendToAnalytics(metric: any) {
     });
   }
   
-  // Логирование in development
+  // Логирование в development
   console.log(metric);
 }
 
@@ -7772,7 +7772,7 @@ export function reportWebVitals() {
   onTTFB(sendToAnalytics);
 }
 
-// In _app.tsx or layout.tsx
+// В _app.tsx или layout.tsx
 useEffect(() => {
   reportWebVitals();
 }, []);
@@ -7805,7 +7805,7 @@ module.exports = {
 ```
 
 
-### 11.5. Мемоизация and оптимизация ре-рендеров
+### 11.5. Мемоизация и оптимизация ре-рендеров
 
 #### 11.5.1. React.memo
 
@@ -7826,7 +7826,7 @@ export const WarehouseCard = memo(function WarehouseCard({
 ```
 
 
-#### 11.5.2. useMemo and useCallback
+#### 11.5.2. useMemo и useCallback
 
 ```typescript
 function SearchPage() {
@@ -7877,7 +7877,7 @@ function SearchPage() {
 #### 11.5.3. Виртуализация длинных списков
 
 ```typescript
-// Для очень длинных списков we use react-window
+// Для очень длинных списков используем react-window
 import { FixedSizeList } from 'react-window';
 
 function VirtualWarehouseList({ warehouses }: { warehouses: Warehouse[] }) {
@@ -7926,7 +7926,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 
-### 11.7. Middleware for Performance
+### 11.7. Middleware для Performance
 
 ```typescript
 // middleware.ts
@@ -7953,7 +7953,7 @@ export function middleware(request: NextRequest) {
 ```
 
 
-## 12. Интеграция with картами
+## 12. Интеграция с картами
 
 
 
@@ -7961,13 +7961,13 @@ export function middleware(request: NextRequest) {
 
 ### 🎯 Map Lifecycle Rules (Client-Only Behavior)
 
-**For frontend-developers: Критические правила работы with картами**
+**Для фронтенд-разработчиков: Критические правила работы с картами**
 
 #### A) Client-Only Rendering (ОБЯЗАТЕЛЬНО)
 
-**Проблема:** Google Maps требует `window` and `document` → ошибка при SSR
+**Проблема:** Google Maps требует `window` и `document` → ошибка при SSR
 
-**Решение: Dynamic import with ssr: false**
+**Решение: Dynamic import с ssr: false**
 
 ```typescript
 // ✅ CORRECT - Client-only map
@@ -7996,8 +7996,8 @@ import { InteractiveWarehouseMap } from '@/components/map';
 // Вызовет ошибку: "window is not defined"
 ```
 
-**All map-components ОБЯЗАНЫ:**
-- Импортироваться через `dynamic` with `ssr: false`
+**Все map-компоненты ОБЯЗАНЫ:**
+- Импортироваться через `dynamic` с `ssr: false`
 - Иметь `loading` fallback
 - Проверять `typeof window !== 'undefined'` внутри useEffect
 
@@ -8117,7 +8117,7 @@ function updateMarkers(map, warehouses) {
         balloonContent: `
           <strong>${warehouse.name}</strong><br>
           ${warehouse.address}<br>
-          from ${warehouse.min_price} AED /мес
+          от ${warehouse.min_price} AED /мес
         `
       }
     );
@@ -8293,7 +8293,7 @@ return (
 
 1. **Hide map container** - Don't show broken/loading map indefinitely
 2. **Show list-only layout** - Warehouses still visible in list view
-3. **Display non-blocking warning** - "Map temporarily unavailable" (dismissible toast)
+3. **Display non-blocking warning** - "Карта временно недоступна" (dismissible toast)
 4. **No page crash** - Graceful degradation only
 
 **Implementation:**
@@ -8311,7 +8311,7 @@ function SearchPage() {
         <ErrorBoundary
           onError={() => {
             setMapError(true);
-            toast.warning('Map temporarily unavailable. Используйте список.');
+            toast.warning('Карта временно недоступна. Используйте список.');
           }}
           fallback={<MapErrorFallback />}
         >
@@ -8320,7 +8320,7 @@ function SearchPage() {
       ) : (
         <div className="map-disabled-notice">
           <InfoIcon />
-          <span>Карта недоступна. Склады отображены in списке ниже.</span>
+          <span>Карта недоступна. Склады отображены в списке ниже.</span>
         </div>
       )}
       
@@ -8352,7 +8352,7 @@ function SearchPage() {
 
 ### 12.1. Google Maps API
 
-#### 12.1.1. Подключение and конфигурация
+#### 12.1.1. Подключение и конфигурация
 
 ```bash
 npm install @react-google-maps/api
@@ -8365,13 +8365,13 @@ export const GOOGLE_MAPS_CONFIG = {
   lang: 'ru_RU',
   version: '2.1',
   coordorder: 'latlong' as const,
-  load: 'package.full', // or указать конкретные модули
+  load: 'package.full', // или указать конкретные модули
 };
 
 export const DEFAULT_MAP_CENTER: [number, number] = [55.751244, 37.618423]; // Dubai
 export const DEFAULT_MAP_ZOOM = 10;
 
-// Настройки for разных типов карт
+// Настройки для разных типов карт
 export const MAP_TYPES = {
   default: 'roadmap',
   satellite: 'satellite',
@@ -8397,7 +8397,7 @@ export function MapsProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// In root layout
+// В root layout
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
@@ -8414,7 +8414,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 
-### 12.2. Base component карты
+### 12.2. Базовый компонент карты
 
 ```typescript
 // modules/map/components/BaseMap.tsx
@@ -8467,7 +8467,7 @@ export function BaseMap({
 ```
 
 
-### 12.3. Markers and Placemarks
+### 12.3. Markers и Placemarks
 
 ```typescript
 // modules/map/components/WarehouseMarker.tsx
@@ -8520,7 +8520,7 @@ export function WarehouseMarker({
         href="/warehouses/${warehouse.id}" 
         style="display: block; margin-top: 12px; text-align: center; padding: 8px; background: #0284c7; color: white; text-decoration: none; border-radius: 6px; font-size: 14px;"
       >
-        Learn more
+        Подробнее
       </a>
     </div>
   `;
@@ -8646,14 +8646,14 @@ export function useGeolocation() {
         });
       },
       (error) => {
-        let errorMessage = 'Не удалось определить monthsтоположение';
+        let errorMessage = 'Не удалось определить местоположение';
         
         switch (error.code) {
           case error.PERMISSION_DENIED:
             errorMessage = 'Доступ к геолокации запрещен';
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Information о monthsтоположении недоступна';
+            errorMessage = 'Информация о местоположении недоступна';
             break;
           case error.TIMEOUT:
             errorMessage = 'Истекло время ожидания';
@@ -8682,7 +8682,7 @@ export function useGeolocation() {
 }
 ```
 
-**Usage in componentе:**
+**Использование в компоненте:**
 
 ```typescript
 function SearchPage() {
@@ -8772,7 +8772,7 @@ export async function geocodeAddress(address: string): Promise<GeocodeResult | n
   }
 }
 
-// Reverse geocoding - координаты in адрес
+// Reverse geocoding - координаты в адрес
 export async function reverseGeocode(
   latitude: number, 
   longitude: number
@@ -8802,10 +8802,10 @@ export async function reverseGeocode(
 }
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
-// In componentе поиска
+// В компоненте поиска
 function SearchBar() {
   const [query, setQuery] = useState('');
   const { updateFilter } = useFilterStore();
@@ -8818,7 +8818,7 @@ function SearchBar() {
       updateFilter('longitude', result.longitude);
       updateFilter('q', result.formatted_address);
     } else {
-      toast.error('Address не найден');
+      toast.error('Адрес не найден');
     }
   };
   
@@ -8829,7 +8829,7 @@ function SearchBar() {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Введите адрес..."
       />
-      <Button onClick={handleSearch}>Find</Button>
+      <Button onClick={handleSearch}>Найти</Button>
     </div>
   );
 }
@@ -8855,11 +8855,11 @@ export function useMapProvider(): MapProvider {
         
         if (!response.ok) {
           setProvider('2gis');
-          console.warn('Google Maps unavailable, we use 2GIS');
+          console.warn('Google Maps недоступен, используем 2GIS');
         }
       } catch (error) {
         setProvider('2gis');
-        console.warn('Google Maps unavailable, we use 2GIS');
+        console.warn('Google Maps недоступен, используем 2GIS');
       }
     };
     
@@ -8871,7 +8871,7 @@ export function useMapProvider(): MapProvider {
 ```
 
 
-### 12.8. Интерактивная карта with поиском
+### 12.8. Интерактивная карта с поиском
 
 ```typescript
 // modules/map/components/InteractiveWarehouseMap.tsx
@@ -8896,7 +8896,7 @@ export function InteractiveWarehouseMap() {
     }
   }, [filters.latitude, filters.longitude]);
   
-  // Центрируем на первом warehouseе из результатов
+  // Центрируем на первом складе из результатов
   useEffect(() => {
     if (warehouses && warehouses.length > 0 && !filters.latitude) {
       setMapCenter([warehouses[0].latitude, warehouses[0].longitude]);
@@ -8921,7 +8921,7 @@ export function InteractiveWarehouseMap() {
         />
       </div>
       
-      {/* Боковая панель with выбранным warehouseом */}
+      {/* Боковая панель с выбранным складом */}
       {selectedWarehouse && (
         <div className="w-96 overflow-y-auto">
           <WarehouseCard warehouse={selectedWarehouse} />
@@ -8970,8 +8970,8 @@ export function RouteMap({ from, to, onRouteCalculated }: RouteMapProps) {
       mapRef.current.geoObjects.add(route);
       
       // Получаем информацию о маршруте
-      const distance = route.getLength(); // in метрах
-      const duration = route.getTime(); // in secondsах
+      const distance = route.getLength(); // в метрах
+      const duration = route.getTime(); // в секундах
       
       onRouteCalculated?.(distance, duration);
     });
@@ -9007,7 +9007,7 @@ const WarehouseMap = dynamic(
   {
     loading: () => (
       <div className="w-full h-[600px] bg-gray-100 animate-pulse flex items-center justify-center">
-        <LoadingSpinner text="Loading карты..." />
+        <LoadingSpinner text="Загрузка карты..." />
       </div>
     ),
     ssr: false, // Карта не рендерится на сервере
@@ -9037,7 +9037,7 @@ function InteractiveMap() {
   const [bounds, setBounds] = useState(null);
   const debouncedBounds = useDebounce(bounds, 500);
   
-  // Запрос warehouses только после остановки движения карты
+  // Запрос складов только после остановки движения карты
   const { data: warehouses } = useQuery({
     queryKey: ['warehouses', 'bounds', debouncedBounds],
     queryFn: () => warehousesApi.searchByBounds(debouncedBounds),
@@ -9055,16 +9055,16 @@ function InteractiveMap() {
 ```
 
 
-**End of Block 4 (Sections 10-11)**
+**Конец Блока 4 (Разделы 10-11)**
 
 
 
 
 
-# БЛОК 5 (ФИНАЛЬНЫЙ): Sections 12-13
+# БЛОК 5 (ФИНАЛЬНЫЙ): Разделы 12-13
 
 
-## 13. Работа with tokenми and безопасность
+## 13. Работа с токенами и безопасность
 
 ---
 
@@ -9094,19 +9094,19 @@ The examples below are **theoretical/alternative approaches only** and are kept 
 ```typescript
 // lib/auth/tokens.ts
 
-// Хранение Access Token - httpOnly cookie (предпочтительно) or localStorage
+// Хранение Access Token - httpOnly cookie (предпочтительно) или localStorage
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
-// Access Token - короткий срок жизни (15 minutes)
+// Access Token - короткий срок жизни (15 минут)
 export function setAccessToken(token: string): void {
   if (typeof window === 'undefined') return;
   
-  // Variant 1: localStorage (проще, но менее безопасно)
+  // Вариант 1: localStorage (проще, но менее безопасно)
   localStorage.setItem(ACCESS_TOKEN_KEY, token);
   
-  // Variant 2: httpOnly cookie (безопаснее, устанавливается сервером)
-  // Устанавливается через Set-Cookie header from API
+  // Вариант 2: httpOnly cookie (безопаснее, устанавливается сервером)
+  // Устанавливается через Set-Cookie header от API
 }
 
 export function getAccessToken(): string | null {
@@ -9118,10 +9118,10 @@ export function getAccessToken(): string | null {
 export function setRefreshToken(token: string): void {
   if (typeof window === 'undefined') return;
   
-  // Refresh token ВСЕГДА in httpOnly cookie for безопасности
+  // Refresh token ВСЕГДА в httpOnly cookie для безопасности
   // Устанавливается сервером через Set-Cookie
   
-  // Для локальной разработки можем хранить in localStorage
+  // Для локальной разработки можем хранить в localStorage
   if (process.env.NODE_ENV === 'development') {
     localStorage.setItem(REFRESH_TOKEN_KEY, token);
   }
@@ -9130,8 +9130,8 @@ export function setRefreshToken(token: string): void {
 export function getRefreshToken(): string | null {
   if (typeof window === 'undefined') return null;
   
-  // In production refresh token unavailable из JS (httpOnly cookie)
-  // In development можем читать из localStorage
+  // В production refresh token недоступен из JS (httpOnly cookie)
+  // В development можем читать из localStorage
   if (process.env.NODE_ENV === 'development') {
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   }
@@ -9159,18 +9159,18 @@ export function clearTokens(): void {
   });
 }
 
-// Проверка валидности token
+// Проверка валидности токена
 export function isTokenExpired(token: string): boolean {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    const exp = payload.exp * 1000; // Конвертируем in миллисекунды
+    const exp = payload.exp * 1000; // Конвертируем в миллисекунды
     return Date.now() >= exp;
   } catch {
     return true;
   }
 }
 
-// Получение data из token
+// Получение данных из токена
 export function decodeToken(token: string): any {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -9203,7 +9203,7 @@ export async function refreshAccessToken(): Promise<string> {
     try {
       const refreshToken = getRefreshToken();
       
-      // Запрос на refresh (с credentials for httpOnly cookies)
+      // Запрос на refresh (с credentials для httpOnly cookies)
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {},
@@ -9211,7 +9211,7 @@ export async function refreshAccessToken(): Promise<string> {
           headers: {
             'Content-Type': 'application/json',
           },
-          withCredentials: true, // Important for отправки httpOnly cookies
+          withCredentials: true, // Важно для отправки httpOnly cookies
         }
       );
       
@@ -9236,7 +9236,7 @@ export async function refreshAccessToken(): Promise<string> {
 ```
 
 
-#### 13.1.3. Автоматический refresh in interceptor
+#### 13.1.3. Автоматический refresh в interceptor
 
 ```typescript
 // lib/api/interceptors/response.interceptor.ts
@@ -9270,7 +9270,7 @@ export function setupResponseInterceptor(client: any) {
       // 401 - токен истек
       if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
-          // Добавляем запрос in очередь
+          // Добавляем запрос в очередь
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           })
@@ -9329,7 +9329,7 @@ export function sanitizeHTML(html: string): string {
   });
 }
 
-// Экранирование for текста
+// Экранирование для текста
 export function escapeHTML(text: string): string {
   const div = document.createElement('div');
   div.textContent = text;
@@ -9348,7 +9348,7 @@ export function SafeHTML({ html }: { html: string }) {
 }
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 // ❌ ОПАСНО - XSS уязвимость
@@ -9356,12 +9356,12 @@ function Comment({ text }: { text: string }) {
   return <div dangerouslySetInnerHTML={{ __html: text }} />;
 }
 
-// ✅ SAFE - санитизация
+// ✅ БЕЗОПАСНО - санитизация
 function Comment({ text }: { text: string }) {
   return <SafeHTML html={text} />;
 }
 
-// ✅ SAFE - React автоматически экранирует
+// ✅ БЕЗОПАСНО - React автоматически экранирует
 function Comment({ text }: { text: string }) {
   return <div>{text}</div>;
 }
@@ -9406,14 +9406,14 @@ export function middleware(request: NextRequest) {
 ```typescript
 // lib/security/csrf.ts
 
-// Generation CSRF token
+// Генерация CSRF токена
 export function generateCSRFToken(): string {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-// Saving CSRF token
+// Сохранение CSRF токена
 export function setCSRFToken(token: string): void {
   if (typeof window === 'undefined') return;
   sessionStorage.setItem('csrf_token', token);
@@ -9424,8 +9424,8 @@ export function getCSRFToken(): string | null {
   return sessionStorage.getItem('csrf_token');
 }
 
-// Добавление CSRF token in запросы
-// In axios interceptor
+// Добавление CSRF токена в запросы
+// В axios interceptor
 apiClient.interceptors.request.use((config) => {
   const csrfToken = getCSRFToken();
   
@@ -9486,7 +9486,7 @@ module.exports = {
 
 ### 13.5. Route Guards
 
-#### 13.5.1. Auth Guard for защищенных страниц
+#### 13.5.1. Auth Guard для защищенных страниц
 
 ```typescript
 // components/auth/AuthGuard.tsx
@@ -9521,7 +9521,7 @@ export function AuthGuard({ children, redirectTo = '/login' }: AuthGuardProps) {
 }
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 // app/dashboard/layout.tsx
@@ -9579,7 +9579,7 @@ export function RoleGuard({
 }
 ```
 
-**Usage:**
+**Использование:**
 
 ```typescript
 // app/operator/layout.tsx
@@ -9595,7 +9595,7 @@ export default function OperatorLayout({ children }: { children: React.ReactNode
 ```
 
 
-### 13.6. Защита from Rate Limiting на клиенте
+### 13.6. Защита от Rate Limiting на клиенте
 
 ```typescript
 // lib/security/rate-limiter.ts
@@ -9650,7 +9650,7 @@ export function useRateLimitedMutation<T>(
       setIsBlocked(true);
       setRemainingTime(Math.ceil(timeRemaining / 1000));
       
-      toast.error(`Too many requests. Try again in ${Math.ceil(timeRemaining / 1000)} sec.`);
+      toast.error(`Слишком много запросов. Попробуйте через ${Math.ceil(timeRemaining / 1000)} сек.`);
       throw new Error('Rate limit exceeded');
     }
     
@@ -9662,16 +9662,16 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-## 14. Диаграммы взаимодействия with API
+## 14. Диаграммы взаимодействия с API
 
-### 14.1. Поток поиска warehouses
+### 14.1. Поток поиска складов
 
 ```
 ┌─────────────┐
-│   Client    │
+│   Клиент    │
 └──────┬──────┘
        │
-       │ 1. Ввод параmetroв поиска
+       │ 1. Ввод параметров поиска
        │    (город, цена, размер)
        ▼
 ┌──────────────────┐
@@ -9679,7 +9679,7 @@ export function useRateLimitedMutation<T>(
 │  (Zustand)       │
 └──────┬───────────┘
        │
-       │ 2. Update filters
+       │ 2. Обновление filters
        │
        ▼
 ┌──────────────────┐
@@ -9741,7 +9741,7 @@ export function useRateLimitedMutation<T>(
 │  - staleTime: 5m │
 └──────┬───────────┘
        │
-       │ 9. Update UI
+       │ 9. Обновление UI
        │
        ▼
 ┌──────────────────┐
@@ -9751,14 +9751,14 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-### 14.2. Поток создания booking
+### 14.2. Поток создания бронирования
 
 ```
 ┌─────────────┐
-│   Client    │
+│   Клиент    │
 └──────┬──────┘
        │
-       │ 1. Form filling
+       │ 1. Заполнение формы
        │    BookingForm
        │
        ▼
@@ -9768,7 +9768,7 @@ export function useRateLimitedMutation<T>(
 └──────┬───────────┘
        │
        │ 2. Client-side validation
-       │    ✓ All поля заполнены
+       │    ✓ Все поля заполнены
        │    ✓ Email корректный
        │
        ▼
@@ -9808,7 +9808,7 @@ export function useRateLimitedMutation<T>(
        │ 6. Business logic:
        │    - Проверка доступности бокса
        │    - Расчет цены
-       │    - Creation booking
+       │    - Создание бронирования
        │
        ▼
 ┌──────────────────┐
@@ -9861,7 +9861,7 @@ export function useRateLimitedMutation<T>(
 │ .invalidateQueries│
 └──────┬───────────┘
        │
-       │ 11. Update кэша:
+       │ 11. Обновление кэша:
        │     - ['bookings', 'user']
        │     - ['boxes', boxId]
        │     - ['warehouses', warehouseId]
@@ -9875,11 +9875,11 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-### 14.3. Поток аутентификации with refresh
+### 14.3. Поток аутентификации с refresh
 
 ```
 ┌─────────────┐
-│   Client    │
+│   Клиент    │
 └──────┬──────┘
        │
        │ 1. Пользователь вводит
@@ -9945,17 +9945,17 @@ export function useRateLimitedMutation<T>(
 │   Frontend       │
 └──────┬───────────┘
        │
-       │ 8. Saving:
+       │ 8. Сохранение:
        │    - access_token → localStorage
        │    - refresh_token → httpOnly cookie
        │    - user → Zustand store
        │
        ▼
 ┌─────────────────────────────────────┐
-│  ... через 15 minutes ...             │
+│  ... через 15 минут ...             │
 └─────────────────────────────────────┘
        │
-       │ 9. API request with истекшим токеном
+       │ 9. API request с истекшим токеном
        │
        ▼
 ┌──────────────────┐
@@ -9993,7 +9993,7 @@ export function useRateLimitedMutation<T>(
 │   Frontend       │
 └──────┬───────────┘
        │
-       │ 14. Saving нового access_token
+       │ 14. Сохранение нового access_token
        │     Повтор оригинального запроса
        │
        ▼
@@ -10003,14 +10003,14 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-### 14.4. Поток создания warehouseа оператором
+### 14.4. Поток создания склада оператором
 
 ```
 ┌─────────────┐
 │  Оператор   │
 └──────┬──────┘
        │
-       │ 1. Form filling
+       │ 1. Заполнение формы
        │    WarehouseForm
        │    (название, адрес, фото)
        │
@@ -10019,7 +10019,7 @@ export function useRateLimitedMutation<T>(
 │ useCreateWarehouse│
 └──────┬───────────┘
        │
-       │ 2. Loading фотографий
+       │ 2. Загрузка фотографий
        │    POST /api/v1/upload
        │    Content-Type: multipart/form-data
        │
@@ -10028,9 +10028,9 @@ export function useRateLimitedMutation<T>(
 │   File Service   │
 └──────┬───────────┘
        │
-       │ 3. Saving файлов
+       │ 3. Сохранение файлов
        │    → S3 / CDN
-       │    Generation URLs
+       │    Генерация URLs
        │
        ▼
 ┌──────────────────┐
@@ -10057,10 +10057,10 @@ export function useRateLimitedMutation<T>(
 │ Operator Service │
 └──────┬───────────┘
        │
-       │ 6. Validation data:
+       │ 6. Валидация данных:
        │    - Геокодирование адреса
        │    - Проверка уникальности
-       │    - Validation атрибутов
+       │    - Валидация атрибутов
        │
        ▼
 ┌──────────────────┐
@@ -10113,11 +10113,11 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-### 14.5. Поток работы with AI рекомендациями
+### 14.5. Поток работы с AI рекомендациями
 
 ```
 ┌─────────────┐
-│   Client    │
+│   Клиент    │
 └──────┬──────┘
        │
        │ 1. Пользователь описывает вещи:
@@ -10170,7 +10170,7 @@ export function useRateLimitedMutation<T>(
 │   PostgreSQL     │
 └──────┬───────────┘
        │
-       │ 6. Возврат подходящих boxes
+       │ 6. Возврат подходящих боксов
        │
        ▼
 ┌──────────────────┐
@@ -10195,9 +10195,9 @@ export function useRateLimitedMutation<T>(
 └──────┬───────────┘
        │
        │ 8. Отображение рекомендаций:
-       │    - Карточки boxes
+       │    - Карточки боксов
        │    - Объяснение выбора
-       │    - Button "Book"
+       │    - Кнопка "Забронировать"
        │
        ▼
 ┌──────────────────┐
@@ -10295,19 +10295,19 @@ export function useRateLimitedMutation<T>(
 ```
 
 
-**End of Block 5 (Sections 12-13)**
+**Конец Блока 5 (Разделы 12-13)**
 
 
 ## ДОКУМЕНТАЦИЯ ЗАВЕРШЕНА!
 
-All 13 разделов Frontend Architecture Specification for Self-Storage Aggregator MVP v1 созданы.
+Все 13 разделов Frontend Architecture Specification для Self-Storage Aggregator MVP v1 созданы.
 
 ### Структура документации:
 
-1. **Block 1** (Sections 1-3) - Общая архитектура, Tech Stack, Структура файлов
-2. **Block 2A** (Section 4) - Management состоянием
-3. **Block 2B** (Section 5) - Loading data
-4. **Block 2C** (Section 6) - UI components
-5. **Block 3** (Sections 7-9) - Loading/Error/SEO/Accessibility
-6. **Block 4** (Sections 10-11) - Performance/Maps
-7. **Block 5** (Sections 12-13) - Security/API Diagrams
+1. **Блок 1** (Разделы 1-3) - Общая архитектура, Tech Stack, Структура файлов
+2. **Блок 2A** (Раздел 4) - Управление состоянием
+3. **Блок 2B** (Раздел 5) - Загрузка данных
+4. **Блок 2C** (Раздел 6) - UI компоненты
+5. **Блок 3** (Разделы 7-9) - Loading/Error/SEO/Accessibility
+6. **Блок 4** (Разделы 10-11) - Performance/Maps
+7. **Блок 5** (Разделы 12-13) - Security/API Diagrams

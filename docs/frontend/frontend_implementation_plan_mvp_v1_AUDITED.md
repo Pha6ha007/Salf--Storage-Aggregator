@@ -31,64 +31,64 @@ This document uses the following terminology to indicate the level of requiremen
    - 1.4. State-management
    - 1.5. API Services and Backend Synchronization
    - 1.6. Working with Maps
-   - 1.7. Работа с авторизацией
-   - 1.8. Работа с формами и валидацией
+   - 1.7. Working with Authentication
+   - 1.8. Working with Forms and Validation
 
-2. [UI-слой](#2-ui-слой)
-   - 2.1. Принципы дизайн-системы
-   - 2.2. UI-компоненты
-   - 2.3. Best practices по композиции интерфейсов
+2. [UI Layer](#2-ui-layer)
+   - 2.1. Design System Principles
+   - 2.2. UI Components
+   - 2.3. Best Practices for Interface Composition
 
-3. [Технический стек](#3-технический-стек)
+3. [Technology Stack](#3-technology-stack)
    - 3.1. Framework: Next.js + React
-   - 3.2. Библиотека карт
-   - 3.3. Работа с API
+   - 3.2. Maps Library
+   - 3.3. Working with API
    - 3.4. State-management
-   - 3.5. Оптимизации
+   - 3.5. Optimizations
 
-4. [План разработки](#4-план-разработки)
-   - 4.1. Спринты и фазы
-   - 4.2. Интеграции с backend
-   - 4.3. Тестирование
+4. [Development Plan](#4-development-plan)
+   - 4.1. Sprints and Phases
+   - 4.2. Backend Integrations
+   - 4.3. Testing
 
-5. [Требования к производительности](#5-требования-к-производительности)
-   - 5.1. Время загрузки
-   - 5.2. Оптимизация карт
-   - 5.3. Кэширование
-   - 5.4. Пагинация, сортировка и фильтрация
+5. [Performance Requirements](#5-performance-requirements)
+   - 5.1. Load Time
+   - 5.2. Maps Optimization
+   - 5.3. Caching
+   - 5.4. Pagination, Sorting and Filtering
 
 ---
 
-# Раздел 1: Архитектура фронтенда
+# Section 1: Frontend Architecture
 
-## 1.1. Структура проекта
+## 1.1. Project Structure
 
-Проект фронтенда построен на **Next.js 14 (App Router)** с использованием TypeScript. Структура организована по принципу **feature-based architecture** с чёткой изоляцией компонентов по доменам.
+The frontend project is built on **Next.js 14 (App Router)** using TypeScript. The structure is organized according to the **feature-based architecture** principle with clear component isolation by domains.
 
 > **Frontend clarification:**
-> - Структура проекта ниже является **MUST** — все директории и файлы MUST быть созданы согласно этой структуре.
-> - Названия директорий и файлов MUST соответствовать указанным (регистр важен).
-> - Директория `themes/` в `styles/` является **MAY** — темизация не входит в MVP.
+> - The project structure below is **MUST** — all directories and files MUST be created according to this structure.
+> - Directory and file names MUST match the specified ones (case-sensitive).
+> - The `themes/` directory in `styles/` is **MAY** — theming is not included in MVP.
 
 ```
 frontend/
 ├── src/
 │   ├── app/                          # Next.js App Router
-│   │   ├── (public)/                 # Публичные страницы (без auth layout)
-│   │   │   ├── page.tsx              # Главная страница
-│   │   │   ├── catalog/              # Каталог складов
+│   │   ├── (public)/                 # Public pages (without auth layout)
+│   │   │   ├── page.tsx              # Home page
+│   │   │   ├── catalog/              # Warehouse catalog
 │   │   │   │   ├── page.tsx
-│   │   │   │   └── [id]/            # Карточка склада
+│   │   │   │   └── [id]/            # Warehouse details page
 │   │   │   │       └── page.tsx
-│   │   │   ├── map/                  # Карта
+│   │   │   ├── map/                  # Map
 │   │   │   │   └── page.tsx
-│   │   │   ├── booking/              # Бронирование
+│   │   │   ├── booking/              # Booking
 │   │   │   │   └── [id]/
 │   │   │   │       └── page.tsx
 │   │   │   └── about/
 │   │   │       └── page.tsx
 │   │   │
-│   │   ├── (auth)/                   # Auth страницы
+│   │   ├── (auth)/                   # Auth pages
 │   │   │   ├── login/
 │   │   │   │   └── page.tsx
 │   │   │   ├── register/
@@ -96,36 +96,36 @@ frontend/
 │   │   │   └── reset-password/
 │   │   │       └── page.tsx
 │   │   │
-│   │   ├── (protected)/              # Защищённые страницы (требуют auth)
-│   │   │   ├── profile/              # ЛК пользователя
+│   │   ├── (protected)/              # Protected pages (require auth)
+│   │   │   ├── profile/              # User dashboard
 │   │   │   │   ├── page.tsx
 │   │   │   │   ├── bookings/
 │   │   │   │   ├── favorites/
 │   │   │   │   └── settings/
 │   │   │   │
-│   │   │   └── operator/             # ЛК оператора
+│   │   │   └── operator/             # Operator dashboard
 │   │   │       ├── page.tsx          # Dashboard
-│   │   │       ├── warehouses/       # Управление складами
-│   │   │       ├── boxes/            # Управление боксами
-│   │   │       ├── bookings/         # Заявки
-│   │   │       ├── reviews/          # Отзывы
-│   │   │       ├── analytics/        # Аналитика
-│   │   │       └── settings/         # Настройки
+│   │   │       ├── warehouses/       # Warehouse management
+│   │   │       ├── boxes/            # Box management
+│   │   │       ├── bookings/         # Booking requests
+│   │   │       ├── reviews/          # Reviews
+│   │   │       ├── analytics/        # Analytics
+│   │   │       └── settings/         # Settings
 │   │   │
 │   │   ├── layout.tsx                # Root layout
 │   │   ├── error.tsx                 # Error boundary
 │   │   ├── loading.tsx               # Loading UI
 │   │   └── not-found.tsx             # 404
 │   │
-│   ├── components/                    # Компоненты
-│   │   ├── layout/                   # Layout-компоненты
+│   ├── components/                    # Components
+│   │   ├── layout/                   # Layout components
 │   │   │   ├── Header.tsx
 │   │   │   ├── Footer.tsx
 │   │   │   ├── Sidebar.tsx
 │   │   │   ├── MainLayout.tsx
 │   │   │   └── OperatorLayout.tsx
 │   │   │
-│   │   ├── ui/                       # UI-компоненты (базовые)
+│   │   ├── ui/                       # UI components (base)
 │   │   │   ├── Button.tsx
 │   │   │   ├── Input.tsx
 │   │   │   ├── Select.tsx
@@ -138,7 +138,7 @@ frontend/
 │   │   │   ├── Dropdown.tsx
 │   │   │   └── index.ts
 │   │   │
-│   │   └── features/                 # Feature-компоненты (по доменам)
+│   │   └── features/                 # Feature components (by domain)
 │   │       ├── auth/
 │   │       │   ├── LoginForm.tsx
 │   │       │   ├── RegisterForm.tsx
@@ -200,15 +200,15 @@ frontend/
 │   │   └── useFilters.ts
 │   │
 │   ├── stores/                        # State management (Zustand)
-│   │   ├── authStore.ts              # Авторизация
-│   │   ├── filtersStore.ts           # Фильтры каталога
-│   │   ├── mapStore.ts               # Состояние карты
-│   │   ├── bookingStore.ts           # Процесс бронирования
-│   │   └── uiStore.ts                # UI состояние (модалки, тосты)
+│   │   ├── authStore.ts              # Authentication
+│   │   ├── filtersStore.ts           # Catalog filters
+│   │   ├── mapStore.ts               # Map state
+│   │   ├── bookingStore.ts           # Booking process
+│   │   └── uiStore.ts                # UI state (modals, toasts)
 │   │
-│   ├── services/                      # API и внешние сервисы
+│   ├── services/                      # API and external services
 │   │   ├── api/
-│   │   │   ├── client.ts             # Axios instance с interceptors
+│   │   │   ├── client.ts             # Axios instance with interceptors
 │   │   │   ├── auth.api.ts
 │   │   │   ├── warehouses.api.ts
 │   │   │   ├── boxes.api.ts
@@ -221,32 +221,32 @@ frontend/
 │   │   └── maps/
 │   │       └── googleMaps.ts         # Google Maps SDK wrapper
 │   │
-│   ├── lib/                           # Утилиты и хелперы
-│   │   ├── utils.ts                  # Общие утилиты
-│   │   ├── validators.ts             # Валидаторы форм
-│   │   ├── formatters.ts             # Форматирование (цены, даты)
-│   │   ├── constants.ts              # Константы приложения
+│   ├── lib/                           # Utilities and helpers
+│   │   ├── utils.ts                  # Common utilities
+│   │   ├── validators.ts             # Form validators
+│   │   ├── formatters.ts             # Formatting (prices, dates)
+│   │   ├── constants.ts              # Application constants
 │   │   └── queryClient.ts            # React Query configuration
 │   │
-│   ├── types/                         # TypeScript типы
-│   │   ├── api.types.ts              # API response/request типы
+│   ├── types/                         # TypeScript types
+│   │   ├── api.types.ts              # API response/request types
 │   │   ├── warehouse.types.ts
 │   │   ├── box.types.ts
 │   │   ├── booking.types.ts
 │   │   ├── user.types.ts
 │   │   └── index.ts
 │   │
-│   ├── styles/                        # Стили
-│   │   ├── globals.css               # Глобальные стили + Tailwind
-│   │   ├── variables.css             # CSS переменные (цвета, шрифты)
-│   │   └── themes/                   # Темы (если нужны)
+│   ├── styles/                        # Styles
+│   │   ├── globals.css               # Global styles + Tailwind
+│   │   ├── variables.css             # CSS variables (colors, fonts)
+│   │   └── themes/                   # Themes (if needed)
 │   │
-│   └── config/                        # Конфигурация
+│   └── config/                        # Configuration
 │       ├── env.ts                    # Environment variables
-│       ├── routes.ts                 # Роуты приложения
+│       ├── routes.ts                 # Application routes
 │       └── api.config.ts             # API endpoints
 │
-├── public/                            # Статика
+├── public/                            # Static assets
 │   ├── images/
 │   ├── icons/
 │   └── fonts/
@@ -260,81 +260,81 @@ frontend/
 └── README.md
 ```
 
-### Назначение ключевых директорий
+### Key Directory Purposes
 
-| Директория | Назначение |
+| Directory | Purpose |
 |------------|------------|
-| **`app/`** | Next.js App Router — файловая маршрутизация, layouts, страницы |
-| **`components/layout/`** | Общие layout-компоненты (Header, Footer, Sidebar) |
-| **`components/ui/`** | Базовые переиспользуемые UI-компоненты (Button, Input, Modal) |
-| **`components/features/`** | Доменные компоненты, специфичные для фич (warehouses, booking, map) |
-| **`hooks/`** | Custom React hooks для переиспользования логики |
-| **`stores/`** | Zustand stores для глобального состояния |
-| **`services/api/`** | API-слой: функции для запросов к backend |
-| **`lib/`** | Утилиты, хелперы, конфигурация React Query |
-| **`types/`** | TypeScript типы и интерфейсы |
-| **`styles/`** | Глобальные стили, CSS-переменные |
-| **`config/`** | Конфигурационные файлы (env, routes, api endpoints) |
+| **`app/`** | Next.js App Router — file-based routing, layouts, pages |
+| **`components/layout/`** | Common layout components (Header, Footer, Sidebar) |
+| **`components/ui/`** | Base reusable UI components (Button, Input, Modal) |
+| **`components/features/`** | Domain-specific feature components (warehouses, booking, map) |
+| **`hooks/`** | Custom React hooks for logic reuse |
+| **`stores/`** | Zustand stores for global state |
+| **`services/api/`** | API layer: functions for backend requests |
+| **`lib/`** | Utilities, helpers, React Query configuration |
+| **`types/`** | TypeScript types and interfaces |
+| **`styles/`** | Global styles, CSS variables |
+| **`config/`** | Configuration files (env, routes, api endpoints) |
 
 ---
 
-## 1.2. Страницы и роутинг
+## 1.2. Pages and Routing
 
-### Структура роутинга
+### Routing Structure
 
-Next.js App Router использует файловую систему для определения роутов. Все страницы находятся в директории `app/`.
+Next.js App Router uses the file system to define routes. All pages are located in the `app/` directory.
 
 > **Frontend clarification:**
-> - Route Groups `(public)`, `(auth)`, `(protected)` — это организационная структура, которая НЕ влияет на URL.
-> - Middleware защищает роуты на уровне сервера (Edge Runtime).
-> - ProtectedRoute компонент — дополнительная клиентская защита для UX.
-> - Оба уровня защиты (middleware + ProtectedRoute) **MUST** использоваться вместе для защищённых роутов.
+> - Route Groups `(public)`, `(auth)`, `(protected)` — this is an organizational structure that does NOT affect the URL.
+> - Middleware protects routes at the server level (Edge Runtime).
+> - ProtectedRoute component — additional client-side protection for UX.
+> - Both protection levels (middleware + ProtectedRoute) **MUST** be used together for protected routes.
 
-#### Публичные страницы (без авторизации)
+#### Public Pages (without authentication)
 
-| URL | Файл | Описание |
+| URL | File | Description |
 |-----|------|----------|
-| `/` | `app/(public)/page.tsx` | Главная страница: поиск, AI-рекомендации |
-| `/catalog` | `app/(public)/catalog/page.tsx` | Каталог складов: список, фильтры, сортировка |
-| `/catalog/[id]` | `app/(public)/catalog/[id]/page.tsx` | Карточка склада: детали, фото, боксы, отзывы |
-| `/map` | `app/(public)/map/page.tsx` | Карта складов с кластерами и фильтрами |
-| `/booking/[warehouseId]` | `app/(public)/booking/[warehouseId]/page.tsx` | Форма бронирования бокса |
-| `/about` | `app/(public)/about/page.tsx` | О проекте |
+| `/` | `app/(public)/page.tsx` | Home page: search, AI recommendations |
+| `/catalog` | `app/(public)/catalog/page.tsx` | Warehouse catalog: list, filters, sorting |
+| `/catalog/[id]` | `app/(public)/catalog/[id]/page.tsx` | Warehouse details: details, photos, boxes, reviews |
+| `/map` | `app/(public)/map/page.tsx` | Warehouse map with clusters and filters |
+| `/booking/[warehouseId]` | `app/(public)/booking/[warehouseId]/page.tsx` | Box booking form |
+| `/about` | `app/(public)/about/page.tsx` | About the project |
 
-#### Страницы авторизации
+#### Authentication Pages
 
-| URL | Файл | Описание |
+| URL | File | Description |
 |-----|------|----------|
-| `/login` | `app/(auth)/login/page.tsx` | Вход в систему |
-| `/register` | `app/(auth)/register/page.tsx` | Регистрация (user/operator) |
-| `/reset-password` | `app/(auth)/reset-password/page.tsx` | Восстановление пароля |
+| `/login` | `app/(auth)/login/page.tsx` | Login |
+| `/register` | `app/(auth)/register/page.tsx` | Registration (user/operator) |
+| `/reset-password` | `app/(auth)/reset-password/page.tsx` | Password recovery |
 
-#### Личный кабинет пользователя (защищённые роуты)
+#### User Dashboard (protected routes)
 
-| URL | Файл | Описание |
+| URL | File | Description |
 |-----|------|----------|
-| `/profile` | `app/(protected)/profile/page.tsx` | Профиль пользователя |
-| `/profile/bookings` | `app/(protected)/profile/bookings/page.tsx` | Мои бронирования |
-| `/profile/favorites` | `app/(protected)/profile/favorites/page.tsx` | Избранные склады |
-| `/profile/settings` | `app/(protected)/profile/settings/page.tsx` | Настройки профиля |
+| `/profile` | `app/(protected)/profile/page.tsx` | User profile |
+| `/profile/bookings` | `app/(protected)/profile/bookings/page.tsx` | My bookings |
+| `/profile/favorites` | `app/(protected)/profile/favorites/page.tsx` | Favorite warehouses |
+| `/profile/settings` | `app/(protected)/profile/settings/page.tsx` | Profile settings |
 
-#### Личный кабинет оператора (защищённые роуты)
+#### Operator Dashboard (protected routes)
 
-| URL | Файл | Описание |
+| URL | File | Description |
 |-----|------|----------|
-| `/operator` | `app/(protected)/operator/page.tsx` | Dashboard оператора: метрики, активность |
-| `/operator/warehouses` | `app/(protected)/operator/warehouses/page.tsx` | Управление складами |
-| `/operator/warehouses/[id]` | `app/(protected)/operator/warehouses/[id]/page.tsx` | Редактирование склада |
-| `/operator/warehouses/new` | `app/(protected)/operator/warehouses/new/page.tsx` | Добавление нового склада |
-| `/operator/boxes` | `app/(protected)/operator/boxes/page.tsx` | Управление боксами |
-| `/operator/bookings` | `app/(protected)/operator/bookings/page.tsx` | Заявки на бронирование |
-| `/operator/reviews` | `app/(protected)/operator/reviews/page.tsx` | Управление отзывами |
-| `/operator/analytics` | `app/(protected)/operator/analytics/page.tsx` | Аналитика и отчёты |
-| `/operator/settings` | `app/(protected)/operator/settings/page.tsx` | Настройки оператора |
+| `/operator` | `app/(protected)/operator/page.tsx` | Operator dashboard: metrics, activity |
+| `/operator/warehouses` | `app/(protected)/operator/warehouses/page.tsx` | Warehouse management |
+| `/operator/warehouses/[id]` | `app/(protected)/operator/warehouses/[id]/page.tsx` | Warehouse editing |
+| `/operator/warehouses/new` | `app/(protected)/operator/warehouses/new/page.tsx` | Add new warehouse |
+| `/operator/boxes` | `app/(protected)/operator/boxes/page.tsx` | Box management |
+| `/operator/bookings` | `app/(protected)/operator/bookings/page.tsx` | Booking requests |
+| `/operator/reviews` | `app/(protected)/operator/reviews/page.tsx` | Review management |
+| `/operator/analytics` | `app/(protected)/operator/analytics/page.tsx` | Analytics and reports |
+| `/operator/settings` | `app/(protected)/operator/settings/page.tsx` | Operator settings |
 
-### Динамические сегменты
+### Dynamic Segments
 
-Next.js использует квадратные скобки для динамических параметров:
+Next.js uses square brackets for dynamic parameters:
 
 ```typescript
 // app/(public)/catalog/[id]/page.tsx
@@ -348,15 +348,15 @@ export default async function WarehousePage({
 }
 ```
 
-### Группы роутов (Route Groups)
+### Route Groups
 
-Используются скобки `()` для организации без влияния на URL:
+Parentheses `()` are used for organization without affecting the URL:
 
-- `(public)` — публичные страницы
-- `(auth)` — страницы авторизации
-- `(protected)` — защищённые страницы с middleware проверкой
+- `(public)` — public pages
+- `(auth)` — authentication pages
+- `(protected)` — protected pages with middleware verification
 
-### Middleware для защиты роутов
+### Middleware for Route Protection
 
 ```typescript
 // middleware.ts
@@ -372,9 +372,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Проверка роли для operator routes
+  // Role check for operator routes
   if (request.nextUrl.pathname.startsWith('/operator')) {
-    // TODO: Decode JWT и проверить role === 'operator'
+    // TODO: Decode JWT and verify role === 'operator'
   }
 
   return NextResponse.next();
@@ -387,22 +387,22 @@ export const config = {
 
 ---
 
-## 1.3. Компоненты (структура и уровни)
+## 1.3. Components (structure and levels)
 
-Компоненты организованы по трём уровням абстракции:
+Components are organized into three levels of abstraction:
 
-### 1. Layout-компоненты (структурные)
+### 1. Layout Components (structural)
 
-Отвечают за общую структуру страниц.
+Responsible for the overall structure of pages.
 
-**Компоненты:**
-- `MainLayout` — общий каркас для публичных страниц (Header + Footer)
-- `OperatorLayout` — каркас для ЛК оператора (Sidebar + Header)
-- `Header` — навигация, поиск, кнопки auth
-- `Footer` — ссылки, контакты
-- `Sidebar` — боковое меню (для ЛК оператора)
+**Components:**
+- `MainLayout` — common framework for public pages (Header + Footer)
+- `OperatorLayout` — framework for operator dashboard (Sidebar + Header)
+- `Header` — navigation, search, auth buttons
+- `Footer` — links, contacts
+- `Sidebar` — side menu (for operator dashboard)
 
-**Пример:**
+**Example:**
 ```typescript
 // components/layout/MainLayout.tsx
 export function MainLayout({ children }: { children: React.ReactNode }) {
@@ -416,102 +416,102 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### 2. Feature-компоненты (доменная логика)
+### 2. Feature Components (domain logic)
 
-Специфичные для бизнес-доменов компоненты с логикой.
+Components specific to business domains with logic.
 
-#### Домен: Warehouses
-- `WarehouseCard` — карточка склада в каталоге
-- `WarehouseList` — список складов с пагинацией
-- `WarehouseFilters` — панель фильтров (цена, размер, атрибуты)
-- `WarehouseDetails` — полная информация о складе
-- `WarehouseGallery` — галерея фото
+#### Domain: Warehouses
+- `WarehouseCard` — warehouse card in catalog
+- `WarehouseList` — warehouse list with pagination
+- `WarehouseFilters` — filter panel (price, size, attributes)
+- `WarehouseDetails` — complete warehouse information
+- `WarehouseGallery` — photo gallery
 
-#### Домен: Boxes
-- `BoxCard` — карточка бокса с ценой и доступностью
-- `BoxList` — список боксов склада
-- `BoxSelector` — выбор бокса при бронировании
-- `BoxManager` — управление боксами (для оператора)
+#### Domain: Boxes
+- `BoxCard` — box card with price and availability
+- `BoxList` — warehouse box list
+- `BoxSelector` — box selection during booking
+- `BoxManager` — box management (for operator)
 
-#### Домен: Booking
-- `BookingForm` — форма бронирования
-- `BookingDatePicker` — выбор дат аренды
-- `BookingPriceCalculator` — калькулятор цены
-- `BookingConfirmation` — подтверждение бронирования
-- `BookingList` — список бронирований пользователя
+#### Domain: Booking
+- `BookingForm` — booking form
+- `BookingDatePicker` — rental date selection
+- `BookingPriceCalculator` — price calculator
+- `BookingConfirmation` — booking confirmation
+- `BookingList` — user booking list
 
-#### Домен: Map
-- `MapView` — основной компонент карты (Google Maps)
-- `MapMarker` — маркер склада
-- `MapCluster` — кластер маркеров
-- `MapPopup` — всплывающее окно с информацией о складе
-- `MapControls` — кнопки управления картой
+#### Domain: Map
+- `MapView` — main map component (Google Maps)
+- `MapMarker` — warehouse marker
+- `MapCluster` — marker cluster
+- `MapPopup` — popup window with warehouse information
+- `MapControls` — map control buttons
 
-#### Домен: Reviews
-- `ReviewCard` — карточка отзыва
-- `ReviewList` — список отзывов с пагинацией
-- `ReviewForm` — форма добавления отзыва
-- `ReviewStats` — статистика рейтинга
+#### Domain: Reviews
+- `ReviewCard` — review card
+- `ReviewList` — review list with pagination
+- `ReviewForm` — add review form
+- `ReviewStats` — rating statistics
 
-#### Домен: Operator
-- `DashboardMetrics` — метрики dashboard (occupancy, revenue)
-- `WarehouseManager` — управление складами
-- `BookingRequestList` — список заявок на бронирование
-- `BookingRequestCard` — карточка заявки
-- `AnalyticsCharts` — графики аналитики
+#### Domain: Operator
+- `DashboardMetrics` — dashboard metrics (occupancy, revenue)
+- `WarehouseManager` — warehouse management
+- `BookingRequestList` — booking request list
+- `BookingRequestCard` — request card
+- `AnalyticsCharts` — analytics charts
 
-#### Домен: AI
+#### Domain: AI
 
 > **Frontend clarification — AI COMPONENTS STATUS:**
-> 
-> Все AI-компоненты имеют следующий статус для MVP:
-> 
-> | Компонент | Статус | Описание |
+>
+> All AI components have the following status for MVP:
+>
+> | Component | Status | Description |
 > |-----------|--------|----------|
-> | `AIBoxFinder` | **MVP STUB** | Feature-flagged, базовый UI |
-> | `AIChat` | **POST-MVP** | Не реализовывать в MVP |
-> | `AIRecommendations` | **MVP STUB** | Feature-flagged, базовый UI |
-> 
-> **Что значит MVP STUB:**
-> 1. Компонент **MUST** быть создан с базовым UI
-> 2. Компонент **MUST** быть обёрнут в feature flag (`NEXT_PUBLIC_FEATURE_AI_ENABLED`)
-> 3. При `FEATURE_AI_ENABLED=false` — компонент НЕ рендерится
-> 4. При `FEATURE_AI_ENABLED=true` — компонент отправляет запрос к AI API
-> 5. Если AI API недоступен — показать fallback UI (стандартный поиск)
-> 
-> **Пример feature flag:**
+> | `AIBoxFinder` | **MVP STUB** | Feature-flagged, basic UI |
+> | `AIChat` | **POST-MVP** | Do not implement in MVP |
+> | `AIRecommendations` | **MVP STUB** | Feature-flagged, basic UI |
+>
+> **What MVP STUB means:**
+> 1. Component **MUST** be created with basic UI
+> 2. Component **MUST** be wrapped in feature flag (`NEXT_PUBLIC_FEATURE_AI_ENABLED`)
+> 3. When `FEATURE_AI_ENABLED=false` — component does NOT render
+> 4. When `FEATURE_AI_ENABLED=true` — component sends request to AI API
+> 5. If AI API is unavailable — show fallback UI (standard search)
+>
+> **Feature flag example:**
 > ```typescript
 > export function AIBoxFinder() {
 >   if (process.env.NEXT_PUBLIC_FEATURE_AI_ENABLED !== 'true') {
->     return null; // или fallback компонент
+>     return null; // or fallback component
 >   }
->   // ... AI логика
+>   // ... AI logic
 > }
 > ```
 
-- `AIBoxFinder` — виджет AI-подбора бокса — **MVP STUB** (feature-flagged)
-- `AIChat` — чат с AI-ассистентом — **POST-MVP**
-- `AIRecommendations` — блок рекомендаций — **MVP STUB** (feature-flagged)
+- `AIBoxFinder` — AI box finder widget — **MVP STUB** (feature-flagged)
+- `AIChat` — chat with AI assistant — **POST-MVP**
+- `AIRecommendations` — recommendations block — **MVP STUB** (feature-flagged)
 
-### 3. UI-компоненты (базовые)
+### 3. UI Components (base)
 
-Переиспользуемые примитивы без бизнес-логики.
+Reusable primitives without business logic.
 
-**Компоненты:**
-- `Button` — кнопка с вариантами (primary, secondary, ghost)
-- `Input` — текстовое поле
-- `Select` — выпадающий список
-- `Checkbox` / `Radio` — чекбоксы и радиокнопки
-- `Modal` — модальное окно
-- `Card` — карточка контента
-- `Badge` — бейдж (статус, метка)
-- `Skeleton` — загрузочные placeholder
-- `Toast` — уведомления
-- `Tabs` — вкладки
-- `Dropdown` — выпадающее меню
-- `Spinner` — индикатор загрузки
+**Components:**
+- `Button` — button with variants (primary, secondary, ghost)
+- `Input` — text field
+- `Select` — dropdown list
+- `Checkbox` / `Radio` — checkboxes and radio buttons
+- `Modal` — modal window
+- `Card` — content card
+- `Badge` — badge (status, label)
+- `Skeleton` — loading placeholders
+- `Toast` — notifications
+- `Tabs` — tabs
+- `Dropdown` — dropdown menu
+- `Spinner` — loading indicator
 
-**Пример компонента Button:**
+**Button Component Example:**
 ```typescript
 // components/ui/Button.tsx
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -550,26 +550,26 @@ export function Button({
 
 ## 1.4. State-management
 
-Для управления состоянием используется комбинация **React Query** (серверное состояние) + **Zustand** (клиентское состояние).
+For state management, a combination of **React Query** (server state) + **Zustand** (client state) is used.
 
 > **Frontend clarification:**
-> - React Query — для ВСЕХ данных, получаемых с сервера (warehouses, boxes, bookings, reviews, user data).
-> - Zustand — ТОЛЬКО для клиентского состояния (UI state, фильтры, состояние карты).
-> - НЕ дублировать серверные данные в Zustand.
-> - НЕ использовать Redux, MobX или другие state managers.
+> - React Query — for ALL data received from the server (warehouses, boxes, bookings, reviews, user data).
+> - Zustand — ONLY for client-side state (UI state, filters, map state).
+> - DO NOT duplicate server data in Zustand.
+> - DO NOT use Redux, MobX or other state managers.
 
-### Принципы распределения состояния
+### State Distribution Principles
 
-| Тип данных | Инструмент | Примеры |
+| Data Type | Tool | Examples |
 |------------|------------|---------|
-| **Серверные данные** | React Query | Склады, боксы, бронирования, отзывы |
-| **Глобальное UI-состояние** | Zustand | Авторизация, модалки, тосты, фильтры |
-| **Локальное состояние** | useState/useReducer | Состояние форм, UI-компонентов |
-| **URL-параметры** | Next.js searchParams | Фильтры каталога, пагинация, сортировка |
+| **Server data** | React Query | Warehouses, boxes, bookings, reviews |
+| **Global UI state** | Zustand | Authentication, modals, toasts, filters |
+| **Local state** | useState/useReducer | Form state, UI component state |
+| **URL parameters** | Next.js searchParams | Catalog filters, pagination, sorting |
 
-### React Query для серверного состояния
+### React Query for Server State
 
-**Настройка:**
+**Configuration:**
 ```typescript
 // lib/queryClient.ts
 import { QueryClient } from '@tanstack/react-query';
@@ -577,8 +577,8 @@ import { QueryClient } from '@tanstack/react-query';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,        // 5 минут
-      cacheTime: 10 * 60 * 1000,       // 10 минут
+      staleTime: 5 * 60 * 1000,        // 5 minutes
+      cacheTime: 10 * 60 * 1000,       // 10 minutes
       refetchOnWindowFocus: false,
       retry: 1,
     },
@@ -589,7 +589,7 @@ export const queryClient = new QueryClient({
 });
 ```
 
-**Использование для складов:**
+**Usage for Warehouses:**
 ```typescript
 // hooks/useWarehouses.ts
 import { useQuery } from '@tanstack/react-query';
@@ -611,7 +611,7 @@ export function useWarehouse(id: string) {
   });
 }
 
-// Prefetching для быстрой навигации
+// Prefetching for fast navigation
 export function usePrefetchWarehouse() {
   const queryClient = useQueryClient();
   
@@ -624,7 +624,7 @@ export function usePrefetchWarehouse() {
 }
 ```
 
-**Мутации (создание бронирования):**
+**Mutations (creating a booking):**
 ```typescript
 // hooks/useBooking.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -636,33 +636,33 @@ export function useCreateBooking() {
   return useMutation({
     mutationFn: bookingsApi.create,
     onSuccess: () => {
-      // Инвалидация кэша бронирований
+      // Invalidate bookings cache
       queryClient.invalidateQueries({ queryKey: ['bookings'] });
-      
-      // Показать тост
-      toast.success('Бронирование создано!');
+
+      // Show toast
+      toast.success('Booking created!');
     },
     onError: (error) => {
-      toast.error('Ошибка при создании бронирования');
+      toast.error('Error creating booking');
     },
   });
 }
 ```
 
-### Zustand для глобального состояния
+### Zustand for Global State
 
-**1. Auth Store (авторизация)**
+**1. Auth Store (authentication)**
 
 > **Frontend clarification — AUTH STORE (CANONICAL):**
-> 
-> **ЕДИНСТВЕННАЯ модель хранения:**
-> - `auth_token` — httpOnly cookie, **недоступна JS-коду**, устанавливается сервером
-> - `refresh_token` — httpOnly cookie, **недоступна JS-коду**, устанавливается сервером
-> - Zustand store хранит **ТОЛЬКО**: `user`, `isAuthenticated`, `isLoading`
-> 
-> **Zustand НЕ хранит и НЕ знает о токенах.**
-> Токены передаются браузером автоматически через cookies.
-> Frontend не имеет доступа к значениям токенов.
+>
+> **THE ONLY storage model:**
+> - `auth_token` — httpOnly cookie, **not accessible to JS code**, set by server
+> - `refresh_token` — httpOnly cookie, **not accessible to JS code**, set by server
+> - Zustand store holds **ONLY**: `user`, `isAuthenticated`, `isLoading`
+>
+> **Zustand does NOT store and does NOT know about tokens.**
+> Tokens are passed automatically by the browser through cookies.
+> Frontend does not have access to token values.
 
 ```typescript
 // stores/authStore.ts
@@ -687,8 +687,8 @@ export const useAuthStore = create<AuthState>()(
       isLoading: true,
 
       login: async (email, password) => {
-        // Backend устанавливает httpOnly cookies автоматически
-        // Frontend получает только user data
+        // Backend sets httpOnly cookies automatically
+        // Frontend receives only user data
         const response = await authApi.login(email, password);
         set({ 
           user: response.data.user, 
@@ -720,7 +720,7 @@ export const useAuthStore = create<AuthState>()(
 );
 ```
 
-**2. Filters Store (фильтры каталога)**
+**2. Filters Store (catalog filters)**
 ```typescript
 // stores/filtersStore.ts
 import { create } from 'zustand';
@@ -784,7 +784,7 @@ export const useFiltersStore = create<FiltersState>((set) => ({
 }));
 ```
 
-**3. Map Store (состояние карты)**
+**3. Map Store (map state)**
 ```typescript
 // stores/mapStore.ts
 import { create } from 'zustand';
@@ -818,7 +818,7 @@ export const useMapStore = create<MapState>((set) => ({
 }));
 ```
 
-**4. UI Store (модалки, тосты)**
+**4. UI Store (modals, toasts)**
 ```typescript
 // stores/uiStore.ts
 import { create } from 'zustand';
@@ -855,9 +855,9 @@ export const useUIStore = create<UIState>((set) => ({
 }));
 ```
 
-### Оптимистичные обновления
+### Optimistic Updates
 
-Для улучшения UX используются оптимистичные обновления:
+Optimistic updates are used to improve UX:
 
 ```typescript
 // hooks/useFavorite.ts
@@ -874,7 +874,7 @@ export function useToggleFavorite() {
         : favoritesApi.add(warehouseId);
     },
 
-    // Оптимистичное обновление
+    // Optimistic update
     onMutate: async ({ warehouseId, isFavorite }) => {
       await queryClient.cancelQueries({ queryKey: ['favorites'] });
 
@@ -891,10 +891,10 @@ export function useToggleFavorite() {
       return { previousFavorites };
     },
 
-    // Откат при ошибке
+    // Rollback on error
     onError: (err, variables, context) => {
       queryClient.setQueryData(['favorites'], context?.previousFavorites);
-      toast.error('Ошибка при обновлении избранного');
+      toast.error('Error updating favorites');
     },
 
     onSettled: () => {
@@ -906,15 +906,15 @@ export function useToggleFavorite() {
 
 ---
 
-## 1.5. Сервисы API и синхронизация с backend
+## 1.5. API Services and Backend Synchronization
 
-### Базовый API клиент (Axios)
+### Base API Client (Axios)
 
 > **Frontend clarification — API RESPONSE FORMAT:**
-> 
-> Backend ВСЕГДА возвращает ответы в следующем формате:
-> 
-> **Успешный ответ:**
+>
+> Backend ALWAYS returns responses in the following format:
+>
+> **Successful response:**
 > ```json
 > {
 >   "success": true,
@@ -925,8 +925,8 @@ export function useToggleFavorite() {
 >   }
 > }
 > ```
-> 
-> **Ответ с пагинацией:**
+>
+> **Response with pagination:**
 > ```json
 > {
 >   "success": true,
@@ -942,19 +942,19 @@ export function useToggleFavorite() {
 > }
 > ```
 > 
-> **Ответ с ошибкой:**
+> **Error response:**
 > ```json
 > {
 >   "success": false,
 >   "error": {
 >     "code": "VALIDATION_ERROR",
->     "message": "Описание ошибки",
+>     "message": "Error description",
 >     "details": { ... }
 >   }
 > }
 > ```
-> 
-> Frontend **MUST** обрабатывать все три формата.
+>
+> Frontend **MUST** handle all three formats.
 
 ```typescript
 // services/api/client.ts
@@ -969,56 +969,56 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,  // CRITICAL: включает автоматическую передачу httpOnly cookies
+  withCredentials: true,  // CRITICAL: enables automatic httpOnly cookies transmission
 });
 
-// Request Interceptor: логирование (опционально)
-// НЕ добавляем Authorization header — auth_token передаётся автоматически через cookies
+// Request Interceptor: logging (optional)
+// DO NOT add Authorization header — auth_token is transmitted automatically through cookies
 apiClient.interceptors.request.use(
   (config) => config,
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: обработка ошибок
+// Response Interceptor: error handling
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<ApiErrorResponse>) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // 401: Сессия истекла — пробуем refresh
+    // 401: Session expired — try refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // Refresh token передаётся автоматически через httpOnly cookie
-        // Backend сам обновляет cookies — frontend не получает токены
-        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { 
-          withCredentials: true 
+        // Refresh token is transmitted automatically through httpOnly cookie
+        // Backend updates cookies itself — frontend does not receive tokens
+        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
+          withCredentials: true
         });
-        
-        // Повторяем оригинальный запрос — новые cookies уже установлены
+
+        // Retry original request — new cookies are already set
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // Refresh не удался — выходим из системы
+        // Refresh failed — log out
         useAuthStore.getState().logout();
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }
     }
 
-    // 403: Недостаточно прав
+    // 403: Insufficient permissions
     if (error.response?.status === 403) {
-      toast.error('Недостаточно прав для выполнения действия');
+      toast.error('Insufficient permissions to perform this action');
     }
 
     // 429: Rate limit
     if (error.response?.status === 429) {
-      toast.error('Слишком много запросов. Попробуйте позже');
+      toast.error('Too many requests. Please try again later');
     }
 
-    // 500: Серверная ошибка
+    // 500: Server error
     if (error.response?.status === 500) {
-      toast.error('Ошибка сервера. Мы уже работаем над её исправлением');
+      toast.error('Server error. We are already working on fixing it');
     }
 
     return Promise.reject(error);
@@ -1026,7 +1026,7 @@ apiClient.interceptors.response.use(
 );
 ```
 
-### API-сервисы по доменам
+### API Services by Domain
 
 **1. Auth API**
 ```typescript
@@ -1040,19 +1040,19 @@ export const authApi = {
   },
 
   login: async (email: string, password: string) => {
-    // Backend устанавливает httpOnly cookies автоматически
+    // Backend sets httpOnly cookies automatically
     const response = await apiClient.post('/auth/login', { email, password });
     return response.data;
   },
 
   logout: async () => {
-    // Backend очищает httpOnly cookies
+    // Backend clears httpOnly cookies
     const response = await apiClient.post('/auth/logout');
     return response.data;
   },
 
-  // Refresh происходит автоматически через cookies
-  // Frontend НЕ передаёт и НЕ получает токены
+  // Refresh happens automatically through cookies
+  // Frontend does NOT transmit and does NOT receive tokens
   refreshToken: async () => {
     const response = await apiClient.post('/auth/refresh');
     return response.data;
@@ -1063,7 +1063,7 @@ export const authApi = {
     return response.data;
   },
   
-  // Получение текущего пользователя (для инициализации)
+  // Get current user (for initialization)
   getCurrentUser: async () => {
     const response = await apiClient.get('/users/me');
     return response.data;
@@ -1229,7 +1229,7 @@ export const operatorApi = {
 };
 ```
 
-### Типизация API ответов
+### API Response Typing
 
 ```typescript
 // types/api.types.ts
@@ -1266,49 +1266,49 @@ export interface PaginatedResponse<T> {
 
 ---
 
-## 1.6. Работа с картами
+## 1.6. Working with Maps
 
-Для отображения карты используется **Google Maps API** (основная) с возможностью переключения на **Google Maps** (резервная).
+**Google Maps API** (primary) is used for map display with the ability to switch to **Google Maps** (backup).
 
 > **Frontend clarification — MAP PROVIDER:**
-> 
-> | Провайдер | Статус |
+>
+> | Provider | Status |
 > |-----------|--------|
-> | Google Maps API | **MUST** для MVP |
-> | Google Maps | **POST-MVP** (резервный) |
-> 
-> - Файл `googleMaps.ts` **MAY** быть создан как заглушка
-> - Файл `mapProvider.ts` (абстракция) — **SHOULD** для будущей расширяемости
-> 
+> | Google Maps API | **MUST** for MVP |
+> | Google Maps | **POST-MVP** (backup) |
+>
+> - File `googleMaps.ts` **MAY** be created as a stub
+> - File `mapProvider.ts` (abstraction) — **SHOULD** for future extensibility
+>
 > **MAP RESPONSIBILITY SPLIT:**
-> 
-> | Ответственность | Backend | Frontend |
+>
+> | Responsibility | Backend | Frontend |
 > |-----------------|---------|----------|
-> | Фильтрация складов по bounds | ✅ | ❌ |
-> | Серверная кластеризация | ✅ (опционально) | ❌ |
-> | Визуальная кластеризация | ❌ | ✅ (Google Maps SDK) |
-> | Рендеринг маркеров/кластеров | ❌ | ✅ |
-> | Геолокация пользователя | ❌ | ✅ |
+> | Warehouse filtering by bounds | ✅ | ❌ |
+> | Server-side clustering | ✅ (optional) | ❌ |
+> | Visual clustering | ❌ | ✅ (Google Maps SDK) |
+> | Marker/cluster rendering | ❌ | ✅ |
+> | User geolocation | ❌ | ✅ |
 
-### Структура модуля карты
+### Map Module Structure
 
 ```
 src/
 ├── services/maps/
 │   ├── googleMaps.ts          # Google Maps SDK wrapper
-│   ├── googleMaps.ts          # Google Maps SDK wrapper (резерв)
-│   └── mapProvider.ts         # Абстракция над картами
+│   ├── googleMaps.ts          # Google Maps SDK wrapper (backup)
+│   └── mapProvider.ts         # Abstraction over maps
 │
 ├── components/features/map/
-│   ├── MapView.tsx            # Основной компонент карты
-│   ├── MapMarker.tsx          # Маркер склада
-│   ├── MapCluster.tsx         # Кластер маркеров
-│   ├── MapPopup.tsx           # Popup с информацией
-│   ├── MapControls.tsx        # Кнопки управления
+│   ├── MapView.tsx            # Main map component
+│   ├── MapMarker.tsx          # Warehouse marker
+│   ├── MapCluster.tsx         # Marker cluster
+│   ├── MapPopup.tsx           # Info popup
+│   ├── MapControls.tsx        # Control buttons
 │   └── MapSkeleton.tsx        # Loading state
 │
 └── hooks/
-    └── useMap.ts              # Hook для работы с картой
+    └── useMap.ts              # Hook for working with map
 ```
 
 ### Google Maps SDK Wrapper
@@ -1336,7 +1336,7 @@ export class GoogleMapsService {
             controls: ['zoomControl', 'geolocationControl'],
           });
 
-          // Инициализация кластеризатора
+          // Clusterer initialization
           this.clusterer = new window.ymaps.Clusterer({
             preset: 'islands#invertedVioletClusterIcons',
             groupByCoordinates: false,
@@ -1443,9 +1443,9 @@ export class GoogleMapsService {
       <div class="map-balloon">
         <h3>${warehouse.name}</h3>
         <p>${warehouse.address.full_address}</p>
-        <p class="price">от ${warehouse.price_from.toLocaleString()} AED /мес</p>
+        <p class="price">from ${warehouse.price_from.toLocaleString()} AED /month</p>
         <p class="rating">★ ${warehouse.rating} (${warehouse.review_count})</p>
-        <a href="/catalog/${warehouse.id}" class="btn-primary">Подробнее</a>
+        <a href="/catalog/${warehouse.id}" class="btn-primary">Details</a>
       </div>
     `;
   }
@@ -1465,7 +1465,7 @@ export class GoogleMapsService {
 }
 ```
 
-### React Hook для карты
+### React Hook for Map
 
 ```typescript
 // hooks/useMap.ts
@@ -1485,12 +1485,12 @@ export function useMap(containerId: string) {
         const mapService = new GoogleMapsService();
         await mapService.init(containerId, center, zoom);
 
-        // Подписка на изменение bounds
+        // Subscribe to bounds changes
         mapService.onBoundsChange((bounds) => {
           setBounds(bounds);
         });
 
-        // Обработчик клика по маркеру
+        // Marker click handler
         mapService.setMarkerClickHandler((warehouseId) => {
           selectWarehouse(warehouseId);
         });
@@ -1516,7 +1516,7 @@ export function useMap(containerId: string) {
 }
 ```
 
-### Компонент MapView
+### MapView Component
 
 ```typescript
 // components/features/map/MapView.tsx
@@ -1536,7 +1536,7 @@ export function MapView() {
   const { bounds, zoom, selectedWarehouseId } = useMapStore();
   const filters = useFiltersStore();
 
-  // Загрузка кластеров/маркеров
+  // Load clusters/markers
   const { data: mapData, isLoading } = useQuery({
     queryKey: ['map-warehouses', bounds, zoom, filters],
     queryFn: () => mapApi.getClusters(bounds!, zoom, filters),
@@ -1544,19 +1544,19 @@ export function MapView() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Обновление маркеров при изменении данных
+  // Update markers when data changes
   useEffect(() => {
     if (!mapService || !mapData) return;
 
     mapService.clearMarkers();
 
-    // Добавление маркеров складов
+    // Add warehouse markers
     mapData.data.warehouses.forEach((warehouse) => {
       mapService.addMarker(warehouse);
     });
   }, [mapData, mapService]);
 
-  // Подсветка выбранного склада
+  // Highlight selected warehouse
   useEffect(() => {
     if (!mapService || !selectedWarehouseId) return;
 
@@ -1578,7 +1578,7 @@ export function MapView() {
       
       {isLoading && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-md">
-          Загрузка складов...
+          Loading warehouses...
         </div>
       )}
     </div>
@@ -1586,7 +1586,7 @@ export function MapView() {
 }
 ```
 
-### Синхронизация карты со списком
+### Map and List Synchronization
 
 ```typescript
 // components/features/warehouses/WarehouseCard.tsx
@@ -1614,24 +1614,24 @@ export function WarehouseCard({ warehouse }: { warehouse: Warehouse }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* ... содержимое карточки ... */}
+      {/* ... card content ... */}
       <button onClick={handleViewOnMap}>
-        Показать на карте
+        Show on map
       </button>
     </div>
   );
 }
 ```
 
-### Кластеризация
+### Clustering
 
-Google Maps автоматически кластеризует маркеры на основе:
-- **Zoom < 10**: кластеры с радиусом 5000м
-- **Zoom 10-13**: кластеры с радиусом 1000м
-- **Zoom 14-15**: кластеры с радиусом 500м
-- **Zoom > 15**: отдельные маркеры
+Google Maps automatically clusters markers based on:
+- **Zoom < 10**: clusters with 5000m radius
+- **Zoom 10-13**: clusters with 1000m radius
+- **Zoom 14-15**: clusters with 500m radius
+- **Zoom > 15**: individual markers
 
-Backend возвращает данные уже с учётом zoom-уровня:
+Backend returns data already considering zoom level:
 ```json
 {
   "data": {
@@ -1649,84 +1649,84 @@ Backend возвращает данные уже с учётом zoom-уровн
 
 ---
 
-## 1.7. Работа с авторизацией
+## 1.7. Working with Authentication
 
 > **Frontend clarification — CANONICAL AUTH FLOW (MVP):**
-> 
-> Это **ЕДИНСТВЕННЫЙ** поддерживаемый способ авторизации для MVP:
-> 
+>
+> This is the **ONLY** supported authentication method for MVP:
+>
 > **1. Login Flow:**
 > ```
 > User → POST /auth/login (email, password)
 >      ← Set-Cookie: auth_token (httpOnly, 15 min)
 >      ← Set-Cookie: refresh_token (httpOnly, 7 days)
 >      ← { success: true, data: { user: {...} } }
-> Frontend → Сохранить user в authStore
+> Frontend → Save user in authStore
 > ```
-> 
+>
 > **2. Request Flow:**
 > ```
-> Frontend → GET /any-endpoint (cookies отправляются автоматически)
-> Backend → Проверяет auth_token из cookie
->        ← 200 OK или 401 Unauthorized
+> Frontend → GET /any-endpoint (cookies sent automatically)
+> Backend → Verifies auth_token from cookie
+>        ← 200 OK or 401 Unauthorized
 > ```
-> 
+>
 > **3. Token Refresh Flow:**
 > ```
-> Frontend → Получает 401 на любой запрос
->         → POST /auth/refresh (refresh_token из cookie автоматически)
->         ← Новые cookies (auth_token, refresh_token)
->         → Повторяет оригинальный запрос
+> Frontend → Receives 401 on any request
+>         → POST /auth/refresh (refresh_token from cookie automatically)
+>         ← New cookies (auth_token, refresh_token)
+>         → Retries original request
 > ```
-> 
+>
 > **4. Logout Flow:**
 > ```
 > Frontend → POST /auth/logout
->         ← Cookies очищаются сервером
-> Frontend → Очистить authStore
->         → Очистить React Query cache
->         → Редирект на /
+>         ← Cookies cleared by server
+> Frontend → Clear authStore
+>         → Clear React Query cache
+>         → Redirect to /
 > ```
-> 
-> **АЛЬТЕРНАТИВНЫЕ ПОДХОДЫ — ЗАПРЕЩЕНЫ:**
-> - LocalStorage для токенов — **ЗАПРЕЩЕНО** (уязвимость XSS)
-> - Bearer token в заголовке — **ЗАПРЕЩЕНО**
-> - Хранение токенов в Zustand/Redux — **ЗАПРЕЩЕНО**
-> - Чтение токенов из JS-кода — **НЕВОЗМОЖНО** (httpOnly)
+>
+> **ALTERNATIVE APPROACHES — PROHIBITED:**
+> - LocalStorage for tokens — **PROHIBITED** (XSS vulnerability)
+> - Bearer token in header — **PROHIBITED**
+> - Storing tokens in Zustand/Redux — **PROHIBITED**
+> - Reading tokens from JS code — **IMPOSSIBLE** (httpOnly)
 
-### Хранение токенов
+### Token Storage
 
-**Токены хранятся ТОЛЬКО в httpOnly cookies**, которые:
-- Устанавливаются **ТОЛЬКО сервером** (backend)
-- **Недоступны** из JavaScript-кода
-- Передаются браузером **автоматически** при каждом запросе
-- Очищаются **ТОЛЬКО сервером** при logout
+**Tokens are stored ONLY in httpOnly cookies**, which are:
+- Set **ONLY by server** (backend)
+- **Not accessible** from JavaScript code
+- Transmitted by browser **automatically** with each request
+- Cleared **ONLY by server** on logout
 
 > **Frontend clarification:**
-> Функции ниже работают **ТОЛЬКО в Server Components и API Routes**.
-> В Client Components эти функции **НЕДОСТУПНЫ** — cookies управляются браузером автоматически.
-> Frontend-разработчикам **НЕ нужно** вызывать эти функции напрямую.
+> Functions below work **ONLY in Server Components and API Routes**.
+> In Client Components these functions are **NOT AVAILABLE** — cookies are managed by the browser automatically.
+> Frontend developers **DO NOT need** to call these functions directly.
 
 ```typescript
-// lib/auth.ts (Server-side ONLY — для API Routes и Server Components)
+// lib/auth.ts (Server-side ONLY — for API Routes and Server Components)
 import { cookies } from 'next/headers';
 
-// Проверка наличия сессии (для Server Components)
+// Check for session existence (for Server Components)
 export function hasAuthSession(): boolean {
   return !!cookies().get('auth_token')?.value;
 }
 
-// Очистка cookies (вызывается из API Route при logout)
+// Clear cookies (called from API Route on logout)
 export function clearAuthCookies() {
   cookies().delete('auth_token');
   cookies().delete('refresh_token');
 }
 
-// ВАЖНО: Frontend НЕ устанавливает cookies напрямую
-// Cookies устанавливаются ТОЛЬКО backend при POST /auth/login
+// IMPORTANT: Frontend does NOT set cookies directly
+// Cookies are set ONLY by backend on POST /auth/login
 ```
 
-### Middleware для защиты роутов
+### Middleware for Route Protection
 
 ```typescript
 // middleware.ts
@@ -1742,22 +1742,22 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
   const { pathname } = request.nextUrl;
 
-  // Публичные роуты — пропускаем всех
+  // Public routes — allow everyone
   if (publicRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
 
-  // Если нет токена и пытается попасть на защищённую страницу
+  // If no token and trying to access protected page
   if (!token && protectedRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Если есть токен и пытается попасть на auth страницы — редирект на главную
+  // If has token and trying to access auth pages — redirect to home
   if (token && authRoutes.some(route => pathname === route)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Проверка роли для operator роутов
+  // Role check for operator routes
   if (pathname.startsWith('/operator')) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -1781,7 +1781,7 @@ export const config = {
 };
 ```
 
-### ProtectedRoute компонент
+### ProtectedRoute Component
 
 ```typescript
 // components/features/auth/ProtectedRoute.tsx
@@ -1831,7 +1831,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
 }
 ```
 
-### Использование в Layout
+### Usage in Layout
 
 ```typescript
 // app/(protected)/operator/layout.tsx
@@ -1851,29 +1851,29 @@ export default function OperatorLayoutPage({
 }
 ```
 
-### Автоматическое обновление токена
+### Automatic Token Refresh
 
-Обрабатывается в axios interceptor (см. раздел 1.5):
+Handled in axios interceptor (see section 1.5):
 
 ```typescript
-// Логика в apiClient interceptor
+// Logic in apiClient interceptor
 if (error.response?.status === 401 && !originalRequest._retry) {
   originalRequest._retry = true;
-  
-  // refresh_token передаётся автоматически через httpOnly cookie
-  // Backend обновляет cookies — frontend НЕ получает токены
+
+  // refresh_token is transmitted automatically through httpOnly cookie
+  // Backend updates cookies — frontend does NOT receive tokens
   await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
-  
-  // Повторяем запрос — новые cookies уже установлены браузером
+
+  // Retry request — new cookies are already set by browser
   return apiClient(originalRequest);
 }
 ```
 
 > **Frontend clarification:**
-> - Frontend **НЕ читает** refresh_token
-> - Frontend **НЕ получает** новый auth_token
-> - Backend сам обновляет httpOnly cookies
-> - Frontend просто повторяет запрос после успешного refresh
+> - Frontend **does NOT read** refresh_token
+> - Frontend **does NOT receive** new auth_token
+> - Backend updates httpOnly cookies itself
+> - Frontend simply retries request after successful refresh
 
 ### Logout
 
@@ -1888,13 +1888,13 @@ export function useAuth() {
     try {
       await authApi.logout();
     } finally {
-      // Очистка store
+      // Clear store
       logoutStore();
-      
-      // Очистка всех query кэшей
+
+      // Clear all query caches
       queryClient.clear();
-      
-      // Редирект на главную
+
+      // Redirect to home
       router.push('/');
     }
   };
@@ -1905,117 +1905,117 @@ export function useAuth() {
 
 ---
 
-## 1.8. Работа с формами и валидацией
+## 1.8. Working with Forms and Validation
 
-### Библиотека: React Hook Form + Zod
+### Library: React Hook Form + Zod
 
 > **Frontend clarification:**
-> - Все схемы валидации **MUST** соответствовать backend валидации
-> - При расхождении — приоритет у backend (frontend показывает ошибки от backend)
-> - Email и password requirements **MUST** быть согласованы с Security документацией
-> 
-> **Принципы работы с формами:**
-> 1. Валидация на клиенте (Zod) — **MUST**
-> 2. Показ ошибок под полями — **MUST**
-> 3. Disabled-состояния при отправке — **MUST**
-> 4. Loading state на кнопке — **MUST**
-> 5. Toast-уведомления — **MUST**
-> 6. Server-side errors — **MUST** показывать пользователю
+> - All validation schemas **MUST** match backend validation
+> - In case of discrepancy — backend takes priority (frontend shows errors from backend)
+> - Email and password requirements **MUST** be aligned with Security documentation
+>
+> **Form working principles:**
+> 1. Client-side validation (Zod) — **MUST**
+> 2. Show errors under fields — **MUST**
+> 3. Disabled states during submission — **MUST**
+> 4. Loading state on button — **MUST**
+> 5. Toast notifications — **MUST**
+> 6. Server-side errors — **MUST** show to user
 
 ```bash
 npm install react-hook-form zod @hookform/resolvers
 ```
 
-### Схемы валидации (Zod)
+### Validation Schemas (Zod)
 
 ```typescript
 // lib/validators.ts
 import { z } from 'zod';
 
-// Регистрация
+// Registration
 export const registerSchema = z.object({
   email: z
     .string()
-    .email('Некорректный email')
-    .min(1, 'Email обязателен'),
-  
+    .email('Invalid email')
+    .min(1, 'Email is required'),
+
   password: z
     .string()
-    .min(8, 'Минимум 8 символов')
-    .regex(/[A-Z]/, 'Должна быть хотя бы одна заглавная буква')
-    .regex(/[a-z]/, 'Должна быть хотя бы одна строчная буква')
-    .regex(/[0-9]/, 'Должна быть хотя бы одна цифра')
-    .regex(/[^A-Za-z0-9]/, 'Должен быть хотя бы один спецсимвол'),
-  
+    .min(8, 'Minimum 8 characters')
+    .regex(/[A-Z]/, 'Must have at least one uppercase letter')
+    .regex(/[a-z]/, 'Must have at least one lowercase letter')
+    .regex(/[0-9]/, 'Must have at least one digit')
+    .regex(/[^A-Za-z0-9]/, 'Must have at least one special character'),
+
   name: z
     .string()
-    .min(2, 'Минимум 2 символа')
-    .max(100, 'Максимум 100 символов'),
-  
+    .min(2, 'Minimum 2 characters')
+    .max(100, 'Maximum 100 characters'),
+
   phone: z
     .string()
-    .regex(/^\+7\d{10}$/, 'Формат: +7XXXXXXXXXX'),
-  
+    .regex(/^\+971\d{9}$/, 'Format: +971XXXXXXXXX'),
+
   agreeToTerms: z
     .boolean()
-    .refine(val => val === true, 'Необходимо согласие с условиями'),
+    .refine(val => val === true, 'Must agree to terms'),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
-// Бронирование
+// Booking
 export const bookingSchema = z.object({
-  boxId: z.number().min(1, 'Выберите бокс'),
-  
+  boxId: z.number().min(1, 'Select a box'),
+
   startDate: z
     .string()
-    .min(1, 'Выберите дату начала')
-    .refine((date) => new Date(date) >= new Date(), 'Дата не может быть в прошлом'),
-  
+    .min(1, 'Select start date')
+    .refine((date) => new Date(date) >= new Date(), 'Date cannot be in the past'),
+
   durationMonths: z
     .number()
-    .min(1, 'Минимум 1 месяц')
-    .max(12, 'Максимум 12 месяцев'),
-  
+    .min(1, 'Minimum 1 month')
+    .max(12, 'Maximum 12 months'),
+
   userComment: z
     .string()
-    .max(500, 'Максимум 500 символов')
+    .max(500, 'Maximum 500 characters')
     .optional(),
-  
+
   agreeToTerms: z
     .boolean()
-    .refine(val => val === true, 'Необходимо согласие с условиями'),
+    .refine(val => val === true, 'Must agree to terms'),
 });
 
 export type BookingFormData = z.infer<typeof bookingSchema>;
 
-// Отзыв
+// Review
 export const reviewSchema = z.object({
   rating: z
     .number()
-    .min(1, 'Минимум 1 звезда')
-    .max(5, 'Максимум 5 звёзд'),
-  
+    .min(1, 'Minimum 1 star')
+    .max(5, 'Maximum 5 stars'),
+
   text: z
     .string()
-    .min(10, 'Минимум 10 символов')
-    .max(1000, 'Максимум 1000 символов'),
-  
+    .min(10, 'Minimum 10 characters')
+    .max(1000, 'Maximum 1000 characters'),
+
   pros: z
     .string()
-    .max(500, 'Максимум 500 символов')
+    .max(500, 'Maximum 500 characters')
     .optional(),
-  
+
   cons: z
     .string()
-    .max(500, 'Максимум 500 символов')
+    .max(500, 'Maximum 500 characters')
     .optional(),
 });
 
 export type ReviewFormData = z.infer<typeof reviewSchema>;
 ```
 
-### Пример формы регистрации
+### Registration Form Example
 
 ```typescript
 // components/features/auth/RegisterForm.tsx
@@ -2050,10 +2050,10 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data);
-      toast.success('Регистрация успешна!');
+      toast.success('Registration successful!');
       router.push('/profile');
     } catch (error) {
-      toast.error('Ошибка при регистрации');
+      toast.error('Registration error');
     }
   };
 
@@ -2067,44 +2067,44 @@ export function RegisterForm() {
       />
 
       <Input
-        label="Пароль"
+        label="Password"
         type="password"
         {...register('password')}
         error={errors.password?.message}
       />
 
       <Input
-        label="Имя"
+        label="Name"
         {...register('name')}
         error={errors.name?.message}
       />
 
       <Input
-        label="Телефон"
+        label="Phone"
         placeholder="+971501234567"
         {...register('phone')}
         error={errors.phone?.message}
       />
 
       <Checkbox
-        label="Я согласен с условиями использования"
+        label="I agree to the terms of use"
         {...register('agreeToTerms')}
         error={errors.agreeToTerms?.message}
       />
 
-      <Button 
-        type="submit" 
-        fullWidth 
+      <Button
+        type="submit"
+        fullWidth
         isLoading={isSubmitting}
       >
-        Зарегистрироваться
+        Register
       </Button>
     </form>
   );
 }
 ```
 
-### Пример формы бронирования
+### Booking Form Example
 
 ```typescript
 // components/features/booking/BookingForm.tsx
@@ -2145,10 +2145,10 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
         warehouse_id: warehouse.id,
         ...data,
       });
-      toast.success('Заявка отправлена!');
+      toast.success('Request submitted!');
       router.push('/profile/bookings');
     } catch (error) {
-      toast.error('Ошибка при создании бронирования');
+      toast.error('Error creating booking');
     }
   };
 
@@ -2166,7 +2166,7 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
         control={control}
         render={({ field }) => (
           <BookingDatePicker
-            label="Дата начала аренды"
+            label="Rental start date"
             value={field.value}
             onChange={field.onChange}
             minDate={new Date()}
@@ -2177,16 +2177,16 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
 
       <div>
         <label className="block text-sm font-medium mb-2">
-          Срок аренды
+          Rental period
         </label>
         <select
           {...register('durationMonths', { valueAsNumber: true })}
           className="w-full border rounded-lg p-2"
         >
-          <option value={1}>1 месяц</option>
-          <option value={3}>3 месяца (скидка 5%)</option>
-          <option value={6}>6 месяцев (скидка 10%)</option>
-          <option value={12}>12 месяцев (скидка 15%)</option>
+          <option value={1}>1 month</option>
+          <option value={3}>3 months (5% discount)</option>
+          <option value={6}>6 months (10% discount)</option>
+          <option value={12}>12 months (15% discount)</option>
         </select>
         {errors.durationMonths && (
           <p className="text-red-500 text-sm mt-1">
@@ -2202,7 +2202,7 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
 
       <textarea
         {...register('userComment')}
-        placeholder="Комментарий к заявке (необязательно)"
+        placeholder="Comment on request (optional)"
         className="w-full border rounded-lg p-3"
         rows={3}
       />
@@ -2211,7 +2211,7 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
       )}
 
       <Checkbox
-        label="Я согласен с условиями аренды"
+        label="I agree to the rental terms"
         {...register('agreeToTerms')}
         error={errors.agreeToTerms?.message}
       />
@@ -2222,39 +2222,39 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
         size="lg"
         isLoading={isSubmitting}
       >
-        Отправить заявку
+        Submit request
       </Button>
     </form>
   );
 }
 ```
 
-### Общие принципы работы с формами
+### General Form Working Principles
 
-1. **Валидация на клиенте** — через Zod схемы
-2. **Валидация на сервере** — backend всегда проверяет данные
-3. **Показ ошибок** — под полями ввода, красным цветом
-4. **Disabled-состояния** — во время отправки формы
-5. **Спиннеры** — кнопка submit показывает loading state
-6. **Toast-уведомления** — успех/ошибка после отправки
+1. **Client-side validation** — through Zod schemas
+2. **Server-side validation** — backend always validates data
+3. **Error display** — under input fields, in red
+4. **Disabled states** — during form submission
+5. **Spinners** — submit button shows loading state
+6. **Toast notifications** — success/error after submission
 
 ---
 
-# Раздел 2: UI-слой
+# Section 2: UI Layer
 
-## 2.1. Принципы дизайн-системы
+## 2.1. Design System Principles
 
-### Базовые принципы
+### Basic Principles
 
-Дизайн-система построена на следующих принципах:
+The design system is built on the following principles:
 
-1. **Консистентность** — единый визуальный язык во всех компонентах
-2. **Масштабируемость** — компоненты легко расширяются и переиспользуются
-3. **Доступность** — соответствие WCAG 2.1 AA
-4. **Производительность** — оптимизация рендеринга, lazy loading
-5. **Mobile-first** — адаптивность с приоритетом мобильных устройств
+1. **Consistency** — unified visual language across all components
+2. **Scalability** — components are easily extended and reused
+3. **Accessibility** — WCAG 2.1 AA compliance
+4. **Performance** — rendering optimization, lazy loading
+5. **Mobile-first** — responsiveness with mobile device priority
 
-### Цветовая палитра
+### Color Palette
 
 ```css
 :root {
@@ -2273,7 +2273,7 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
 }
 ```
 
-### Типографика
+### Typography
 
 ```css
 :root {
@@ -2299,7 +2299,7 @@ export function BookingForm({ warehouse, box }: BookingFormProps) {
 }
 ```
 
-## 2.2. UI-компоненты
+## 2.2. UI Components
 
 ### Button
 
@@ -2323,9 +2323,9 @@ export function Button({ variant = 'primary', size = 'md', isLoading, ...props }
 
 ### Input, Card, Modal, Badge, Skeleton, Toast, Tabs
 
-См. подробные реализации в полной версии документа.
+See detailed implementations in the full version of the document.
 
-### Доменные компоненты
+### Domain Components
 
 #### WarehouseCard
 
@@ -2340,7 +2340,7 @@ export function WarehouseCard({ warehouse, onFavoriteToggle, isFavorite }: Props
       <h3>{warehouse.name}</h3>
       <p>{warehouse.address.full_address}</p>
       <div>★ {warehouse.rating} ({warehouse.review_count})</div>
-      <p>от {warehouse.price_from.toLocaleString()} AED /мес</p>
+      <p>from {warehouse.price_from.toLocaleString()} AED /month</p>
     </Card>
   );
 }
@@ -2354,10 +2354,10 @@ export function BoxCard({ box, onSelect, isSelected }: Props) {
     <Card>
       <Badge>{box.size}</Badge>
       <h3>{box.size_display}</h3>
-      <p>{box.dimensions.width} × {box.dimensions.length} × {box.dimensions.height} см</p>
-      <p>Объём: ~{box.volume_m3} м³</p>
-      <div>{box.available_quantity} свободно</div>
-      <p className="price">{box.price_per_month.toLocaleString()} AED /мес</p>
+      <p>{box.dimensions.width} × {box.dimensions.length} × {box.dimensions.height} cm</p>
+      <p>Volume: ~{box.volume_m3} m³</p>
+      <div>{box.available_quantity} available</div>
+      <p className="price">{box.price_per_month.toLocaleString()} AED /month</p>
     </Card>
   );
 }
@@ -2381,32 +2381,32 @@ export function BookingPriceCalculator({ pricePerMonth, durationMonths }: Props)
 
   return (
     <Card>
-      <h3>Расчёт стоимости</h3>
-      <div>Цена за месяц: {pricePerMonth.toLocaleString()} AED </div>
-      {discount > 0 && <div>Скидка: -{discount}%</div>}
-      <div className="total">Итого: {totalPrice.toLocaleString()} AED </div>
+      <h3>Price Calculation</h3>
+      <div>Price per month: {pricePerMonth.toLocaleString()} AED </div>
+      {discount > 0 && <div>Discount: -{discount}%</div>}
+      <div className="total">Total: {totalPrice.toLocaleString()} AED </div>
     </Card>
   );
 }
 ```
 
-## 2.3. Best practices по композиции интерфейсов
+## 2.3. Best Practices for Interface Composition
 
-### 1. Разделение контейнеров и презентационных компонентов
+### 1. Separation of Container and Presentational Components
 
-**Презентационные** — только UI, получают данные через props  
-**Контейнерные** — бизнес-логика, API-запросы, state management
+**Presentational** — UI only, receive data through props
+**Container** — business logic, API requests, state management
 
-### 2. Минимизация проп-дриллинга
+### 2. Minimize Prop Drilling
 
-- Context API для глубоко вложенных данных
-- Custom hooks для переиспользования логики
-- Composition через children
+- Context API for deeply nested data
+- Custom hooks for logic reuse
+- Composition through children
 
-### 3. Переиспользование блоков
+### 3. Block Reuse
 
 ```typescript
-// EmptyState - универсальный компонент для пустых состояний
+// EmptyState - universal component for empty states
 export function EmptyState({ icon, title, description, action }: Props) {
   return (
     <div className="empty-state">
@@ -2419,7 +2419,7 @@ export function EmptyState({ icon, title, description, action }: Props) {
 }
 ```
 
-### 4. Адаптивность (Mobile-first)
+### 4. Responsiveness (Mobile-first)
 
 ```typescript
 // Responsive grid
@@ -2432,7 +2432,7 @@ export function MapViewResponsive() {
   const { isMd } = useBreakpoint();
   
   if (!isMd) {
-    return <Button onClick={() => router.push('/map')}>Показать на карте</Button>;
+    return <Button onClick={() => router.push('/map')}>Show on map</Button>;
   }
   
   return <MapView />;
@@ -2442,21 +2442,21 @@ export function MapViewResponsive() {
 
 ---
 
-# Раздел 3: Технический стек
+# Section 3: Technology Stack
 
 ## 3.1. Framework: Next.js + React
 
-### Выбор: Next.js 14 (App Router) + React 18
+### Choice: Next.js 14 (App Router) + React 18
 
-**Аргументация:**
-- ✅ SSR для SEO критичных страниц
+**Rationale:**
+- ✅ SSR for SEO-critical pages
 - ✅ Automatic code splitting
-- ✅ Image optimization из коробки
-- ✅ Файловая маршрутизация
-- ✅ API Routes для BFF
+- ✅ Image optimization out of the box
+- ✅ File-based routing
+- ✅ API Routes for BFF
 - ✅ TypeScript support
 
-### Конфигурация
+### Configuration
 
 ```javascript
 // next.config.js
@@ -2483,27 +2483,27 @@ module.exports = {
 
 ### SSR vs CSR vs SSG
 
-| Страница | Стратегия | Обоснование |
+| Page | Strategy | Rationale |
 |----------|-----------|-------------|
-| Главная (`/`) | SSR | SEO + динамический контент |
-| Каталог (`/catalog`) | SSR | SEO + фильтры в URL |
-| Карточка склада (`/catalog/[id]`) | SSR | SEO критично |
-| Карта (`/map`) | CSR | Полностью клиентская |
-| ЛК (`/profile/*`) | CSR | Требует auth, SEO не нужно |
-| Статические (`/about`) | SSG | Не меняется |
+| Home (`/`) | SSR | SEO + dynamic content |
+| Catalog (`/catalog`) | SSR | SEO + filters in URL |
+| Warehouse details (`/catalog/[id]`) | SSR | SEO critical |
+| Map (`/map`) | CSR | Fully client-side |
+| Dashboard (`/profile/*`) | CSR | Requires auth, SEO not needed |
+| Static (`/about`) | SSG | Doesn't change |
 
-## 3.2. Библиотека карт
+## 3.2. Maps Library
 
-### Выбор: Google Maps (основная) + Google Maps (fallback)
+### Choice: Google Maps (primary) + Google Maps (fallback)
 
-**Аргументация:**
-- ✅ Отличное покрытие РФ/СНГ
-- ✅ Бесплатно до 25k запросов/день
-- ✅ Встроенная кластеризация
-- ✅ Качественная русская документация
+**Rationale:**
+- ✅ Excellent coverage for UAE/GCC
+- ✅ Free up to 25k requests/day
+- ✅ Built-in clustering
+- ✅ Quality documentation
 
 ```typescript
-// Подключение Google Maps
+// Load Google Maps
 export function loadGoogleMapsScript(apiKey: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -2515,36 +2515,36 @@ export function loadGoogleMapsScript(apiKey: string): Promise<void> {
 }
 ```
 
-## 3.3. Работа с API
+## 3.3. Working with API
 
-### Выбор: Axios
+### Choice: Axios
 
-**Аргументация:**
-- ✅ Interceptors для обработки ошибок
-- ✅ Timeout из коробки
-- ✅ Автоматический JSON
-- ✅ Отличная типизация
+**Rationale:**
+- ✅ Interceptors for error handling
+- ✅ Timeout out of the box
+- ✅ Automatic JSON
+- ✅ Excellent typing
 
 ```typescript
-// Базовый клиент
+// Base client
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 30000,
-  withCredentials: true,  // CRITICAL: для передачи httpOnly cookies
+  withCredentials: true,  // CRITICAL: for httpOnly cookies transmission
 });
 
-// Request interceptor — НЕ добавляем Authorization header
-// auth_token передаётся автоматически через cookies
+// Request interceptor — DO NOT add Authorization header
+// auth_token is transmitted automatically through cookies
 apiClient.interceptors.request.use((config) => config);
 
-// Response interceptor для refresh token
+// Response interceptor for refresh token
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      // Refresh через cookies, см. раздел 1.5
+      // Refresh through cookies, see section 1.5
       await axios.post('/auth/refresh', {}, { withCredentials: true });
-      return apiClient(error.config);  // Повтор запроса
+      return apiClient(error.config);  // Retry request
     }
     return Promise.reject(error);
   }
@@ -2553,44 +2553,44 @@ apiClient.interceptors.response.use(
 
 ## 3.4. State-management
 
-### Выбор: React Query + Zustand
+### Choice: React Query + Zustand
 
-| Инструмент | Назначение |
+| Tool | Purpose |
 |------------|------------|
-| React Query | Серверное состояние (API данные) |
-| Zustand | Глобальное клиентское состояние |
+| React Query | Server state (API data) |
+| Zustand | Global client state |
 
 **React Query:**
-- ✅ Автоматическое кэширование
+- ✅ Automatic caching
 - ✅ Background refetching
 - ✅ Optimistic updates
 - ✅ DevTools
 
 **Zustand:**
-- ✅ Минималистичный API
-- ✅ Не требует Provider
+- ✅ Minimalist API
+- ✅ No Provider required
 - ✅ Middleware (persist, devtools)
-- ✅ ~1KB размер
+- ✅ ~1KB size
 
 ```typescript
 // React Query setup
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,  // 5 минут
-      gcTime: 10 * 60 * 1000,     // 10 минут
+      staleTime: 5 * 60 * 1000,  // 5 minutes
+      gcTime: 10 * 60 * 1000,     // 10 minutes
       refetchOnWindowFocus: false,
     },
   },
 });
 
-// Zustand store — НЕ хранит токены
+// Zustand store — does NOT store tokens
 export const useAuthStore = create(persist(
   (set) => ({
     user: null,
     isAuthenticated: false,
     login: async (email, password) => {
-      // Backend устанавливает httpOnly cookies
+      // Backend sets httpOnly cookies
       const response = await authApi.login(email, password);
       set({ user: response.data.user, isAuthenticated: true });
     },
@@ -2600,12 +2600,12 @@ export const useAuthStore = create(persist(
 ));
 ```
 
-## 3.5. Оптимизации
+## 3.5. Optimizations
 
 ### 1. Lazy Loading
 
 ```typescript
-// Динамический импорт тяжёлых компонентов
+// Dynamic import of heavy components
 const MapView = dynamic(() => import('@/components/features/map/MapView'), {
   loading: () => <MapSkeleton />,
   ssr: false,
@@ -2648,10 +2648,10 @@ webpack: (config) => {
 ### 4. Prefetching
 
 ```typescript
-// Prefetch следующей страницы
-<Link href="/catalog" prefetch>Каталог</Link>
+// Prefetch next page
+<Link href="/catalog" prefetch>Catalog</Link>
 
-// Prefetch данных при hover
+// Prefetch data on hover
 const handleMouseEnter = () => {
   queryClient.prefetchQuery({
     queryKey: ['warehouse', warehouse.id],
@@ -2663,106 +2663,106 @@ const handleMouseEnter = () => {
 
 ---
 
-# Раздел 4: План разработки
+# Section 4: Development Plan
 
-## 4.1. Спринты и фазы
+## 4.1. Sprints and Phases
 
-Разработка MVP разбита на **6 спринтов по 2 недели** (всего 12 недель / 3 месяца).
+MVP development is divided into **6 sprints of 2 weeks each** (total 12 weeks / 3 months).
 
 ### Roadmap
 
-| Спринт | Недели | Фокус | Ключевые задачи |
+| Sprint | Weeks | Focus | Key Tasks |
 |--------|--------|-------|-----------------|
-| **1** | 1-2 | Инфраструктура | Setup, UI Kit, дизайн-система |
-| **2** | 3-4 | Каталог и поиск | Главная, каталог, фильтры |
-| **3** | 5-6 | Детали и карта | Карточка склада, карта с кластерами |
-| **4** | 7-8 | Auth и бронирование | Регистрация, форма бронирования, ЛК |
-| **5** | 9-10 | Оператор | Dashboard, управление складами/боксами |
-| **6** | 11-12 | AI и финализация | AI-модули, оптимизация, тестирование |
+| **1** | 1-2 | Infrastructure | Setup, UI Kit, design system |
+| **2** | 3-4 | Catalog and search | Home, catalog, filters |
+| **3** | 5-6 | Details and map | Warehouse details, map with clusters |
+| **4** | 7-8 | Auth and booking | Registration, booking form, dashboard |
+| **5** | 9-10 | Operator | Dashboard, warehouse/box management |
+| **6** | 11-12 | AI and finalization | AI modules, optimization, testing |
 
-### Спринт 1: Инфраструктура (недели 1-2)
+### Sprint 1: Infrastructure (weeks 1-2)
 
-**Задачи:**
+**Tasks:**
 - [ ] Setup Next.js 14 + TypeScript
-- [ ] Настройка ESLint, Prettier, Husky
-- [ ] Tailwind CSS + дизайн-система
-- [ ] Базовые UI-компоненты (Button, Input, Card, Modal, etc.)
-- [ ] Layout компоненты (Header, Footer)
+- [ ] Configure ESLint, Prettier, Husky
+- [ ] Tailwind CSS + design system
+- [ ] Base UI components (Button, Input, Card, Modal, etc.)
+- [ ] Layout components (Header, Footer)
 - [ ] State management setup (React Query + Zustand)
-- [ ] API client (Axios с interceptors)
+- [ ] API client (Axios with interceptors)
 
-**Результат:** ✅ Готовая инфраструктура и UI Kit
+**Result:** ✅ Ready infrastructure and UI Kit
 
-### Спринт 2: Каталог (недели 3-4)
+### Sprint 2: Catalog (weeks 3-4)
 
-**Задачи:**
-- [ ] Главная страница с поиском
-- [ ] Страница каталога `/catalog`
-- [ ] WarehouseCard компонент
-- [ ] Фильтры (город, цена, размер, атрибуты)
-- [ ] Сортировка и пагинация
-- [ ] API интеграция warehouses
-- [ ] Mock данные (MSW)
+**Tasks:**
+- [ ] Home page with search
+- [ ] Catalog page `/catalog`
+- [ ] WarehouseCard component
+- [ ] Filters (city, price, size, attributes)
+- [ ] Sorting and pagination
+- [ ] Warehouses API integration
+- [ ] Mock data (MSW)
 
-**Результат:** ✅ Рабочий каталог с фильтрами
+**Result:** ✅ Working catalog with filters
 
-### Спринт 3: Детали и карта (недели 5-6)
+### Sprint 3: Details and map (weeks 5-6)
 
-**Задачи:**
-- [ ] Страница склада `/catalog/[id]`
-- [ ] Галерея фото
-- [ ] Список боксов
-- [ ] Отзывы (preview)
-- [ ] Google Maps интеграция
-- [ ] Страница `/map` с кластеризацией
-- [ ] Синхронизация карты со списком
+**Tasks:**
+- [ ] Warehouse page `/catalog/[id]`
+- [ ] Photo gallery
+- [ ] Box list
+- [ ] Reviews (preview)
+- [ ] Google Maps integration
+- [ ] `/map` page with clustering
+- [ ] Map and list synchronization
 
-**Результат:** ✅ Детальные страницы + работающая карта
+**Result:** ✅ Detail pages + working map
 
-### Спринт 4: Auth и бронирование (недели 7-8)
+### Sprint 4: Auth and booking (weeks 7-8)
 
-**Задачи:**
-- [ ] Страницы `/login` и `/register`
-- [ ] Формы с валидацией (Zod)
-- [ ] Middleware для защиты роутов
-- [ ] BookingForm с калькулятором цены
-- [ ] ЛК пользователя `/profile`
-- [ ] Список бронирований
-- [ ] Избранные склады
+**Tasks:**
+- [ ] Pages `/login` and `/register`
+- [ ] Forms with validation (Zod)
+- [ ] Middleware for route protection
+- [ ] BookingForm with price calculator
+- [ ] User dashboard `/profile`
+- [ ] Bookings list
+- [ ] Favorite warehouses
 
-**Результат:** ✅ Авторизация + бронирование
+**Result:** ✅ Authentication + booking
 
-### Спринт 5: Оператор (недели 9-10)
+### Sprint 5: Operator (weeks 9-10)
 
-**Задачи:**
+**Tasks:**
 - [ ] Operator Dashboard `/operator`
-- [ ] Метрики и графики
-- [ ] Управление складами
-- [ ] Wizard создания склада
-- [ ] Управление боксами
-- [ ] Обработка заявок на бронирование
+- [ ] Metrics and charts
+- [ ] Warehouse management
+- [ ] Warehouse creation wizard
+- [ ] Box management
+- [ ] Booking request processing
 
-**Результат:** ✅ ЛК оператора
+**Result:** ✅ Operator dashboard
 
-### Спринт 6: AI и финализация (недели 11-12)
+### Sprint 6: AI and finalization (weeks 11-12)
 
-**Задачи:**
-- [ ] AIBoxFinder виджет
-- [ ] AI-рекомендации
+**Tasks:**
+- [ ] AIBoxFinder widget
+- [ ] AI recommendations
 - [ ] ReviewForm
-- [ ] Оптимизация производительности
-- [ ] E2E тесты (Playwright)
-- [ ] Lighthouse аудит (score > 90)
-- [ ] Баг-фиксы
+- [ ] Performance optimization
+- [ ] E2E tests (Playwright)
+- [ ] Lighthouse audit (score > 90)
+- [ ] Bug fixes
 
-**Результат:** ✅ Готовый к релизу MVP
+**Result:** ✅ Ready for release MVP
 
-## 4.2. Интеграции с backend
+## 4.2. Backend Integrations
 
-### Фаза 1: Mock API (Спринты 1-2)
+### Phase 1: Mock API (Sprints 1-2)
 
 ```typescript
-// MSW для моков
+// MSW for mocks
 import { http, HttpResponse } from 'msw';
 
 export const handlers = [
@@ -2776,7 +2776,7 @@ export const handlers = [
 ];
 ```
 
-### Фаза 2: Staging Backend (Спринты 3-4)
+### Phase 2: Staging Backend (Sprints 3-4)
 
 ```typescript
 // .env.local
@@ -2784,26 +2784,26 @@ NEXT_PUBLIC_API_URL=https://api-staging.storagecompare.ae/v1
 NEXT_PUBLIC_USE_MOCKS=false
 ```
 
-### Фаза 3: Production Backend (Спринты 5-6)
+### Phase 3: Production Backend (Sprints 5-6)
 
 ```typescript
 // .env.production
 NEXT_PUBLIC_API_URL=https://api.storagecompare.ae/v1
 ```
 
-## 4.3. Тестирование
+## 4.3. Testing
 
-### Unit тесты (Jest + React Testing Library)
+### Unit Tests (Jest + React Testing Library)
 
 ```typescript
-// Тестирование UI-компонентов
+// UI component testing
 describe('Button', () => {
-  it('рендерится с текстом', () => {
+  it('renders with text', () => {
     render(<Button>Click me</Button>);
     expect(screen.getByText('Click me')).toBeInTheDocument();
   });
-  
-  it('вызывает onClick', () => {
+
+  it('calls onClick', () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click</Button>);
     fireEvent.click(screen.getByText('Click'));
@@ -2812,17 +2812,17 @@ describe('Button', () => {
 });
 ```
 
-### Integration тесты
+### Integration Tests
 
 ```typescript
-// Тестирование форм
+// Form testing
 describe('BookingForm', () => {
-  it('отправляет форму с корректными данными', async () => {
+  it('submits form with correct data', async () => {
     render(<BookingForm warehouse={mock} box={mock} />);
-    
-    await user.type(screen.getByLabelText('Комментарий'), 'Test');
-    await user.click(screen.getByText('Отправить'));
-    
+
+    await user.type(screen.getByLabelText('Comment'), 'Test');
+    await user.click(screen.getByText('Submit'));
+
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalled();
     });
@@ -2830,23 +2830,23 @@ describe('BookingForm', () => {
 });
 ```
 
-### E2E тесты (Playwright)
+### E2E Tests (Playwright)
 
 ```typescript
-// Критичные сценарии
-test('процесс бронирования', async ({ page }) => {
+// Critical scenarios
+test('booking process', async ({ page }) => {
   await page.goto('/');
-  await page.fill('[placeholder="Город"]', 'Dubai');
-  await page.click('button:has-text("Найти")');
+  await page.fill('[placeholder="City"]', 'Dubai');
+  await page.click('button:has-text("Find")');
   await page.click('[data-testid="warehouse-card"]:first-child');
-  await page.click('button:has-text("Забронировать")');
-  
-  // Заполнение формы
+  await page.click('button:has-text("Book")');
+
+  // Fill form
   await page.click('[data-testid="date-picker"]');
   await page.selectOption('select[name="duration"]', '6');
   await page.check('input[name="agreeToTerms"]');
   await page.click('button[type="submit"]');
-  
+
   await expect(page).toHaveURL(/\/profile\/bookings/);
 });
 ```
@@ -2875,20 +2875,20 @@ jobs:
       - run: npm run test:e2e
 ```
 
-**Покрытие тестами:**
-- Unit тесты: 70%+ для утилит и UI-компонентов
-- E2E тесты: критичные флоу (поиск, бронирование, auth)
+**Test coverage:**
+- Unit tests: 70%+ for utilities and UI components
+- E2E tests: critical flows (search, booking, auth)
 
 
 ---
 
-# Раздел 5: Требования к производительности
+# Section 5: Performance Requirements
 
-## 5.1. Время загрузки
+## 5.1. Load Time
 
-### Целевые метрики (Core Web Vitals)
+### Target Metrics (Core Web Vitals)
 
-| Метрика | Цель для MVP |
+| Metric | MVP Target |
 |---------|--------------|
 | **LCP** (Largest Contentful Paint) | ≤ 2.5s |
 | **FID** (First Input Delay) | ≤ 100ms |
@@ -2898,16 +2898,16 @@ jobs:
 
 ### Lighthouse Score
 
-| Категория | Минимум | Цель |
+| Category | Minimum | Target |
 |-----------|---------|------|
 | Performance | 85 | **90+** |
 | Accessibility | 90 | **95+** |
 | Best Practices | 90 | **95+** |
 | SEO | 95 | **100** |
 
-### Стратегии оптимизации
+### Optimization Strategies
 
-#### 1. SSR для критичных страниц
+#### 1. SSR for Critical Pages
 
 ```typescript
 // Server-Side Rendering
@@ -2929,7 +2929,7 @@ export default async function WarehousePage({ params }) {
 #### 2. Code Splitting
 
 ```typescript
-// Динамический импорт
+// Dynamic import
 const MapView = dynamic(() => import('@/components/features/map/MapView'), {
   loading: () => <MapSkeleton />,
   ssr: false,
@@ -2957,15 +2957,15 @@ const MapView = dynamic(() => import('@/components/features/map/MapView'), {
 import { Inter } from 'next/font/google';
 
 const inter = Inter({
-  subsets: ['latin', 'cyrillic'],
+  subsets: ['latin'],
   display: 'swap',
   preload: true,
 });
 ```
 
-## 5.2. Оптимизация карт
+## 5.2. Maps Optimization
 
-### 1. Ленивая загрузка библиотеки
+### 1. Lazy Library Loading
 
 ```typescript
 export function useMapLoader() {
@@ -2985,12 +2985,12 @@ export function useMapLoader() {
 }
 ```
 
-### 2. Рендер только видимой области
+### 2. Render Only Visible Area
 
 ```typescript
 updateVisibleMarkers(warehouses: Warehouse[]) {
   const bounds = this.map.getBounds();
-  
+
   warehouses.forEach((warehouse) => {
     if (this.isInBounds(warehouse.coordinates, bounds)) {
       this.addMarker(warehouse);
@@ -2999,7 +2999,7 @@ updateVisibleMarkers(warehouses: Warehouse[]) {
 }
 ```
 
-### 3. Debounce для boundschange
+### 3. Debounce for boundschange
 
 ```typescript
 const debouncedSetBounds = useDebouncedCallback(
@@ -3010,21 +3010,21 @@ const debouncedSetBounds = useDebouncedCallback(
 );
 ```
 
-## 5.3. Кэширование
+## 5.3. Caching
 
-### 1. React Query кэш
+### 1. React Query Cache
 
 ```typescript
 export function useWarehouses(filters) {
   return useQuery({
     queryKey: ['warehouses', filters],
     queryFn: () => warehousesApi.search(filters),
-    staleTime: 5 * 60 * 1000,  // 5 минут
-    gcTime: 10 * 60 * 1000,     // 10 минут
+    staleTime: 5 * 60 * 1000,  // 5 minutes
+    gcTime: 10 * 60 * 1000,     // 10 minutes
   });
 }
 
-// Справочники - кэш навсегда
+// Dictionaries - cache forever
 export function useAttributes() {
   return useQuery({
     queryKey: ['attributes'],
@@ -3057,7 +3057,7 @@ async headers() {
 }
 ```
 
-### 3. LocalStorage для настроек
+### 3. LocalStorage for Settings
 
 ```typescript
 export function useLocalStorage<T>(key: string, initialValue: T) {
@@ -3075,18 +3075,18 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 }
 ```
 
-## 5.4. Пагинация, сортировка и фильтрация
+## 5.4. Pagination, Sorting and Filtering
 
-### 1. Серверная пагинация
+### 1. Server-Side Pagination
 
 ```typescript
 export function useWarehouses(filters) {
   const [page, setPage] = useState(1);
-  
+
   const { data, isLoading } = useQuery({
     queryKey: ['warehouses', { ...filters, page }],
     queryFn: () => warehousesApi.search({ ...filters, page, perPage: 12 }),
-    keepPreviousData: true,  // Показываем старые данные при загрузке
+    keepPreviousData: true,  // Show old data while loading
   });
 
   return { warehouses: data?.data, pagination: data?.pagination, page, setPage };
@@ -3106,20 +3106,20 @@ export function useInfiniteWarehouses(filters) {
   });
 }
 
-// Автозагрузка при scroll
+// Auto-load on scroll
 useEffect(() => {
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && hasNextPage) {
       fetchNextPage();
     }
   });
-  
+
   observer.observe(triggerRef.current);
   return () => observer.disconnect();
 }, [hasNextPage, fetchNextPage]);
 ```
 
-### 3. Фильтры в URL
+### 3. Filters in URL
 
 ```typescript
 export function useFiltersFromUrl() {
@@ -3134,7 +3134,7 @@ export function useFiltersFromUrl() {
 
   const updateFilters = useCallback((newFilters) => {
     const params = new URLSearchParams();
-    // ... заполняем params
+    // ... fill params
     router.push(`/catalog?${params.toString()}`, { scroll: false });
   }, [router]);
 
@@ -3142,7 +3142,7 @@ export function useFiltersFromUrl() {
 }
 ```
 
-### 4. Индикация загрузки
+### 4. Loading Indication
 
 ```typescript
 export function WarehouseCatalog() {
@@ -3159,7 +3159,7 @@ export function WarehouseCatalog() {
       {isLoading ? (
         <WarehouseListSkeleton />
       ) : warehouses.length === 0 ? (
-        <EmptyState title="Не найдено" />
+        <EmptyState title="Not found" />
       ) : (
         <WarehouseList warehouses={warehouses} />
       )}
@@ -3168,14 +3168,14 @@ export function WarehouseCatalog() {
 }
 ```
 
-## Мониторинг производительности
+## Performance Monitoring
 
 ### Web Vitals Tracking
 
 ```typescript
 export function WebVitalsReporter() {
   useReportWebVitals((metric) => {
-    // Отправка в Google Analytics
+    // Send to Google Analytics
     if (window.gtag) {
       window.gtag('event', metric.name, {
         value: Math.round(metric.value),
@@ -3183,7 +3183,7 @@ export function WebVitalsReporter() {
       });
     }
   });
-  
+
   return null;
 }
 ```
@@ -3204,9 +3204,9 @@ webpack: (config, { dev }) => {
 }
 ```
 
-**Целевые размеры бандлов:**
+**Target Bundle Sizes:**
 
-| Тип | Размер (gzip) | Макс |
+| Type | Size (gzip) | Max |
 |-----|---------------|------|
 | Initial JS | < 100 KB | 150 KB |
 | Total JS | < 300 KB | 500 KB |
@@ -3214,57 +3214,57 @@ webpack: (config, { dev }) => {
 
 ---
 
-# Заключение
+# Conclusion
 
-Данный Frontend Implementation Plan описывает полную архитектуру, технический стек, план разработки и требования к производительности для MVP v1 агрегатора Self-Storage.
+This Frontend Implementation Plan describes the complete architecture, technology stack, development plan and performance requirements for MVP v1 of the Self-Storage aggregator.
 
 ---
 
-## Сводка по статусам компонентов
+## Component Status Summary
 
-### AI компоненты
+### AI Components
 
-| Компонент | Статус MVP | Описание |
+| Component | MVP Status | Description |
 |-----------|------------|----------|
-| `AIBoxFinder` | **MVP STUB** | Feature-flagged, базовый UI |
-| `AIChat` | **POST-MVP** | Не реализовывать в MVP |
-| `AIRecommendations` | **MVP STUB** | Feature-flagged, базовый UI |
+| `AIBoxFinder` | **MVP STUB** | Feature-flagged, basic UI |
+| `AIChat` | **POST-MVP** | Do not implement in MVP |
+| `AIRecommendations` | **MVP STUB** | Feature-flagged, basic UI |
 
-### Авторизация
+### Authentication
 
-| Аспект | Статус | Описание |
+| Aspect | Status | Description |
 |--------|--------|----------|
-| httpOnly cookies | **MUST** | **ЕДИНСТВЕННЫЙ** способ хранения токенов |
-| Middleware защита | **MUST** | Edge Runtime, jose для JWT |
+| httpOnly cookies | **MUST** | **THE ONLY** way to store tokens |
+| Middleware protection | **MUST** | Edge Runtime, jose for JWT |
 | ProtectedRoute | **MUST** | Client-side fallback |
-| Refresh token flow | **MUST** | Автоматический через cookies |
-| withCredentials: true | **MUST** | Для всех axios запросов |
-| LocalStorage для токенов | **ЗАПРЕЩЕНО** | Уязвимость XSS |
-| Bearer token в header | **ЗАПРЕЩЕНО** | Не использовать |
-| Токены в Zustand | **ЗАПРЕЩЕНО** | Store хранит только user data |
+| Refresh token flow | **MUST** | Automatic through cookies |
+| withCredentials: true | **MUST** | For all axios requests |
+| LocalStorage for tokens | **PROHIBITED** | XSS vulnerability |
+| Bearer token in header | **PROHIBITED** | Do not use |
+| Tokens in Zustand | **PROHIBITED** | Store only holds user data |
 
-### Карты
+### Maps
 
-| Аспект | Статус | Описание |
+| Aspect | Status | Description |
 |--------|--------|----------|
-| Google Maps | **MUST** | Основной провайдер |
-| Google Maps | **POST-MVP** | Резервный провайдер |
-| Клиентская кластеризация | **MUST** | Через Google Maps SDK |
-| Серверная кластеризация | **SHOULD** | Для оптимизации (1000+ складов) |
+| Google Maps | **MUST** | Primary provider |
+| Google Maps | **POST-MVP** | Backup provider |
+| Client-side clustering | **MUST** | Via Google Maps SDK |
+| Server-side clustering | **SHOULD** | For optimization (1000+ warehouses) |
 
-### Страницы
+### Pages
 
-| Группа | Статус |
+| Group | Status |
 |--------|--------|
-| Публичные (`/`, `/catalog`, `/map`) | **MUST** |
+| Public (`/`, `/catalog`, `/map`) | **MUST** |
 | Auth (`/login`, `/register`) | **MUST** |
-| Reset Password | **PLACEHOLDER** для MVP |
-| Profile (`/profile/*`) | **MUST** основные, **SHOULD** settings |
-| Operator (`/operator/*`) | **MUST** основные, **SHOULD** analytics |
+| Reset Password | **PLACEHOLDER** for MVP |
+| Profile (`/profile/*`) | **MUST** basic, **SHOULD** settings |
+| Operator (`/operator/*`) | **MUST** basic, **SHOULD** analytics |
 
-### Производительность
+### Performance
 
-| Метрика | Цель | Статус |
+| Metric | Target | Status |
 |---------|------|--------|
 | LCP | ≤ 2.5s | **MUST** |
 | FID | ≤ 100ms | **MUST** |
@@ -3274,32 +3274,32 @@ webpack: (config, { dev }) => {
 
 ---
 
-**Ключевые достижения документа:**
-- ✅ Детальная архитектура фронтенда (структура, роутинг, компоненты, state)
-- ✅ Полная дизайн-система и UI Kit
-- ✅ Обоснованный технический стек (Next.js 14, React Query, Zustand, Google Maps)
-- ✅ Подробный план разработки по спринтам (12 недель)
-- ✅ Чёткие требования к производительности (Core Web Vitals, Lighthouse > 90)
+**Key Document Achievements:**
+- ✅ Detailed frontend architecture (structure, routing, components, state)
+- ✅ Complete design system and UI Kit
+- ✅ Justified technology stack (Next.js 14, React Query, Zustand, Google Maps)
+- ✅ Detailed sprint-based development plan (12 weeks)
+- ✅ Clear performance requirements (Core Web Vitals, Lighthouse > 90)
 
-**Готовность к передаче frontend-команде:**
-- 📋 Структура проекта готова к setup
-- 🎨 Дизайн-система и компоненты описаны
-- 🔌 API интеграции определены
-- 📅 Roadmap на 3 месяца детализирован
-- ⚡ Оптимизации и best practices включены
+**Ready for Frontend Team Handoff:**
+- 📋 Project structure ready for setup
+- 🎨 Design system and components described
+- 🔌 API integrations defined
+- 📅 3-month roadmap detailed
+- ⚡ Optimizations and best practices included
 
-**Следующие шаги:**
-1. Setup проекта согласно структуре
-2. Реализация UI Kit (Спринт 1)
-3. Интеграция с backend API
-4. Поэтапная разработка по спринтам
-5. Тестирование и оптимизация
+**Next Steps:**
+1. Project setup according to structure
+2. UI Kit implementation (Sprint 1)
+3. Backend API integration
+4. Phased development by sprints
+5. Testing and optimization
 
 ---
 
-**Дата создания:** 01 декабря 2024  
-**Дата аудита:** 16 декабря 2024  
-**Дата security fix:** 16 декабря 2024  
-**Версия:** 1.2 (Security Fixed)  
-**Статус:** GREEN (Approved)
+**Creation Date:** December 1, 2024
+**Audit Date:** December 16, 2024
+**Security Fix Date:** December 16, 2024
+**Version:** 1.2 (Security Fixed)
+**Status:** GREEN (Approved)
 

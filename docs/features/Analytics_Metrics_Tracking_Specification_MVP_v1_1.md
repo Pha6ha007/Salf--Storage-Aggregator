@@ -89,51 +89,51 @@ This specification is subordinate to and aligned with:
    - 4.3. [Backup Storage](#43-backup-storage)
    - 4.4. [Data Flow Architecture](#44-data-flow-architecture)
 5. [Naming Conventions](#5-naming-conventions)
-   - 5.1. [Формат именования](#51-формат-именования)
-   - 5.2. [Категории событий](#52-категории-событий)
-   - 5.3. [Полный реестр событий](#53-полный-реестр-событий)
-   - 5.4. [Антипаттерны](#54-антипаттерны)
-6. [Схемы данных событий](#6-схемы-данных-событий)
-   - 6.1. [Базовая структура события](#61-базовая-структура-события)
-   - 6.2. [Обязательные и опциональные поля](#62-обязательные-и-опциональные-поля)
-   - 6.3. [Примеры событий по категориям](#63-примеры-событий-по-категориям)
-   - 6.4. [Валидация событий](#64-валидация-событий)
+   - 5.1. [Naming Format](#51-naming-format)
+   - 5.2. [Event Categories](#52-event-categories)
+   - 5.3. [Complete Event Registry](#53-complete-event-registry)
+   - 5.4. [Anti-patterns](#54-anti-patterns)
+6. [Event Data Schemas](#6-event-data-schemas)
+   - 6.1. [Base Event Structure](#61-base-event-structure)
+   - 6.2. [Required and Optional Fields](#62-required-and-optional-fields)
+   - 6.3. [Event Examples by Category](#63-event-examples-by-category)
+   - 6.4. [Event Validation](#64-event-validation)
 7. [A/B Testing Framework](#7-ab-testing-framework)
-   - 7.1. [Архитектура системы](#71-архитектура-системы)
-   - 7.2. [Сегментация пользователей](#72-сегментация-пользователей)
+   - 7.1. [System Architecture](#71-system-architecture)
+   - 7.2. [User Segmentation](#72-user-segmentation)
    - 7.3. [Feature Flags](#73-feature-flags)
-   - 7.4. [Измеряемые метрики](#74-измеряемые-метрики)
-   - 7.5. [Статистическая значимость](#75-статистическая-значимость)
+   - 7.4. [Measured Metrics](#74-measured-metrics)
+   - 7.5. [Statistical Significance](#75-statistical-significance)
 8. [Dashboard Requirements](#8-dashboard-requirements)
-   - 8.1. [Дашборды для продакт-менеджера](#81-дашборды-для-продакт-менеджера)
-   - 8.2. [Дашборды для операторов](#82-дашборды-для-операторов)
-   - 8.3. [Технические дашборды](#83-технические-дашборды)
-   - 8.4. [Инструменты и платформы](#84-инструменты-и-платформы)
-- [Приложения](#приложения)
-   - A. [Полный реестр событий](#приложение-a-полный-реестр-событий)
-   - B. [Mapping к GA4](#приложение-b-mapping-к-ga4)
-   - C. [Checklist интеграции](#приложение-c-checklist-интеграции)
+   - 8.1. [Product Manager Dashboards](#81-product-manager-dashboards)
+   - 8.2. [Operator Dashboards](#82-operator-dashboards)
+   - 8.3. [Technical Dashboards](#83-technical-dashboards)
+   - 8.4. [Tools and Platforms](#84-tools-and-platforms)
+- [Appendices](#appendices)
+   - A. [Complete Event Registry](#appendix-a-complete-event-registry)
+   - B. [GA4 Mapping](#appendix-b-ga4-mapping)
+   - C. [Integration Checklist](#appendix-c-integration-checklist)
 
 ---
 
-## 1. Метрики платформы
+## 1. Platform Metrics
 
-Данный раздел описывает ключевые метрики для оценки эффективности платформы: продуктовые, бизнесовые и AI-метрики.
+This section describes key metrics for evaluating platform performance: product metrics, business metrics, and AI metrics.
 
-### 1.1. Продуктовые метрики
+### 1.1. Product Metrics
 
-Продуктовые метрики отражают вовлечённость пользователей и эффективность ключевых сценариев использования платформы.
+Product metrics reflect user engagement and the effectiveness of key platform usage scenarios.
 
-#### 1.1.1. Активность пользователей (DAU / MAU)
+#### 1.1.1. User Activity (DAU / MAU)
 
-| Метрика | Описание | Формула | Целевое значение (MVP) |
+| Metric | Description | Formula | Target Value (MVP) |
 |---------|----------|---------|------------------------|
-| **DAU** | Уникальные пользователи за день | `COUNT(DISTINCT user_id) WHERE date = today` | > 100 |
-| **MAU** | Уникальные пользователи за месяц | `COUNT(DISTINCT user_id) WHERE date >= today - 30` | > 1,000 |
-| **DAU/MAU Ratio** | Стикинес платформы | `DAU / MAU * 100%` | > 10% |
-| **WAU** | Уникальные пользователи за неделю | `COUNT(DISTINCT user_id) WHERE date >= today - 7` | > 300 |
+| **DAU** | Unique users per day | `COUNT(DISTINCT user_id) WHERE date = today` | > 100 |
+| **MAU** | Unique users per month | `COUNT(DISTINCT user_id) WHERE date >= today - 30` | > 1,000 |
+| **DAU/MAU Ratio** | Platform stickiness | `DAU / MAU * 100%` | > 10% |
+| **WAU** | Unique users per week | `COUNT(DISTINCT user_id) WHERE date >= today - 7` | > 300 |
 
-**Сегментация DAU/MAU:**
+**DAU/MAU Segmentation:**
 
 ```
 DAU_by_role:
@@ -142,9 +142,9 @@ DAU_by_role:
   - admins: COUNT(DISTINCT user_id WHERE role = 'admin')
 ```
 
-#### 1.1.2. Конверсионная воронка
+#### 1.1.2. Conversion Funnel
 
-Главная конверсионная воронка платформы:
+Main platform conversion funnel:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -179,7 +179,7 @@ DAU_by_role:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-| Этап | Событие | Целевая конверсия (MVP) |
+| Stage | Event | Target Conversion (MVP) |
 |------|---------|-------------------------|
 | Search → Warehouse View | `search_result_click` | 60% |
 | Warehouse View → Box View | `box_open` | 40% |
@@ -188,18 +188,18 @@ DAU_by_role:
 | Booking Submit → Confirmed | `booking_confirmed` (backend) | 80% |
 | **Overall: Search → Confirmed** | — | **3-5%** |
 
-#### 1.1.3. Retention-метрики
+#### 1.1.3. Retention Metrics
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **D1 Retention** | Вернулись на следующий день | `Users(day N+1) / Users(day N) * 100%` | > 20% |
-| **D7 Retention** | Вернулись через неделю | `Users(day N+7) / Users(day N) * 100%` | > 10% |
-| **D30 Retention** | Вернулись через месяц | `Users(day N+30) / Users(day N) * 100%` | > 5% |
+| **D1 Retention** | Returned next day | `Users(day N+1) / Users(day N) * 100%` | > 20% |
+| **D7 Retention** | Returned after one week | `Users(day N+7) / Users(day N) * 100%` | > 10% |
+| **D30 Retention** | Returned after one month | `Users(day N+30) / Users(day N) * 100%` | > 5% |
 
-**Retention по когортам:**
+**Retention by Cohorts:**
 
 ```sql
--- Пример SQL для расчёта retention когорт
+-- SQL example for calculating retention cohorts
 SELECT 
   DATE_TRUNC('week', first_visit_date) AS cohort_week,
   COUNT(DISTINCT CASE WHEN days_since_first = 0 THEN user_id END) AS d0,
@@ -213,131 +213,131 @@ ORDER BY cohort_week DESC;
 
 #### 1.1.4. Operator Activation Rate
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Registration → First Warehouse** | Оператор добавил первый склад | `Operators(≥1 warehouse) / Registered Operators` | > 70% |
-| **First Warehouse → First Box** | Оператор добавил первый бокс | `Operators(≥1 box) / Operators(≥1 warehouse)` | > 90% |
-| **First Box → First Request** | Получена первая заявка | `Operators(≥1 request) / Operators(≥1 box)` | > 50% |
-| **Time to First Warehouse** | Медиана времени до добавления склада | `MEDIAN(time_to_first_warehouse)` | < 24 часа |
-| **Time to First Request** | Медиана времени до первой заявки | `MEDIAN(time_to_first_request)` | < 7 дней |
+| **Registration → First Warehouse** | Operator added first warehouse | `Operators(≥1 warehouse) / Registered Operators` | > 70% |
+| **First Warehouse → First Box** | Operator added first box | `Operators(≥1 box) / Operators(≥1 warehouse)` | > 90% |
+| **First Box → First Request** | Received first request | `Operators(≥1 request) / Operators(≥1 box)` | > 50% |
+| **Time to First Warehouse** | Median time to adding warehouse | `MEDIAN(time_to_first_warehouse)` | < 24 hours |
+| **Time to First Request** | Median time to first request | `MEDIAN(time_to_first_request)` | < 7 days |
 
-#### 1.1.5. Поведенческие метрики
+#### 1.1.5. Behavioral Metrics
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Pages per Session** | Среднее количество страниц за сессию | `SUM(page_views) / COUNT(DISTINCT session_id)` | > 3 |
-| **Session Duration** | Средняя длительность сессии | `AVG(session_end - session_start)` | > 3 минуты |
-| **Bounce Rate** | Процент одностраничных сессий | `Sessions(page_count = 1) / Total Sessions * 100%` | < 40% |
-| **Time on Page (Warehouse)** | Время на странице склада | `AVG(time_on_page) WHERE page_type = 'warehouse'` | > 2 минуты |
-| **Search Depth** | Кол-во результатов поиска перед кликом | `AVG(results_viewed_before_click)` | < 10 |
+| **Pages per Session** | Average pages per session | `SUM(page_views) / COUNT(DISTINCT session_id)` | > 3 |
+| **Session Duration** | Average session duration | `AVG(session_end - session_start)` | > 3 minutes |
+| **Bounce Rate** | Percentage of single-page sessions | `Sessions(page_count = 1) / Total Sessions * 100%` | < 40% |
+| **Time on Page (Warehouse)** | Time on warehouse page | `AVG(time_on_page) WHERE page_type = 'warehouse'` | > 2 minutes |
+| **Search Depth** | Number of search results before click | `AVG(results_viewed_before_click)` | < 10 |
 
 ---
 
-### 1.2. Бизнес-метрики
+### 1.2. Business Metrics
 
-Бизнес-метрики измеряют коммерческую эффективность платформы.
+Business metrics measure the commercial effectiveness of the platform.
 
 #### 1.2.1. Booking Metrics
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Total Bookings** | Общее количество бронирований | `COUNT(bookings)` | > 50/месяц (MVP) |
-| **Confirmed Bookings** | Подтверждённые бронирования | `COUNT(bookings WHERE status = 'confirmed')` | > 40/месяц (MVP) |
-| **Booking Confirmation Rate** | Процент подтверждения | `Confirmed / Total * 100%` | > 70% |
-| **Cancelled Bookings** | Отменённые бронирования | `COUNT(bookings WHERE status = 'cancelled')` | < 10% |
-| **Average Booking Value (ABV)** | Средняя стоимость брони | `SUM(booking_amount) / COUNT(bookings)` | > $100 |
-| **Booking Lead Time** | Среднее время до въезда | `AVG(move_in_date - booking_created_at)` | 7-14 дней |
+| **Total Bookings** | Total number of bookings | `COUNT(bookings)` | > 50/month (MVP) |
+| **Confirmed Bookings** | Confirmed bookings | `COUNT(bookings WHERE status = 'confirmed')` | > 40/month (MVP) |
+| **Booking Confirmation Rate** | Confirmation percentage | `Confirmed / Total * 100%` | > 70% |
+| **Cancelled Bookings** | Cancelled bookings | `COUNT(bookings WHERE status = 'cancelled')` | < 10% |
+| **Average Booking Value (ABV)** | Average booking cost | `SUM(booking_amount) / COUNT(bookings)` | > $100 |
+| **Booking Lead Time** | Average time to move-in | `AVG(move_in_date - booking_created_at)` | 7-14 days |
 
 #### 1.2.2. Revenue Metrics
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Gross Booking Value (GBV)** | Общая стоимость бронирований | `SUM(booking_amount)` | > $10K/месяц |
-| **Net Revenue** | Доход платформы (комиссия) | `SUM(platform_fee)` | > $1K/месяц |
-| **Take Rate** | Процент комиссии | `Net Revenue / GBV * 100%` | 10-15% |
-| **ARPU (User)** | Средний доход с пользователя | `Net Revenue / Active Users` | > $10 |
-| **ARPU (Operator)** | Средний доход с оператора | `Net Revenue / Active Operators` | > $100 |
+| **Gross Booking Value (GBV)** | Total booking value | `SUM(booking_amount)` | > $10K/month |
+| **Net Revenue** | Platform revenue (commission) | `SUM(platform_fee)` | > $1K/month |
+| **Take Rate** | Commission percentage | `Net Revenue / GBV * 100%` | 10-15% |
+| **ARPU (User)** | Average revenue per user | `Net Revenue / Active Users` | > $10 |
+| **ARPU (Operator)** | Average revenue per operator | `Net Revenue / Active Operators` | > $100 |
 
 #### 1.2.3. Operator Metrics
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Active Operators** | Операторы с активными складами | `COUNT(DISTINCT operator_id WHERE warehouses > 0)` | > 20 (MVP) |
-| **Warehouses per Operator** | Среднее количество складов | `AVG(warehouses_count)` | > 1.5 |
-| **Boxes per Warehouse** | Среднее количество боксов | `AVG(boxes_count)` | > 20 |
-| **Occupancy Rate** | Занятость боксов | `Booked Boxes / Total Boxes * 100%` | > 30% (MVP) |
-| **Warehouse Fill Rate** | Процент заполненности склада | `AVG(occupancy_rate) GROUP BY warehouse` | > 50% (target) |
-| **Operator Response Time** | Среднее время ответа на заявку | `AVG(response_time)` | < 24 часа |
-| **Operator Acceptance Rate** | Процент принятых заявок | `Accepted / Total Requests * 100%` | > 80% |
+| **Active Operators** | Operators with active warehouses | `COUNT(DISTINCT operator_id WHERE warehouses > 0)` | > 20 (MVP) |
+| **Warehouses per Operator** | Average warehouse count | `AVG(warehouses_count)` | > 1.5 |
+| **Boxes per Warehouse** | Average box count | `AVG(boxes_count)` | > 20 |
+| **Occupancy Rate** | Box occupancy | `Booked Boxes / Total Boxes * 100%` | > 30% (MVP) |
+| **Warehouse Fill Rate** | Warehouse fill percentage | `AVG(occupancy_rate) GROUP BY warehouse` | > 50% (target) |
+| **Operator Response Time** | Average response time to request | `AVG(response_time)` | < 24 hours |
+| **Operator Acceptance Rate** | Percentage of accepted requests | `Accepted / Total Requests * 100%` | > 80% |
 
 #### 1.2.4. Supply & Demand
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Total Supply (Boxes)** | Общее количество боксов | `COUNT(boxes WHERE status = 'available')` | > 500 (MVP) |
-| **Available Supply** | Доступные боксы | `COUNT(boxes WHERE status = 'available' AND NOT booked)` | > 300 |
-| **Search Demand** | Количество поисков | `COUNT(search_events)` | > 1,000/месяц |
-| **Supply Coverage** | Процент запросов с результатами | `Searches with results / Total Searches * 100%` | > 90% |
-| **Unmet Demand** | Поиски без результатов | `COUNT(search_no_results)` | < 10% |
+| **Total Supply (Boxes)** | Total number of boxes | `COUNT(boxes WHERE status = 'available')` | > 500 (MVP) |
+| **Available Supply** | Available boxes | `COUNT(boxes WHERE status = 'available' AND NOT booked)` | > 300 |
+| **Search Demand** | Number of searches | `COUNT(search_events)` | > 1,000/month |
+| **Supply Coverage** | Percentage of searches with results | `Searches with results / Total Searches * 100%` | > 90% |
+| **Unmet Demand** | Searches without results | `COUNT(search_no_results)` | < 10% |
 
 ---
 
-### 1.3. AI-метрики
+### 1.3. AI Metrics
 
-AI-метрики измеряют эффективность AI-компонентов платформы (AI Search, Recommendations, Claude integration).
+AI metrics measure the effectiveness of AI components of the platform (AI Search, Recommendations, Claude integration).
 
 #### 1.3.1. AI Search Performance
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **AI Search Usage** | Процент поисков с AI | `AI Searches / Total Searches * 100%` | > 30% |
-| **AI Search CTR** | Клики по AI-результатам | `Clicks on AI results / AI Search impressions * 100%` | > 15% |
-| **AI Search Conversion** | Конверсия в бронирование | `Bookings from AI Search / AI Searches * 100%` | > 5% |
-| **AI vs Non-AI CTR Lift** | Прирост CTR относительно обычного поиска | `(AI CTR - Non-AI CTR) / Non-AI CTR * 100%` | > +20% |
-| **AI Search Latency** | Среднее время ответа AI | `AVG(ai_response_time)` | < 2 секунды |
-| **AI Fallback Rate** | Процент ошибок AI → fallback | `AI Fallbacks / AI Requests * 100%` | < 5% |
+| **AI Search Usage** | Percentage of searches with AI | `AI Searches / Total Searches * 100%` | > 30% |
+| **AI Search CTR** | Clicks on AI results | `Clicks on AI results / AI Search impressions * 100%` | > 15% |
+| **AI Search Conversion** | Conversion to booking | `Bookings from AI Search / AI Searches * 100%` | > 5% |
+| **AI vs Non-AI CTR Lift** | CTR increase vs regular search | `(AI CTR - Non-AI CTR) / Non-AI CTR * 100%` | > +20% |
+| **AI Search Latency** | Average AI response time | `AVG(ai_response_time)` | < 2 seconds |
+| **AI Fallback Rate** | Percentage of AI errors → fallback | `AI Fallbacks / AI Requests * 100%` | < 5% |
 
 #### 1.3.2. Recommendation Quality
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **Recommendation Impressions** | Показы рекомендаций | `COUNT(recommendation_shown)` | > 1,000/день |
-| **Recommendation CTR** | Клики по рекомендациям | `Clicks / Impressions * 100%` | > 10% |
-| **Recommendation Conversion** | Конверсия в бронирование | `Bookings from recommendations / Recommendation clicks * 100%` | > 8% |
-| **Personalization Uplift** | Прирост относительно неперсонализированных | `(Personalized CTR - Random CTR) / Random CTR * 100%` | > +30% |
+| **Recommendation Impressions** | Recommendation impressions | `COUNT(recommendation_shown)` | > 1,000/day |
+| **Recommendation CTR** | Clicks on recommendations | `Clicks / Impressions * 100%` | > 10% |
+| **Recommendation Conversion** | Conversion to booking | `Bookings from recommendations / Recommendation clicks * 100%` | > 8% |
+| **Personalization Uplift** | Increase vs non-personalized | `(Personalized CTR - Random CTR) / Random CTR * 100%` | > +30% |
 
 #### 1.3.3. AI System Health
 
-| Метрика | Описание | Формула | Целевое значение |
+| Metric | Description | Formula | Target Value |
 |---------|----------|---------|------------------|
-| **AI Request Volume** | Количество AI запросов | `COUNT(ai_requests)` | Мониторинг |
-| **AI Success Rate** | Процент успешных ответов | `Successful AI requests / Total requests * 100%` | > 95% |
-| **AI Error Rate** | Процент ошибок | `Failed AI requests / Total requests * 100%` | < 5% |
-| **AI Response Time (p50)** | Медианное время ответа | `PERCENTILE(ai_response_time, 50)` | < 1 секунда |
-| **AI Response Time (p95)** | 95-й перцентиль | `PERCENTILE(ai_response_time, 95)` | < 3 секунды |
-| **AI Cost per Request** | Средняя стоимость запроса | `Total AI cost / Total requests` | < $0.01 |
-| **AI Token Usage** | Среднее количество токенов | `AVG(tokens_used)` | Мониторинг |
+| **AI Request Volume** | Number of AI requests | `COUNT(ai_requests)` | Monitoring |
+| **AI Success Rate** | Percentage of successful responses | `Successful AI requests / Total requests * 100%` | > 95% |
+| **AI Error Rate** | Percentage of errors | `Failed AI requests / Total requests * 100%` | < 5% |
+| **AI Response Time (p50)** | Median response time | `PERCENTILE(ai_response_time, 50)` | < 1 second |
+| **AI Response Time (p95)** | 95th percentile | `PERCENTILE(ai_response_time, 95)` | < 3 seconds |
+| **AI Cost per Request** | Average request cost | `Total AI cost / Total requests` | < $0.01 |
+| **AI Token Usage** | Average token count | `AVG(tokens_used)` | Monitoring |
 
 ---
 
-## 2. События фронтенда (Frontend Tracking)
+## 2. Frontend Events (Frontend Tracking)
 
-Фронтенд отслеживает действия пользователей через **Google Analytics 4 (GA4)** с использованием `gtag.js`.
+The frontend tracks user actions through **Google Analytics 4 (GA4)** using `gtag.js`.
 
-### 2.1. Навигационные события
+### 2.1. Navigation Events
 
-Навигационные события отслеживают перемещения пользователей по платформе.
+Navigation events track user movements across the platform.
 
 | Event Name | Trigger | Priority | GA4 Mapping |
 |------------|---------|----------|-------------|
-| **page_view** | Просмотр любой страницы | HIGH | `page_view` |
-| **page_exit** | Уход со страницы (beforeunload) | LOW | Custom event |
-| **search_open** | Открытие страницы поиска | HIGH | `view_search_results` |
-| **map_open** | Открытие карты | MEDIUM | Custom event |
-| **warehouse_open** | Открытие страницы склада | HIGH | `view_item` |
-| **box_open** | Открытие страницы бокса | HIGH | `view_item` |
+| **page_view** | View any page | HIGH | `page_view` |
+| **page_exit** | Page exit (beforeunload) | LOW | Custom event |
+| **search_open** | Open search page | HIGH | `view_search_results` |
+| **map_open** | Open map | MEDIUM | Custom event |
+| **warehouse_open** | Open warehouse page | HIGH | `view_item` |
+| **box_open** | Open box page | HIGH | `view_item` |
 
-**Пример: page_view**
+**Example: page_view**
 
 ```javascript
 gtag('event', 'page_view', {
@@ -350,7 +350,7 @@ gtag('event', 'page_view', {
 });
 ```
 
-**Пример: warehouse_open**
+**Example: warehouse_open**
 
 ```javascript
 gtag('event', 'view_item', {
@@ -370,20 +370,20 @@ gtag('event', 'view_item', {
 
 ---
 
-### 2.2. Поисковые события
+### 2.2. Search Events
 
-Поисковые события отслеживают взаимодействие с поиском и фильтрами.
+Search events track interactions with search and filters.
 
 | Event Name | Trigger | Priority | GA4 Mapping |
 |------------|---------|----------|-------------|
-| **search_apply_filters** | Применение фильтров | HIGH | `search` |
-| **search_reset_filters** | Сброс фильтров | MEDIUM | Custom event |
-| **search_result_click** | Клик по результату поиска | HIGH | `select_item` |
-| **search_sort_change** | Изменение сортировки | MEDIUM | Custom event |
-| **search_pagination** | Переход на следующую страницу | LOW | Custom event |
-| **search_no_results** | Поиск не вернул результатов | MEDIUM | `search_no_results` |
+| **search_apply_filters** | Apply filters | HIGH | `search` |
+| **search_reset_filters** | Reset filters | MEDIUM | Custom event |
+| **search_result_click** | Click on search result | HIGH | `select_item` |
+| **search_sort_change** | Change sorting | MEDIUM | Custom event |
+| **search_pagination** | Navigate to next page | LOW | Custom event |
+| **search_no_results** | Search returned no results | MEDIUM | `search_no_results` |
 
-**Пример: search_apply_filters**
+**Example: search_apply_filters**
 
 ```javascript
 gtag('event', 'search', {
@@ -401,7 +401,7 @@ gtag('event', 'search', {
 });
 ```
 
-**Пример: search_result_click**
+**Example: search_result_click**
 
 ```javascript
 gtag('event', 'select_item', {
@@ -420,20 +420,20 @@ gtag('event', 'select_item', {
 
 ---
 
-### 2.3. События бронирования
+### 2.3. Booking Events
 
-События бронирования отслеживают весь путь от начала бронирования до финальной отправки заявки.
+Booking events track the entire path from booking initiation to final request submission.
 
 | Event Name | Trigger | Priority | GA4 Mapping |
 |------------|---------|----------|-------------|
-| **booking_start** | Нажатие "Забронировать" | HIGH | `begin_checkout` |
-| **booking_step_complete** | Завершение шага формы | MEDIUM | `checkout_progress` |
-| **booking_submit** | Отправка заявки на бронирование | HIGH | `purchase` |
-| **booking_success** | Успешная отправка (frontend confirmation) | HIGH | Custom event |
-| **booking_error** | Ошибка при отправке | HIGH | Custom event |
-| **booking_abandon** | Покидание формы без завершения | MEDIUM | `abandon_checkout` |
+| **booking_start** | Click "Book Now" | HIGH | `begin_checkout` |
+| **booking_step_complete** | Complete form step | MEDIUM | `checkout_progress` |
+| **booking_submit** | Submit booking request | HIGH | `purchase` |
+| **booking_success** | Successful submission (frontend confirmation) | HIGH | Custom event |
+| **booking_error** | Submission error | HIGH | Custom event |
+| **booking_abandon** | Abandon form without completion | MEDIUM | `abandon_checkout` |
 
-**Пример: booking_start**
+**Example: booking_start**
 
 ```javascript
 gtag('event', 'begin_checkout', {
@@ -453,7 +453,7 @@ gtag('event', 'begin_checkout', {
 });
 ```
 
-**Пример: booking_submit**
+**Example: booking_submit**
 
 ```javascript
 gtag('event', 'purchase', {
@@ -473,7 +473,7 @@ gtag('event', 'purchase', {
 });
 ```
 
-**Пример: booking_error**
+**Example: booking_error**
 
 ```javascript
 gtag('event', 'booking_error', {
@@ -489,21 +489,21 @@ gtag('event', 'booking_error', {
 
 ---
 
-### 2.4. Пользовательские действия
+### 2.4. User Actions
 
-События, связанные с аутентификацией и персональными действиями пользователей.
+Events related to authentication and personal user actions.
 
 | Event Name | Trigger | Priority | GA4 Mapping |
 |------------|---------|----------|-------------|
-| **auth_login** | Вход в систему | HIGH | `login` |
-| **auth_signup** | Регистрация нового пользователя | HIGH | `sign_up` |
-| **auth_logout** | Выход из системы | MEDIUM | Custom event |
-| **auth_password_reset** | Запрос на сброс пароля | MEDIUM | Custom event |
-| **user_favorite_add** | Добавление в избранное | MEDIUM | `add_to_wishlist` |
-| **user_favorite_remove** | Удаление из избранного | LOW | `remove_from_wishlist` |
-| **user_share_click** | Нажатие кнопки "Поделиться" | LOW | `share` |
+| **auth_login** | Login to system | HIGH | `login` |
+| **auth_signup** | Register new user | HIGH | `sign_up` |
+| **auth_logout** | Logout from system | MEDIUM | Custom event |
+| **auth_password_reset** | Password reset request | MEDIUM | Custom event |
+| **user_favorite_add** | Add to favorites | MEDIUM | `add_to_wishlist` |
+| **user_favorite_remove** | Remove from favorites | LOW | `remove_from_wishlist` |
+| **user_share_click** | Click "Share" button | LOW | `share` |
 
-**Пример: auth_login**
+**Example: auth_login**
 
 ```javascript
 gtag('event', 'login', {
@@ -514,7 +514,7 @@ gtag('event', 'login', {
 });
 ```
 
-**Пример: user_favorite_add**
+**Example: user_favorite_add**
 
 ```javascript
 gtag('event', 'add_to_wishlist', {
@@ -532,82 +532,82 @@ gtag('event', 'add_to_wishlist', {
 
 ---
 
-### 2.5. Схема данных frontend-событий
+### 2.5. Frontend Event Data Schema
 
-#### 2.5.1. Базовая структура
+#### 2.5.1. Base Structure
 
-Все frontend-события содержат следующую базовую структу:
+All frontend events contain the following base structure:
 
 ```typescript
 interface FrontendEvent {
-  // Идентификаторы
-  event_name: string;          // Имя события (e.g., "page_view")
+  // Identifiers
+  event_name: string;          // Event name (e.g., "page_view")
   timestamp: string;           // ISO 8601 timestamp
-  session_id: string;          // UUID сессии
-  user_id?: string;            // UUID пользователя (если авторизован)
-  
-  // Контекст страницы
-  page_location: string;       // Полный URL
-  page_path: string;           // Путь (без домена)
-  page_title: string;          // Заголовок страницы
-  referrer?: string;           // Откуда пришёл
-  
-  // Устройство и браузер
+  session_id: string;          // Session UUID
+  user_id?: string;            // User UUID (if authenticated)
+
+  // Page context
+  page_location: string;       // Full URL
+  page_path: string;           // Path (without domain)
+  page_title: string;          // Page title
+  referrer?: string;           // Referrer source
+
+  // Device and browser
   user_agent: string;          // User agent
   device_category: string;     // "desktop" | "mobile" | "tablet"
-  browser: string;             // Название браузера
-  os: string;                  // Операционная система
+  browser: string;             // Browser name
+  os: string;                  // Operating system
   screen_resolution: string;   // "1920x1080"
   viewport_size: string;       // "1440x900"
-  
-  // Геолокация (из IP, если доступно)
+
+  // Geolocation (from IP, if available)
   country?: string;
   region?: string;
   city?: string;
-  
-  // Дополнительные параметры (специфичные для каждого события)
+
+  // Additional parameters (event-specific)
   [key: string]: any;
 }
 ```
 
-#### 2.5.2. Обязательные поля
+#### 2.5.2. Required Fields
 
-| Поле | Обязательность | Примечание |
+| Field | Required | Notes |
 |------|----------------|------------|
-| `event_name` | **Обязательное** | Имя события из реестра |
-| `timestamp` | **Обязательное** | ISO 8601 формат |
-| `session_id` | **Обязательное** | UUID сессии |
-| `user_id` | Опциональное | Только для авторизованных |
-| `page_location` | **Обязательное** | Полный URL |
-| `page_path` | **Обязательное** | Путь страницы |
-| `device_category` | **Обязательное** | desktop/mobile/tablet |
+| `event_name` | **Required** | Event name from registry |
+| `timestamp` | **Required** | ISO 8601 format |
+| `session_id` | **Required** | Session UUID |
+| `user_id` | Optional | Only for authenticated users |
+| `page_location` | **Required** | Full URL |
+| `page_path` | **Required** | Page path |
+| `device_category` | **Required** | desktop/mobile/tablet |
 
 ---
 
-## 3. События backend
+## 3. Backend Events
 
-Backend-события отслеживаются через внутреннюю систему логирования и сохраняются в таблице `analytics_events` PostgreSQL.
+Backend events are tracked through the internal logging system and stored in the PostgreSQL `analytics_events` table.
 
 **Compliance & Privacy Note:**  
 All backend event logging must comply with **DOC-071: Security & Compliance Plan** regarding PII handling, data anonymization, and user consent. Events must respect the retention policies defined in **DOC-036: Data Retention & Privacy Policy**.
 
-### 3.1. Бизнес-события
+### 3.1. Business Events
 
-Бизнес-события отражают ключевые действия пользователей и операторов, связанные с бронированиями, складами и отзывами.
+Business events reflect key user and operator actions related to bookings, warehouses, and reviews.
 
 | Event Name | Trigger | Storage | Priority |
 |------------|---------|---------|----------|
-| **booking_created** | Создание нового бронирования | PG + CH | HIGH |
-| **booking_status_changed** | Изменение статуса бронирования | PG + CH | HIGH |
-| **booking_cancelled** | Отмена бронирования | PG + CH | HIGH |
-| **booking_completed** | Завершение бронирования | PG + CH | MEDIUM |
-| **warehouse_created** | Добавление нового склада | PG | MEDIUM |
-| **warehouse_updated** | Обновление информации о складе | PG | LOW |
-| **warehouse_published** | Публикация склада | PG + CH | HIGH |
-| **box_price_changed** | Изменение цены бокса | PG + CH | MEDIUM |
-| **review_submitted** | Новый отзыв | PG | MEDIUM |
+| **booking_created** | Create new booking | PG + CH | HIGH |
+| **booking_status_changed** | Change booking status | PG + CH | HIGH |
+| **booking_cancelled** | Cancel booking | PG + CH | HIGH |
+| **booking_completed** | Complete booking | PG + CH | MEDIUM |
+| **warehouse_created** | Add new warehouse | PG | MEDIUM |
+| **warehouse_updated** | Update warehouse information | PG | LOW |
+| **warehouse_published** | Publish warehouse | PG + CH | HIGH |
+| **box_price_changed** | Change box price | PG + CH | MEDIUM |
+| **review_submitted** | New review | PG | MEDIUM |
 
-**Пример: booking_created**
+**Example: booking_created**
 
 ```json
 {
@@ -630,7 +630,7 @@ All backend event logging must comply with **DOC-071: Security & Compliance Plan
 }
 ```
 
-**Пример: booking_status_changed**
+**Example: booking_status_changed**
 
 ```json
 {
@@ -651,19 +651,19 @@ All backend event logging must comply with **DOC-071: Security & Compliance Plan
 
 ---
 
-### 3.2. Системные события
+### 3.2. System Events
 
-Системные события отслеживают техническую работу платформы: API запросы, ошибки, rate limiting, performance.
+System events track the technical operation of the platform: API requests, errors, rate limiting, performance.
 
 | Event Name | Trigger | Storage | Priority |
 |------------|---------|---------|----------|
-| **api_request** | Любой API запрос | CH | LOW |
-| **api_error_4xx** | Ошибка клиента (400-499) | CH | MEDIUM |
-| **api_error_5xx** | Ошибка сервера (500-599) | CH | HIGH |
-| **rate_limit_exceeded** | Превышен rate limit | CH | HIGH |
-| **db_query_slow** | Медленный DB запрос (>1s) | Logs | HIGH |
+| **api_request** | Any API request | CH | LOW |
+| **api_error_4xx** | Client error (400-499) | CH | MEDIUM |
+| **api_error_5xx** | Server error (500-599) | CH | HIGH |
+| **rate_limit_exceeded** | Rate limit exceeded | CH | HIGH |
+| **db_query_slow** | Slow DB query (>1s) | Logs | HIGH |
 
-**Пример: api_request**
+**Example: api_request**
 
 ```json
 {
@@ -683,7 +683,7 @@ All backend event logging must comply with **DOC-071: Security & Compliance Plan
 }
 ```
 
-**Пример: api_error_5xx**
+**Example: api_error_5xx**
 
 ```json
 {
@@ -705,18 +705,18 @@ All backend event logging must comply with **DOC-071: Security & Compliance Plan
 
 ---
 
-### 3.3. AI-события
+### 3.3. AI Events
 
-AI-события отслеживают взаимодействие с AI-компонентами платформы (AI Search, Claude API, Recommendations).
+AI events track interactions with AI components of the platform (AI Search, Claude API, Recommendations).
 
 | Event Name | Trigger | Storage | Priority |
 |------------|---------|---------|----------|
-| **ai_request_sent** | Отправка запроса в AI | CH | MEDIUM |
-| **ai_response_received** | Успешный ответ от AI | CH | MEDIUM |
-| **ai_response_failed** | Ошибка AI запроса | CH | HIGH |
-| **ai_fallback_used** | Использован fallback (non-AI) | CH | MEDIUM |
+| **ai_request_sent** | Send AI request | CH | MEDIUM |
+| **ai_response_received** | Successful AI response | CH | MEDIUM |
+| **ai_response_failed** | AI request error | CH | HIGH |
+| **ai_fallback_used** | Fallback used (non-AI) | CH | MEDIUM |
 
-**Пример: ai_request_sent**
+**Example: ai_request_sent**
 
 ```json
 {
@@ -735,7 +735,7 @@ AI-события отслеживают взаимодействие с AI-ко
 }
 ```
 
-**Pример: ai_response_received**
+**Example: ai_response_received**
 
 ```json
 {
@@ -755,11 +755,11 @@ AI-события отслеживают взаимодействие с AI-ко
 
 ---
 
-### 3.4. Схема данных backend-событий
+### 3.4. Backend Event Data Schema
 
-#### 3.4.1. Таблица analytics_events
+#### 3.4.1. analytics_events Table
 
-Backend-события сохраняются в таблицу `analytics_events` в PostgreSQL.
+Backend events are saved to the `analytics_events` table in PostgreSQL.
 
 ```sql
 CREATE TABLE analytics_events (
@@ -767,19 +767,19 @@ CREATE TABLE analytics_events (
     event_name VARCHAR(100) NOT NULL,
     event_category VARCHAR(50) NOT NULL,  -- 'business', 'system', 'ai'
     timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    
-    -- Идентификаторы
+
+    -- Identifiers
     user_id UUID REFERENCES users(id),
     session_id VARCHAR(100),
     request_id VARCHAR(100),
-    
-    -- Данные события (JSONB для гибкости)
+
+    -- Event data (JSONB for flexibility)
     data JSONB NOT NULL,
-    
-    -- Метаданные
+
+    -- Metadata
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    
-    -- Индексы
+
+    -- Indexes
     INDEX idx_event_name (event_name),
     INDEX idx_event_category (event_category),
     INDEX idx_timestamp (timestamp),
@@ -792,18 +792,18 @@ CREATE TABLE analytics_events (
 **Data Retention:**  
 Analytics events must be retained according to **DOC-036: Data Retention & Privacy Policy**. MVP retention period: 13 months in PostgreSQL, with potential archival to S3 for longer-term storage.
 
-#### 3.4.2. Обязательные поля
+#### 3.4.2. Required Fields
 
-| Поле | Тип | Обязательность | Примечание |
+| Field | Type | Required | Notes |
 |------|-----|----------------|------------|
-| `event_name` | VARCHAR(100) | **Обязательное** | Имя события из реестра |
-| `event_category` | VARCHAR(50) | **Обязательное** | business / system / ai |
-| `timestamp` | TIMESTAMPTZ | **Обязательное** | Время события |
-| `data` | JSONB | **Обязательное** | Полезная нагрузка |
-| `user_id` | UUID | Опциональное | Если применимо |
-| `session_id` | VARCHAR(100) | Опциональное | Если доступно |
+| `event_name` | VARCHAR(100) | **Required** | Event name from registry |
+| `event_category` | VARCHAR(50) | **Required** | business / system / ai |
+| `timestamp` | TIMESTAMPTZ | **Required** | Event time |
+| `data` | JSONB | **Required** | Payload |
+| `user_id` | UUID | Optional | If applicable |
+| `session_id` | VARCHAR(100) | Optional | If available |
 
-#### 3.4.3. Пример записи события
+#### 3.4.3. Event Recording Example
 
 ```javascript
 // Backend service (TypeScript/Node.js)
@@ -831,87 +831,87 @@ analyticsService.trackEvent({
 
 ---
 
-## 4. Хранение аналитики
+## 4. Analytics Storage
 
-### 4.1. Источники данных
+### 4.1. Data Sources
 
-Платформа собирает аналитические данные из трёх основных источников:
+The platform collects analytics data from three main sources:
 
-| Источник | Тип данных | Инструмент | Применение |
+| Source | Data Type | Tool | Application |
 |----------|------------|------------|------------|
-| **Frontend Events** | Пользовательские действия | Google Analytics 4 | Продуктовая аналитика, конверсии |
-| **Backend Events** | Бизнес-события, системные метрики | PostgreSQL `analytics_events` | Бизнес-метрики, операционные данные |
-| **System Logs** | Технические логи, errors | Grafana Loki | Системный мониторинг, debugging |
+| **Frontend Events** | User actions | Google Analytics 4 | Product analytics, conversions |
+| **Backend Events** | Business events, system metrics | PostgreSQL `analytics_events` | Business metrics, operational data |
+| **System Logs** | Technical logs, errors | Grafana Loki | System monitoring, debugging |
 
 ---
 
-### 4.2. MVP-хранилище
+### 4.2. MVP Storage
 
 **MVP v1 Storage Strategy:**
 
-Для MVP используется упрощённая архитектура хранения без сложных OLAP-решений.
+For MVP, a simplified storage architecture without complex OLAP solutions is used.
 
 #### 4.2.1. Google Analytics 4 (GA4) — MVP Solution
 
-**Назначение:** Хранение и анализ frontend-событий  
-**Retention:** 14 месяцев (бесплатный tier)  
-**Преимущества:**
-- Бесплатно до 10M событий/месяц
-- Готовые дашборды и отчёты
-- Интеграция с Google Ads, Search Console
-- Автоматическая обработка user journeys
+**Purpose:** Frontend event storage and analysis
+**Retention:** 14 months (free tier)
+**Advantages:**
+- Free up to 10M events/month
+- Ready-made dashboards and reports
+- Integration with Google Ads, Search Console
+- Automatic user journey processing
 - Real-time reporting
 
-**Используется для MVP v1:**
-- ✅ Продуктовая аналитика (DAU/MAU, retention, funnels)
-- ✅ Поведенческие метрики (bounce rate, session duration)
-- ✅ Конверсионная воронка (search → booking)
+**Used for MVP v1:**
+- ✅ Product analytics (DAU/MAU, retention, funnels)
+- ✅ Behavioral metrics (bounce rate, session duration)
+- ✅ Conversion funnel (search → booking)
 - ✅ A/B testing (experiment tracking)
 
-**Limitations (решается post-MVP):**
-- ❌ Ограниченная кастомизация отчётов
-- ❌ Нет доступа к raw data (только aggregated)
-- ❌ Не подходит для real-time operational analytics
+**Limitations (addressed post-MVP):**
+- ❌ Limited report customization
+- ❌ No access to raw data (only aggregated)
+- ❌ Not suitable for real-time operational analytics
 
 ---
 
 #### 4.2.2. PostgreSQL analytics_events — MVP Solution
 
-**Назначение:** Хранение backend-событий  
-**Retention:** 13 месяцев (с архивацией в S3)  
-**Table:** `analytics_events` (см. раздел 3.4.1)
+**Purpose:** Backend event storage
+**Retention:** 13 months (with S3 archival)
+**Table:** `analytics_events` (see section 3.4.1)
 
-**Используется для MVP v1:**
-- ✅ Бизнес-события (bookings, warehouses, reviews)
-- ✅ Операторские метрики (activation, response time)
-- ✅ AI-события (requests, responses, costs)
-- ✅ Системные события (API errors, slow queries)
-- ✅ Custom SQL queries для BI отчётов
+**Used for MVP v1:**
+- ✅ Business events (bookings, warehouses, reviews)
+- ✅ Operator metrics (activation, response time)
+- ✅ AI events (requests, responses, costs)
+- ✅ System events (API errors, slow queries)
+- ✅ Custom SQL queries for BI reports
 
-**Преимущества для MVP:**
-- Простая интеграция (уже используем PostgreSQL)
-- Гибкость (JSONB для любых данных)
-- SQL-доступ для data analysts
-- Transactional consistency с основной БД
+**MVP Advantages:**
+- Simple integration (already using PostgreSQL)
+- Flexibility (JSONB for any data)
+- SQL access for data analysts
+- Transactional consistency with main DB
 
-**Limitations (решается post-MVP):**
-- ❌ Не оптимизирована для OLAP queries (агрегации, time-series)
-- ❌ Performance деградация при больших объёмах (>1M events)
-- ❌ Ограниченная масштабируемость
+**Limitations (addressed post-MVP):**
+- ❌ Not optimized for OLAP queries (aggregations, time-series)
+- ❌ Performance degradation with large volumes (>1M events)
+- ❌ Limited scalability
 
 ---
 
-### 4.3. Резервное хранение
+### 4.3. Backup Storage
 
 #### 4.3.1. S3 Backup (MVP)
 
-**Назначение:** Долгосрочное архивирование backend-событий
+**Purpose:** Long-term backend event archival
 
 ```
 Process:
-1. Еженедельный экспорт analytics_events → S3 (Parquet format)
-2. Хранение в S3 холодного хранения (Glacier) — до 7 лет
-3. Удаление из PostgreSQL данных старше 13 месяцев
+1. Weekly export analytics_events → S3 (Parquet format)
+2. Storage in S3 cold storage (Glacier) — up to 7 years
+3. Delete from PostgreSQL data older than 13 months
 ```
 
 **S3 Structure:**
@@ -1037,114 +1037,114 @@ s3://platform-analytics/
 
 ## 5. Naming Conventions
 
-### 5.1. Формат именования
+### 5.1. Naming Format
 
-Все события следуют единому стандарту именования:
+All events follow a unified naming standard:
 
-**Формат:** `category_object_action`
+**Format:** `category_object_action`
 
-| Часть | Описание | Примеры |
+| Part | Description | Examples |
 |-------|----------|---------|
-| **category** | Категория события | search, booking, user, auth, warehouse, ai |
-| **object** | Объект действия | result, start, submit, request, response |
-| **action** | Действие | click, open, apply, change, created, failed |
+| **category** | Event category | search, booking, user, auth, warehouse, ai |
+| **object** | Action object | result, start, submit, request, response |
+| **action** | Action | click, open, apply, change, created, failed |
 
-**Примеры:**
+**Examples:**
 - ✅ `search_result_click`
 - ✅ `booking_start`
 - ✅ `user_favorite_add`
 - ✅ `ai_response_failed`
-- ❌ `clickSearchResult` (неправильный формат)
-- ❌ `user_adds_favorite` (глагол вместо существительного + действие)
+- ❌ `clickSearchResult` (incorrect format)
+- ❌ `user_adds_favorite` (verb instead of noun + action)
 
 ---
 
-### 5.2. Категории событий
+### 5.2. Event Categories
 
-| Категория | Префикс | Применение | Примеры |
+| Category | Prefix | Application | Examples |
 |-----------|---------|------------|---------|
-| **Navigation** | `page_`, `map_`, `warehouse_`, `box_` | Навигация по платформе | `page_view`, `warehouse_open` |
-| **Search** | `search_` | Поиск и фильтры | `search_apply_filters`, `search_result_click` |
-| **Booking** | `booking_` | Процесс бронирования | `booking_start`, `booking_submit` |
-| **Auth** | `auth_` | Аутентификация | `auth_login`, `auth_signup` |
-| **User** | `user_` | Пользовательские действия | `user_favorite_add`, `user_share_click` |
-| **AI** | `ai_` | AI-интеграции | `ai_request_sent`, `ai_response_received` |
-| **System** | `api_`, `db_`, `rate_` | Системные события | `api_error_5xx`, `db_query_slow` |
+| **Navigation** | `page_`, `map_`, `warehouse_`, `box_` | Platform navigation | `page_view`, `warehouse_open` |
+| **Search** | `search_` | Search and filters | `search_apply_filters`, `search_result_click` |
+| **Booking** | `booking_` | Booking process | `booking_start`, `booking_submit` |
+| **Auth** | `auth_` | Authentication | `auth_login`, `auth_signup` |
+| **User** | `user_` | User actions | `user_favorite_add`, `user_share_click` |
+| **AI** | `ai_` | AI integrations | `ai_request_sent`, `ai_response_received` |
+| **System** | `api_`, `db_`, `rate_` | System events | `api_error_5xx`, `db_query_slow` |
 
 ---
 
-### 5.3. Полный реестр событий
+### 5.3. Complete Event Registry
 
-См. **Приложение A** для полного списка всех frontend и backend событий.
+See **Appendix A** for a complete list of all frontend and backend events.
 
 ---
 
-### 5.4. Антипаттерны
+### 5.4. Anti-patterns
 
-**Избегайте следующих антипаттернов:**
+**Avoid the following anti-patterns:**
 
-| Антипаттерн | Почему плохо | Правильный вариант |
+| Anti-pattern | Why It's Bad | Correct Variant |
 |-------------|--------------|---------------------|
-| `clickSearchResult` | camelCase вместо snake_case | `search_result_click` |
-| `user_clicks_favorite` | Глагол в настоящем времени | `user_favorite_click` |
+| `clickSearchResult` | camelCase instead of snake_case | `search_result_click` |
+| `user_clicks_favorite` | Present tense verb | `user_favorite_click` |
 | `searchApplyFilters` | camelCase | `search_apply_filters` |
-| `user_added_to_favorites` | Слишком многословно | `user_favorite_add` |
-| `error` | Слишком общее | `api_error_5xx` |
-| `page` | Не уточняет действие | `page_view` |
+| `user_added_to_favorites` | Too verbose | `user_favorite_add` |
+| `error` | Too generic | `api_error_5xx` |
+| `page` | Doesn't specify action | `page_view` |
 
 ---
 
-## 6. Схемы данных событий
+## 6. Event Data Schemas
 
-### 6.1. Базовая структура события
+### 6.1. Base Event Structure
 
-Все события (frontend и backend) содержат общий набор полей:
+All events (frontend and backend) contain a common set of fields:
 
 ```typescript
 interface BaseEvent {
-  // Обязательные поля
-  event_name: string;          // Имя события
+  // Required fields
+  event_name: string;          // Event name
   timestamp: string;           // ISO 8601 timestamp
-  
-  // Идентификаторы
-  session_id: string;          // UUID сессии
-  user_id?: string;            // UUID пользователя (опционально)
-  
-  // Контекст
-  [key: string]: any;          // Дополнительные данные
+
+  // Identifiers
+  session_id: string;          // Session UUID
+  user_id?: string;            // User UUID (optional)
+
+  // Context
+  [key: string]: any;          // Additional data
 }
 ```
 
 ---
 
-### 6.2. Обязательные и опциональные поля
+### 6.2. Required and Optional Fields
 
 #### 6.2.1. Frontend Events
 
-| Поле | Обязательность | Тип | Примечание |
+| Field | Required | Type | Notes |
 |------|----------------|-----|------------|
-| `event_name` | **Обязательное** | string | Имя из реестра |
-| `timestamp` | **Обязательное** | string (ISO 8601) | Время события |
-| `session_id` | **Обязательное** | string (UUID) | ID сессии |
-| `user_id` | Опциональное | string (UUID) | Только для авторизованных |
-| `page_location` | **Обязательное** | string (URL) | Полный URL |
-| `page_path` | **Обязательное** | string | Путь страницы |
-| `device_category` | **Обязательное** | enum | desktop / mobile / tablet |
+| `event_name` | **Required** | string | Name from registry |
+| `timestamp` | **Required** | string (ISO 8601) | Event time |
+| `session_id` | **Required** | string (UUID) | Session ID |
+| `user_id` | Optional | string (UUID) | Only for authenticated users |
+| `page_location` | **Required** | string (URL) | Full URL |
+| `page_path` | **Required** | string | Page path |
+| `device_category` | **Required** | enum | desktop / mobile / tablet |
 
 #### 6.2.2. Backend Events
 
-| Поле | Обязательность | Тип | Примечание |
+| Field | Required | Type | Notes |
 |------|----------------|-----|------------|
-| `event_name` | **Обязательное** | string | Имя из реестра |
-| `event_category` | **Обязательное** | string | business / system / ai |
-| `timestamp` | **Обязательное** | timestamptz | Время события |
-| `data` | **Обязательное** | JSONB | Полезная нагрузка |
-| `user_id` | Опциональное | UUID | Если применимо |
-| `session_id` | Опциональное | string | Если доступно |
+| `event_name` | **Required** | string | Name from registry |
+| `event_category` | **Required** | string | business / system / ai |
+| `timestamp` | **Required** | timestamptz | Event time |
+| `data` | **Required** | JSONB | Payload |
+| `user_id` | Optional | UUID | If applicable |
+| `session_id` | Optional | string | If available |
 
 ---
 
-### 6.3. Примеры событий по категориям
+### 6.3. Event Examples by Category
 
 #### 6.3.1. Navigation Event
 
@@ -1259,7 +1259,7 @@ interface BaseEvent {
 
 ---
 
-### 6.4. Валидация событий
+### 6.4. Event Validation
 
 #### 6.4.1. Frontend Validation
 
@@ -1267,31 +1267,31 @@ interface BaseEvent {
 // Frontend validation (TypeScript)
 class EventValidator {
   static validate(event: FrontendEvent): boolean {
-    // Обязательные поля
+    // Required fields
     if (!event.event_name || !event.timestamp || !event.session_id) {
       console.error('Missing required fields:', event);
       return false;
     }
-    
-    // Проверка формата timestamp
+
+    // Timestamp format check
     if (!this.isValidISO8601(event.timestamp)) {
       console.error('Invalid timestamp format:', event.timestamp);
       return false;
     }
-    
-    // Проверка session_id
+
+    // Session ID check
     if (!this.isValidUUID(event.session_id)) {
       console.error('Invalid session_id:', event.session_id);
       return false;
     }
-    
+
     return true;
   }
-  
+
   private static isValidISO8601(timestamp: string): boolean {
     return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/.test(timestamp);
   }
-  
+
   private static isValidUUID(uuid: string): boolean {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uuid);
   }
@@ -1314,15 +1314,15 @@ class BackendEvent(BaseModel):
     user_id: Optional[uuid.UUID] = None
     session_id: Optional[str] = None
     data: Dict[str, Any]
-    
+
     @validator('event_name')
     def validate_event_name(cls, v):
-        # Проверка формата: category_object_action
+        # Format check: category_object_action
         parts = v.split('_')
         if len(parts) < 2:
             raise ValueError('Event name must follow format: category_object_action')
         return v
-    
+
     @validator('data')
     def validate_data_not_empty(cls, v):
         if not v:
@@ -1346,13 +1346,13 @@ For details on experiment design, randomization algorithms, sample size calculat
 
 ---
 
-### 7.1. Архитектура системы
+### 7.1. System Architecture
 
-A/B testing на платформе реализован через:
-1. **Feature Flags** — управление вариантами экспериментов
-2. **Event Tracking** — отслеживание действий пользователей в экспериментах
-3. **Metrics Calculation** — расчёт метрик по группам (control vs. treatment)
-4. **Statistical Analysis** — определение значимости результатов
+A/B testing on the platform is implemented through:
+1. **Feature Flags** — experiment variant management
+2. **Event Tracking** — tracking user actions in experiments
+3. **Metrics Calculation** — calculating metrics by groups (control vs. treatment)
+4. **Statistical Analysis** — determining result significance
 
 **Note:** The complete feature flag architecture, including flag service, configuration management, and rollout strategies, is described in **DOC-003: A/B Testing & Experimentation Framework**. This section covers only the analytics integration.
 
@@ -1392,12 +1392,12 @@ A/B testing на платформе реализован через:
 
 ---
 
-### 7.2. Сегментация пользователей
+### 7.2. User Segmentation
 
-**User Assignment:**  
+**User Assignment:**
 For complete details on user segmentation algorithms, hash-based assignment, and traffic allocation strategies, refer to **DOC-003: A/B Testing & Experimentation Framework**.
 
-Пользователи распределяются по вариантам экспериментов при первом визите:
+Users are assigned to experiment variants on their first visit:
 
 ```typescript
 // Simplified example — full algorithm in DOC-003
@@ -1434,13 +1434,13 @@ gtag('event', 'experiment_assigned', {
 **Feature Flag Architecture:**  
 For complete details on feature flag service implementation, configuration management, flag types (boolean, multivariate, rollout), and targeting rules, refer to **DOC-003: A/B Testing & Experimentation Framework**.
 
-Примеры feature flags:
+Feature flag examples:
 
 | Flag Key | Variants | Description |
 |----------|----------|-------------|
-| `search_ai_enabled` | true / false | Включить AI-поиск |
-| `booking_flow_v2` | control / variant_a / variant_b | Новый flow бронирования |
-| `price_display_format` | default / with_discount / with_monthly | Формат отображения цен |
+| `search_ai_enabled` | true / false | Enable AI search |
+| `booking_flow_v2` | control / variant_a / variant_b | New booking flow |
+| `price_display_format` | default / with_discount / with_monthly | Price display format |
 
 **Example: Checking feature flag**
 
@@ -1466,47 +1466,47 @@ gtag('event', 'experiment_view', {
 
 ---
 
-### 7.4. Измеряемые метрики
+### 7.4. Measured Metrics
 
-**Statistical Testing & Sample Size:**  
+**Statistical Testing & Sample Size:**
 For complete details on statistical significance testing, sample size calculations, minimum detectable effects (MDE), and power analysis, refer to **DOC-003: A/B Testing & Experimentation Framework**.
 
-Для каждого A/B теста определяются **Primary** и **Secondary** метрики:
+For each A/B test, **Primary** and **Secondary** metrics are defined:
 
-#### 7.4.1. Primary Metrics (Основные)
+#### 7.4.1. Primary Metrics
 
-| Метрика | Описание | Формула | Пример эксперимента |
+| Metric | Description | Formula | Example Experiment |
 |---------|----------|---------|---------------------|
-| **Conversion Rate** | Процент конверсии в целевое действие | `Conversions / Total Users * 100%` | Search → Booking |
-| **Click-Through Rate (CTR)** | Процент кликов | `Clicks / Impressions * 100%` | AI Search Results |
-| **Average Session Duration** | Средняя длительность сессии | `AVG(session_duration)` | New Homepage Design |
-| **Booking Value** | Средняя стоимость бронирования | `AVG(booking_amount)` | Price Display Format |
+| **Conversion Rate** | Percentage of conversions to target action | `Conversions / Total Users * 100%` | Search → Booking |
+| **Click-Through Rate (CTR)** | Click percentage | `Clicks / Impressions * 100%` | AI Search Results |
+| **Average Session Duration** | Average session duration | `AVG(session_duration)` | New Homepage Design |
+| **Booking Value** | Average booking cost | `AVG(booking_amount)` | Price Display Format |
 
-#### 7.4.2. Secondary Metrics (Вторичные)
+#### 7.4.2. Secondary Metrics
 
-| Метрика | Описание | Формула | Применение |
+| Metric | Description | Formula | Application |
 |---------|----------|---------|------------|
-| **Bounce Rate** | Процент отказов | `Bounces / Total Sessions * 100%` | Проверка качества трафика |
-| **Page Views per Session** | Глубина просмотра | `Total Page Views / Total Sessions` | Вовлечённость |
-| **Time to First Booking** | Время до первого бронирования | `AVG(first_booking_time - signup_time)` | Onboarding эффективность |
-| **Operator Response Time** | Время ответа оператора | `AVG(operator_response_time)` | Operator UX |
+| **Bounce Rate** | Bounce percentage | `Bounces / Total Sessions * 100%` | Traffic quality check |
+| **Page Views per Session** | View depth | `Total Page Views / Total Sessions` | Engagement |
+| **Time to First Booking** | Time to first booking | `AVG(first_booking_time - signup_time)` | Onboarding effectiveness |
+| **Operator Response Time** | Operator response time | `AVG(operator_response_time)` | Operator UX |
 
 ---
 
-### 7.5. Статистическая значимость
+### 7.5. Statistical Significance
 
-**Complete Statistical Methods:**  
+**Complete Statistical Methods:**
 For detailed information on statistical testing methods, confidence intervals, multiple testing corrections (Bonferroni, FDR), and sequential testing, refer to **DOC-003: A/B Testing & Experimentation Framework**.
 
-**Критерии оценки эксперимента:**
+**Experiment evaluation criteria:**
 
-| Параметр | Значение | Примечание |
+| Parameter | Value | Notes |
 |----------|----------|------------|
-| **Minimum Sample Size** | 1,000 users per variant | Для достоверных результатов |
-| **Confidence Level** | 95% | Стандартный уровень доверия |
-| **Statistical Power** | 80% | Вероятность обнаружения эффекта |
-| **Minimum Detectable Effect (MDE)** | 5% relative change | Минимальный значимый эффект |
-| **Test Duration** | 1-2 weeks | Минимум 1 бизнес-цикл |
+| **Minimum Sample Size** | 1,000 users per variant | For reliable results |
+| **Confidence Level** | 95% | Standard confidence level |
+| **Statistical Power** | 80% | Probability of detecting effect |
+| **Minimum Detectable Effect (MDE)** | 5% relative change | Minimum significant effect |
+| **Test Duration** | 1-2 weeks | Minimum 1 business cycle |
 
 **Example: Statistical Significance Calculation**
 
@@ -1541,17 +1541,17 @@ else:
 
 ## 8. Dashboard Requirements
 
-### 8.1. Дашборды для продакт-менеджера
+### 8.1. Product Manager Dashboards
 
 #### 8.1.1. Product Overview Dashboard
 
-**Назначение:** Общий обзор здоровья продукта  
-**Инструмент:** Google Analytics 4  
+**Purpose:** General product health overview
+**Tool:** Google Analytics 4
 **Refresh Rate:** Real-time
 
 **Widgets:**
 
-| Widget | Метрика | Visualization |
+| Widget | Metric | Visualization |
 |--------|---------|---------------|
 | **Daily Active Users (DAU)** | `COUNT(DISTINCT user_id)` | Line chart (7 days) |
 | **Conversion Funnel** | Search → Booking → Confirmed | Funnel chart |
@@ -1591,32 +1591,32 @@ else:
 
 #### 8.1.2. Search Performance Dashboard
 
-**Назначение:** Анализ эффективности поиска  
-**Инструмент:** GA4 + Metabase (PostgreSQL)  
+**Purpose:** Search effectiveness analysis
+**Tool:** GA4 + Metabase (PostgreSQL)
 **Refresh Rate:** Hourly
 
 **Metrics:**
 
-| Метрика | Описание | Visualization |
+| Metric | Description | Visualization |
 |---------|----------|---------------|
-| **Search Volume** | Количество поисков | Time series |
-| **Search → Click CTR** | Процент кликов по результатам | Line chart |
-| **Search → Booking** | Конверсия в бронирование | Funnel |
-| **Zero Results Rate** | Процент поисков без результатов | Gauge |
-| **AI Search Usage** | Процент AI-поисков | Pie chart |
-| **Top Search Queries** | Популярные запросы | Table |
+| **Search Volume** | Number of searches | Time series |
+| **Search → Click CTR** | Percentage of clicks on results | Line chart |
+| **Search → Booking** | Conversion to booking | Funnel |
+| **Zero Results Rate** | Percentage of searches without results | Gauge |
+| **AI Search Usage** | Percentage of AI searches | Pie chart |
+| **Top Search Queries** | Popular queries | Table |
 
 ---
 
 #### 8.1.3. Booking Funnel Dashboard
 
-**Назначение:** Анализ процесса бронирования  
-**Инструмент:** Metabase (PostgreSQL)  
+**Purpose:** Booking process analysis
+**Tool:** Metabase (PostgreSQL)
 **Refresh Rate:** Hourly
 
 **Metrics:**
 
-| Метрика | Описание | SQL Query |
+| Metric | Description | SQL Query |
 |---------|----------|-----------|
 | **Booking Started** | `COUNT(booking_start)` | `SELECT COUNT(*) FROM analytics_events WHERE event_name = 'booking_start'` |
 | **Booking Submitted** | `COUNT(booking_submit)` | `SELECT COUNT(*) FROM analytics_events WHERE event_name = 'booking_submit'` |
@@ -1626,17 +1626,17 @@ else:
 
 ---
 
-### 8.2. Дашборды для операторов
+### 8.2. Operator Dashboards
 
 #### 8.2.1. Operator Dashboard (In-App)
 
-**Назначение:** Метрики для владельцев складов  
-**Инструмент:** Frontend (React) + Backend API  
+**Purpose:** Metrics for warehouse owners
+**Tool:** Frontend (React) + Backend API
 **Refresh Rate:** Real-time
 
 **Widgets:**
 
-| Widget | Метрика | API Endpoint |
+| Widget | Metric | API Endpoint |
 |--------|---------|--------------|
 | **New Requests Today** | `COUNT(bookings WHERE status = 'pending')` | `GET /api/v1/operators/{id}/stats` |
 | **Confirmed Bookings** | `COUNT(bookings WHERE status = 'confirmed')` | Same |
@@ -1672,37 +1672,37 @@ else:
 
 ---
 
-### 8.3. Технические дашборды
+### 8.3. Technical Dashboards
 
 #### 8.3.1. System Health Dashboard
 
-**Назначение:** Мониторинг технического здоровья платформы  
-**Инструмент:** Grafana  
-**Refresh Rate:** Real-time (30s)  
+**Purpose:** Platform technical health monitoring
+**Tool:** Grafana
+**Refresh Rate:** Real-time (30s)
 **Related Document:** See **DOC-086: Monitoring & Observability Plan** for complete system monitoring architecture
 
 **Metrics:**
 
-| Метрика | Описание | Data Source |
+| Metric | Description | Data Source |
 |---------|----------|-------------|
-| **API Response Time (p50, p95, p99)** | Latency API | Prometheus |
-| **Error Rate (4xx, 5xx)** | Процент ошибок | ClickHouse |
+| **API Response Time (p50, p95, p99)** | API Latency | Prometheus |
+| **Error Rate (4xx, 5xx)** | Error percentage | ClickHouse |
 | **Request Rate** | Requests per second | Prometheus |
-| **Database Query Time** | Среднее время запросов | PostgreSQL |
-| **CPU / Memory Usage** | Утилизация ресурсов | Node Exporter |
-| **Active Connections** | Активные соединения | PostgreSQL |
+| **Database Query Time** | Average query time | PostgreSQL |
+| **CPU / Memory Usage** | Resource utilization | Node Exporter |
+| **Active Connections** | Active connections | PostgreSQL |
 
 ---
 
 #### 8.3.2. AI Core Dashboard
 
-**Назначение:** Мониторинг AI-компонентов  
-**Инструмент:** Grafana  
+**Purpose:** AI component monitoring
+**Tool:** Grafana
 **Refresh Rate:** Real-time (1m)
 
 **Metrics:**
 
-| Метрика | Описание | Data Source |
+| Metric | Description | Data Source |
 |---------|----------|-------------|
 | **AI Request Volume** | Requests per hour | ClickHouse |
 | **AI Success Rate** | `Successful / Total * 100%` | ClickHouse |
@@ -1713,20 +1713,20 @@ else:
 
 ---
 
-### 8.4. Инструменты и платформы
+### 8.4. Tools and Platforms
 
-#### 8.4.1. Используемые инструменты (MVP)
+#### 8.4.1. Used Tools (MVP)
 
-| Назначение | Инструмент | Обоснование |
+| Purpose | Tool | Justification |
 |------------|------------|-------------|
-| **Product Analytics** | GA4 | Бесплатно, интеграция с Google |
-| **System Monitoring** | Grafana | Open-source, гибкие дашборды |
-| **Log Analysis** | Grafana Loki | Интеграция с Grafana |
+| **Product Analytics** | GA4 | Free, Google integration |
+| **System Monitoring** | Grafana | Open-source, flexible dashboards |
+| **Log Analysis** | Grafana Loki | Grafana integration |
 | **Alerting** | Grafana + PagerDuty | Alerting rules + escalation |
 | **BI / Reporting** | Metabase | Open-source, SQL-based |
 | **Error Tracking** | Sentry | Real-time error tracking |
 
-#### 8.4.2. Интеграции
+#### 8.4.2. Integrations
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -1766,9 +1766,9 @@ else:
 
 ---
 
-#### 8.4.3. Доступ к дашбордам
+#### 8.4.3. Dashboard Access
 
-| Роль | Дашборды | Доступ |
+| Role | Dashboards | Access |
 |------|----------|--------|
 | **Product Manager** | Product Overview, Search, Booking Funnel | View |
 | **Operator** | Operator Dashboard (in-app) | View own data |
@@ -1778,71 +1778,71 @@ else:
 
 ---
 
-## Приложения
+## Appendices
 
-### Приложение A: Полный реестр событий
+### Appendix A: Complete Event Registry
 
 #### Frontend Events (Complete List)
 
 | # | Event Name | Category | Priority | Description |
 |---|------------|----------|----------|-------------|
-| 1 | `page_view` | Navigation | HIGH | Просмотр страницы |
-| 2 | `page_exit` | Navigation | LOW | Уход со страницы |
-| 3 | `search_open` | Navigation | HIGH | Открытие поиска |
-| 4 | `map_open` | Navigation | MEDIUM | Открытие карты |
-| 5 | `warehouse_open` | Navigation | HIGH | Просмотр склада |
-| 6 | `box_open` | Navigation | HIGH | Просмотр бокса |
-| 7 | `search_apply_filters` | Search | HIGH | Применение фильтров |
-| 8 | `search_reset_filters` | Search | MEDIUM | Сброс фильтров |
-| 9 | `search_result_click` | Search | HIGH | Клик по результату |
-| 10 | `search_sort_change` | Search | MEDIUM | Изменение сортировки |
-| 11 | `search_pagination` | Search | LOW | Пагинация |
-| 12 | `search_no_results` | Search | MEDIUM | Пустые результаты |
-| 13 | `map_marker_click` | Map | MEDIUM | Клик по маркеру |
-| 14 | `map_cluster_click` | Map | LOW | Клик по кластеру |
-| 15 | `map_zoom` | Map | LOW | Изменение zoom |
-| 16 | `booking_start` | Booking | HIGH | Начало бронирования |
-| 17 | `booking_step_complete` | Booking | MEDIUM | Завершение шага |
-| 18 | `booking_submit` | Booking | HIGH | Отправка заявки |
-| 19 | `booking_success` | Booking | HIGH | Успешная отправка |
-| 20 | `booking_error` | Booking | HIGH | Ошибка |
-| 21 | `booking_abandon` | Booking | MEDIUM | Покидание формы |
-| 22 | `auth_login` | Auth | HIGH | Вход |
-| 23 | `auth_signup` | Auth | HIGH | Регистрация |
-| 24 | `auth_logout` | Auth | MEDIUM | Выход |
-| 25 | `auth_password_reset` | Auth | MEDIUM | Сброс пароля |
-| 26 | `user_favorite_add` | User | MEDIUM | В избранное |
-| 27 | `user_favorite_remove` | User | LOW | Из избранного |
-| 28 | `user_share_click` | User | LOW | Поделиться |
+| 1 | `page_view` | Navigation | HIGH | Page view |
+| 2 | `page_exit` | Navigation | LOW | Page exit |
+| 3 | `search_open` | Navigation | HIGH | Open search |
+| 4 | `map_open` | Navigation | MEDIUM | Open map |
+| 5 | `warehouse_open` | Navigation | HIGH | View warehouse |
+| 6 | `box_open` | Navigation | HIGH | View box |
+| 7 | `search_apply_filters` | Search | HIGH | Apply filters |
+| 8 | `search_reset_filters` | Search | MEDIUM | Reset filters |
+| 9 | `search_result_click` | Search | HIGH | Click on result |
+| 10 | `search_sort_change` | Search | MEDIUM | Change sorting |
+| 11 | `search_pagination` | Search | LOW | Pagination |
+| 12 | `search_no_results` | Search | MEDIUM | Empty results |
+| 13 | `map_marker_click` | Map | MEDIUM | Click on marker |
+| 14 | `map_cluster_click` | Map | LOW | Click on cluster |
+| 15 | `map_zoom` | Map | LOW | Change zoom |
+| 16 | `booking_start` | Booking | HIGH | Start booking |
+| 17 | `booking_step_complete` | Booking | MEDIUM | Complete step |
+| 18 | `booking_submit` | Booking | HIGH | Submit request |
+| 19 | `booking_success` | Booking | HIGH | Successful submission |
+| 20 | `booking_error` | Booking | HIGH | Error |
+| 21 | `booking_abandon` | Booking | MEDIUM | Abandon form |
+| 22 | `auth_login` | Auth | HIGH | Login |
+| 23 | `auth_signup` | Auth | HIGH | Signup |
+| 24 | `auth_logout` | Auth | MEDIUM | Logout |
+| 25 | `auth_password_reset` | Auth | MEDIUM | Password reset |
+| 26 | `user_favorite_add` | User | MEDIUM | Add to favorites |
+| 27 | `user_favorite_remove` | User | LOW | Remove from favorites |
+| 28 | `user_share_click` | User | LOW | Share |
 
 #### Backend Events (Complete List)
 
 | # | Event Name | Category | Storage | Description |
 |---|------------|----------|---------|-------------|
-| 1 | `booking_created` | Business | PG + CH | Создание бронирования |
-| 2 | `booking_status_changed` | Business | PG + CH | Смена статуса |
-| 3 | `booking_cancelled` | Business | PG + CH | Отмена |
-| 4 | `booking_completed` | Business | PG + CH | Завершение |
-| 5 | `warehouse_created` | Business | PG | Добавление склада |
-| 6 | `warehouse_updated` | Business | PG | Обновление склада |
-| 7 | `warehouse_published` | Business | PG + CH | Публикация |
-| 8 | `box_price_changed` | Business | PG + CH | Изменение цены |
-| 9 | `review_submitted` | Business | PG | Новый отзыв |
-| 10 | `api_request` | System | CH | API запрос |
-| 11 | `api_error_4xx` | System | CH | Ошибка 4xx |
-| 12 | `api_error_5xx` | System | CH | Ошибка 5xx |
+| 1 | `booking_created` | Business | PG + CH | Create booking |
+| 2 | `booking_status_changed` | Business | PG + CH | Status change |
+| 3 | `booking_cancelled` | Business | PG + CH | Cancellation |
+| 4 | `booking_completed` | Business | PG + CH | Completion |
+| 5 | `warehouse_created` | Business | PG | Add warehouse |
+| 6 | `warehouse_updated` | Business | PG | Update warehouse |
+| 7 | `warehouse_published` | Business | PG + CH | Publication |
+| 8 | `box_price_changed` | Business | PG + CH | Price change |
+| 9 | `review_submitted` | Business | PG | New review |
+| 10 | `api_request` | System | CH | API request |
+| 11 | `api_error_4xx` | System | CH | 4xx error |
+| 12 | `api_error_5xx` | System | CH | 5xx error |
 | 13 | `rate_limit_exceeded` | System | CH | Rate limit |
-| 14 | `db_query_slow` | System | Logs | Медленный запрос |
-| 15 | `ai_request_sent` | AI | CH | AI запрос |
-| 16 | `ai_response_received` | AI | CH | AI ответ |
-| 17 | `ai_response_failed` | AI | CH | AI ошибка |
+| 14 | `db_query_slow` | System | Logs | Slow query |
+| 15 | `ai_request_sent` | AI | CH | AI request |
+| 16 | `ai_response_received` | AI | CH | AI response |
+| 17 | `ai_response_failed` | AI | CH | AI error |
 | 18 | `ai_fallback_used` | AI | Fallback |
 
 **Note:** Events marked "PG + CH" indicate storage in both PostgreSQL (MVP v1) and ClickHouse (Post-MVP). For MVP v1, only PostgreSQL storage is implemented.
 
 ---
 
-### Приложение B: Mapping к GA4
+### Appendix B: GA4 Mapping
 
 | Our Event | GA4 Event | GA4 Parameters |
 |-----------|-----------|----------------|
@@ -1856,49 +1856,49 @@ else:
 
 ---
 
-### Приложение C: Checklist интеграции
+### Appendix C: Integration Checklist
 
 #### Frontend Integration Checklist
 
-- [ ] Установлен GA4 tag (gtag.js)
-- [ ] Настроены custom dimensions
-- [ ] Реализован Analytics Service
-- [ ] Добавлены все navigation events
-- [ ] Добавлены все search events
-- [ ] Добавлены все booking events
-- [ ] Добавлены все auth events
-- [ ] Настроен error tracking
-- [ ] Проведено тестирование в GA4 DebugView
-- [ ] Настроены conversions в GA4
+- [ ] GA4 tag installed (gtag.js)
+- [ ] Custom dimensions configured
+- [ ] Analytics Service implemented
+- [ ] All navigation events added
+- [ ] All search events added
+- [ ] All booking events added
+- [ ] All auth events added
+- [ ] Error tracking configured
+- [ ] Testing completed in GA4 DebugView
+- [ ] Conversions configured in GA4
 
 #### Backend Integration Checklist
 
-- [ ] Создана таблица analytics_events
-- [ ] Реализован Event Service
-- [ ] Добавлены все business events
-- [ ] Добавлены все system events
-- [ ] Добавлены все AI events
-- [ ] Настроено structured logging (see DOC-086)
-- [ ] Настроена retention policy согласно DOC-036
-- [ ] Настроен S3 backup
-- [ ] Реализован compliance с DOC-071 (PII handling)
-- [ ] Проведено нагрузочное тестирование
+- [ ] analytics_events table created
+- [ ] Event Service implemented
+- [ ] All business events added
+- [ ] All system events added
+- [ ] All AI events added
+- [ ] Structured logging configured (see DOC-086)
+- [ ] Retention policy configured per DOC-036
+- [ ] S3 backup configured
+- [ ] DOC-071 compliance implemented (PII handling)
+- [ ] Load testing completed
 
 #### Dashboard Checklist
 
-- [ ] Настроен GA4 dashboard
-- [ ] Создан Grafana system health dashboard (see DOC-086)
-- [ ] Создан Grafana AI dashboard
-- [ ] Настроены alerting rules (see DOC-086)
-- [ ] Настроен Metabase для BI
-- [ ] Документированы все метрики
+- [ ] GA4 dashboard configured
+- [ ] Grafana system health dashboard created (see DOC-086)
+- [ ] Grafana AI dashboard created
+- [ ] Alerting rules configured (see DOC-086)
+- [ ] Metabase configured for BI
+- [ ] All metrics documented
 
 #### Post-MVP Enhancements (Not in MVP v1)
 
-- [ ] Настроен экспорт в ClickHouse
-- [ ] Настроен BigQuery data lake
-- [ ] Реализован real-time streaming (Kafka)
-- [ ] Создан Looker/Tableau BI layer
+- [ ] ClickHouse export configured
+- [ ] BigQuery data lake configured
+- [ ] Real-time streaming implemented (Kafka)
+- [ ] Looker/Tableau BI layer created
 
 ---
 
