@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('jwt.secret'),
+      secretOrKey: configService.get<string>('jwt.secret') || 'your-secret-key-change-in-production',
     });
   }
 

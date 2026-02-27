@@ -11,7 +11,7 @@ export interface GeocodeResult {
 @Injectable()
 export class GoogleMapsService {
   private readonly logger = new Logger(GoogleMapsService.name);
-  private readonly apiKey: string;
+  private readonly apiKey: string | undefined;
 
   constructor(
     private configService: ConfigService,

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import { GoogleMapsService } from '../../shared/google-maps/google-maps.service';
+import { GoogleMapsService, GeocodeResult } from '../../shared/google-maps/google-maps.service';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { FilterWarehousesDto } from './dto/filter-warehouses.dto';
@@ -76,7 +76,7 @@ export class WarehousesService {
     }
 
     // If address is being updated, re-geocode
-    let geocodeResult = null;
+    let geocodeResult: GeocodeResult | null = null;
     if (updateWarehouseDto.address) {
       geocodeResult = await this.googleMapsService.geocodeAddress(
         updateWarehouseDto.address,

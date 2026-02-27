@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -10,7 +10,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // Global API prefix
-  const apiPrefix = configService.get<string>('app.apiPrefix');
+  const apiPrefix = configService.get<string>('app.apiPrefix') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
 
   // Cookie parser for JWT authentication
@@ -30,7 +30,7 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: configService.get<string>('app.appUrl'),
+    origin: configService.get<string>('app.appUrl') || 'http://localhost:3000',
     credentials: true,
   });
 
@@ -51,7 +51,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
 
-  const port = configService.get<number>('app.port');
+  const port = configService.get<number>('app.port') || 3000;
   await app.listen(port);
 
   console.log(`🚀 Application is running on: http://localhost:${port}/${apiPrefix}`);

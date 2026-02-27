@@ -21,7 +21,8 @@ import {
 import { FavoritesService } from './favorites.service';
 import { QueryFavoritesDto } from './dto/query-favorites.dto';
 import { FavoriteResponseDto, PaginatedFavoritesResponseDto } from './dto/favorite-response.dto';
-import { CurrentUser, CurrentUserData } from '../../common/decorators/current-user.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import type { CurrentUserData } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
