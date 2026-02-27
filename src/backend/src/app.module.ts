@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
 import { BoxesModule } from './modules/boxes/boxes.module';
+import { BookingsModule } from './modules/bookings/bookings.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -27,6 +29,8 @@ import googleMapsConfig from './config/google-maps.config';
       load: [appConfig, databaseConfig, jwtConfig, redisConfig, googleMapsConfig],
       envFilePath: '.env',
     }),
+    // Schedule module for cron jobs
+    ScheduleModule.forRoot(),
     // Global Prisma module
     PrismaModule,
     // Global shared modules
@@ -36,6 +40,7 @@ import googleMapsConfig from './config/google-maps.config';
     UsersModule,
     WarehousesModule,
     BoxesModule,
+    BookingsModule,
   ],
   controllers: [AppController],
   providers: [
