@@ -13,6 +13,7 @@ import { BoxesModule } from './modules/boxes/boxes.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
+import { CrmModule } from './modules/crm/crm.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -45,6 +46,7 @@ import googleMapsConfig from './config/google-maps.config';
     BookingsModule,
     ReviewsModule,
     FavoritesModule,
+    CrmModule,
   ],
   controllers: [AppController],
   providers: [
