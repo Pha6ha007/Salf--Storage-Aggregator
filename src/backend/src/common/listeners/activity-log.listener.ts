@@ -17,6 +17,7 @@ import { BoxCreatedEvent, BoxPriceChangedEvent } from '../events/box.events';
 import { UserRegisteredEvent } from '../events/user.events';
 import { ReviewCreatedEvent } from '../events/review.events';
 import { LeadCreatedEvent, LeadStatusChangedEvent } from '../events/crm.events';
+import { MediaUploadedEvent, MediaDeletedEvent } from '../events/media.events';
 
 @Injectable()
 export class ActivityLogListener {
@@ -241,6 +242,37 @@ export class ActivityLogListener {
         fromStatus: event.fromStatus,
         toStatus: event.toStatus,
         reason: event.reason,
+      },
+    });
+  }
+
+  // ==================== MEDIA EVENTS ====================
+
+  @OnEvent('media.uploaded')
+  async handleMediaUploaded(event: MediaUploadedEvent) {
+    await this.activityLogService.logEvent({
+      eventName: 'media.uploaded',
+      entityType: 'media',
+      entityId: String(event.mediaId),
+      actorId: event.actorId,
+      payload: {
+        warehouseId: event.warehouseId,
+        fileUrl: event.fileUrl,
+        fileType: event.fileType,
+      },
+    });
+  }
+
+  @OnEvent('media.deleted')
+  async handleMediaDeleted(event: MediaDeletedEvent) {
+    await this.activityLogService.logEvent({
+      eventName: 'media.deleted',
+      entityType: 'media',
+      entityId: String(event.mediaId),
+      actorId: event.actorId,
+      payload: {
+        warehouseId: event.warehouseId,
+        fileUrl: event.fileUrl,
       },
     });
   }
