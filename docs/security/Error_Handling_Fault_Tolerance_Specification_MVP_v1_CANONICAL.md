@@ -98,9 +98,9 @@ The error handling strategy adheres to the following core principles:
 - Internal service names and architecture details
 
 **Safe Externalization:**
-- Generic error messages for 5xx errors: "Внутренняя ошибка сервера. Мы уже работаем над решением"
+- Generic error messages for 5xx errors: "Internal server error. We are already working on a solution"
 - Specific error codes for debugging: `error_code`, `http_status`
-- Business-level error details only: "Бокс уже забронирован", "Неверный формат email"
+- Business-level error details only: "Box already booked", "Invalid email format"
 
 ### Principle 3: Correlation is Mandatory
 
@@ -275,7 +275,7 @@ Business errors occur when a request violates domain rules or business constrain
 {
   "error_code": "BOX_NOT_AVAILABLE",
   "http_status": 409,
-  "message": "К сожалению, выбранный бокс уже забронирован",
+  "message": "Unfortunately, the selected box is already booked",
   "details": {
     "box_id": "770e8400-e29b-41d4-a716-446655440002",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440001",
@@ -361,16 +361,16 @@ Validation errors occur when input data does not conform to expected formats, ty
 {
   "error_code": "VALIDATION_ERROR",
   "http_status": 400,
-  "message": "Ошибка валидации одного или нескольких полей",
+  "message": "Validation error for one or more fields",
   "details": [
     {
       "field": "email",
-      "error": "Неверный формат email",
+      "error": "Invalid email format",
       "value": "invalid-email"
     },
     {
       "field": "price_per_month",
-      "error": "Цена должна быть положительным числом",
+      "error": "Price must be a positive number",
       "value": -100
     }
   ]
@@ -415,7 +415,7 @@ app.useGlobalPipes(
       return new BadRequestException({
         error_code: 'VALIDATION_ERROR',
         http_status: 400,
-        message: 'Ошибка валидации одного или нескольких полей',
+        message: 'Validation error for one or more fields',
         details
       });
     }
@@ -454,7 +454,7 @@ Infrastructure errors occur due to system-level failures unrelated to business l
 {
   "error_code": "DATABASE_ERROR",
   "http_status": 500,
-  "message": "Ошибка базы данных. Попробуйте позже"
+  "message": "Database error. Please try again later"
 }
 ```
 
@@ -510,7 +510,7 @@ Network errors occur due to connectivity issues between system components.
 {
   "error_code": "EXTERNAL_SERVICE_TIMEOUT",
   "http_status": 504,
-  "message": "Превышено время ожидания ответа от внешнего сервиса"
+  "message": "External service response timeout exceeded"
 }
 ```
 
@@ -565,7 +565,7 @@ class MapsService {
 {
   "error_code": "AI_SERVICE_UNAVAILABLE",
   "http_status": 502,
-  "message": "AI-рекомендации временно недоступны. Попробуйте позже",
+  "message": "AI recommendations temporarily unavailable. Please try again later",
   "details": {
     "fallback_available": false
   }
@@ -586,7 +586,7 @@ All API error responses follow this **canonical format**:
 {
   "error_code": "BOX_NOT_AVAILABLE",
   "http_status": 409,
-  "message": "К сожалению, выбранный бокс уже забронирован",
+  "message": "Unfortunately, the selected box is already booked",
   "details": {
     "box_id": "770e8400-e29b-41d4-a716-446655440002",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440001",
@@ -732,70 +732,70 @@ function getHTTPStatus(error: AppError): number {
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `TOKEN_MISSING` | 401 | Токен авторизации отсутствует | No Authorization header | âŒ NO |
-| `TOKEN_INVALID` | 401 | Недействительный токен авторизации | Malformed or tampered JWT | âŒ NO |
-| `TOKEN_EXPIRED` | 401 | Ваша сессия истекла. Войдите снова | JWT expired | âŒ NO |
-| `INVALID_CREDENTIALS` | 401 | Неверный email или пароль | Login failure | âŒ NO |
-| `INSUFFICIENT_PERMISSIONS` | 403 | У вас нет прав для выполнения этого действия | User lacks permission | âŒ NO |
-| `OPERATOR_NOT_VERIFIED` | 403 | Ваш аккаунт оператора ожидает проверки | New operator not approved | âŒ NO |
-| `RESOURCE_OWNERSHIP` | 403 | Доступ только для владельца ресурса | User doesn't own resource | âŒ NO |
+| `TOKEN_MISSING` | 401 | Authorization token missing | No Authorization header | âŒ NO |
+| `TOKEN_INVALID` | 401 | Invalid authorization token | Malformed or tampered JWT | âŒ NO |
+| `TOKEN_EXPIRED` | 401 | Your session has expired. Please log in again | JWT expired | âŒ NO |
+| `INVALID_CREDENTIALS` | 401 | Invalid email or password | Login failure | âŒ NO |
+| `INSUFFICIENT_PERMISSIONS` | 403 | You do not have permission to perform this action | User lacks permission | âŒ NO |
+| `OPERATOR_NOT_VERIFIED` | 403 | Your operator account is pending verification | New operator not approved | âŒ NO |
+| `RESOURCE_OWNERSHIP` | 403 | Access only for resource owner | User doesn't own resource | âŒ NO |
 
 ### Resource Errors (404)
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `WAREHOUSE_NOT_FOUND` | 404 | Склад не найден | Warehouse ID doesn't exist | âŒ NO |
-| `BOX_NOT_FOUND` | 404 | Бокс не найден | Box ID doesn't exist | âŒ NO |
-| `BOOKING_NOT_FOUND` | 404 | Бронирование не найдено | Booking ID doesn't exist | âŒ NO |
-| `USER_NOT_FOUND` | 404 | Пользователь не найден | User ID doesn't exist | âŒ NO |
-| `REVIEW_NOT_FOUND` | 404 | Отзыв не найден | Review ID doesn't exist | âŒ NO |
-| `LEAD_NOT_FOUND` | 404 | Лид не найден | CRM Lead ID doesn't exist | âŒ NO |
+| `WAREHOUSE_NOT_FOUND` | 404 | Warehouse not found | Warehouse ID doesn't exist | âŒ NO |
+| `BOX_NOT_FOUND` | 404 | Box not found | Box ID doesn't exist | âŒ NO |
+| `BOOKING_NOT_FOUND` | 404 | Booking not found | Booking ID doesn't exist | âŒ NO |
+| `USER_NOT_FOUND` | 404 | User not found | User ID doesn't exist | âŒ NO |
+| `REVIEW_NOT_FOUND` | 404 | Review not found | Review ID doesn't exist | âŒ NO |
+| `LEAD_NOT_FOUND` | 404 | Lead not found | CRM Lead ID doesn't exist | âŒ NO |
 
 ### Business Logic Errors (409, 422)
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `BOX_NOT_AVAILABLE` | 409 | Выбранный бокс уже забронирован | Box reserved by another user | âŒ NO |
-| `EMAIL_ALREADY_EXISTS` | 409 | Email уже зарегистрирован | Duplicate email on registration | âŒ NO |
-| `BOOKING_CONFLICT` | 409 | Даты пересекаются с существующим бронированием | Date overlap | âŒ NO |
-| `INVALID_DATE_RANGE` | 422 | Дата окончания должна быть после даты начала | end_date < start_date | âŒ NO |
-| `START_DATE_IN_PAST` | 422 | Дата начала не может быть в прошлом | start_date < today | âŒ NO |
-| `MINIMUM_DURATION_NOT_MET` | 422 | Минимальный срок аренды: 1 месяц | duration < 1 month | âŒ NO |
-| `WAREHOUSE_INACTIVE` | 422 | Склад временно не принимает бронирования | Warehouse disabled | âŒ NO |
-| `CANNOT_CANCEL_BOOKING` | 422 | Невозможно отменить бронирование в статусе '{status}' | Invalid status transition | âŒ NO |
-| `CANNOT_MODIFY_BOOKING` | 422 | Невозможно изменить бронирование в статусе '{status}' | Invalid status | âŒ NO |
+| `BOX_NOT_AVAILABLE` | 409 | Selected box is already booked | Box reserved by another user | âŒ NO |
+| `EMAIL_ALREADY_EXISTS` | 409 | Email already registered | Duplicate email on registration | âŒ NO |
+| `BOOKING_CONFLICT` | 409 | Dates overlap with existing booking | Date overlap | âŒ NO |
+| `INVALID_DATE_RANGE` | 422 | End date must be after start date | end_date < start_date | âŒ NO |
+| `START_DATE_IN_PAST` | 422 | Start date cannot be in the past | start_date < today | âŒ NO |
+| `MINIMUM_DURATION_NOT_MET` | 422 | Minimum rental period: 1 month | duration < 1 month | âŒ NO |
+| `WAREHOUSE_INACTIVE` | 422 | Warehouse temporarily not accepting bookings | Warehouse disabled | âŒ NO |
+| `CANNOT_CANCEL_BOOKING` | 422 | Cannot cancel booking in status '{status}' | Invalid status transition | âŒ NO |
+| `CANNOT_MODIFY_BOOKING` | 422 | Cannot modify booking in status '{status}' | Invalid status | âŒ NO |
 
 ### Validation Errors (400)
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `VALIDATION_ERROR` | 400 | Ошибка валидации одного или нескольких полей | Multiple validation failures | âŒ NO |
-| `MISSING_REQUIRED_FIELD` | 400 | Обязательное поле отсутствует | Required field not provided | âŒ NO |
-| `INVALID_FORMAT` | 400 | Неверный формат данных | Invalid email, phone, etc. | âŒ NO |
-| `INVALID_TYPE` | 400 | Неверный тип данных | Type mismatch | âŒ NO |
-| `VALUE_OUT_OF_RANGE` | 400 | Значение вне допустимого диапазона | Range violation | âŒ NO |
-| `INVALID_ENUM_VALUE` | 400 | Недопустимое значение перечисления | Invalid enum value | âŒ NO |
+| `VALIDATION_ERROR` | 400 | Validation error for one or more fields | Multiple validation failures | âŒ NO |
+| `MISSING_REQUIRED_FIELD` | 400 | Required field missing | Required field not provided | âŒ NO |
+| `INVALID_FORMAT` | 400 | Invalid data format | Invalid email, phone, etc. | âŒ NO |
+| `INVALID_TYPE` | 400 | Invalid data type | Type mismatch | âŒ NO |
+| `VALUE_OUT_OF_RANGE` | 400 | Value out of allowed range | Range violation | âŒ NO |
+| `INVALID_ENUM_VALUE` | 400 | Invalid enum value | Invalid enum value | âŒ NO |
 
 ### Infrastructure Errors (5xx)
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `INTERNAL_SERVER_ERROR` | 500 | Внутренняя ошибка сервера. Мы уже работаем над решением | Unhandled exception | âœ… YES |
-| `DATABASE_ERROR` | 500 | Ошибка базы данных. Попробуйте позже | DB connection/query failure | âœ… YES |
-| `CACHE_UNAVAILABLE` | 500 | Сервис кеширования временно недоступен | Redis connection failure | âœ… YES |
-| `EXTERNAL_SERVICE_ERROR` | 502 | Внешний сервис временно недоступен | External API failure | âœ… YES |
-| `AI_SERVICE_UNAVAILABLE` | 502 | AI-рекомендации временно недоступны. Попробуйте позже | AI API timeout/error | âœ… YES |
-| `MAPS_API_ERROR` | 502 | Сервис геолокации временно недоступен | Maps API failure | âœ… YES |
-| `NOTIFICATION_DELIVERY_FAILED` | 502 | Не удалось отправить уведомление | Email/SMS send failure | âœ… YES |
-| `SERVICE_UNAVAILABLE` | 503 | Сервис временно недоступен. Попробуйте через несколько минут | Maintenance mode | âœ… YES |
-| `REQUEST_TIMEOUT` | 504 | Превышено время ожидания. Попробуйте снова | Request took too long | âœ… YES |
-| `EXTERNAL_SERVICE_TIMEOUT` | 504 | Превышено время ожидания ответа от внешнего сервиса | External API timeout | âœ… YES |
+| `INTERNAL_SERVER_ERROR` | 500 | Internal server error. We are already working on a solution | Unhandled exception | âœ… YES |
+| `DATABASE_ERROR` | 500 | Database error. Please try again later | DB connection/query failure | âœ… YES |
+| `CACHE_UNAVAILABLE` | 500 | Cache service temporarily unavailable | Redis connection failure | âœ… YES |
+| `EXTERNAL_SERVICE_ERROR` | 502 | External service temporarily unavailable | External API failure | âœ… YES |
+| `AI_SERVICE_UNAVAILABLE` | 502 | AI recommendations temporarily unavailable. Please try again later | AI API timeout/error | âœ… YES |
+| `MAPS_API_ERROR` | 502 | Geolocation service temporarily unavailable | Maps API failure | âœ… YES |
+| `NOTIFICATION_DELIVERY_FAILED` | 502 | Failed to send notification | Email/SMS send failure | âœ… YES |
+| `SERVICE_UNAVAILABLE` | 503 | Service temporarily unavailable. Please try again in a few minutes | Maintenance mode | âœ… YES |
+| `REQUEST_TIMEOUT` | 504 | Request timeout. Please try again | Request took too long | âœ… YES |
+| `EXTERNAL_SERVICE_TIMEOUT` | 504 | External service response timeout exceeded | External API timeout | âœ… YES |
 
 ### Rate Limiting Errors (429)
 
 | Error Code | HTTP Status | Message (UAEn) | Scenario | Retryable |
 |------------|-------------|-------------------|----------|-----------|
-| `RATE_LIMIT_EXCEEDED` | 429 | Превышен лимит запросов. Попробуйте через {retry_after} секунд | Too many requests | âœ… YES (after delay) |
+| `RATE_LIMIT_EXCEEDED` | 429 | Rate limit exceeded. Please try again in {retry_after} seconds | Too many requests | âœ… YES (after delay) |
 
 ### Error Response Examples (Canonical Format)
 
@@ -804,7 +804,7 @@ function getHTTPStatus(error: AppError): number {
 {
   "error_code": "TOKEN_EXPIRED",
   "http_status": 401,
-  "message": "Ваша сессия истекла. Войдите снова"
+  "message": "Your session has expired. Please log in again"
 }
 ```
 
@@ -813,7 +813,7 @@ function getHTTPStatus(error: AppError): number {
 {
   "error_code": "BOX_NOT_AVAILABLE",
   "http_status": 409,
-  "message": "К сожалению, выбранный бокс уже забронирован",
+  "message": "Unfortunately, the selected box is already booked",
   "details": {
     "box_id": "770e8400-e29b-41d4-a716-446655440002",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440001",
@@ -830,16 +830,16 @@ function getHTTPStatus(error: AppError): number {
 {
   "error_code": "VALIDATION_ERROR",
   "http_status": 400,
-  "message": "Ошибка валидации одного или нескольких полей",
+  "message": "Validation error for one or more fields",
   "details": [
     {
       "field": "email",
-      "error": "Неверный формат email",
+      "error": "Invalid email format",
       "value": "invalid-email"
     },
     {
       "field": "start_date",
-      "error": "Дата начала не может быть в прошлом",
+      "error": "Start date cannot be in the past",
       "value": "2025-01-01"
     }
   ]
@@ -851,7 +851,7 @@ function getHTTPStatus(error: AppError): number {
 {
   "error_code": "DATABASE_ERROR",
   "http_status": 500,
-  "message": "Ошибка базы данных. Попробуйте позже"
+  "message": "Database error. Please try again later"
 }
 ```
 
@@ -860,7 +860,7 @@ function getHTTPStatus(error: AppError): number {
 {
   "error_code": "RATE_LIMIT_EXCEEDED",
   "http_status": 429,
-  "message": "Превышен лимит запросов. Попробуйте через 45 секунд",
+  "message": "Rate limit exceeded. Please try again in 45 seconds",
   "details": {
     "limit": 100,
     "window_seconds": 60,
@@ -944,7 +944,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       errorResponse: {
         error_code: 'INTERNAL_SERVER_ERROR',
         http_status: 500,
-        message: 'Внутренняя ошибка сервера. Мы уже работаем над решением'
+        message: 'Internal server error. We are already working on a solution'
       }
     };
   }
@@ -1042,7 +1042,7 @@ export class BoxNotAvailableException extends HttpException {
       {
         error_code: 'BOX_NOT_AVAILABLE',
         http_status: 409,
-        message: 'К сожалению, выбранный бокс уже забронирован',
+        message: 'Unfortunately, the selected box is already booked',
         details
       },
       HttpStatus.CONFLICT
@@ -1057,7 +1057,7 @@ export class InvalidDateRangeException extends HttpException {
       {
         error_code: 'INVALID_DATE_RANGE',
         http_status: 422,
-        message: 'Дата окончания должна быть после даты начала',
+        message: 'End date must be after start date',
         details
       },
       HttpStatus.UNPROCESSABLE_ENTITY
@@ -1115,7 +1115,7 @@ app.useGlobalPipes(
         {
           error_code: 'VALIDATION_ERROR',
           http_status: 400,
-          message: 'Ошибка валидации одного или нескольких полей',
+          message: 'Validation error for one or more fields',
           details
         },
         HttpStatus.BAD_REQUEST
@@ -1145,7 +1145,7 @@ export class WarehouseService {
           {
             error_code: 'WAREHOUSE_NOT_FOUND',
             http_status: 404,
-            message: 'Склад не найден',
+            message: 'Warehouse not found',
             details: { warehouse_id: id }
           },
           HttpStatus.NOT_FOUND
@@ -1170,7 +1170,7 @@ export class WarehouseService {
         {
           error_code: 'INTERNAL_SERVER_ERROR',
           http_status: 500,
-          message: 'Внутренняя ошибка сервера. Мы уже работаем над решением'
+          message: 'Internal server error. We are already working on a solution'
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
@@ -1263,7 +1263,7 @@ export class DatabaseHealthService {
         {
           error_code: 'DATABASE_ERROR',
           http_status: 500,
-          message: 'Ошибка базы данных. Попробуйте позже'
+          message: 'Database error. Please try again later'
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
@@ -1388,7 +1388,7 @@ export class QueryTimeoutInterceptor implements NestInterceptor {
             {
               error_code: 'REQUEST_TIMEOUT',
               http_status: 504,
-              message: 'Превышено время ожидания. Попробуйте снова'
+              message: 'Request timeout. Please try again'
             },
             HttpStatus.GATEWAY_TIMEOUT
           );
@@ -1416,7 +1416,7 @@ export class ConstraintErrorHandler {
         {
           error_code: 'DUPLICATE_ENTRY',
           http_status: 409,
-          message: `${field} уже существует`,
+          message: `${field} already exists`,
           details: {
             field,
             constraint: error.constraint
@@ -1432,7 +1432,7 @@ export class ConstraintErrorHandler {
         {
           error_code: 'INVALID_REFERENCE',
           http_status: 400,
-          message: 'Ссылка на несуществующий ресурс',
+          message: 'Reference to non-existent resource',
           details: {
             constraint: error.constraint
           }
@@ -1447,7 +1447,7 @@ export class ConstraintErrorHandler {
         {
           error_code: 'MISSING_REQUIRED_FIELD',
           http_status: 400,
-          message: 'Обязательное поле отсутствует',
+          message: 'Required field missing',
           details: {
             field: error.column
           }
@@ -1461,7 +1461,7 @@ export class ConstraintErrorHandler {
       {
         error_code: 'DATABASE_ERROR',
         http_status: 500,
-        message: 'Ошибка базы данных. Попробуйте позже'
+        message: 'Database error. Please try again later'
       },
       HttpStatus.INTERNAL_SERVER_ERROR
     );
@@ -1699,7 +1699,7 @@ export class CircuitBreaker {
           {
             error_code: 'SERVICE_UNAVAILABLE',
             http_status: 503,
-            message: 'Сервис временно недоступен. Попробуйте через несколько минут'
+            message: 'Service temporarily unavailable. Please try again in a few minutes'
           },
           HttpStatus.SERVICE_UNAVAILABLE
         );
@@ -1817,7 +1817,7 @@ export class SearchService {
       {
         error_code: 'SERVICE_UNAVAILABLE',
         http_status: 503,
-        message: 'Сервис поиска временно недоступен. Попробуйте через несколько минут'
+        message: 'Search service temporarily unavailable. Please try again in a few minutes'
       },
       HttpStatus.SERVICE_UNAVAILABLE
     );
@@ -1859,7 +1859,7 @@ export class AIService {
     // Simple rule-based fallback
     const queryLower = query.toLowerCase();
     
-    if (queryLower.includes('большой') || queryLower.includes('много')) {
+    if (queryLower.includes('large') || queryLower.includes('many')) {
       return {
         recommended_size: 'L',
         confidence: 0.5,
@@ -1867,7 +1867,7 @@ export class AIService {
       };
     }
     
-    if (queryLower.includes('маленький') || queryLower.includes('мало')) {
+    if (queryLower.includes('small') || queryLower.includes('few')) {
       return {
         recommended_size: 'S',
         confidence: 0.5,
@@ -1923,7 +1923,7 @@ export class MapsService {
         {
           error_code: 'MAPS_API_ERROR',
           http_status: 502,
-          message: 'Сервис геолокации временно недоступен'
+          message: 'Geolocation service temporarily unavailable'
         },
         HttpStatus.BAD_GATEWAY
       );
@@ -2279,7 +2279,7 @@ export class MapsService {
           {
             error_code: 'MAPS_API_ERROR',
             http_status: 502,
-            message: 'Сервис геолокации временно недоступен'
+            message: 'Geolocation service temporarily unavailable'
           },
           HttpStatus.BAD_GATEWAY
         );
@@ -2379,7 +2379,7 @@ export class SearchService {
         {
           error_code: 'SERVICE_UNAVAILABLE',
           http_status: 503,
-          message: 'Сервис поиска временно недоступен'
+          message: 'Search service temporarily unavailable'
         },
         HttpStatus.SERVICE_UNAVAILABLE
       );
@@ -2403,7 +2403,7 @@ export class WarehouseService {
         {
           error_code: 'WAREHOUSE_NOT_FOUND',
           http_status: 404,
-          message: 'Склад не найден',
+          message: 'Warehouse not found',
           details: { warehouse_id: id }
         },
         HttpStatus.NOT_FOUND
@@ -2468,7 +2468,7 @@ export class DatabaseFailoverService {
         {
           error_code: 'DATABASE_ERROR',
           http_status: 500,
-          message: 'Ошибка базы данных. Попробуйте позже'
+          message: 'Database error. Please try again later'
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
@@ -2553,7 +2553,7 @@ export class MapsService {
       {
         error_code: 'MAPS_API_ERROR',
         http_status: 502,
-        message: 'Сервис геолокации временно недоступен'
+        message: 'Geolocation service temporarily unavailable'
       },
       HttpStatus.BAD_GATEWAY
     );
@@ -2926,11 +2926,11 @@ When payment gateway integration is added in future versions, the following erro
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `PAYMENT_FAILED` | 502 | Ошибка обработки платежа. Попробуйте другую карту | Payment gateway rejected |
-| `PAYMENT_TIMEOUT` | 504 | Превышено время ожидания оплаты | Payment gateway timeout |
-| `INSUFFICIENT_FUNDS` | 422 | Недостаточно средств на карте | Card declined |
-| `INVALID_CARD` | 400 | Неверные данные карты | Card validation failed |
-| `PAYMENT_METHOD_NOT_SUPPORTED` | 422 | Способ оплаты не поддерживается | Unsupported payment method |
+| `PAYMENT_FAILED` | 502 | Payment processing error. Please try another card | Payment gateway rejected |
+| `PAYMENT_TIMEOUT` | 504 | Payment timeout exceeded | Payment gateway timeout |
+| `INSUFFICIENT_FUNDS` | 422 | Insufficient funds on card | Card declined |
+| `INVALID_CARD` | 400 | Invalid card data | Card validation failed |
+| `PAYMENT_METHOD_NOT_SUPPORTED` | 422 | Payment method not supported | Unsupported payment method |
 
 ## A.2. Subscription/Billing Errors (v2+)
 
@@ -2938,9 +2938,9 @@ When payment gateway integration is added in future versions, the following erro
 
 | Error Code | HTTP Status | Message | Scenario |
 |------------|-------------|---------|----------|
-| `SUBSCRIPTION_EXPIRED` | 403 | Подписка истекла. Продлите подписку | Subscription lapsed |
-| `PLAN_LIMIT_EXCEEDED` | 429 | Превышен лимит тарифного плана | Usage limit reached |
-| `BILLING_CYCLE_ENDED` | 403 | Платежный цикл завершен | End of billing period |
+| `SUBSCRIPTION_EXPIRED` | 403 | Subscription expired. Please renew subscription | Subscription lapsed |
+| `PLAN_LIMIT_EXCEEDED` | 429 | Plan limit exceeded | Usage limit reached |
+| `BILLING_CYCLE_ENDED` | 403 | Billing cycle ended | End of billing period |
 
 ---
 

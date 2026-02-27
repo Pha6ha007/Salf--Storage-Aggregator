@@ -436,8 +436,8 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "data": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "name": "СкладОК Выхино",
-      "address": "ул. Ташкентская, 1",
+      "name": "StorageHub Al Quoz",
+      "address": "Al Quoz Industrial Area 3, Dubai",
       "latitude": 55.7123,
       "longitude": 37.8234,
       "distance_km": 2.5,
@@ -550,9 +550,9 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "success": true,
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
-    "name": "СкладОК Выхино",
-    "description": "Современный складской комплекс...",
-    "address": "ул. Ташкентская, 1",
+    "name": "StorageHub Al Quoz",
+    "description": "Modern storage complex...",
+    "address": "Al Quoz Industrial Area 3, Dubai",
     "latitude": 55.7123,
     "longitude": 37.8234,
     "rating": 4.8,
@@ -567,7 +567,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
       {
         "id": "770e8400-e29b-41d4-a716-446655440002",
         "size": "M",
-        "dimensions": "2x2x2.5м",
+        "dimensions": "2x2x2.5m",
         "price_monthly": 4500,
         "is_available": true
       }
@@ -632,7 +632,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
     "warehouses": [
       {
         "id": "550e8400-e29b-41d4-a716-446655440000",
-        "name": "СкладОК Выхино",
+        "name": "StorageHub Al Quoz",
         "latitude": 55.7123,
         "longitude": 37.8234,
         "min_price_monthly": 3500,
@@ -692,9 +692,9 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 **Request Body:**
 ```json
 {
-  "name": "СкладОК Выхино",
-  "description": "Современный складской комплекс с круглосуточным доступом",
-  "address": "ул. Ташкентская, 1, Dubai",
+  "name": "StorageHub Al Quoz",
+  "description": "Modern storage complex with 24/7 access",
+  "address": "Al Quoz Industrial Area 3, Dubai",
   "latitude": 55.7123,
   "longitude": 37.8234,
   "amenities": ["24_7_access", "climate_control", "security"],
@@ -712,7 +712,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "success": true,
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
-    "name": "СкладОК Выхино",
+    "name": "StorageHub Al Quoz",
     "operator_id": "bb0e8400-e29b-41d4-a716-446655440006",
     "is_active": false,
     "created_at": "2025-12-16T14:30:00Z"
@@ -766,7 +766,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 ```json
 {
   "size": "M",
-  "dimensions": "2x2x2.5м",
+  "dimensions": "2x2x2.5m",
   "price_monthly": 4500,
   "total_quantity": 10,
   "available_quantity": 10
@@ -1033,13 +1033,13 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
       "price_total": 13500,
       "warehouse": {
         "id": "550e8400-e29b-41d4-a716-446655440000",
-        "name": "СкладОК Выхино",
-        "address": "ул. Ташкентская, 1"
+        "name": "StorageHub Al Quoz",
+        "address": "Al Quoz Industrial Area 3, Dubai"
       },
       "box": {
         "id": "770e8400-e29b-41d4-a716-446655440002",
         "size": "M",
-        "dimensions": "2x2x2.5м"
+        "dimensions": "2x2x2.5m"
       }
     }
   ],
@@ -1095,7 +1095,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 **Request Body (Update):**
 ```json
 {
-  "name": "Иван Иванович Петров",
+  "name": "Ahmed Hassan Al-Mansoori",
   "phone": "+79991234568"
 }
 ```
@@ -1107,7 +1107,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "data": {
     "id": "bb0e8400-e29b-41d4-a716-446655440006",
     "email": "user@example.com",
-    "name": "Иван Иванович Петров",
+    "name": "Ahmed Hassan Al-Mansoori",
     "phone": "+79991234568",
     "role": "user",
     "created_at": "2025-01-15T10:00:00Z"
@@ -1267,7 +1267,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 {
   "company_name": "StorageOK LLC",
   "tax_id": "7707123456",
-  "legal_address": "Dubai, ул. Примерная, д. 1",
+  "legal_address": "Business Bay, Office 1234, Dubai",
   "billing_email": "billing@skladok.ru",
   "support_phone": "+971501234567",
   "support_email": "support@skladok.ru"
@@ -1342,7 +1342,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
       {
         "type": "new_booking",
         "booking_id": "dd0e8400-e29b-41d4-a716-446655440008",
-        "warehouse_name": "СкладОК Выхино",
+        "warehouse_name": "StorageHub Al Quoz",
         "timestamp": "2025-12-16T14:00:00Z"
       }
     ]
@@ -1393,7 +1393,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 ```json
 {
   "rating": 5,
-  "comment": "Отличный склад, всё чисто и удобно!"
+  "comment": "Excellent storage facility, everything is clean and convenient!"
 }
 ```
 
@@ -1406,7 +1406,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
     "user_id": "bb0e8400-e29b-41d4-a716-446655440006",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
     "rating": 5,
-    "comment": "Отличный склад, всё чисто и удобно!",
+    "comment": "Excellent storage facility, everything is clean and convenient!",
     "verified": true,
     "created_at": "2025-12-16T14:30:00Z"
   },
@@ -1500,8 +1500,8 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 
 | ID | Scenario | Given | When | Then |
 |----|----------|-------|------|------|
-| AC-01 | Valid recommendation | User describes items (e.g., "диван, 10 коробок, велосипед") | AI request submitted | Recommended box sizes returned (e.g., "L" or "XL"), explanation provided |
-| AC-02 | Unclear input | User provides vague description ("разные вещи") | AI request submitted | AI asks clarifying questions or returns multiple size options |
+| AC-01 | Valid recommendation | User describes items (e.g., "sofa, 10 boxes, bicycle") | AI request submitted | Recommended box sizes returned (e.g., "L" or "XL"), explanation provided |
+| AC-02 | Unclear input | User provides vague description ("various items") | AI request submitted | AI asks clarifying questions or returns multiple size options |
 | AC-03 | AI unavailable | OpenAI API is down | Request submitted | Fallback to rule-based recommendation, warning shown |
 | AC-04 | Request logging | Any AI request made | Request processed | Request/response logged to ai_requests_log table |
 
@@ -1514,7 +1514,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 **Request Body:**
 ```json
 {
-  "items_description": "диван, 10 коробок с книгами, велосипед, зимняя одежда"
+  "items_description": "sofa, 10 boxes of books, bicycle, winter clothes"
 }
 ```
 
@@ -1524,7 +1524,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "success": true,
   "data": {
     "recommended_sizes": ["L", "XL"],
-    "explanation": "Для дивана и велосипеда потребуется просторный бокс. Рекомендуем размер L (8-10 кв.м) или XL (12+ кв.м) в зависимости от размера дивана.",
+    "explanation": "For the sofa and bicycle, you'll need a spacious box. We recommend size L (8-10 sq.m) or XL (12+ sq.m) depending on the sofa size.",
     "estimated_space_m2": 10,
     "confidence": "high"
   },
@@ -1542,7 +1542,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "success": true,
   "data": {
     "recommended_sizes": ["M", "L"],
-    "explanation": "Основываясь на типичных размерах мебели, рекомендуем бокс размера M или L.",
+    "explanation": "Based on typical furniture dimensions, we recommend a box size M or L.",
     "confidence": "low",
     "fallback": true
   },
@@ -1592,12 +1592,12 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 **Request Body:**
 ```json
 {
-  "name": "Мария Иванова",
+  "name": "Fatima Al-Zaabi",
   "phone": "+971501234567",
   "email": "maria@example.com",
   "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
   "preferred_box_size": "M",
-  "message": "Хочу арендовать бокс на 6 месяцев"
+  "message": "I want to rent a box for 6 months"
 }
 ```
 
@@ -1607,13 +1607,13 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
   "success": true,
   "data": {
     "id": "gg0e8400-e29b-41d4-a716-446655440011",
-    "name": "Мария Иванова",
+    "name": "Fatima Al-Zaabi",
     "status": "new",
     "warehouse_id": "550e8400-e29b-41d4-a716-446655440000",
     "created_at": "2025-12-16T14:30:00Z"
   },
   "meta": {
-    "message": "Ваш запрос отправлен. Мы свяжемся с вами в ближайшее время.",
+    "message": "Your request has been submitted. We will contact you shortly.",
     "timestamp": "2025-12-16T14:30:00Z"
   }
 }
@@ -1645,7 +1645,7 @@ Set-Cookie: refresh_token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0
 | AC-01 | View leads list | Operator has assigned leads | Operator navigates to CRM | All leads displayed with status, name, contact info, timestamp |
 | AC-02 | Filter by status | Operator has leads in different statuses | Filter applied (e.g., "new") | Only leads with selected status shown |
 | AC-03 | Update lead status | Lead exists with status=new | Operator changes to "contacted" | Status updated, status_history entry created |
-| AC-04 | Add activity note | Lead exists | Operator adds note "Позвонил, договорились о встрече" | Activity created, visible in lead timeline |
+| AC-04 | Add activity note | Lead exists | Operator adds note "Called, agreed on meeting" | Activity created, visible in lead timeline |
 | AC-05 | Mark as spam | Spam lead submitted | Operator marks as spam | is_spam=true, lead hidden from default views |
 
 #### API Mapping

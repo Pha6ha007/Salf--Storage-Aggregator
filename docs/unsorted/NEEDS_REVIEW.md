@@ -11,7 +11,7 @@
 - DOC-011 Pricing_Recommendation_Engine_MVP_v1.md
 - DOC-012_AI_Assisted_Content_Generator_MVP_v1.md
 - DOC-013_AI_Anomaly_Detection_Prices_Demand_MVP_v2.md
-- DOC-020 Аudit_logging_specification_mvp_v1_CANONICAL.md
+- DOC-020 Audit_logging_specification_mvp_v1_CANONICAL.md
 - DOC-021_Operator_Risk_Signals_Manual_Review_Framework_MVP_v1.md
 - DOC-024_Box_Size_Recommendation_Engine_MVP_v1.md
 - DOC-025_Box_Type_Classification_Engine_AI_Deep_Tech_Spec_MVP_v2.md

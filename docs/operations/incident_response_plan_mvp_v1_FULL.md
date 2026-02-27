@@ -66,28 +66,28 @@ This Incident Response Plan (IRP) defines the processes, procedures, and respons
 ---
 
 
-## 1.1. Назначение
+## 1.1. Purpose
 
-Incident Response Plan (IRP) для Self-Storage Aggregator MVP определяет процессы обнаружения, классификации, реагирования и восстановления после инцидентов в продакшн-среде. Документ обеспечивает минимально необходимый уровень операционной готовности команды для обработки сбоев, критических ошибок и нарушений безопасности.
+Incident Response Plan (IRP) for Self-Storage Aggregator MVP defines processes for detection, classification, response and recovery after incidents in production environment. This document ensures minimum required level of operational readiness for teams to handle failures, critical errors and security breaches.
 
-**Применимость:**
-- Все компоненты MVP: Backend API, Frontend, PostgreSQL, Redis, AI Service
-- Все типы инцидентов: технические сбои, security incidents, data breaches
-- Все роли: DevOps Engineer, Backend Engineer, Product Owner, Support
+**Applicability:**
+- All MVP components: Backend API, Frontend, PostgreSQL, Redis, AI Service
+- All incident types: technical failures, security incidents, data breaches
+- All roles: DevOps Engineer, Backend Engineer, Product Owner, Support
 
-## 1.2. Цели IR-процесса
+## 1.2. IR Process Goals
 
-| Цель | Метрика | Target (MVP) |
+| Goal | Metric | Target (MVP) |
 |------|---------|--------------|
-| **Минимизация downtime** | MTTR (Mean Time To Resolve) | < 4 часа для SEV-1 |
-| **Быстрое обнаружение** | MTTD (Mean Time To Detect) | < 15 минут для SEV-1 |
-| **Прозрачность** | Документация инцидентов | 100% инцидентов задокументированы |
-| **Улучшение процессов** | Post-Incident Reviews | 100% для SEV-1/SEV-2 |
-| **Защита данных** | Security incident response | < 72 часа (GDPR compliance) |
+| **Minimize downtime** | MTTR (Mean Time To Resolve) | < 4 hours for SEV-1 |
+| **Fast detection** | MTTD (Mean Time To Detect) | < 15 minutes for SEV-1 |
+| **Transparency** | Incident documentation | 100% incidents documented |
+| **Process improvement** | Post-Incident Reviews | 100% for SEV-1/SEV-2 |
+| **Data protection** | Security incident response | < 72 hours (GDPR compliance) |
 
-## 1.3. Область охвата
+## 1.3. Scope
 
-### Инфраструктура MVP
+### MVP Infrastructure
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -119,150 +119,150 @@ Incident Response Plan (IRP) для Self-Storage Aggregator MVP определя
 └─────────────────────────────────────────────────────┘
 ```
 
-### Типы инцидентов в охвате
+### Types of incidents in scope
 
-**Технические инциденты:**
+**Technical Incidents:**
 - Application crashes, errors, timeout
 - Database failures, connection pool exhaustion
 - Redis unavailability, memory issues
 - Network issues, DNS failures
 - Deployment failures, rollback scenarios
 
-**Security инциденты:**
+**Security Incidents:**
 - Unauthorized access attempts
 - Data breaches, SQL injection
 - DDoS attacks, rate limit bypass
 - Suspicious authentication patterns
 - Security vulnerabilities detected
 
-**Бизнес-критичные инциденты:**
+**Business-Critical Incidents:**
 - Payment processing failures
 - Booking system unavailability
 - Email/SMS delivery failures
 - AI service degradation
 - Data integrity issues
 
-### Вне охвата (для MVP)
+### Out of scope (for MVP)
 
-- Инциденты третьих сторон (Cloudflare, OpenAI) — мониторим, но не контролируем
-- Физическая инфраструктура hosting provider
+- Third-party incidents (Cloudflare, OpenAI) — monitor, but not control
+- Physical infrastructure of hosting provider
 - Client-side browser issues (handled by support)
 
-## 1.4. Что считается инцидентом
+## 1.4. What is considered incident
 
-### Определение инцидента
+### Incident Definition
 
-**Инцидент** — любое незапланированное событие, которое:
-1. Снижает доступность или производительность сервиса
-2. Нарушает безопасность системы или данных пользователей
-3. Приводит к потере данных или их повреждению
-4. Блокирует критические бизнес-процессы (booking, payments)
+**incident** — any unplanned event, that:
+1. reduces availability or performance service
+2. Violates security system or data users
+3. Leads to data loss or data corruption
+4. blocks critical business processes (booking, payments)
 
-### Критерии инцидента vs. не-инцидент
+### Incident Criteria vs. not-incident
 
-| Критерий | Инцидент ✅ | Не инцидент ❌ |
+| Criterion | incident ✅ | not incident ❌ |
 |----------|-------------|----------------|
-| **Доступность** | API response time > 5s для 50%+ запросов | Единичный медленный запрос от пользователя |
-| **Ошибки** | Error rate > 5% в течение 5 минут | Единичная ошибка 500 без повторений |
-| **База данных** | PostgreSQL недоступна > 1 минуты | Slow query от одного пользователя |
-| **Безопасность** | 10+ failed login attempts с одного IP | Единичный failed login |
-| **Данные** | Booking создан, но не записан в БД | Валидационная ошибка от пользователя |
+| **availability** | API response time > 5s for 50%+ requests | Single slow request from user |
+| **errors** | Error rate > 5% within 5 minutes | Single 500 error without repetition |
+| **Database** | PostgreSQL unavailable > 1 minute | Slow query from single user |
+| **security** | 10+ failed login attempts from single IP | Single failed login |
+| **Data** | Booking created, but not recorded in DB | Validation error from user |
 
-### Примеры событий, НЕ являющихся инцидентами
+### Examples of events that are not incidents
 
-- Плановое обслуживание (scheduled maintenance)
-- Expected errors (404 для несуществующих ресурсов)
-- User-side issues (плохой интернет, устаревший браузер)
-- Feature requests или bug reports без impact на production
-- Load testing или QA activity в dev/staging
+- Scheduled maintenance (planned downtime)
+- Expected errors (404 for non-existent resources)
+- User-side issues (poor internet, outdated browser)
+- Feature requests or bug reports without impact to production
+- Load testing or QA activity in dev/staging
 
-### Когда создавать инцидент
+### When to Create an Incident
 
-**Создать инцидент немедленно, если:**
-- Алерт от Prometheus/Grafana с severity HIGH/CRITICAL
-- Множественные сообщения пользователей о недоступности
-- Security alert от системы мониторинга
-- Manual escalation от Support или Product Owner
-- Обнаружение data corruption или data loss
+**Create incident immediately, if:**
+- Alert from Prometheus/Grafana with severity HIGH/CRITICAL
+- Multiple user reports about unavailability
+- Security alert from monitoring system
+- Manual escalation from Support or Product Owner
+- Detection of data corruption or data loss
 
-**Можно не создавать инцидент:**
-- Алерт INFO/LOW без impact на пользователей
-- Проблема уже решена автоматически (auto-recovery)
-- False positive от мониторинга (требуется tune алерта)
+**May not create incident:**
+- Alert INFO/LOW without impact to users
+- Problem already resolved automatically (auto-recovery)
+- False positive from monitoring (requires alert tuning)
 
 ---
 
 # 2. Incident Classification
 
-## 2.1. Severity уровни (SEV-1…SEV-4)
+## 2.1. Severity levels (SEV-1…SEV-4)
 
-Система классификации основана на **impact** (влияние на бизнес) и **urgency** (необходимость немедленных действий).
+Classification system is based on **impact** (business impact) and **urgency** (need for immediate action).
 
 ### SEV-1: Critical
 
-**Определение:** Полная или критическая недоступность сервиса, затрагивающая всех пользователей.
+**Definition:** complete or critical service unavailability, affecting all users.
 
-**Характеристики:**
-- Весь сайт недоступен (HTTP 5xx для всех запросов)
-- База данных недоступна
-- Критическая security breach (data exposure)
-- Полная потеря данных
+**Characteristics:**
+- Entire site unavailable (HTTP 5xx for all requests)
+- Database unavailable
+- Critical security breach (data exposure)
+- complete data loss
 
-**Impact:** 100% пользователей не могут использовать сервис  
-**Response time:** < 15 минут  
-**Resolution target:** < 4 часа  
-**Escalation:** Немедленно к Incident Commander + CTO
+**Impact:** 100% users cannot use service  
+**Response time:** < 15 minutes  
+**Resolution target:** < 4 hours  
+**Escalation:** Immediately to Incident Commander + CTO
 
 ### SEV-2: High
 
-**Определение:** Значительная деградация сервиса или partial outage.
+**Definition:** Significant service degradation or partial outage.
 
-**Характеристики:**
-- Критическая функция недоступна (booking, search)
+**Characteristics:**
+- Critical function unavailable (booking, search)
 - API error rate > 10%
 - Payment processing failures
 - Security incident (unauthorized access attempt)
 - Performance degradation (response time > 10s)
 
-**Impact:** 30-100% пользователей испытывают проблемы  
-**Response time:** < 1 час  
-**Resolution target:** < 12 часов  
-**Escalation:** К DevOps Lead + Backend Lead
+**Impact:** 30-100% users experience issues  
+**Response time:** < 1 hour  
+**Resolution target:** < 12 hours  
+**Escalation:** To DevOps Lead + Backend Lead
 
 ### SEV-3: Medium
 
-**Определение:** Частичная деградация сервиса или non-critical feature issues.
+**Definition:** Partial service degradation or non-critical feature issues.
 
-**Характеристики:**
-- Вторичная функция недоступна (reviews, notifications)
+**Characteristics:**
+- Secondary function unavailable (reviews, notifications)
 - Intermittent errors (< 5% error rate)
 - AI service degradation (slow responses)
 - Redis cache unavailable (degraded performance)
 - High resource utilization (CPU > 80%)
 
-**Impact:** < 30% пользователей испытывают minor issues  
-**Response time:** < 4 часа  
-**Resolution target:** < 48 часов  
-**Escalation:** К on-call engineer
+**Impact:** < 30% users experience minor issues  
+**Response time:** < 4 hours  
+**Resolution target:** < 48 hours  
+**Escalation:** To on-call engineer
 
 ### SEV-4: Low
 
-**Определение:** Minor issues без significant impact.
+**Definition:** Minor issues without significant impact.
 
-**Характеристики:**
-- UI glitches без функционального impact
+**Characteristics:**
+- UI glitches without functional impact
 - Non-critical logging errors
-- Performance issues для редких use cases
+- Performance issues for rare use cases
 - Minor configuration issues
 
-**Impact:** Minimal или нет impact на пользователей  
-**Response time:** < 24 часа  
-**Resolution target:** Best effort (в рамках sprint)  
-**Escalation:** Не требуется
+**Impact:** Minimal or no impact to users  
+**Response time:** < 24 hours  
+**Resolution target:** Best effort (within sprint)  
+**Escalation:** not required
 
-## 2.2. Критерии классификации
+## 2.2. Classification criteria
 
-### Матрица определения Severity
+### Severity determination matrix
 
 ```
           │ Impact: 100%  │ Impact: 30-100% │ Impact: <30%  │ Impact: Minimal
@@ -281,71 +281,71 @@ Urgency:  │               │                 │               │
 Low       │   SEV-4       │   SEV-4         │   SEV-4       │   SEV-4
 ```
 
-### Факторы для определения Severity
+### Factors for determining Severity
 
-**Impact оценка:**
-- Сколько пользователей затронуто? (%, абсолютное число)
-- Какие критические функции недоступны?
-- Есть ли workaround для пользователей?
-- Влияет ли на revenue или SLA?
+**Impact assessment:**
+- How many users affected? (%, absolute number)
+- Which critical functions unavailable?
+- Is there a workaround for users?
+- Does it affect revenue or SLA?
 
-**Urgency оценка:**
-- Требуется ли немедленное вмешательство?
-- Ухудшается ли ситуация со временем?
-- Есть ли risk escalation (например, data loss)?
+**Urgency assessment:**
+- Is immediate intervention required?
+- Does the situation worsen over time?
+- Is there risk escalation (for example, data loss)?
 
 **Security dimension:**
-- Есть ли risk data breach или unauthorized access?
-- Нарушены ли compliance требования (GDPR)?
-- Активная атака или vulnerability exploitation?
+- Is there risk of data breach or unauthorized access?
+- Are compliance requirements violated (GDPR)?
+- Active attack or vulnerability exploitation?
 
-## 2.3. Примеры инцидентов
+## 2.3. Examples incidents
 
 ### SEV-1 Examples
 
-| Сценарий | Symptom | Root Cause (пример) |
+| Scenario | Symptom | Root Cause (example) |
 |----------|---------|---------------------|
-| **Total outage** | Весь сайт возвращает 502/503 | Nginx crashed, backend containers down |
-| **Database failure** | Все API requests fail с DB connection error | PostgreSQL out of disk space |
-| **Data breach** | Unauthorized access к user data detected | SQL injection vulnerability exploited |
-| **Critical data loss** | All bookings за последние 2 часа потеряны | Failed migration без backup |
+| **Total outage** | Entire site returns 502/503 | Nginx crashed, backend containers down |
+| **Database failure** | all API requests fail with DB connection error | PostgreSQL out of disk space |
+| **Data breach** | Unauthorized access to user data detected | SQL injection vulnerability exploited |
+| **Critical data loss** | All bookings from last 2 hours lost | Failed migration without backup |
 
 ### SEV-2 Examples
 
-| Сценарий | Symptom | Root Cause (пример) |
+| Scenario | Symptom | Root Cause (example) |
 |----------|---------|---------------------|
-| **Booking system down** | POST /bookings returns 500, но search работает | Bug в booking validation logic |
+| **Booking system down** | POST /bookings returns 500, but search works | Bug in booking validation logic |
 | **Payment failures** | 100% payment transactions failing | Payment gateway API down |
-| **High error rate** | API error rate 15% для всех endpoints | Backend memory leak, OOM kills |
+| **High error rate** | API error rate 15% for all endpoints | Backend memory leak, OOM kills |
 | **Security incident** | Multiple unauthorized API calls detected | API key leaked, being abused |
 
 ### SEV-3 Examples
 
-| Сценарий | Symptom | Root Cause (пример) |
+| Scenario | Symptom | Root Cause (example) |
 |----------|---------|---------------------|
 | **Email delays** | Booking confirmation emails delayed 2+ hours | Email queue backlog, rate limit hit |
 | **Cache unavailable** | Redis connection errors, slow performance | Redis maxmemory reached, evicting keys |
 | **AI slow responses** | Box finder takes 30+ seconds | OpenAI API throttling |
-| **High CPU** | Backend CPU 90%, slow responses | Inefficient query в warehouse search |
+| **High CPU** | Backend CPU 90%, slow responses | Inefficient query in warehouse search |
 
 ### SEV-4 Examples
 
-| Сценарий | Symptom | Root Cause (пример) |
+| Scenario | Symptom | Root Cause (example) |
 |----------|---------|---------------------|
-| **UI glitch** | Button styling broken на одной странице | CSS regression в последнем deploy |
-| **Verbose logging** | Logs заполняют диск, но не критично | Debug logging enabled в production |
-| **Minor config issue** | Environment variable missing, fallback работает | Deploy script не обновил .env |
+| **UI glitch** | Button styling broken on one page | CSS regression in latest deploy |
+| **Verbose logging** | Logs filling disk, but not critical | Debug logging enabled in production |
+| **Minor config issue** | Environment variable missing, fallback works | Deploy script did not update .env |
 
-## 2.4. Матрица приоритетов
+## 2.4. Priority matrix
 
 ### Priority vs Severity
 
-**Приоритет** определяет порядок работы над инцидентами при multiple concurrent incidents.
+**Priority** determines order of work on incidents when multiple concurrent incidents.
 
-| Severity | Default Priority | Может быть повышен если | Может быть понижен если |
+| Severity | Default Priority | can be elevated if | can be downgraded if |
 |----------|------------------|-------------------------|------------------------|
-| **SEV-1** | P0 (Emergency) | - | Workaround найден, impact снижен до SEV-2 |
-| **SEV-2** | P1 (High) | Security implications | Partial workaround, impact на <10% users |
+| **SEV-1** | P0 (Emergency) | - | Workaround found, impact reduced to SEV-2 |
+| **SEV-2** | P1 (High) | Security implications | Partial workaround, impact to <10% users |
 | **SEV-3** | P2 (Medium) | Affects critical customer/operator | Scheduled for next sprint |
 | **SEV-4** | P3 (Low) | - | Deferred to backlog |
 
@@ -358,36 +358,36 @@ Low       │   SEV-4       │   SEV-4         │   SEV-4       │   SEV-4
 | **SEV-3** | 4 hours | 48 hours | Yes | No |
 | **SEV-4** | 24 hours | Best effort | Yes | No |
 
-**Примечания:**
-- Response time = время до начала активной работы над инцидентом
-- Resolution target = ожидаемое время полного восстановления
-- Business hours для MVP: 09:00-18:00 Moscow Time (Mon-Fri)
-- After hours coverage: только SEV-1, best effort для SEV-2
+**Notes:**
+- Response time = time until start of active work on incident
+- Resolution target = expected time for complete recovery
+- Business hours for MVP: 09:00-18:00 Moscow Time (Mon-Fri)
+- After hours coverage: only SEV-1, best effort for SEV-2
 
 ### Escalation thresholds
 
-**Auto-escalate Severity если:**
-- SEV-3 не resolved за 24 часа → upgrade to SEV-2
-- SEV-2 не resolved за 12 часов → upgrade to SEV-1
-- Новые symptoms появились (expanding impact)
-- User complaints увеличились (social media mentions)
+**Auto-escalate Severity if:**
+- SEV-3 not resolved within 24 hours → upgrade to SEV-2
+- SEV-2 not resolved within 12 hours → upgrade to SEV-1
+- New symptoms appeared (expanding impact)
+- User complaints increased (social media mentions)
 
-**De-escalate Severity если:**
-- Workaround deployed, impact снизился значительно
+**De-escalate Severity if:**
+- Workaround deployed, impact reduced significantly
 - Root cause identified, low risk recurring
-- Affecting < 5% users с non-critical feature
+- Affecting < 5% users with non-critical feature
 
 ---
 
 # 3. Detection & Alerting
 
-## 3.1. Источники детекции (мониторинг, алерты, логи)
+## 3.1. Detection sources (monitoring, alerts, logs)
 
-### Автоматические источники
+### Automated sources
 
 #### 3.1.1. Prometheus Metrics
 
-**Собираемые метрики:**
+**Collected metrics:**
 
 ```yaml
 # Application metrics
@@ -457,7 +457,7 @@ export const LOGGING_CONFIG = {
       )
     }),
     
-    // Error file (для критических ошибок)
+    // Error file (for critical errors)
     new winston.transports.File({
       filename: '/var/log/selfstorage/error.log',
       level: 'error',
@@ -465,7 +465,7 @@ export const LOGGING_CONFIG = {
       maxFiles: 5
     }),
     
-    // Combined file (все логи)
+    // Combined file (all logs)
     new winston.transports.File({
       filename: '/var/log/selfstorage/combined.log',
       maxsize: 10485760,
@@ -475,7 +475,7 @@ export const LOGGING_CONFIG = {
 };
 ```
 
-**Структурированные логи:**
+**Structured logs:**
 
 ```typescript
 // Error logging format
@@ -518,21 +518,21 @@ logger.error('Database query failed', {
 ```
 
 **Health check schedule:**
-- Prometheus scrapes `/health` каждые 30 секунд
-- External monitoring (UptimeRobot/Pingdom) каждые 5 минут
+- Prometheus scrapes `/health` every 30 seconds
+- External monitoring (UptimeRobot/Pingdom) every 5 minutes
 
-### Ручные источники
+### Manual sources
 
 #### 3.1.4. User Reports
 
 **Support channels:**
 - Email: support@selfstorage.com
-- In-app chat (если реализован)
+- In-app chat (if implemented)
 - Social media monitoring (manual check)
 
-**Escalation от Support:**
-- 3+ пользователя сообщают одну проблему → создать инцидент
-- VIP operator/customer сообщает проблему → immediate triage
+**Escalation from Support:**
+- 3+ users report same problem → create incident
+- VIP operator/customer reports problem → immediate triage
 
 #### 3.1.5. Monitoring Dashboard Review
 
@@ -541,7 +541,7 @@ logger.error('Database query failed', {
 - Log aggregation review (unusual patterns)
 - Resource utilization trends
 
-## 3.2. Триггеры инцидентов
+## 3.2. Incident triggers
 
 ### Alert Rules (Prometheus)
 
@@ -633,7 +633,7 @@ groups:
 ### Security Alert Triggers
 
 ```typescript
-// Security monitoring rules (из security_and_compliance_plan)
+// Security monitoring rules (from security_and_compliance_plan)
 const SECURITY_ALERT_RULES = {
   
   // Failed login attempts
@@ -662,7 +662,7 @@ const SECURITY_ALERT_RULES = {
 };
 ```
 
-## 3.3. Роли и каналы уведомлений
+## 3.3. Roles and notification channels
 
 ### Notification Matrix
 
@@ -744,7 +744,7 @@ function getSeverityEmoji(severity: string): string {
 ### Email Configuration
 
 ```typescript
-// Email templates для alert notifications
+// Email templates for alert notifications
 const EMAIL_TEMPLATES = {
   
   SEV1: {
@@ -761,7 +761,7 @@ const EMAIL_TEMPLATES = {
       {{services}}
       
       IMMEDIATE ACTIONS REQUIRED:
-      1. Acknowledge alert в Slack (#incidents-critical)
+      1. Acknowledge alert in Slack (#incidents-critical)
       2. Join incident bridge call
       3. Begin triage and mitigation
       
@@ -781,9 +781,9 @@ const EMAIL_TEMPLATES = {
       {{description}}
       
       NEXT STEPS:
-      1. Review alert в Grafana
-      2. Начать triage в течение 1 часа
-      3. Update в Slack #incidents
+      1. Review alert in Grafana
+      2. Start triage within 1 hour
+      3. Update in Slack #incidents
       
       GRAFANA: {{grafana_url}}
     `
@@ -791,9 +791,9 @@ const EMAIL_TEMPLATES = {
 };
 ```
 
-## 3.4. Автоматические и ручные алерты
+## 3.4. Automatic and manual alerts
 
-### Автоматические алерты
+### Automatic alerts
 
 **Prometheus → Alertmanager → Slack/Email**
 
@@ -851,18 +851,18 @@ receivers:
         title: '🟡 MEDIUM Alert'
 ```
 
-### Ручные алерты
+### Manual alerts
 
-**Когда создавать вручную:**
-1. Пользователь сообщает о проблеме, которую автоматика не детектировала
-2. DevOps замечает аномалию в dashboard, но alert не triggered
-3. Security team обнаруживает suspicious activity
+**When to create manually:**
+1. User reports a problem that automation did not detect
+2. DevOps notices anomaly in dashboard, but alert not triggered
+3. Security team detects suspicious activity
 4. Product Owner escalates business-critical issue
 
-**Процесс создания ручного alert:**
+**Process for creating manual alert:**
 
 ```bash
-# CLI команда для создания инцидента
+# CLI tool for creating incident
 ./scripts/create-incident.sh \
   --severity SEV-2 \
   --title "Payment processing intermittent failures" \
@@ -870,7 +870,7 @@ receivers:
   --reporter "support@selfstorage.com" \
   --slack-channel "#incidents"
 
-# Или через Slack slash command
+# or via Slack slash command
 /incident create severity:SEV-2 title:"Payment failures"
 ```
 
@@ -879,7 +879,7 @@ receivers:
 **Maintenance mode:**
 
 ```typescript
-// Disable non-critical alerts во время планового обслуживания
+// Disable non-critical alerts during planned maintenance
 async function enableMaintenanceMode(duration: number) {
   await alertmanager.createSilence({
     matchers: [
@@ -908,33 +908,33 @@ async function enableMaintenanceMode(duration: number) {
 
 ## 4.1. Initial triage
 
-**Цель triage:** Быстро оценить инцидент, определить severity и назначить ответственного для дальнейших действий.
+**Goal of triage:** Quickly assess incident, determine severity and assign responsible person for further actions.
 
-### Начало triage
+### Start of triage
 
-**Триггеры для начала triage:**
-- Автоматический alert от Prometheus/Grafana
-- Ручное создание инцидента через Slack
-- Escalation от Support или Product Owner
-- Обнаружение проблемы при мониторинге dashboard
+**Triggers for starting triage:**
+- Automatic alert from Prometheus/Grafana
+- Manual incident creation via Slack
+- Escalation from Support or Product Owner
+- Detection of issues when monitoring dashboard
 
-### Первый responder
+### First responder
 
-**Кто выполняет initial triage:**
-- **On-call Engineer** (если alert пришёл вне business hours)
-- **DevOps Engineer** (если в business hours и доступен)
-- **Любой инженер**, кто первым увидел alert и может начать
+**Who performs initial triage:**
+- **On-call Engineer** (if alert received outside business hours)
+- **DevOps Engineer** (if in business hours and available)
+- **Any engineer**, who first saw alert and can start
 
-**Обязанности первого responder:**
-1. **Acknowledge alert** в течение 5 минут (отметить в Slack emoji ✅)
-2. Создать incident ticket (если ещё не создан)
-3. Начать быструю проверку симптомов
-4. Определить preliminary severity
-5. Escalate при необходимости
+**Responsibilities of first responder:**
+1. **Acknowledge alert** within 5 minutes (mark in Slack with emoji ✅)
+2. Create incident ticket (if not yet created)
+3. Start quick symptom check
+4. Determine preliminary severity
+5. Escalate when necessary
 
-### Создание incident ticket
+### Incident ticket creation
 
-**Минимальная информация в ticket:**
+**Minimum information in ticket:**
 
 ```markdown
 # Incident: [SHORT_TITLE]
@@ -946,7 +946,7 @@ async function enableMaintenanceMode(duration: number) {
 **Detected by:** Prometheus alert "HighErrorRate"
 
 ## Symptoms
-- API error rate 15% для всех endpoints
+- API error rate 15% for all endpoints
 - Users reporting "500 Internal Server Error"
 - Response time p95: 8.5s (normal: 0.5s)
 
@@ -966,46 +966,46 @@ async function enableMaintenanceMode(duration: number) {
 - 14:40 - Started investigation
 ```
 
-**Где создаётся ticket:**
+**Where ticket is created:**
 - GitHub Issues (label: `incident`)
-- Dedicated incident management tool (если есть)
-- Минимум: Slack thread в #incidents с pinned message
+- Dedicated incident management tool (if available)
+- Minimum: Slack thread in #incidents with pinned message
 
-## 4.2. Быстрая проверка симптомов
+## 4.2. Quick symptom check
 
-### Checklist для быстрой диагностики (5-10 минут)
+### Checklist for quick diagnostics (5-10 minutes)
 
-#### 4.2.1. Проверка доступности сервисов
+#### 4.2.1. Services availability check
 
 ```bash
-# Health check всех компонентов
+# Health check of all components
 curl -f https://api.selfstorage.com/health
 curl -f https://selfstorage.com/
 
-# Проверка статуса контейнеров
+# Check container status
 docker ps --filter "status=running"
 docker ps --filter "status=exited"
 
-# Проверка логов (последние 50 строк)
+# Logs check (last 50 lines)
 docker logs backend --tail 50
 docker logs frontend --tail 50
 ```
 
-#### 4.2.2. Проверка метрик в Grafana
+#### 4.2.2. Check metrics in Grafana
 
-**Основные dashboard для проверки:**
+**Main dashboards for checking:**
 
-| Dashboard | Что смотреть | Red flags |
+| Dashboard | What to check | Red flags |
 |-----------|--------------|-----------|
 | **API Overview** | Request rate, error rate, latency | Error rate > 5%, p95 latency > 3s |
 | **Database** | Connections, query time, locks | Connections > 80%, slow queries |
 | **Redis** | Memory usage, hit rate, commands/sec | Memory > 90%, hit rate < 50% |
 | **System Resources** | CPU, Memory, Disk, Network | CPU > 80%, Memory > 85%, Disk > 90% |
 
-**Grafana queries для проверки:**
+**Grafana queries for checking:**
 
 ```promql
-# Error rate (последние 5 минут)
+# Error rate (last 5 minutes)
 rate(http_requests_errors_total[5m]) / rate(http_requests_total[5m])
 
 # p95 latency
@@ -1018,34 +1018,34 @@ database_connections_active / database_connections_max
 (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes
 ```
 
-#### 4.2.3. Проверка логов (structured search)
+#### 4.2.3. Logs check (structured search)
 
 ```bash
-# Поиск ошибок за последние 10 минут
+# Search for errors in last 10 minutes
 grep -i "error\|exception\|fatal" /var/log/selfstorage/error.log | tail -100
 
-# Поиск database errors
+# Search for database errors
 grep "database\|postgres\|connection" /var/log/selfstorage/error.log | tail -50
 
-# Поиск timeout errors
+# Search for timeout errors
 grep "timeout\|timed out" /var/log/selfstorage/error.log | tail -50
 
-# Поиск OOM (Out of Memory)
+# Search for OOM (Out of Memory)
 dmesg | grep -i "out of memory\|oom"
 ```
 
-#### 4.2.4. Проверка недавних изменений
+#### 4.2.4. Recent changes check
 
-**Timeline проверки:**
+**Timeline check:**
 
 ```bash
-# Последние деплои (Git log)
+# Recent deploys (Git log)
 git log --oneline -10 --since="2 hours ago"
 
-# Последние database migrations
+# Recent database migrations
 psql -U user -d selfstorage -c "SELECT * FROM migrations ORDER BY executed_at DESC LIMIT 5;"
 
-# Изменения в конфигурации
+# Configuration changes
 ls -lt /etc/nginx/conf.d/ | head -5
 ls -lt .env* | head -5
 
@@ -1053,7 +1053,7 @@ ls -lt .env* | head -5
 docker images --format "{{.Repository}}:{{.Tag}} - {{.CreatedSince}}" | head -10
 ```
 
-#### 4.2.5. Проверка внешних зависимостей
+#### 4.2.5. External dependencies check
 
 ```bash
 # OpenAI API status
@@ -1070,9 +1070,9 @@ dig selfstorage.com
 dig api.selfstorage.com
 ```
 
-### Результат быстрой проверки
+### Result of quick check
 
-**Обновить incident ticket с findings:**
+**update incident ticket with findings:**
 
 ```markdown
 ## Findings (initial triage)
@@ -1092,92 +1092,92 @@ dig api.selfstorage.com
 - OR: Database connection leak from new code
 ```
 
-## 4.3. Определение SEV уровня
+## 4.3. SEV level definition
 
-### Decision tree для severity
+### Decision tree for severity
 
 ```mermaid
 graph TD
-    A[Инцидент обнаружен] --> B{Сервис полностью недоступен?}
-    B -->|Да| C[SEV-1]
-    B -->|Нет| D{Критическая функция недоступна?}
-    D -->|Да, >30% users| E[SEV-2]
-    D -->|Нет| F{Error rate > 5%?}
-    F -->|Да| G{Workaround есть?}
-    G -->|Нет| E
-    G -->|Да| H[SEV-3]
-    F -->|Нет| I{Impact на users?}
+    A[Incident detected] --> B{Service completely unavailable?}
+    B -->|Yes| C[SEV-1]
+    B -->|No| D{Critical function unavailable?}
+    D -->|Yes, >30% users| E[SEV-2]
+    D -->|No| F{Error rate > 5%?}
+    F -->|Yes| G{Workaround exists?}
+    G -->|No| E
+    G -->|Yes| H[SEV-3]
+    F -->|No| I{Impact to users?}
     I -->|Minimal| J[SEV-4]
-    I -->|Заметный| H
-    
-    C --> K[Escalate немедленно]
-    E --> L[Escalate в течение 1 часа]
-    H --> M[Назначить on-call]
-    J --> N[Track в backlog]
+    I -->|Noticeable| H
+
+    C --> K[Escalate immediately]
+    E --> L[Escalate within 1 hour]
+    H --> M[Assign on-call]
+    J --> N[Track in backlog]
 ```
 
-### Критерии для окончательного определения severity
+### Criteria for final severity determination
 
-**Контрольные вопросы:**
+**Control questions:**
 
-| Вопрос | SEV-1 | SEV-2 | SEV-3 | SEV-4 |
+| Question | SEV-1 | SEV-2 | SEV-3 | SEV-4 |
 |--------|-------|-------|-------|-------|
-| Сколько users affected? | 100% | 30-100% | <30% | <5% |
-| Критическая функция down? | Да | Да | Нет | Нет |
+| How many users affected? | 100% | 30-100% | <30% | <5% |
+| Critical function down? | Yes | Yes | No | No |
 | Error rate? | >20% | >10% | >5% | <5% |
-| Workaround доступен? | Нет | Нет | Возможно | Да |
-| Data loss risk? | Да | Возможно | Нет | Нет |
-| Security breach? | Да | Возможно | Нет | Нет |
+| Workaround available? | No | No | Possible | Yes |
+| Data loss risk? | Yes | Possible | No | No |
+| Security breach? | Yes | Possible | No | No |
 
-**Примеры решений:**
+**Decision examples:**
 
 ```
-Сценарий 1:
+Scenario 1:
 - Error rate: 15%
 - Affected: 60% users
 - Function: Booking creation fails
-→ SEV-2 (критическая функция, high impact)
+→ SEV-2 (critical function, high impact)
 
-Сценарий 2:
+Scenario 2:
 - Error rate: 3%
 - Affected: 10% users  
 - Function: Email notifications delayed
 → SEV-3 (non-critical function, low error rate)
 
-Сценарий 3:
+Scenario 3:
 - Error rate: 0%
 - Affected: 0%
 - Function: UI button misaligned
 → SEV-4 (cosmetic, no functional impact)
 ```
 
-### Изменение severity в процессе
+### Severity change during incident
 
-**Upgrade severity если:**
-- Impact растёт (больше users affected)
-- Новые symptoms появляются
-- Mitigation attempts не работают
-- Обнаружен data loss или security breach
+**Upgrade severity if:**
+- Impact growing (more users affected)
+- New symptoms appearing
+- Mitigation attempts not working
+- Data loss or security breach detected
 
-**Downgrade severity если:**
-- Workaround найден и работает
-- Impact уменьшился значительно
+**Downgrade severity if:**
+- Workaround found and working
+- Impact reduced significantly
 - Root cause identified, risk minimal
 
-## 4.4. Передача ответственному инженеру
+## 4.4. Handoff to responsible engineer
 
 ### Escalation matrix
 
-| Severity | Кто должен владеть инцидентом | Escalate если |
+| Severity | Who must own incident | Escalate if |
 |----------|------------------------------|---------------|
 | **SEV-1** | Incident Commander + DevOps Lead + Backend Lead | Immediate (< 5 min) |
-| **SEV-2** | DevOps Lead или Backend Lead | Within 30 min |
+| **SEV-2** | DevOps Lead or Backend Lead | Within 30 min |
 | **SEV-3** | On-call Engineer | Within 4 hours |
-| **SEV-4** | Assignee в sprint | Next sprint planning |
+| **SEV-4** | Assignee in sprint | Next sprint planning |
 
-### Процесс передачи (handoff)
+### Handoff process (handoff)
 
-**1. Notify в Slack:**
+**1. Notify in Slack:**
 
 ```
 @devops-lead @backend-lead 
@@ -1218,15 +1218,15 @@ Need DevOps + Backend to investigate.
 
 **3. Acknowledge handoff:**
 
-Новый owner должен:
-- Acknowledge в Slack (reply в thread)
+New owner must:
+- Acknowledge in Slack (reply in thread)
 - Review incident ticket
 - Confirm understanding of situation
-- Begin investigation immediately (SEV-1/2) или scheduled (SEV-3/4)
+- Begin investigation immediately (SEV-1/2) or scheduled (SEV-3/4)
 
 ### Role assignment
 
-**Primary roles для инцидента:**
+**Primary roles for incident:**
 
 | Role | Responsibility | Who |
 |------|----------------|-----|
@@ -1235,7 +1235,7 @@ Need DevOps + Backend to investigate.
 | **Communication Lead** | Updates to stakeholders | Product Owner / Support Lead |
 | **Scribe** | Documentation | Junior Engineer / rotation |
 
-**Для MVP (упрощённо):**
+**For MVP (simplified):**
 - SEV-1: Incident Commander + Owner + Scribe
 - SEV-2: Owner + optional Scribe
 - SEV-3/4: Owner only
@@ -1246,21 +1246,21 @@ Need DevOps + Backend to investigate.
 
 ## 5.1. Detection
 
-**Определение:** Момент, когда проблема впервые обнаружена системой мониторинга или человеком.
+**Definition:** Moment when issue is first detected by monitoring system or person.
 
-### Автоматическая детекция
+### Automatic detection
 
-**Источники:**
-- Prometheus alerts (метрики превышают thresholds)
+**Sources:**
+- Prometheus alerts (metrics exceed thresholds)
 - Health check failures (endpoint /health returns unhealthy)
-- Error tracking (spike в error logs)
-- Security monitoring (подозрительная активность)
+- Error tracking (spike in error logs)
+- Security monitoring (suspicious activity)
 
-**Метрики детекции:**
-- **MTTD (Mean Time To Detect):** Время от начала проблемы до получения alert
-- **Target MTTD:** < 5 минут для SEV-1, < 15 минут для SEV-2
+**Detection metrics:**
+- **MTTD (Mean Time To Detect):** Time from start of issue until alert received
+- **Target MTTD:** < 5 minutes for SEV-1, < 15 minutes for SEV-2
 
-**Пример автоматической детекции:**
+**Automatic detection example:**
 
 ```
 14:35:00 UTC - HighErrorRate alert triggered
@@ -1269,54 +1269,54 @@ Need DevOps + Backend to investigate.
 14:35:30 UTC - SMS sent (SEV-1 only)
 ```
 
-### Ручная детекция
+### Manual detection
 
-**Источники:**
+**Sources:**
 - User reports (email, support chat)
 - DevOps dashboard review
 - Operator complaints
 - Social media mentions
 
-**Процесс:**
-1. Person обнаруживает проблему
-2. Проверяет, есть ли уже alert
-3. Если нет alert → создаёт incident ticket вручную
-4. Notify в Slack #incidents
+**process:**
+1. Person discovers problem
+2. Checks if alert already exists
+3. If no alert → creates incident ticket manually
+4. Notify in Slack #incidents
 
 ## 5.2. Triage
 
-**Определение:** Быстрая оценка инцидента для определения severity, impact и первоначальных действий.
+**Definition:** Quick assessment of incident for determining severity, impact and initial actions.
 
-**Ключевые действия:**
-1. Acknowledge alert (< 5 минут)
-2. Быстрая проверка симптомов (5-10 минут)
-3. Определение severity (SEV-1 до SEV-4)
-4. Создание incident ticket
-5. Назначение owner
-6. Первоначальная коммуникация
+**Key actions:**
+1. Acknowledge alert (< 5 minutes)
+2. Quick symptom check (5-10 minutes)
+3. Determine severity (SEV-1 to SEV-4)
+4. Incident ticket creation
+5. Assign owner
+6. Initial communication
 
-**Результат triage:**
-- Incident ticket с полной информацией
-- Severity определён
-- Owner назначен
-- Stakeholders уведомлены
+**Result of triage:**
+- Incident ticket with complete information
+- Severity determined
+- Owner assigned
+- Stakeholders notified
 
-**Triage не должен занимать > 15 минут для SEV-1/2**
+**Triage should not take > 15 minutes for SEV-1/2**
 
 ## 5.3. Mitigation
 
-**Определение:** Немедленные действия для уменьшения impact инцидента, даже если root cause ещё не найден.
+**Definition:** Immediate actions to reduce incident impact, even if root cause is not yet found.
 
-### Стратегии mitigation
+### Mitigation strategies
 
 #### 5.3.1. Rollback
 
-**Когда использовать:**
-- Инцидент начался после recent deployment
-- Code change identified как potential cause
-- Rollback безопасен (нет breaking DB changes)
+**When to use:**
+- Incident started after recent deployment
+- Code change identified as potential cause
+- Rollback is safe (no breaking DB changes)
 
-**Процедура rollback:**
+**Procedure rollback:**
 
 ```bash
 # 1. Identify previous stable version
@@ -1325,13 +1325,13 @@ git log --oneline -10
 # 2. Checkout previous version
 git checkout <previous-commit-hash>
 
-# 3. Rebuild и redeploy
+# 3. Rebuild and redeploy
 docker-compose build backend
 docker-compose up -d backend
 
 # 4. Verify rollback
 curl https://api.selfstorage.com/health
-# Check error rate в Grafana
+# Check error rate in Grafana
 ```
 
 **Rollback checklist:**
@@ -1346,12 +1346,12 @@ curl https://api.selfstorage.com/health
 
 #### 5.3.2. Scaling Resources
 
-**Когда использовать:**
+**When to use:**
 - High CPU/Memory usage
 - Database connection pool exhaustion
 - Traffic spike
 
-**Процедура scaling:**
+**Procedure scaling:**
 
 ```bash
 # Vertical scaling (increase resources)
@@ -1361,8 +1361,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2.0'  # было 1.0
-          memory: 4G   # было 2G
+          cpus: '2.0'  # was 1.0
+          memory: 4G   # was 2G
 
 docker-compose up -d backend
 
@@ -1371,28 +1371,28 @@ docker-compose up -d --scale backend=3
 
 # Database connection pool increase
 # Edit backend .env
-DB_POOL_SIZE=50  # было 20
+DB_POOL_SIZE=50  # was 20
 docker-compose restart backend
 ```
 
 #### 5.3.3. Disabling Feature
 
-**Когда использовать:**
+**When to use:**
 - Specific feature causing crashes
-- Non-critical feature можно временно отключить
-- Bug fix требует времени
+- Non-critical feature can be temporarily disabled
+- Bug fix requires time
 
-**Процедура feature toggle:**
+**Procedure feature toggle:**
 
 ```typescript
-// Feature flag через environment variable
+// Feature flag via environment variable
 const FEATURES = {
   AI_BOX_FINDER: process.env.ENABLE_AI_BOX_FINDER === 'true',
   EMAIL_NOTIFICATIONS: process.env.ENABLE_EMAIL_NOTIFICATIONS === 'true',
   REVIEWS: process.env.ENABLE_REVIEWS === 'true'
 };
 
-// Disable AI Box Finder если он causes issues
+// Disable AI Box Finder if it causes issues
 process.env.ENABLE_AI_BOX_FINDER = 'false';
 
 // Restart service
@@ -1401,7 +1401,7 @@ docker-compose restart backend
 
 #### 5.3.4. Database Optimization
 
-**Когда использовать:**
+**When to use:**
 - Slow queries identified
 - Database lock contention
 - High database CPU
@@ -1423,19 +1423,19 @@ JOIN pg_stat_activity a ON l.pid = a.pid
 WHERE l.granted = false;
 
 -- Increase connection limit temporarily
-ALTER SYSTEM SET max_connections = 200;  -- было 100
+ALTER SYSTEM SET max_connections = 200;  -- was 100
 SELECT pg_reload_conf();
 ```
 
 #### 5.3.5. Cache Warming
 
-**Когда использовать:**
+**When to use:**
 - Redis cache cleared/restarted
 - High cache miss rate
-- Slow responses из-за cold cache
+- Slow responses due to cold cache
 
 ```bash
-# Warm cache для critical data
+# Warm cache for critical data
 curl -X POST https://api.selfstorage.com/admin/cache/warm \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -d '{"resources": ["warehouses", "cities"]}'
@@ -1443,40 +1443,40 @@ curl -X POST https://api.selfstorage.com/admin/cache/warm \
 
 ### Mitigation success criteria
 
-**Как понять, что mitigation сработал:**
-- Error rate снизился > 50%
-- Response time вернулось к acceptable levels
-- User complaints прекратились
-- Metrics в Grafana показывают improvement
+**How to know that mitigation worked:**
+- Error rate decreased > 50%
+- Response time returned to acceptable levels
+- User complaints stopped
+- Metrics in Grafana show improvement
 
-**Если mitigation НЕ работает:**
+**If mitigation does NOT work:**
 - Try alternative mitigation strategy
-- Escalate severity если impact растёт
+- Escalate severity if impact grows
 - Continue to resolution phase
 
 ## 5.4. Resolution
 
-**Определение:** Постоянное исправление root cause инцидента.
+**Definition:** Permanent fix of incident root cause.
 
-### Процесс resolution
+### Resolution process
 
 #### 5.4.1. Root Cause Analysis (during incident)
 
-**Быстрая RCA для resolution:**
+**Quick RCA for resolution:**
 
 ```markdown
 ## Root Cause Analysis
 
 **Symptom:** API error rate 15%
-**Root Cause:** Database connection leak в новом коде
+**Root Cause:** Database connection leak in new code
 
 **Evidence:**
-1. Error logs показывают "Too many connections"
+1. Error logs show "Too many connections"
 2. Connection pool exhausted (100/100)
-3. Code review нашёл missing connection.release()
-4. Issue появился после deployment с новым booking endpoint
+3. Code review found missing connection.release()
+4. Issue appeared after deployment with new booking endpoint
 
-**Fix:** Добавить missing connection.release() в error handler
+**Fix:** Add missing connection.release() in error handler
 ```
 
 #### 5.4.2. Implementing Fix
@@ -1520,7 +1520,7 @@ npm run test:integration
 git push origin hotfix/connection-leak
 # CI/CD deploys to staging automatically
 
-# 3. Test на staging
+# 3. Test to staging
 curl -X POST https://staging-api.selfstorage.com/bookings \
   -H "Content-Type: application/json" \
   -d @test-booking.json
@@ -1540,13 +1540,13 @@ git checkout -b hotfix/inc-001-connection-leak main
 # 2. Apply fix
 git commit -m "fix: release DB connection in error handler (INC-001)"
 
-# 3. Push и create PR
+# 3. Push and create PR
 git push origin hotfix/inc-001-connection-leak
 
 # 4. Fast-track review (for SEV-1/2)
-# Get approval от Senior Engineer
+# Get approval from Senior Engineer
 
-# 5. Merge и deploy
+# 5. Merge and deploy
 git checkout main
 git merge hotfix/inc-001-connection-leak
 git push origin main
@@ -1558,8 +1558,8 @@ git push origin main
 
 **Deployment checklist:**
 - [ ] Fix tested locally
-- [ ] Fix tested на staging
-- [ ] PR reviewed и approved
+- [ ] Fix tested to staging
+- [ ] PR reviewed and approved
 - [ ] Deployment window communicated
 - [ ] Backup created (if needed)
 - [ ] Fix deployed to production
@@ -1568,7 +1568,7 @@ git push origin main
 
 ## 5.5. Verification
 
-**Определение:** Подтверждение, что инцидент полностью resolved и не recurring.
+**Definition:** Confirmation that incident is fully resolved and not recurring.
 
 ### Verification checklist
 
@@ -1579,10 +1579,10 @@ git push origin main
 curl https://api.selfstorage.com/health
 # Expected: {"status": "healthy"}
 
-# 2. Check error rate (должен быть < 1%)
+# 2. Check error rate (must be < 1%)
 # Grafana → API Overview → Error Rate (last 15 min)
 
-# 3. Check response time (должен быть < 1s p95)
+# 3. Check response time (must be < 1s p95)
 # Grafana → API Overview → Latency p95 (last 15 min)
 
 # 4. Check resource utilization
@@ -1596,7 +1596,7 @@ docker logs backend --since 15m | grep -i error
 
 #### 5.5.2. Business Verification
 
-**Проверить критические функции:**
+**Check critical functions:**
 
 | Function | Test | Expected |
 |----------|------|----------|
@@ -1625,14 +1625,14 @@ curl -X POST https://api.selfstorage.com/bookings \
 
 #### 5.5.3. User Verification
 
-**Проверка from user perspective:**
-- No new user complaints в последние 30 минут
-- Support tickets rate вернулся к normal
-- Social media mentions не показывают новые проблемы
+**Check from user perspective:**
+- No new user complaints in last 30 minutes
+- Support tickets rate returned to normal
+- Social media mentions do not show new issues
 
 ### Monitoring period
 
-**После resolution продолжить мониторинг:**
+**Continue monitoring after resolution:**
 
 | Severity | Monitoring Period | Frequency |
 |----------|-------------------|-----------|
@@ -1648,7 +1648,7 @@ curl -X POST https://api.selfstorage.com/bookings \
 
 ## 5.6. Documentation
 
-**Определение:** Полное документирование инцидента для future reference и learning.
+**Definition:** Complete documentation of incident for future reference and learning.
 
 ### Incident Report Structure
 
@@ -1676,10 +1676,10 @@ curl -X POST https://api.selfstorage.com/bookings \
 | 16:50 | Incident closed |
 
 ## Root Cause
-Database connection leak в новом booking endpoint. Error handler не вызывал `connection.release()`, что привело к exhaustion connection pool (100/100 connections).
+Database connection leak in new booking endpoint. Error handler did not call `connection.release()`, which led to connection pool exhaustion (100/100 connections).
 
 ## Resolution
-Добавлен `finally` block в booking endpoint для guaranteed connection release:
+Added `finally` block in booking endpoint for guaranteed connection release:
 ```typescript
 finally { connection.release(); }
 ```
@@ -1691,14 +1691,14 @@ finally { connection.release(); }
 - 15 support tickets created
 
 ## Lessons Learned
-1. Need better code review process для database operations
-2. Add automated tests для connection pool limits
-3. Set up alert для connection pool utilization > 70%
+1. Need better code review process for database operations
+2. Add automated tests for connection pool limits
+3. Set up alert for connection pool utilization > 70%
 
 ## Action Items
-- [ ] #123: Add linting rule для missing connection.release()
-- [ ] #124: Add integration test для connection pool limits
-- [ ] #125: Create Prometheus alert для DB connection pool
+- [ ] #123: Add linting rule for missing connection.release()
+- [ ] #124: Add integration test for connection pool limits
+- [ ] #125: Create Prometheus alert for DB connection pool
 - [ ] #126: Update developer guide with DB best practices
 
 ## Post-Incident Review
@@ -1710,7 +1710,7 @@ Attendees: DevOps Lead, Backend Lead, Product Owner
 
 - [ ] Incident ticket updated with final timeline
 - [ ] Root cause documented
-- [ ] Fix documented и deployed
+- [ ] Fix documented and deployed
 - [ ] Lessons learned documented
 - [ ] Action items created (Jira/GitHub issues)
 - [ ] Post-incident review scheduled (SEV-1/2)
@@ -1723,9 +1723,9 @@ Attendees: DevOps Lead, Backend Lead, Product Owner
 
 ```mermaid
 flowchart TD
-    Start([Инцидент обнаружен]) --> Detection[1. DETECTION<br/>Alert triggered или<br/>Manual report]
+    Start([Incident detected]) --> Detection[1. DETECTION<br/>Alert triggered or<br/>Manual report]
     
-    Detection --> Triage[2. TRIAGE<br/>• Acknowledge < 5 min<br/>• Определить severity<br/>• Назначить owner]
+    Detection --> Triage[2. TRIAGE<br/>• Acknowledge < 5 min<br/>• Determine severity<br/>• Assign owner]
     
     Triage --> CheckSEV{Severity?}
     
@@ -1739,33 +1739,33 @@ flowchart TD
     
     Investigate[📊 INVESTIGATION<br/>• Check Grafana<br/>• Review logs<br/>• Identify symptoms<br/>• Check recent changes] --> RootCause{Root cause<br/>identified?}
     
-    RootCause -->|Нет| Mitigation
-    RootCause -->|Да| Resolution
+    RootCause -->|No| Mitigation
+    RootCause -->|Yes| Resolution
     
     Mitigation[3. MITIGATION<br/>Temporary fix:<br/>• Rollback<br/>• Scale resources<br/>• Disable feature<br/>• Cache warming]
     
-    Mitigation --> CheckMitigation{Mitigation<br/>успешна?}
+    Mitigation --> CheckMitigation{Mitigation<br/>successful?}
     
-    CheckMitigation -->|Нет| TryAlternative[Попробовать другую<br/>mitigation strategy]
+    CheckMitigation -->|No| TryAlternative[Try another<br/>mitigation strategy]
     TryAlternative --> Mitigation
     
-    CheckMitigation -->|Да| ImpactReduced[Impact снижен<br/>Error rate < 5%]
+    CheckMitigation -->|Yes| ImpactReduced[Impact reduced<br/>Error rate < 5%]
     ImpactReduced --> Resolution
     
-    Resolution[4. RESOLUTION<br/>Permanent fix:<br/>• Develop fix<br/>• Test на staging<br/>• Deploy to production<br/>• Monitor]
+    Resolution[4. RESOLUTION<br/>Permanent fix:<br/>• Develop fix<br/>• Test to staging<br/>• Deploy to production<br/>• Monitor]
     
     Resolution --> Verification[5. VERIFICATION<br/>• Health checks<br/>• Smoke tests<br/>• Monitor 15+ min<br/>• User feedback]
     
-    Verification --> CheckResolved{Проблема<br/>resolved?}
+    Verification --> CheckResolved{Problem<br/>resolved?}
     
-    CheckResolved -->|Нет| Recurring[Issue recurring<br/>Re-investigate]
+    CheckResolved -->|No| Recurring[Issue recurring<br/>Re-investigate]
     Recurring --> Investigate
     
-    CheckResolved -->|Да| Documentation[6. DOCUMENTATION<br/>• Update ticket<br/>• Document RCA<br/>• Create action items<br/>• Schedule PIR]
+    CheckResolved -->|Yes| Documentation[6. DOCUMENTATION<br/>• Update ticket<br/>• Document RCA<br/>• Create action items<br/>• Schedule PIR]
     
-    Documentation --> Closed([Инцидент закрыт])
+    Documentation --> Closed([Incident closed])
     
-    %% Параллельный процесс коммуникации
+    %% Parallel communication process
     Triage -.-> Communication[📢 COMMUNICATION<br/>Update stakeholders]
     Mitigation -.-> Communication
     Resolution -.-> Communication
@@ -1788,30 +1788,30 @@ flowchart TD
 
 ## 6.1. Incident Commander
 
-**Когда нужен:** Только для SEV-1 инцидентов
+**When needed:** Only for SEV-1 incidents
 
-**Кто может быть Incident Commander:**
+**Who can be Incident Commander:**
 - Senior DevOps Engineer
 - Engineering Manager
-- CTO (в критических случаях)
+- CTO (in critical cases)
 
 ### Responsibilities
 
 **Coordination:**
-- Владеет инцидентом от начала до конца
-- Координирует всех участников
-- Принимает key decisions (rollback, escalation)
-- Ensure все работают эффективно, без дублирования
+- Owns incident from start to finish
+- Coordinates all participants
+- Makes key decisions (rollback, escalation)
+- Ensure all work efficiently, without duplication
 
 **Communication:**
-- Регулярные updates в Slack (каждые 15-30 минут)
-- Status updates для stakeholders (CEO, Product Owner)
-- External communication (если требуется)
+- Regular updates in Slack (every 15-30 minutes)
+- Status updates for stakeholders (CEO, Product Owner)
+- External communication (if required)
 
 **Decision Making:**
 - Approve major actions (rollback, scaling, feature disable)
-- Decide когда escalate severity
-- Decide когда incident resolved
+- Decide when escalate severity
+- Decide when incident resolved
 
 ### Incident Commander Checklist
 
@@ -1819,16 +1819,16 @@ flowchart TD
 ## Incident Commander Actions (SEV-1)
 
 ### During Incident
-- [ ] Acknowledge role as Incident Commander в Slack
-- [ ] Create war room (Slack thread или video call)
+- [ ] Acknowledge role as Incident Commander in Slack
+- [ ] Create war room (Slack thread or video call)
 - [ ] Assign technical owner
 - [ ] Assign communication lead
 - [ ] Assign scribe (documentation)
-- [ ] Every 15 min: Request status update от owner
-- [ ] Every 30 min: Post update в #incidents-critical
+- [ ] Every 15 min: Request status update from owner
+- [ ] Every 30 min: Post update in #incidents-critical
 - [ ] Approve major actions (rollback, etc.)
-- [ ] Coordinate с external teams (если нужно)
-- [ ] Decide когда incident resolved
+- [ ] Coordinate with external teams (if needed)
+- [ ] Decide when incident resolved
 
 ### After Incident
 - [ ] Schedule post-incident review (within 48 hours)
@@ -1839,7 +1839,7 @@ flowchart TD
 
 ## 6.2. DevOps Engineer
 
-**Когда вовлечён:** 
+**When involved:** 
 - SEV-1/2: Immediately
 - SEV-3: Within 4 hours
 - SEV-4: Best effort
@@ -1849,16 +1849,16 @@ flowchart TD
 **Infrastructure:**
 - Monitor infrastructure metrics (CPU, memory, disk, network)
 - Manage Docker containers (restart, scale, rollback)
-- Handle deployments и rollbacks
+- Handle deployments and rollbacks
 - Manage database operations (backup, restore, optimization)
-- Configure monitoring и alerting
+- Configure monitoring and alerting
 
 **During Incident:**
 - Check infrastructure health
 - Review Grafana dashboards
 - Execute rollbacks if needed
 - Scale resources (horizontal/vertical)
-- Monitor logs и metrics
+- Monitor logs and metrics
 - Implement infrastructure-level fixes
 
 **Tools DevOps uses:**
@@ -1905,8 +1905,8 @@ curl -I https://api.selfstorage.com/health
 
 ## 6.3. Backend Engineer
 
-**Когда вовлечён:**
-- SEV-1/2: Immediately (если application-level issue)
+**When involved:**
+- SEV-1/2: Immediately (if application-level issue)
 - SEV-3: Within 4 hours
 - SEV-4: During sprint
 
@@ -1916,7 +1916,7 @@ curl -I https://api.selfstorage.com/health
 - Investigate application errors
 - Review error logs
 - Debug code issues
-- Develop fixes для bugs
+- Develop fixes for bugs
 - Test fixes
 - Deploy hotfixes
 
@@ -1926,7 +1926,7 @@ curl -I https://api.selfstorage.com/health
 - Review database queries
 - Identify performance bottlenecks
 - Develop and test fixes
-- Coordinate с DevOps для deployment
+- Coordinate with DevOps for deployment
 
 **Areas of Ownership:**
 - NestJS backend application
@@ -1934,7 +1934,7 @@ curl -I https://api.selfstorage.com/health
 - Database queries (via TypeORM)
 - Business logic
 - Authentication/Authorization
-- Integration с external services (OpenAI, SendGrid)
+- Integration with external services (OpenAI, SendGrid)
 
 ### Backend Engineer Runbook
 
@@ -1970,7 +1970,7 @@ logger.debug(`Memory: ${JSON.stringify(memoryUsage)}`);
 
 ## 6.4. Support
 
-**Когда вовлечён:** Все severity levels
+**When involved:** All severity levels
 
 ### Responsibilities
 
@@ -1982,71 +1982,71 @@ logger.debug(`Memory: ${JSON.stringify(memoryUsage)}`);
 - Track user impact metrics
 
 **During Incident:**
-- Log user complaints (сколько, какие симптомы)
-- Provide workarounds to users (если есть)
+- Log user complaints (how many, what symptoms)
+- Provide workarounds to users (if available)
 - Communicate expected resolution time
-- Update users когда resolved
+- Update users when resolved
 - Collect user feedback post-incident
 
 **Communication Templates:**
 
 ```markdown
-## Initial Response (инцидент ongoing)
+## Initial Response (incident ongoing)
 
-Здравствуйте!
+Hello!
 
-Мы знаем о проблеме с [описание проблемы]. Наша команда уже работает над решением.
+We are aware of the problem with [issue description]. Our team is already working on a solution.
 
-**Статус:** Исследуем причину
-**Ожидаемое время решения:** [время]
+**Status:** Investigating cause
+**Expected resolution time:** [time]
 
-Мы сообщим обновления каждые [интервал] и уведомим вас, когда проблема будет решена.
+We will provide updates every [interval] and notify you when the issue is resolved.
 
-Приносим извинения за неудобства.
+We apologize for the inconvenience.
 
 ---
 
 ## Resolution Notification
 
-Здравствуйте!
+Hello!
 
-Проблема с [описание] была решена в [время].
+Problem with [description] was resolved in [time].
 
-**Что было сделано:** [краткое описание]
+**What was done:** [brief description]
 
-Сервис работает нормально. Если у вас остались вопросы, пожалуйста, ответьте на это письмо.
+Service is working normally. If you have any remaining questions, please reply to this email.
 
-Спасибо за терпение!
+Thank you for your patience!
 ```
 
 ## 6.5. Product Owner
 
-**Когда вовлечён:** SEV-1/2 incidents
+**When involved:** SEV-1/2 incidents
 
 ### Responsibilities
 
 **Business Impact:**
 - Assess business impact (revenue, users, reputation)
 - Prioritize resolution efforts
-- Communicate с executive team
-- Make business decisions (например, manual refunds)
-- Public communication (если требуется)
+- Communicate with executive team
+- Make business decisions (for example, manual refunds)
+- Public communication (if required)
 
 **During Incident:**
 - Monitor incident progress
 - Provide business context to engineering team
 - Decide on external communication strategy
-- Coordinate с customer success для VIP customers
+- Coordinate with customer success for VIP customers
 - Track business metrics (lost bookings, revenue)
 
 **Post-Incident:**
 - Review incident impact
-- Approve compensation (если нужно)
-- Update roadmap priorities на basis of lessons learned
+- Approve compensation (if needed)
+- Update roadmap priorities to basis of lessons learned
 
 ### Escalation to Product Owner
 
-**Notify Product Owner если:**
+**Notify Product Owner if:**
 - SEV-1 incident (immediate notification)
 - SEV-2 incident lasting > 4 hours
 - Significant revenue impact (> $1000)
@@ -2060,11 +2060,11 @@ logger.debug(`Memory: ${JSON.stringify(memoryUsage)}`);
 
 # 7. Communication & Escalation
 
-## 7.1. Каналы связи (Slack/Email)
+## 7.1. Communication Channels (Slack/Email)
 
-### Основные каналы коммуникации
+### Main Communication Channels
 
-**Slack channels для incident management:**
+**Slack channels for incident management:**
 
 | Channel | Purpose | Audience | Retention |
 |---------|---------|----------|-----------|
@@ -2085,7 +2085,7 @@ logger.debug(`Memory: ${JSON.stringify(memoryUsage)}`);
 | **SEV-3** | Every 4 hours (during investigation) | #monitoring |
 | **SEV-4** | Once when detected, once when resolved | #monitoring-low |
 
-**Slack message template для updates:**
+**Slack message template for updates:**
 
 ```markdown
 🔴 SEV-1 Update #3 - [INCIDENT TITLE]
@@ -2127,7 +2127,7 @@ Technical Owner: @jane-smith
 **Email distribution lists:**
 
 ```yaml
-# Email groups для incident notifications
+# Email groups for incident notifications
 email_groups:
   oncall: oncall@selfstorage.com
   engineering: engineering@selfstorage.com
@@ -2151,7 +2151,7 @@ severity_routing:
 
 ### SMS notifications
 
-**SMS alerts для critical incidents only:**
+**SMS alerts for critical incidents only:**
 
 ```typescript
 const SMS_ALERT_CONFIG = {
@@ -2166,10 +2166,10 @@ const SMS_ALERT_CONFIG = {
     retry: { attempts: 3, interval: 60 }
   },
   
-  // SEV-2: SMS to on-call only if no acknowledgment в 15 минут
+  // SEV-2: SMS to on-call only if no acknowledgment in 15 minutes
   'SEV-2': {
     recipients: [process.env.ONCALL_PHONE],
-    message: '⚠️ SEV-2: {{title}}. Acknowledge в Slack #incidents.',
+    message: '⚠️ SEV-2: {{title}}. Acknowledge in Slack #incidents.',
     delay: 900, // 15 minutes
     condition: 'not_acknowledged'
   }
@@ -2179,15 +2179,15 @@ const SMS_ALERT_CONFIG = {
 
 ### Status page communication
 
-**Public status page (если реализован):**
+**Public status page (if implemented):**
 
-**Статусы:**
+**Statuses:**
 - 🟢 **Operational** - All systems normal
 - 🟡 **Degraded Performance** - Minor issues, service functional
 - 🟠 **Partial Outage** - Some features unavailable
 - 🔴 **Major Outage** - Critical functionality down
 
-**Когда обновлять status page:**
+**When to update status page:**
 
 | Severity | Status Page Update | Public Message |
 |----------|-------------------|----------------|
@@ -2233,7 +2233,7 @@ We apologize for the inconvenience.
 
 ## 7.2. Escalation matrix
 
-### Vertical escalation (по severity)
+### Vertical escalation (by severity)
 
 ```mermaid
 graph TD
@@ -2243,7 +2243,7 @@ graph TD
     
     SEV -->|SEV-4| Track[Track in backlog<br/>No escalation]
     
-    SEV -->|SEV-3| AssignOnCall[Assign to On-Call<br/>Inform в #monitoring]
+    SEV -->|SEV-3| AssignOnCall[Assign to On-Call<br/>Inform in #monitoring]
     
     SEV -->|SEV-2| EscSEV2[Escalate to:<br/>DevOps Lead<br/>Backend Lead]
     EscSEV2 --> NotifySEV2[Notify:<br/>Product Owner<br/>via #incidents]
@@ -2257,7 +2257,7 @@ graph TD
     style Track fill:#dfe6e9
 ```
 
-### Horizontal escalation (если не resolving)
+### Horizontal escalation (if not resolving)
 
 **Escalation thresholds:**
 
@@ -2298,7 +2298,7 @@ graph TD
 
 ### Step 3: Handoff or support
 - Escalated contact decides: take over OR provide support
-- If taking over: full handoff с documentation
+- If taking over: full handoff with documentation
 - If supporting: join as additional resource
 
 ### Step 4: Continue with increased resources
@@ -2340,7 +2340,7 @@ Available for quick call? Or can you look at:
 - Code: [Link to suspected code]
 ```
 
-## 7.3. Внешние уведомления (если применимо)
+## 7.3. External Notifications (if applicable)
 
 ### Customer communication
 
@@ -2450,7 +2450,7 @@ Thank you for your understanding.
 ## GDPR Breach Notification Timeline
 
 ### Within 72 hours of discovery:
-1. Notify Supervisory Authority (Роскомнадзор)
+1. Notify Supervisory Authority (Roskomnadzor)
 2. Document breach details:
    - Nature of breach
    - Categories of data affected
@@ -2473,7 +2473,7 @@ Thank you for your understanding.
 ```yaml
 regulatory_contacts:
   russia:
-    authority: "Роскомнадзор"
+    authority: "Roskomnadzor"
     contact: "https://rkn.gov.ru/"
     
   gdpr:
@@ -2482,22 +2482,22 @@ regulatory_contacts:
 ```
 
 
-## 7.4. Правила коммуникации при SEV-1
+## 7.4. Communication rules for SEV-1
 
 ### SEV-1 Communication Protocol
 
-**Обязательные коммуникации:**
+**Mandatory Communications:**
 
 ```markdown
 ## SEV-1 Communication Checklist
 
 ### T+0 (Immediately upon detection)
-- [ ] Post initial alert в #incidents-critical
+- [ ] Post initial alert in #incidents-critical
 - [ ] SMS to on-call engineer
 - [ ] Incident Commander assigned
 
 ### T+15 minutes
-- [ ] First status update в #incidents-critical
+- [ ] First status update in #incidents-critical
 - [ ] Email to engineering team
 - [ ] Update status page to "Major Outage"
 
@@ -2507,11 +2507,11 @@ regulatory_contacts:
 - [ ] Customer email notification (if public-facing)
 
 ### Every 30 minutes thereafter
-- [ ] Status update в #incidents-critical
+- [ ] Status update in #incidents-critical
 - [ ] Update status page with latest information
 
 ### Upon resolution
-- [ ] Final status update в #incidents-critical
+- [ ] Final status update in #incidents-critical
 - [ ] Update status page to "Resolved"
 - [ ] Email to all stakeholders
 - [ ] Customer resolution email
@@ -2527,7 +2527,7 @@ regulatory_contacts:
 **War room setup:**
 
 ```markdown
-## War Room Setup (Slack Thread или Video Call)
+## War Room Setup (Slack Thread or Video Call)
 
 ### Structure:
 **Incident Commander** leads the war room
@@ -2572,7 +2572,7 @@ regulatory_contacts:
 
 # 8. Resolution & Recovery
 
-## 8.1. Checklist восстановления
+## 8.1. Recovery Checklist
 
 ### Pre-resolution checklist
 
@@ -2652,7 +2652,7 @@ We will continue monitoring for [12/24] hours to ensure stability.
 Incident Commander: @name
 ```
 
-## 8.2. Сценарии восстановления для сервисов
+## 8.2. Recovery scenarios for services
 
 ### Backend API Recovery
 
@@ -2705,7 +2705,7 @@ echo "✅ Recovery complete. Monitor closely for 30 minutes."
 
 ### Database Recovery
 
-**Scenario: PostgreSQL unavailable или corrupted**
+**Scenario: PostgreSQL unavailable or corrupted**
 
 ```bash
 #!/bin/bash
@@ -2760,7 +2760,7 @@ echo "✅ Database recovery complete"
 
 ### Redis Recovery
 
-**Scenario: Redis unavailable или memory exhausted**
+**Scenario: Redis unavailable or memory exhausted**
 
 ```bash
 #!/bin/bash
@@ -2888,7 +2888,7 @@ echo "✅ Full system recovery complete"
 echo "⚠️ Monitor closely for next 2 hours"
 ```
 
-## 8.3. Проверка состояния после восстановления
+## 8.3. State Check After Recovery
 
 ### Health verification script
 
@@ -3017,17 +3017,17 @@ docker exec redis redis-cli --latency-history
 echo "✅ Performance verification complete"
 ```
 
-## 8.4. Критерии завершения инцидента
+## 8.4. Incident closure criteria
 
 ### Closure criteria
 
-**Инцидент может быть закрыт когда ВСЕ критерии выполнены:**
+**Incident can be closed when all criteria are met:**
 
 ```markdown
 ## Incident Closure Criteria
 
 ### ✅ Technical Criteria
-- [ ] Root cause identified и documented
+- [ ] Root cause identified and documented
 - [ ] Permanent fix deployed (not temporary workaround)
 - [ ] All systems passing health checks for 30+ minutes
 - [ ] Error rate < 1% sustained for 30+ minutes
@@ -3123,7 +3123,7 @@ On-call engineer: @name
 
 # 9. Post-Incident Review (PIR / RCA)
 
-## 9.1. Когда требуется PIR
+## 9.1. when required PIR
 
 ### PIR Requirements
 
@@ -3179,7 +3179,7 @@ On-call engineer: @name
 - New hires (for training)
 ```
 
-## 9.2. Структура отчёта
+## 9.2. Report Structure
 
 ### PIR Report Template
 
@@ -3385,9 +3385,9 @@ missing linting/testing for connection management
 
 | Action | Owner | Due Date | Priority | Ticket |
 |--------|-------|----------|----------|--------|
-| Add Prometheus alert для DB connection pool > 70% | @john | 2025-12-15 | HIGH | #125 |
-| Add ESLint rule для unclosed database connections | @jane | 2025-12-15 | HIGH | #123 |
-| Add integration tests для connection pool limits | @jane | 2025-12-20 | HIGH | #124 |
+| Add Prometheus alert for DB connection pool > 70% | @john | 2025-12-15 | HIGH | #125 |
+| Add ESLint rule for unclosed database connections | @jane | 2025-12-15 | HIGH | #123 |
+| Add integration tests for connection pool limits | @jane | 2025-12-20 | HIGH | #124 |
 | Update code review checklist with DB patterns | @jane | 2025-12-15 | MEDIUM | #126 |
 | Document database connection best practices | @jane | 2025-12-20 | MEDIUM | #127 |
 
@@ -3397,7 +3397,7 @@ missing linting/testing for connection management
 |--------|-------|----------|----------|--------|
 | Implement connection pool monitoring dashboard | @john | 2026-01-15 | MEDIUM | #128 |
 | Add automated performance tests to CI/CD | @team | 2026-01-30 | MEDIUM | #129 |
-| Database connection training для team | @jane | 2026-02-01 | LOW | #130 |
+| Database connection training for team | @jane | 2026-02-01 | LOW | #130 |
 
 ---
 
@@ -3702,11 +3702,11 @@ Say: "Alert routing could be improved for faster initial response"
 
 # 10. Operational Readiness
 
-## 10.1. Минимальные требования готовности
+## 10.1. Minimum Readiness Requirements
 
 ### Team Readiness
 
-**Перед запуском MVP в production, команда должна:**
+**Before launching MVP to production, team must:**
 
 ```markdown
 ## Team Readiness Checklist
@@ -3814,7 +3814,7 @@ Say: "Alert routing could be improved for faster initial response"
 | **Redis** | Memory: 2GB+, Persistence enabled | `redis-cli INFO` |
 | **Backup Storage** | 50GB+ available, tested restore | Restore test |
 
-## 10.2. Документация и runbooks
+## 10.2. Documentation and runbooks
 
 ### Required Documentation
 
@@ -4110,7 +4110,7 @@ df -h
 - v1.0 - 2025-12-10 - Initial version (@devops-lead)
 ```
 
-## 10.3. Incident drills и тренировки
+## 10.3. Incident drills and training
 
 ### Training Program
 
@@ -4375,7 +4375,7 @@ expected_actions:
 [Any additional context or concerns]
 ```
 
-## 10.4. Continuous improvement процесс
+## 10.4. Continuous improvement process
 
 ### Improvement Framework
 

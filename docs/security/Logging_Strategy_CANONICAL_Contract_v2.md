@@ -72,50 +72,50 @@ This document uses the following key words to indicate requirement levels:
 
 ---
 
-## 1.1. Цели логирования в MVP
+## 1.1. Logging goals for MVP
 
-**Зачем логируем:**
+**Why We Log:**
 
-### 1.1.1. Операционные цели
+### 1.1.1. Operational Goals
 
-| Цель | Описание | Примеры использования |
+| Goal | Description | Usage Examples |
 |------|----------|----------------------|
-| **Debugging** | Поиск и устранение ошибок | Stack traces, SQL queries, API responses |
-| **System Health** | Мониторинг состояния системы | CPU/Memory usage, connection pools, uptime |
-| **Performance** | Отслеживание производительности | Response times, slow queries, bottlenecks |
-| **Diagnostics** | Углублённый анализ проблем | Request traces, state transitions |
+| **Debugging** | Finding and fixing errors | Stack traces, SQL queries, API responses |
+| **System Health** | Monitoring system state | CPU/Memory usage, connection pools, uptime |
+| **Performance** | Tracking performance | Response times, slow queries, bottlenecks |
+| **Diagnostics** | In-depth problem analysis | Request traces, state transitions |
 
-### 1.1.2. Бизнес-цели
+### 1.1.2. Business Goals
 
 **REQUIRED business visibility through logging:**
 
-| Цель | Описание | Примеры использования |
+| Goal | Description | Usage Examples |
 |------|----------|----------------------|
-| **Booking Lifecycle Visibility** | Отслеживание жизненного цикла бронирований | Booking creation, status transitions, operator actions |
-| **AI Usage Cost Control** | Контроль затрат на AI API | AI tokens usage, API costs per request, cache hit rates |
-| **Operator Activity Tracking** | Мониторинг действий операторов | Booking confirmations, warehouse updates, price changes |
-| **System Health Metrics** | Операционные показатели системы | Bookings per hour, search patterns, feature usage statistics |
+| **Booking Lifecycle Visibility** | Tracking booking lifecycle | Booking creation, status transitions, operator actions |
+| **AI Usage Cost Control** | Controlling AI API costs | AI tokens usage, API costs per request, cache hit rates |
+| **Operator Activity Tracking** | Monitoring operator actions | Booking confirmations, warehouse updates, price changes |
+| **System Health Metrics** | Operational system metrics | Bookings per hour, search patterns, feature usage statistics |
 
 > **Note:** Revenue, payment, and conversion tracking are out of MVP v1 scope. See Section 15 for Post-MVP capabilities.
 
-### 1.1.3. Безопасность и compliance
+### 1.1.3. Security and compliance
 
-| Цель | Описание | Примеры использования |
+| Goal | Description | Usage Examples |
 |------|----------|----------------------|
-| **Security** | Обнаружение угроз | Failed login attempts, suspicious patterns, rate limit violations |
-| **Audit Trail** | Юридические требования | Operator actions, data modifications, access logs |
-| **Compliance** | GDPR, PCI-DSS и др. | Data processing logs, consent tracking, deletion requests |
+| **Security** | Threat detection | Failed login attempts, suspicious patterns, rate limit violations |
+| **Audit Trail** | Legal requirements | Operator actions, data modifications, access logs |
+| **Compliance** | GDPR, PCI-DSS and others | Data processing logs, consent tracking, deletion requests |
 
-### 1.1.4. Операторская поддержка
+### 1.1.4. Operator Support
 
-| Цель | Описание | Примеры использования |
+| Goal | Description | Usage Examples |
 |------|----------|----------------------|
-| **Operator Actions** | Отслеживание действий операторов | Booking confirmations, price changes, warehouse updates |
-| **Customer Support** | Помощь в решении проблем клиентов | User journey tracking, error investigation |
+| **Operator Actions** | Tracking operator actions | Booking confirmations, price changes, warehouse updates |
+| **Customer Support** | Helping solve customer problems | User journey tracking, error investigation |
 
 ---
 
-## 1.2. Архитектура системы логирования
+## 1.2. Logging System Architecture
 
 **High-level overview:**
 
@@ -171,11 +171,11 @@ This document uses the following key words to indicate requirement levels:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 1.2.1. Компоненты системы
+### 1.2.1. System Components
 
 **Log Producers:**
 
-| Компонент | Технология | Output Format | Destination |
+| Component | Technology | Output Format | Destination |
 |-----------|-----------|---------------|-------------|
 | **Frontend** | Next.js | JSON | Browser Console + Backend API |
 | **Backend** | NestJS + Winston | JSON | stdout + files |
@@ -185,70 +185,70 @@ This document uses the following key words to indicate requirement levels:
 | **Cache** | Redis | Text | redis.log |
 
 **Log Collection:**
-- Docker json-file driver для всех контейнеров
-- Прямая запись в `/var/log/` для Nginx и system logs
+- Docker json-file driver for all containers
+- Direct writing to `/var/log/` for Nginx and system logs
 
 **Log Storage:**
-- Локальное хранилище: `/var/log/`
-- Ротация: logrotate
-- Retention: 7-90 дней (зависит от типа)
-- Архивирование: опционально в S3/AWS S3
+- Local storage: `/var/log/`
+- Rotation: logrotate
+- Retention: 7-90 days (depends on type)
+- Archiving: optional to S3/AWS S3
 
 **Monitoring:**
-- Prometheus для метрик
-- Grafana для визуализации
-- Alert rules для критических событий
+- Prometheus for metrics
+- Grafana for visualization
+- Alert rules for critical events
 
 ---
 
-## 1.3. Почему логирование критично для MVP
+## 1.3. Why Logging is Critical for MVP
 
-**Специфические причины для Self-Storage Aggregator MVP:**
+**Specific Reasons for Self-Storage Aggregator MVP:**
 
-### 1.3.1. Быстрая диагностика в production
+### 1.3.1. Fast Production Diagnosis
 
-MVP часто имеет недостатки и баги. Логи позволяют:
-- Быстро находить причины ошибок
-- Отслеживать user journey при проблемах
-- Debugging без доступа к production database
+MVP often has shortcomings and bugs. Logs allow:
+- Quickly find error causes
+- Track user journey during issues
+- Debugging without access to production database
 
-**Пример:**
+**Example:**
 
 > **Reference Example:** The following is an illustrative troubleshooting pattern. Actual log queries and debugging workflows may vary based on logging infrastructure.
 
 ```
-User reports: "Не могу забронировать бокс"
+User reports: "Cannot book a box"
 
-Логи позволяют:
-1. Найти все действия пользователя по user_id
-2. Увидеть, на каком шаге произошла ошибка
-3. Проверить состояние бокса в момент бронирования
-4. Выявить root cause (например, race condition)
+Logs allow:
+1. Find all user actions by user_id
+2. See at which step the error occurred
+3. Check box state at booking time
+4. Identify root cause (e.g., race condition)
 ```
 
-### 1.3.2. Мониторинг UX
+### 1.3.2. UX Monitoring
 
-Понимание как пользователи используют продукт:
+Understanding how users use the product:
 
-| Метрика | Источник | Цель |
+| metric | Source | Goal |
 |---------|----------|------|
-| Search patterns | Frontend + Backend logs | Оптимизация поиска |
-| Booking funnel | Business event logs | Выявление drop-off точек |
-| Feature usage | Frontend interaction logs | Приоритизация разработки |
-| Page load times | Performance logs | Оптимизация производительности |
+| Search patterns | Frontend + Backend logs | Search optimization |
+| Booking funnel | Business event logs | Identify drop-off points |
+| Feature usage | Frontend interaction logs | Development prioritization |
+| Page load times | Performance logs | Performance optimization |
 
-### 1.3.3. Контроль интеграций
+### 1.3.3. Integration Control
 
-MVP зависит от внешних сервисов:
+MVP depends on external services:
 
-**Критичные интеграции:**
-- AI API (Claude/ChatGPT) - дорогая, нужен контроль usage
-- Google Maps / Google Maps - геокодинг, лимиты requests
-- Payment Gateway (если добавлен) - критично для безопасности
+**Critical Integrations:**
+- AI API (Claude/ChatGPT) - expensive, usage control needed
+- Google Maps / Google Maps - geocoding, request limits
+- Payment Gateway (if added) - critical for security
 
-**Что MUST логироваться для внешних API:**
+**What MUST be logged for external APIs:**
 - Request/response metadata
-- Cost tracking (для платных API)
+- Cost tracking (for paid APIs)
 - Performance metrics
 - Error details
 
@@ -274,15 +274,15 @@ logger.info('Geocoding successful', {
 });
 ```
 
-### 1.3.4. Безопасность с первого дня
+### 1.3.4. Security from Day One
 
-MVP должен быть безопасным с самого начала:
+MVP must be secure from the start:
 
-**Security events REQUIRED для логирования:**
+**Security events REQUIRED for logging:**
 - Failed login attempts
 - Rate limit violations
 - Suspicious operator activity
-- SQL injection attempts (если обнаружены)
+- SQL injection attempts (if detected)
 - Unauthorized access attempts
 
 > **Reference Example:** The following JSON structure illustrates a security event log. Actual field names and structure may vary by logging framework.
@@ -303,23 +303,23 @@ MVP должен быть безопасным с самого начала:
 }
 ```
 
-### 1.3.5. Данные для принятия решений
+### 1.3.5. Data for decision making
 
-Логи как источник данных для продуктовых решений:
+Logs as data source for product decisions:
 
-**RECOMMENDED аналитика из логов (MVP v1):**
-- Какие города наиболее популярны? (География expansion)
-- Какие размеры боксов чаще всего ищут? (Warehouse requirements)
-- Сколько пользователей используют AI features? (AI feature adoption)
-- Какие паттерны поиска наиболее частые? (Search optimization)
+**RECOMMENDED analytics from logs (MVP v1):**
+- Which cities are most popular? (Geography expansion)
+- Which box sizes are most frequently searched? (Warehouse requirements)
+- How many users use AI features? (AI feature adoption)
+- Which search patterns are most frequent? (Search optimization)
 
 > **Note:** Revenue, payment, and conversion tracking are out of MVP v1 scope. See Section 15 for Post-MVP analytics capabilities.
 
-### 1.3.6. Прозрачность для стейкхолдеров
+### 1.3.6. Transparency for Stakeholders
 
-Логи обеспечивают transparency:
+Logs provide transparency:
 
-**Weekly/Monthly Reports из логов:**
+**Weekly/Monthly Reports from logs:**
 - Total bookings created
 - AI API costs
 - Average response times
@@ -328,13 +328,13 @@ MVP должен быть безопасным с самого начала:
 
 ---
 
-## 1.4. Требования к качеству логов
+## 1.4. Log Quality Requirements
 
-**Quality attributes для production-ready logging:**
+**Quality attributes for production-ready logging:**
 
-### 1.4.1. Структурированность
+### 1.4.1. Structured
 
-**Обязательно JSON format:**
+**JSON format mandatory:**
 ```json
 {
   "timestamp": "2025-12-08T14:32:15.234Z",
@@ -350,30 +350,30 @@ MVP должен быть безопасным с самого начала:
 }
 ```
 
-**Почему JSON:**
+**Why JSON:**
 - Machine-readable
-- Легко парсить и фильтровать
-- Поддержка вложенных объектов
-- Совместимость с Grafana/Loki/ELK
+- Easy to parse and filter
+- Support for nested objects
+- Compatibility with Grafana/Loki/ELK
 
-### 1.4.2. Полнота контекста
+### 1.4.2. Context Completeness
 
-**Каждый лог должен содержать достаточно контекста:**
+**Each log must contain sufficient context:**
 
-| Поле | Обязательность | Описание |
+| Field | Mandatory | Description |
 |------|---------------|----------|
-| `timestamp` | ОБЯЗАТЕЛЬНО | ISO 8601 UTC |
-| `level` | ОБЯЗАТЕЛЬНО | INFO/WARN/ERROR/etc |
-| `service` | ОБЯЗАТЕЛЬНО | backend/frontend/ai-service |
-| `message` | ОБЯЗАТЕЛЬНО | Человекочитаемое описание |
-| `request_id` | Рекомендуется | Для correlation |
-| `user_id` | Если применимо | Идентификация пользователя |
-| `operator_id` | Для operator actions | Обязательно для операторов |
-| `data` | Опционально | Дополнительный контекст |
+| `timestamp` | MANDATORY | ISO 8601 UTC |
+| `level` | MANDATORY | INFO/WARN/ERROR/etc |
+| `service` | MANDATORY | backend/frontend/ai-service |
+| `message` | MANDATORY | Human-readable description |
+| `request_id` | Recommended | For correlation |
+| `user_id` | If applicable | User identification |
+| `operator_id` | For operator actions | Mandatory for operators |
+| `data` | Optional | Additional context |
 
-### 1.4.3. Консистентность
+### 1.4.3. Consistency
 
-**Единый стандарт на всех сервисах:**
+**Unified standard across all services:**
 
 ```typescript
 // Backend (TypeScript)
@@ -388,45 +388,45 @@ logger.info('AI request completed', extra={
   'tokens_used': 847
 })
 
-// Оба генерируют одинаковый формат JSON
+// Both generate identical JSON format
 ```
 
 **Consistency checklist:**
-- [ ] Одинаковые названия полей (user_id, не userId)
-- [ ] Одинаковый формат timestamp
-- [ ] Одинаковые названия event_type
-- [ ] Одинаковый формат message
+- [ ] Identical field names (user_id, not userId)
+- [ ] Identical timestamp format
+- [ ] Identical event_type names
+- [ ] Identical message format
 
-### 1.4.4. Точность timestamp
+### 1.4.4. Timestamp Accuracy
 
-**Строгий формат:**
+**Strict format:**
 ```
 ISO 8601 Extended Format: YYYY-MM-DDTHH:mm:ss.sssZ
-Пример: 2025-12-08T14:32:15.234Z
+Example: 2025-12-08T14:32:15.234Z
 ```
 
 **Timezone:**
-- Всегда UTC (Z suffix)
-- Никогда local timezone
-- Миллисекунды обязательны
+- Always UTC (Z suffix)
+- Never local timezone
+- Milliseconds Mandatory
 
-**Почему важно:**
-- Корреляция логов с разных сервисов
-- Временная последовательность событий
+**Why Important:**
+- Correlation of logs from different services
+- Temporal sequence of events
 - Debugging race conditions
 
 ### 1.4.5. No PII (Personal Identifiable Information)
 
-**Запрещено логировать:**
-- Email addresses (полные)
-- Phone numbers (полные)
+**Prohibited to log:**
+- Email addresses (complete)
+- Phone numbers (complete)
 - Full names
 - Addresses
 - Passport numbers
 - Credit card numbers
-- Passwords (никогда!)
+- Passwords (never!)
 
-**Разрешено логировать:**
+**Allowed to log:**
 - user_id
 - operator_id
 - booking_id
@@ -439,7 +439,7 @@ ISO 8601 Extended Format: YYYY-MM-DDTHH:mm:ss.sssZ
 
 **Logging MUST NOT significantly impact application performance:**
 
-| Требование | Рекомендация |
+| Requirement | Recommendation |
 |-----------|----------|
 | **Max latency** | Configurable threshold (example: <10ms p95 for sync operations) |
 | **Async writes** | RECOMMENDED for production |
@@ -450,7 +450,7 @@ ISO 8601 Extended Format: YYYY-MM-DDTHH:mm:ss.sssZ
 
 **Monitoring:**
 ```typescript
-// Измерение overhead логирования
+// Measuring logging overhead
 const startTime = Date.now();
 logger.info('Test message', { data: 'test' });
 const logDuration = Date.now() - startTime;
@@ -462,35 +462,35 @@ if (logDuration > 10) {
 
 ---
 
-## 1.5. Scope MVP логирования
+## 1.5. Logging MVP Scope
 
-**Что входит в MVP, а что - нет:**
+**What's in MVP and what's not:**
 
-### 1.5.1. ✅ В scope MVP
+### 1.5.1. ✅ In MVP scope
 
-**Базовая инфраструктура:**
-- Winston logger для Backend
-- Python logging для AI Service
+**Basic infrastructure:**
+- Winston logger for Backend
+- Python logging for AI Service
 - Nginx access/error logs
 - Docker json-file driver
 - Local filesystem storage
-- Logrotate для ротации
+- Logrotate for rotation
 
-**Мониторинг:**
+**Monitoring:**
 - Prometheus metrics export
 - Grafana dashboards
 - Basic alert rules
 
 **Security:**
 - PII masking
-- Audit logging для operator actions
-- Access control для log files
+- Audit logging for operator actions
+- Access control for log files
 
-### 1.5.2. ❌ Вне scope MVP (future)
+### 1.5.2. ❌ Out of MVP scope (future)
 
-**Advanced централизованное хранилище:**
+**Advanced centralized storage:**
 - ELK Stack (Elasticsearch + Logstash + Kibana)
-- Loki + Promtail (опционально для MVP, но можно добавить легко)
+- Loki + Promtail (optional for MVP, but can be added easily)
 - Splunk
 - CloudWatch Logs
 
@@ -500,10 +500,10 @@ if (logDuration > 10) {
 - Real-time log streaming
 - Advanced SIEM integration
 
-**Почему не в MVP:**
-- Дорого (licensing для Splunk, infrastructure для ELK)
-- Сложно (requires DevOps expertise)
-- Overkill для MVP traffic (< 10k requests/day)
+**Why not in MVP:**
+- Expensive (licensing for Splunk, infrastructure for ELK)
+- Complex (requires DevOps expertise)
+- Overkill for MVP traffic (< 10k requests/day)
 
 ### 1.5.3. Phased approach
 
@@ -513,26 +513,26 @@ if (logDuration > 10) {
 - Manual log analysis
 
 **Phase 2 (Post-MVP):**
-- Loki для централизованного хранения
+- Loki for centralized storage
 - Advanced dashboards
 - Automated anomaly detection
 
 **Phase 3 (Scale):**
-- Full ELK/Loki с retention policies
+- Full ELK/Loki with retention policies
 - Distributed tracing
 - Advanced security monitoring
 
 ---
 
-**Conclusion раздела 1:**
+**Section 1 Conclusion:**
 
-Логирование для MVP должно быть:
-1. **Простым** - минимальная инфраструктура
-2. **Эффективным** - все критичные события логируются
-3. **Безопасным** - No PII, access control
-4. **Масштабируемым** - легко расширить в будущем
+Logging for MVP must be:
+1. **Simple** - minimal infrastructure
+2. **Effective** - all critical events logged
+3. **Secure** - No PII, access control
+4. **Scalable** - easy to extend in future
 
-Следующие разделы детально опишут HOW реализовать эти принципы.
+Following sections will detail HOW to implement these principles.
 
 
 ---
@@ -546,20 +546,20 @@ if (logDuration > 10) {
 
 **Logging MUST use structured format (JSON):**
 
-### 2.1.1. Что такое structured logging
+### 2.1.1. What is structured logging
 
-**Определение:**
-Structured logging - это подход, при котором логи записываются в машиночитаемом формате (JSON, XML) с чётко определёнными полями, а не в виде произвольного текста.
+**Definition:**
+Structured logging - is an approach where logs are written in machine-readable format (JSON, XML) with clearly defined fields, not as arbitrary text.
 
-**Сравнение:**
+**Comparison:**
 
 > **Reference Implementation:** The following examples illustrate structured logging with TypeScript/JavaScript. Other languages and frameworks may use different syntax while maintaining the same structured approach.
 
 ```typescript
-// ❌ Unstructured (плохо)
+// ❌ Unstructured (bad)
 console.log('User 123 created booking 1001 for warehouse 45 at 2025-12-08 14:32:15');
 
-// ✅ Structured (хорошо)
+// ✅ Structured (good)
 logger.info('Booking created', {
   user_id: 123,
   booking_id: 1001,
@@ -568,7 +568,7 @@ logger.info('Booking created', {
 });
 ```
 
-**Результат (JSON):**
+**Result (JSON):**
 ```json
 {
   "timestamp": "2025-12-08T14:32:15.234Z",
@@ -582,19 +582,19 @@ logger.info('Booking created', {
 }
 ```
 
-### 2.1.2. Преимущества structured logging
+### 2.1.2. Benefits of structured logging
 
-| Преимущество | Описание |
+| Advantage | Description |
 |-------------|----------|
-| **Queryable** | Легко фильтровать по полям: `jq 'select(.user_id == 123)'` |
-| **Parsable** | Автоматический parsing без regex |
-| **Aggregation** | Легко считать метрики: count by error_type |
-| **Type-safe** | Поля имеют чёткие типы (number, string, object) |
-| **Tooling** | Поддержка Grafana, Loki, ELK out-of-the-box |
+| **Queryable** | Easy to filter by fields: `jq 'select(.user_id == 123)'` |
+| **Parsable** | Automatic parsing without regex |
+| **Aggregation** | Easy to calculate metrics: count by error_type |
+| **Type-safe** | Fields have clear types (number, string, object) |
+| **Tooling** | Grafana, Loki, ELK support out-of-the-box |
 
-### 2.1.3. Формат JSON для логов
+### 2.1.3. JSON Format for Logs
 
-**Обязательные поля:**
+**Mandatory fields:**
 ```json
 {
   "timestamp": "2025-12-08T14:32:15.234Z",
@@ -604,7 +604,7 @@ logger.info('Booking created', {
 }
 ```
 
-**Дополнительные поля:**
+**Additional fields:**
 ```json
 {
   "request_id": "req_7x9k2m4p",
@@ -620,26 +620,26 @@ logger.info('Booking created', {
 }
 ```
 
-### 2.1.4. Как НЕ надо структурировать
+### 2.1.4. How NOT to Structure
 
-**❌ Плохие примеры:**
+**❌ Bad examples:**
 
 ```typescript
-// Плохо: message содержит данные
+// Bad: message contains data
 logger.info('User 123 created booking 1001');
 
-// Плохо: данные в строке вместо объекта
+// Bad: data in string instead of object
 logger.info('Booking created', 'user_id=123,booking_id=1001');
 
-// Плохо: смешение text и структуры
+// Bad: mixing text and structure
 logger.info('Booking created for user 123', { booking_id: 1001 });
 ```
 
-**✅ Правильно:**
+**✅ Correct:**
 
 ```typescript
-// Message - human-readable описание
-// Данные - в структурированном виде
+// Message - human-readable description
+// Data - in structured form
 logger.info('Booking created', {
   user_id: 123,
   booking_id: 1001,
@@ -649,14 +649,14 @@ logger.info('Booking created', {
 
 ### 2.1.5. Message vs Data
 
-**Принцип разделения:**
+**Separation Principle:**
 
-| Компонент | Назначение | Формат |
+| Component | Purpose | Format |
 |-----------|-----------|--------|
-| **message** | Для человека | Короткое описание (10-200 символов) |
-| **data** | Для машины | Структурированный объект |
+| **message** | For human | Short description (10-200 characters) |
+| **data** | For machine | Structured object |
 
-**Пример:**
+**Example:**
 
 ```typescript
 logger.info('Booking creation failed', {
@@ -670,7 +670,7 @@ logger.info('Booking creation failed', {
 });
 ```
 
-**Результат:**
+**Result:**
 ```json
 {
   "message": "Booking creation failed",
@@ -688,25 +688,25 @@ logger.info('Booking creation failed', {
 
 ## 2.2. Consistency
 
-**Единообразие на всех уровнях системы:**
+**Uniformity Across All System Levels:**
 
 ### 2.2.1. Naming Conventions
 
 **Unified field names:**
 
-| ✅ Правильно | ❌ Неправильно | Причина |
+| ✅ Correct | ❌ Incorrect | Reason |
 |------------|--------------|---------|
-| `user_id` | `userId`, `UserID`, `user-id` | snake_case везде |
-| `created_at` | `createdAt`, `create_time` | Единый формат |
-| `warehouse_id` | `warehouseId`, `warehouse_key` | Консистентность |
-| `duration_ms` | `durationMs`, `duration` | Явные единицы измерения |
-| `request_id` | `requestId`, `req_id` | Полные названия |
+| `user_id` | `userId`, `UserID`, `user-id` | snake_case everywhere |
+| `created_at` | `createdAt`, `create_time` | Unified format |
+| `warehouse_id` | `warehouseId`, `warehouse_key` | Consistency |
+| `duration_ms` | `durationMs`, `duration` | Explicit units |
+| `request_id` | `requestId`, `req_id` | Full names |
 
-**Стандарт: snake_case для всех полей**
+**Standard: snake_case for all fields**
 
 ### 2.2.2. Standard Keys
 
-**Обязательные поля (везде одинаковые):**
+**Mandatory fields (identical everywhere):**
 
 ```typescript
 interface StandardLogFields {
@@ -714,49 +714,49 @@ interface StandardLogFields {
   level: string;          // INFO, WARN, ERROR, etc.
   service: string;        // backend, frontend, ai-service
   message: string;        // Human-readable
-  request_id?: string;    // Опционально, но recommended
-  trace_id?: string;      // Для distributed tracing
-  user_id?: number;       // Если применимо
-  operator_id?: number;   // Для operator actions
-  data?: Record<string, any>;  // Дополнительный контекст
+  request_id?: string;    // Optional, but recommended
+  trace_id?: string;      // for distributed tracing
+  user_id?: number;       // If applicable
+  operator_id?: number;   // For operator actions
+  data?: Record<string, any>;  // Additional context
 }
 ```
 
 ### 2.2.3. Timestamp Format
 
-**ТОЛЬКО один формат:**
+**ONLY one format:**
 
 ```
 ISO 8601 Extended Format: YYYY-MM-DDTHH:mm:ss.sssZ
 ```
 
-**Примеры:**
+**Examples:**
 ```
 2025-12-08T14:32:15.234Z  ✅
-2025-12-08 14:32:15       ❌ (пробел вместо T)
-08/12/2025 14:32:15       ❌ (неправильный порядок)
-2025-12-08T14:32:15       ❌ (нет миллисекунд)
-2025-12-08T14:32:15+03:00 ❌ (не UTC)
+2025-12-08 14:32:15       ❌ (space instead of T)
+08/12/2025 14:32:15       ❌ (wrong order)
+2025-12-08T14:32:15       ❌ (no milliseconds)
+2025-12-08T14:32:15+03:00 ❌ (not UTC)
 ```
 
-**Реализация:**
+**Implementation:**
 
 ```typescript
 // JavaScript/TypeScript
 const timestamp = new Date().toISOString();
-// Результат: "2025-12-08T14:32:15.234Z"
+// Result: "2025-12-08T14:32:15.234Z"
 
 // Python
 from datetime import datetime, timezone
 timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-# Результат: "2025-12-08T14:32:15.234Z"
+# Result: "2025-12-08T14:32:15.234Z"
 ```
 
 ### 2.2.4. Service Names
 
-**Стандартные названия сервисов:**
+**Standard service names:**
 
-| Сервис | Название в логах |
+| Service | Name in logs |
 |--------|-----------------|
 | Backend API | `backend` |
 | Frontend | `frontend` |
@@ -765,7 +765,7 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 | Database | `postgres` |
 | Cache | `redis` |
 
-**Использование:**
+**Usage:**
 
 ```typescript
 // Backend
@@ -780,55 +780,55 @@ logger.info('...', { service: 'frontend' });
 
 ### 2.2.5. Event Type Naming
 
-**Иерархическая структура event_type:**
+**Hierarchical event_type Structure:**
 
 ```
 {category}.{subcategory}.{action}
 ```
 
-**Примеры:**
+**Examples:**
 
-| Event Type | Описание |
+| Event Type | Description |
 |-----------|----------|
-| `business.booking.created` | Бронирование создано |
-| `business.booking.confirmed` | Бронирование подтверждено |
-| `business.booking.cancelled` | Бронирование отменено |
-| `operator.booking.confirmed` | Оператор подтвердил бронирование |
-| `operator.warehouse.updated` | Оператор обновил склад |
-| `security.login.failed` | Неудачная попытка входа |
-| `security.suspicious_activity` | Подозрительная активность |
-| `system.startup` | Запуск приложения |
-| `system.shutdown` | Остановка приложения |
+| `business.booking.created` | Booking created |
+| `business.booking.confirmed` | Booking confirmed |
+| `business.booking.cancelled` | Booking cancelled |
+| `operator.booking.confirmed` | Operator confirmed booking |
+| `operator.warehouse.updated` | Operator updated warehouse |
+| `security.login.failed` | Failed login attempt |
+| `security.suspicious_activity` | Suspicious activity |
+| `system.startup` | Application startup |
+| `system.shutdown` | Application shutdown |
 
 ---
 
 ## 2.3. Minimal Necessary Data
 
-**Логируем только необходимое:**
+**Log Only What's Necessary:**
 
-### 2.3.1. Принцип минимизации
+### 2.3.1. Minimization Principle
 
-**Правило:** Логируем только то, что будет использоваться для debugging, monitoring, или analytics.
+**Rule:** Log only what will be used for debugging, monitoring, or analytics.
 
-**❌ Избыточное логирование:**
+**❌ Excessive Logging:**
 
 ```typescript
-// Плохо: логируем всё подряд
+// Bad: log everything
 logger.debug('Processing request', {
   user_id: 123,
   user_email: 'user@example.com',  // PII
   user_name: 'John Doe',            // PII
   user_address: '123 Main St',      // PII
-  request_body: req.body,           // Может содержать PII
-  headers: req.headers,              // Может содержать tokens
-  cookies: req.cookies               // Может содержать session data
+  request_body: req.body,           // May contain PII
+  headers: req.headers,              // May contain tokens
+  cookies: req.cookies               // May contain session data
 });
 ```
 
-**✅ Минимально необходимое:**
+**✅ Minimally Necessary:**
 
 ```typescript
-// Хорошо: только важное
+// Good: only important
 logger.info('Request processed', {
   user_id: 123,
   request_id: req.requestId,
@@ -837,39 +837,39 @@ logger.info('Request processed', {
 });
 ```
 
-### 2.3.2. Что логировать
+### 2.3.2. What to Log
 
-**Всегда логируем:**
-- Уникальные идентификаторы (user_id, booking_id, warehouse_id)
+**Always log:**
+- Unique identifiers (user_id, booking_id, warehouse_id)
 - Request correlation IDs (request_id, trace_id)
 - Timestamps
 - Duration metrics
-- Status codes / результаты операций
-- Error types и messages
+- Status codes / operation results
+- Error types and messages
 
-**Логируем только при необходимости:**
-- Детали бизнес-логики (при DEBUG level)
-- Database queries (при медленных запросах)
-- External API responses (при ошибках)
-- Stack traces (при исключениях)
+**Log Only When Necessary:**
+- Business logic details (at DEBUG level)
+- Database queries (for slow queries)
+- External API responses (on errors)
+- Stack traces (on exceptions)
 
-**Никогда не логируем:**
-- Пароли
-- Токены аутентификации
-- Полные email/phone
-- Кредитные карты
-- Персональные данные (PII)
+**Never log:**
+- Passwords
+- Authentication tokens
+- Full email/phone
+- Credit cards
+- Personal data (PII)
 
-### 2.3.3. Levels для контроля детализации
+### 2.3.3. Levels for Detail Control
 
 ```typescript
-// INFO: Минимальный набор данных
+// INFO: Minimal data set
 logger.info('Booking created', {
   booking_id: 1001,
   user_id: 123
 });
 
-// DEBUG: Детальная информация
+// DEBUG: Detailed information
 logger.debug('Booking creation process', {
   booking_id: 1001,
   user_id: 123,
@@ -880,15 +880,15 @@ logger.debug('Booking creation process', {
 ```
 
 **Production:**
-- LOG_LEVEL=info → только необходимое
-- DEBUG логи отключены
+- LOG_LEVEL=info → only necessary
+- DEBUG logs disabled
 
 **Development:**
-- LOG_LEVEL=debug → детальная информация
+- LOG_LEVEL=debug → detailed information
 
-### 2.3.4. Когда логировать детально
+### 2.3.4. When to Log in Detail
 
-**Детальное логирование оправдано для:**
+**Detailed logging justified for:**
 
 1. **Critical errors:**
 ```typescript
@@ -897,7 +897,7 @@ logger.error('Payment processing failed', error, {
   amount: 5000,
   payment_provider: 'stripe',
   error_code: error.code,
-  stack: error.stack  // Полный stack trace
+  stack: error.stack  // Full stack trace
 });
 ```
 
@@ -932,24 +932,24 @@ logger.warn('Multiple failed login attempts', {
 });
 ```
 
-### 2.3.5. Избегаем дублирования
+### 2.3.5. Avoid Duplication
 
-**❌ Плохо:**
+**❌ Bad:**
 
 ```typescript
-// Логируем дважды одну и ту же информацию
+// Log same information twice
 logger.info('Starting booking creation', { user_id: 123 });
 logger.info('Validating booking data', { user_id: 123 });
 logger.info('Saving booking to database', { user_id: 123 });
 logger.info('Booking created', { user_id: 123, booking_id: 1001 });
 ```
 
-**✅ Хорошо:**
+**✅ Good:**
 
 ```typescript
-// Логируем только важные вехи
+// Log only important milestones
 logger.info('Booking creation started', { user_id: 123 });
-// ... внутренняя логика без логирования
+// ... internal logic without logging
 logger.info('Booking created', { 
   user_id: 123, 
   booking_id: 1001,
@@ -961,35 +961,35 @@ logger.info('Booking created', {
 
 ## 2.4. No PII (Personal Identifiable Information)
 
-**Строгий запрет на логирование персональных данных:**
+**Strict Prohibition on Logging Personal Data:**
 
-### 2.4.1. Что считается PII
+### 2.4.1. What is Considered PII
 
 **GDPR Definition:**
-Personal data - любая информация, которая прямо или косвенно идентифицирует физическое лицо.
+Personal data - any information that directly or indirectly identifies a natural person.
 
-**Примеры PII:**
+**PII Examples:**
 
-| Тип данных | Пример | PII? |
+| Data Type | Example | PII? |
 |-----------|--------|------|
-| Email | user@example.com | ✅ Да |
-| Phone | +79991234567 | ✅ Да |
-| Full Name | John Doe | ✅ Да |
-| Address | Dubai, Tverskaya 1, apt 10 | ✅ Да |
-| IP Address (full) | 192.168.1.100 | ⚠️ Частично |
-| Passport | 1234 567890 | ✅ Да (sensitive PII) |
-| Credit Card | 1234-5678-9012-3456 | ✅ Да (sensitive PII) |
-| Date of Birth | 1990-05-15 | ✅ Да |
-| User ID | 123 | ❌ Нет |
-| Session ID | uuid | ❌ Нет |
-| City | Dubai | ❌ Нет |
+| Email | user@example.com | ✅ Yes |
+| Phone | +79991234567 | ✅ Yes |
+| Full Name | John Doe | ✅ Yes |
+| Address | Dubai, Tverskaya 1, apt 10 | ✅ Yes |
+| IP Address (full) | 192.168.1.100 | ⚠️ Partially |
+| Passport | 1234 567890 | ✅ Yes (sensitive PII) |
+| Credit Card | 1234-5678-9012-3456 | ✅ Yes (sensitive PII) |
+| Date of Birth | 1990-05-15 | ✅ Yes |
+| User ID | 123 | ❌ No |
+| Session ID | uuid | ❌ No |
+| City | Dubai | ❌ No |
 
-### 2.4.2. Что можно логировать
+### 2.4.2. What Can Be Logged
 
-**Разрешённые идентификаторы:**
+**Allowed Identifiers:**
 
 ```typescript
-// ✅ Можно
+// ✅ Allowed
 logger.info('User action', {
   user_id: 123,                          // Numeric ID
   session_id: 'uuid-here',               // Session identifier
@@ -1001,9 +1001,9 @@ logger.info('User action', {
 });
 ```
 
-### 2.4.3. Hashing для PII
+### 2.4.3. Hashing for PII
 
-**Если необходимо логировать email/phone:**
+**If necessary to log email/phone:**
 
 ```typescript
 import { createHash } from 'crypto';
@@ -1014,20 +1014,20 @@ function hashEmail(email: string): string {
     .digest('hex');
 }
 
-// Использование
+// Usage
 logger.info('User registered', {
   user_id: 123,
-  email_hash: hashEmail('user@example.com')  // ✅ Hash вместо email
+  email_hash: hashEmail('user@example.com')  // ✅ Hash instead of email
 });
 ```
 
-**Хеширование необратимо:**
-- Невозможно восстановить оригинальный email
-- Но можно найти логи конкретного email (хешируем и ищем)
+**Hashing is irreversible:**
+- Cannot recover original email
+- But can find logs of specific email (hash and search)
 
-### 2.4.4. Masking для debugging
+### 2.4.4. Masking for Debugging
 
-**Если нужно partial PII для debugging:**
+**If partial PII needed for debugging:**
 
 ```typescript
 // Email masking
@@ -1045,7 +1045,7 @@ function maskPhone(phone: string): string {
   );
 }
 
-// Использование
+// Usage
 logger.info('User contact verification', {
   user_id: 123,
   email_masked: maskEmail('user@example.com'),  // u***r@example.com
@@ -1053,26 +1053,26 @@ logger.info('User contact verification', {
 });
 ```
 
-### 2.4.5. Автоматический sanitizer
+### 2.4.5. Automatic Sanitizer
 
-**Использование DataSanitizer:**
+**Usage DataSanitizer:**
 
 ```typescript
 import { DataSanitizer } from './common/data-sanitizer';
 
-// Автоматически удаляет PII из объекта
+// Automatically removes PII from object
 const userData = {
   user_id: 123,
-  email: 'user@example.com',  // Будет удалено
-  phone: '+79991234567',      // Будет удалено
-  name: 'John Doe',           // Будет удалено
-  city: 'Dubai'              // Останется
+  email: 'user@example.com',  // Will be removed
+  phone: '+79991234567',      // Will be removed
+  name: 'John Doe',           // Will be removed
+  city: 'Dubai'              // Will remain
 };
 
 const sanitized = DataSanitizer.sanitizeObject(userData);
 logger.info('User data processed', sanitized);
 
-// Результат:
+// Result:
 // {
 //   user_id: 123,
 //   email: '***REDACTED***',
@@ -1084,16 +1084,16 @@ logger.info('User data processed', sanitized);
 
 ### 2.4.6. GDPR Compliance
 
-**Требования GDPR:**
+**GDPR Requirements:**
 
 1. **No PII without consent:**
 ```typescript
-// ❌ Плохо
+// ❌ Bad
 logger.info('User registered', {
   email: 'user@example.com'
 });
 
-// ✅ Хорошо
+// ✅ Good
 logger.info('User registered', {
   user_id: 123
 });
@@ -1102,7 +1102,7 @@ logger.info('User registered', {
 2. **Right to be forgotten:**
 ```typescript
 async function deleteUserLogs(userId: number): Promise<void> {
-  // Удаление всех логов пользователя
+  // Deletion of all user logs
   await removeLogsFromArchive(userId);
   await removeLogsFromActiveStorage(userId);
   
@@ -1124,23 +1124,23 @@ Audit logs: 365 days
 
 ## 2.5. Immutability
 
-**Логи никогда не изменяются после записи:**
+**Logs are never modified after writing:**
 
-### 2.5.1. Принцип immutability
+### 2.5.1. Immutability Principle
 
-**Определение:**
-Логи должны быть append-only. После записи лог не может быть изменён или удалён (за исключением автоматической ротации/retention).
+**Definition:**
+Logs must be append-only. After writing, a log cannot be modified or deleted (except automatic rotation/retention).
 
-**Почему важно:**
-- **Audit trail integrity:** Доказательство действий
-- **Forensics:** Расследование инцидентов
-- **Compliance:** Требования регуляторов
-- **Trust:** Невозможность "скрыть следы"
+**Why Important:**
+- **Audit trail integrity:** Proof of actions
+- **Forensics:** Incident investigation
+- **Compliance:** Regulatory requirements
+- **Trust:** Impossibility "hide traces"
 
 ### 2.5.2. Append-only approach
 
 ```typescript
-// ✅ Правильно: добавляем новый лог
+// ✅ Correct: add new log
 logger.info('Booking status changed', {
   booking_id: 1001,
   old_status: 'pending',
@@ -1148,41 +1148,41 @@ logger.info('Booking status changed', {
   operator_id: 5
 });
 
-// ❌ Неправильно: пытаемся "исправить" старый лог
-// НЕТ ТАКОЙ ОПЕРАЦИИ!
+// ❌ Incorrect: trying "fix" old log
+// NO SUCH OPERATION!
 ```
 
-### 2.5.3. Что делать с ошибочными логами
+### 2.5.3. What to Do with Erroneous Logs
 
-**Если случайно залогировали неправильную информацию:**
+**If accidentally logged incorrect information:**
 
 ```typescript
-// 1. НЕ удаляем ошибочный лог
+// 1. DO NOT delete erroneous log
 
-// 2. Добавляем корректирующий лог
+// 2. Add corrective log
 logger.info('Correction: previous log contained error', {
   correction_for_timestamp: '2025-12-08T14:32:15.234Z',
   correct_data: {
-    booking_id: 1001,  // правильный ID
+    booking_id: 1001,  // correct ID
     status: 'confirmed'
   }
 });
 ```
 
-### 2.5.4. Deletion только в исключительных случаях
+### 2.5.4. Deletion Only in Exceptional Cases
 
-**Когда можно удалять логи:**
+**When Logs Can Be Deleted:**
 
-1. **Автоматическая ротация (по retention policy):**
+1. **Automatic rotation (per retention policy):**
 ```bash
-# logrotate удаляет логи старше 30 дней
+# logrotate deletes logs older than 30 days
 /var/log/backend/*.log {
     rotate 30
     # ...
 }
 ```
 
-2. **Compliance требование:**
+2. **Compliance requirement:**
 ```typescript
 // GDPR: right to be forgotten
 async function deleteUserData(userId: number) {
@@ -1192,30 +1192,30 @@ async function deleteUserData(userId: number) {
     approved_by: 'legal_team'
   });
   
-  // Удаление логов пользователя
+  // User logs deletion
   await deleteLogsForUser(userId);
 }
 ```
 
 3. **Critical data leak (accidental PII exposure):**
 ```typescript
-// Если случайно залогировали пароль или кредитную карту
+// If accidentally logged password or credit card
 logger.critical('PII exposure detected in logs', {
   timestamp: '2025-12-08T14:32:15.234Z',
   affected_log_file: '/var/log/backend/combined.log',
   action: 'manual_redaction_required'
 });
 
-// Manual intervention для удаления
+// Manual intervention for deletion
 ```
 
 ### 2.5.5. Audit log immutability
 
-**Особые требования для audit logs:**
+**Special Requirements for Audit Logs:**
 
 ```typescript
-// Audit logs НИКОГДА не удаляются автоматически
-// Только manual review + approval
+// Audit logs NEVER deleted automatically
+// Only manual review + approval
 
 // Audit log
 logger.info('Operator confirmed booking', {
@@ -1227,20 +1227,20 @@ logger.info('Operator confirmed booking', {
   timestamp: '2025-12-08T14:32:15.234Z'
 });
 
-// Этот лог должен храниться минимум 365 дней
-// Deletion требует approval от security team
+// This log must be retained minimum 365 days
+// Deletion requires security team approval
 ```
 
-### 2.5.6. Технические меры для immutability
+### 2.5.6. Technical Measures for Immutability
 
 **File permissions:**
 
 ```bash
-# Логи доступны только для записи
+# Logs write-only accessible
 chmod 644 /var/log/backend/combined.log
 chown backend-user:backend-group /var/log/backend/combined.log
 
-# Audit logs - read-only после записи
+# Audit logs - read-only after writing
 chmod 440 /var/log/backend/audit.log
 chown root:logs-security /var/log/backend/audit.log
 ```
@@ -1251,17 +1251,17 @@ chown root:logs-security /var/log/backend/audit.log
 # Set append-only attribute (requires root)
 chattr +a /var/log/backend/audit.log
 
-# Теперь файл можно только дописывать, но не изменять/удалять
-# Даже root не может удалить без снятия атрибута
+# Now file can only be appended, not modified/deleted
+# Even root cannot delete without removing the attribute
 ```
 
 **Verification:**
 
 ```bash
-# Checksums для verification
+# Checksums for verification
 sha256sum /var/log/backend/audit.log > audit.log.sha256
 
-# При подозрении на tampering
+# When tampering suspected
 sha256sum -c audit.log.sha256
 ```
 
@@ -1269,15 +1269,15 @@ sha256sum -c audit.log.sha256
 
 **Summary of Logging Principles:**
 
-| Принцип | Описание | Почему важно |
+| Principle | Description | Why Important |
 |---------|----------|--------------|
 | **Structured** | JSON format | Machine-readable, queryable |
-| **Consistent** | Единый формат везде | Легко корреллировать |
-| **Minimal** | Только необходимое | Performance, storage |
-| **No PII** | Никогда не логируем PII | Privacy, GDPR compliance |
+| **Consistent** | Unified format everywhere | Easy to correlate |
+| **Minimal** | Only necessary | Performance, storage |
+| **No PII** | Never log PII | Privacy, GDPR compliance |
 | **Immutable** | Append-only | Audit integrity, forensics |
 
-Следующий раздел: **Log Structure & Format** - детальная спецификация формата.
+Next Section: **Log Structure & Format** - detailed format specification.
 
 
 ---
@@ -1289,19 +1289,19 @@ sha256sum -c audit.log.sha256
 
 ## 3.1. JSON Format
 
-**Единственный допустимый формат логов - JSON:**
+**Only Allowed Log Format - JSON:**
 
-### 3.1.1. Почему JSON
+### 3.1.1. Why JSON
 
-| Преимущество | Описание |
+| Advantage | Description |
 |-------------|----------|
-| **Machine-readable** | Легко парсить программно |
-| **Structured** | Чёткие типы данных |
-| **Queryable** | Фильтрация по полям |
-| **Universal** | Поддержка всеми инструментами |
-| **Extensible** | Легко добавлять новые поля |
+| **Machine-readable** | Easy to parse programmatically |
+| **Structured** | Clear data types |
+| **Queryable** | Filtering by fields |
+| **Universal** | Support by all tools |
+| **Extensible** | Easy to add new fields |
 
-### 3.1.2. Базовая структура
+### 3.1.2. Basic Structure
 
 ```json
 {
@@ -1318,7 +1318,7 @@ sha256sum -c audit.log.sha256
 
 ### 3.1.3. Newline-delimited JSON (NDJSON)
 
-**Формат файла логов:**
+**Log file format:**
 
 ```json
 {"timestamp":"2025-12-08T14:32:15.234Z","level":"INFO","message":"Request started"}
@@ -1326,18 +1326,18 @@ sha256sum -c audit.log.sha256
 {"timestamp":"2025-12-08T14:32:16.123Z","level":"ERROR","message":"Database error"}
 ```
 
-**Каждая строка - отдельный JSON объект.**
+**Each line - separate JSON object.**
 
-**Преимущества NDJSON:**
-- Streaming processing (можно читать построчно)
-- Append-only (добавление не требует parsing всего файла)
-- Fault-tolerant (повреждение одной строки не влияет на остальные)
+**NDJSON Advantages:**
+- Streaming processing (can read line by line)
+- Append-only (adding doesn't require parsing entire file)
+- Fault-tolerant (corruption of one line doesn't affect others)
 
 ---
 
 ## 3.2. Mandatory Fields
 
-**Поля, которые ОБЯЗАТЕЛЬНО должны присутствовать в каждом логе:**
+**Fields that MUST be present in every log:**
 
 ### 3.2.1. timestamp
 
@@ -1345,13 +1345,13 @@ sha256sum -c audit.log.sha256
 "timestamp": "2025-12-08T14:32:15.234Z"
 ```
 
-**Требования:**
-- Формат: ISO 8601 Extended
-- Timezone: UTC (суффикс Z)
-- Миллисекунды: обязательны
-- Тип: string
+**Requirements:**
+- Format: ISO 8601 Extended
+- Timezone: UTC (Z suffix)
+- Milliseconds: mandatory
+- Type: string
 
-**Пример генерации:**
+**Generation example:**
 
 ```typescript
 // TypeScript/JavaScript
@@ -1362,7 +1362,7 @@ const timestamp = new Date().toISOString();
 from datetime import datetime, timezone
 timestamp = datetime.now(timezone.utc).isoformat()
 # "2025-12-08T14:32:15.234000+00:00"
-# Для совместимости обрезаем до миллисекунд:
+# For compatibility, truncate to milliseconds:
 timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 # "2025-12-08T14:32:15.234Z"
 ```
@@ -1373,15 +1373,15 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 "level": "INFO"
 ```
 
-**Допустимые значения:**
-- `TRACE` (самый детальный)
+**Allowed Values:**
+- `TRACE` (most detailed)
 - `DEBUG`
 - `INFO`
 - `WARN`
 - `ERROR`
-- `FATAL` (самый критичный)
+- `FATAL` (most critical)
 
-**Тип:** string (uppercase)
+**Type:** string (uppercase)
 
 ### 3.2.3. service
 
@@ -1389,15 +1389,15 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 "service": "backend"
 ```
 
-**Допустимые значения:**
+**Allowed Values:**
 - `backend` - NestJS API
 - `frontend` - Next.js UI
 - `ai-service` - FastAPI AI service
 - `nginx` - API Gateway
-- `postgres` - Database (если логируется отдельно)
-- `redis` - Cache (если логируется отдельно)
+- `postgres` - Database (if logged separately)
+- `redis` - Cache (if logged separately)
 
-**Тип:** string (lowercase)
+**Type:** string (lowercase)
 
 ### 3.2.4. message
 
@@ -1405,24 +1405,24 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 "message": "Booking created successfully"
 ```
 
-**Требования:**
-- Human-readable описание события
-- Короткое (10-200 символов рекомендуется)
-- На английском языке
-- Без переменных данных (данные - в поле data)
+**Requirements:**
+- Human-readable event description
+- Short (10-200 characters recommended)
+- In English
+- Without variable data (data - in data field)
 
-**Примеры:**
+**Examples:**
 
 ```typescript
-// ✅ Хорошо
+// ✅ Good
 "message": "User login successful"
 "message": "Database query executed"
 "message": "Payment processing failed"
 
-// ❌ Плохо
-"message": "User 123 logged in"  // ID должен быть в data
-"message": "Query took 1.5s"     // Duration должна быть в data
-"message": "Error"               // Слишком неинформативно
+// ❌ Bad
+"message": "User 123 logged in"  // ID should be in data
+"message": "Query took 1.5s"     // Duration should be in data
+"message": "Error"               // Too uninformative
 ```
 
 ### 3.2.5. request_id (recommended)
@@ -1431,31 +1431,31 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 "request_id": "req_7x9k2m4p"
 ```
 
-**Хотя технически опциональное, это поле НАСТОЯТЕЛЬНО рекомендуется для всех логов, связанных с HTTP requests.**
+**Although technically optional, this field is STRONGLY recommended for all logs related to HTTP requests.**
 
-**Формат:** `req_[8-16 hex characters]`
+**Format:** `req_[8-16 hex characters]`
 
-**Генерация:**
+**Generation:**
 
 ```typescript
 // TypeScript
 function generateRequestId(): string {
   return 'req_' + Math.random().toString(36).substring(2, 10);
 }
-// Результат: "req_7x9k2m4p"
+// Result: "req_7x9k2m4p"
 
 // Python
 import secrets
 def generate_request_id():
     return f"req_{secrets.token_hex(4)}"
-# Результат: "req_a3f5c8d1"
+# Result: "req_a3f5c8d1"
 ```
 
 ---
 
 ## 3.3. Optional Fields
 
-**Поля, которые добавляются при необходимости:**
+**Fields Added When Necessary:**
 
 ### 3.3.1. trace_id
 
@@ -1463,11 +1463,11 @@ def generate_request_id():
 "trace_id": "trace_f3a5c8d1-7x9k-2m4p-8n6b-5v4c3x2z1a0w"
 ```
 
-**Назначение:** Distributed tracing через несколько сервисов
+**Purpose:** Distributed tracing across multiple services
 
-**Формат:** `trace_[UUID или random string]`
+**Format:** `trace_[UUID or random string]`
 
-**Когда использовать:** Когда запрос проходит через несколько сервисов
+**When to use:** When request passes through multiple services
 
 ### 3.3.2. user_id
 
@@ -1475,11 +1475,11 @@ def generate_request_id():
 "user_id": 123
 ```
 
-**Тип:** number (integer)
+**Type:** number (integer)
 
-**Когда использовать:** Когда лог связан с действиями конкретного пользователя
+**When to use:** When log is related to specific user actions
 
-**ВАЖНО:** НИКОГДА не логируем email, phone, или имя - только ID!
+**IMPORTANT:** NEVER log email, phone, or name - only ID!
 
 ### 3.3.3. operator_id
 
@@ -1487,15 +1487,15 @@ def generate_request_id():
 "operator_id": 5
 ```
 
-**Тип:** number (integer)
+**Type:** number (integer)
 
-**Когда использовать:** ОБЯЗАТЕЛЬНО для всех действий операторов
+**When to use:** MANDATORY for all operator actions
 
-**Примеры:**
-- Подтверждение бронирования
-- Отклонение бронирования
-- Изменение статуса склада
-- Изменение цен
+**Examples:**
+- Booking confirmation
+- Booking rejection
+- Warehouse status change
+- Price change
 
 ### 3.3.4. event_type
 
@@ -1503,15 +1503,15 @@ def generate_request_id():
 "event_type": "business.booking.created"
 ```
 
-**Формат:** `{category}.{subcategory}.{action}`
+**Format:** `{category}.{subcategory}.{action}`
 
-**Категории:**
-- `business.*` - Бизнес-события
-- `security.*` - События безопасности
-- `system.*` - Системные события
-- `operator.*` - Действия операторов
+**Categories:**
+- `business.*` - Business events
+- `security.*` - Security events
+- `system.*` - System events
+- `operator.*` - Operator actions
 
-**Примеры:**
+**Examples:**
 
 ```typescript
 "event_type": "business.booking.created"
@@ -1527,11 +1527,11 @@ def generate_request_id():
 "duration_ms": 145
 ```
 
-**Тип:** number (integer, миллисекунды)
+**Type:** number (integer, milliseconds)
 
-**Когда использовать:** Для операций с измеримой длительностью
+**When to use:** For operations with measurable duration
 
-**Примеры:**
+**Examples:**
 - HTTP request duration
 - Database query duration
 - External API call duration
@@ -1547,15 +1547,15 @@ def generate_request_id():
 }
 ```
 
-**Тип:** object (любая вложенная структура)
+**Type:** object (any nested structure)
 
-**Назначение:** Дополнительный контекст, специфичный для события
+**Purpose:** Additional context, specific to events
 
-**Рекомендации:**
-- Используйте snake_case для ключей
-- Избегайте глубокой вложенности (max 3 уровня)
-- Не дублируйте обязательные поля
-- Санитизируйте PII
+**Recommendations:**
+- Use snake_case for keys
+- Avoid deep nesting (max 3 levels)
+- Do not duplicate mandatory fields
+- Sanitize PII
 
 ### 3.3.7. error_type
 
@@ -1563,11 +1563,11 @@ def generate_request_id():
 "error_type": "DatabaseConnectionError"
 ```
 
-**Тип:** string
+**Type:** string
 
-**Когда использовать:** Для ERROR и FATAL logs
+**When to use:** For ERROR and FATAL logs
 
-**Примеры:**
+**Examples:**
 
 ```typescript
 "error_type": "DatabaseConnectionError"
@@ -1583,13 +1583,13 @@ def generate_request_id():
 "error_message": "Connection to database timed out after 5000ms"
 ```
 
-**Тип:** string
+**Type:** string
 
-**Когда использовать:** Для ERROR и FATAL logs
+**When to use:** For ERROR and FATAL logs
 
-**Отличие от message:**
-- `message` - общее описание ("Payment processing failed")
-- `error_message` - детальное техническое описание error
+**Difference from message:**
+- `message` - general description ("Payment processing failed")
+- `error_message` - detailed technical error description
 
 ### 3.3.9. stack
 
@@ -1597,92 +1597,92 @@ def generate_request_id():
 "stack": "Error: Connection timeout\n    at Database.connect (database.ts:45)\n    at ..."
 ```
 
-**Тип:** string (multiline)
+**Type:** string (multiline)
 
-**Когда использовать:** Для ERROR и FATAL logs
+**When to use:** For ERROR and FATAL logs
 
-**ВАЖНО:** Stack traces могут быть длинными. В production рассмотрите:
-- Логирование только первых N строк
+**IMPORTANT:** Stack traces can be long. In production consider:
+- Logging only first N lines
 - Separate error tracking service (Sentry)
 
 ---
 
 ## 3.4. Timestamp Standards
 
-**Строгие требования к формату timestamp:**
+**Strict Timestamp Format Requirements:**
 
 ### 3.4.1. ISO 8601 Extended Format
 
-**Обязательный формат:**
+**Mandatory Format:**
 
 ```
 YYYY-MM-DDTHH:mm:ss.sssZ
 ```
 
-**Компоненты:**
+**Components:**
 
-| Компонент | Описание | Пример |
+| Component | Description | Example |
 |-----------|----------|--------|
-| YYYY | Год (4 цифры) | 2025 |
-| MM | Месяц (01-12) | 12 |
-| DD | День (01-31) | 08 |
-| T | Разделитель (literal) | T |
-| HH | Час (00-23) | 14 |
-| mm | Минута (00-59) | 32 |
-| ss | Секунда (00-59) | 15 |
-| .sss | Миллисекунды (000-999) | .234 |
+| YYYY | Year (4 digits) | 2025 |
+| MM | Month (01-12) | 12 |
+| DD | Day (01-31) | 08 |
+| T | Separator (literal) | T |
+| HH | Hour (00-23) | 14 |
+| mm | Minute (00-59) | 32 |
+| ss | Second (00-59) | 15 |
+| .sss | Milliseconds (000-999) | .234 |
 | Z | UTC timezone (literal) | Z |
 
-**Полный пример:** `2025-12-08T14:32:15.234Z`
+**Full Example:** `2025-12-08T14:32:15.234Z`
 
-### 3.4.2. Почему UTC
+### 3.4.2. Why UTC
 
-**Всегда используем UTC, никогда local timezone:**
+**Always use UTC, never local timezone:**
 
-**Причины:**
-1. **Consistency** - Логи с разных серверов сопоставимы
-2. **No DST issues** - Нет проблем с переходом на летнее время
-3. **Universal** - Понятно везде
-4. **Standard** - Принято в индустрии
+**Reasons:**
+1. **Consistency** - Logs from different servers are comparable
+2. **No DST issues** - No problems with daylight saving time transition
+3. **Universal** - Understood everywhere
+4. **Standard** - Industry standard
 
-**❌ Неправильно:**
+**❌ Incorrect:**
 
 ```json
 "timestamp": "2025-12-08T17:32:15.234+03:00"  // UTC
 "timestamp": "2025-12-08T11:32:15.234-05:00"  // EST
 ```
 
-**✅ Правильно:**
+**✅ Correct:**
 
 ```json
 "timestamp": "2025-12-08T14:32:15.234Z"  // UTC
 ```
 
-### 3.4.3. Миллисекунды обязательны
+### 3.4.3. Milliseconds Mandatory
 
-**Почему нужны миллисекунды:**
-- Точная последовательность событий
-- Измерение performance (response time < 1s)
+**Why milliseconds are needed:**
+- Precise event sequence
+- Performance measurement (response time < 1s)
 - Debugging race conditions
 
-**❌ Без миллисекунд:**
+**❌ Without milliseconds:**
 
 ```json
 "timestamp": "2025-12-08T14:32:15Z"
 ```
 
-Два события в одну секунду не различимы.
+Two events in same second indistinguishable.
 
-**✅ С миллисекундами:**
+**✅ With milliseconds:**
 
 ```json
 "timestamp": "2025-12-08T14:32:15.234Z"
 "timestamp": "2025-12-08T14:32:15.456Z"
 ```
 
-Чёткая последовательность.
+Clear sequence.
 
-### 3.4.4. Реализация в разных языках
+### 3.4.4. Implementation in different languages
 
 **TypeScript/JavaScript:**
 
@@ -1696,11 +1696,11 @@ const timestamp = new Date().toISOString();
 ```python
 from datetime import datetime, timezone
 
-# Вариант 1: С микросекундами (нужно обрезать)
+# Option 1: With microseconds (need to truncate)
 timestamp = datetime.now(timezone.utc).isoformat()
 # "2025-12-08T14:32:15.234567+00:00"
 
-# Вариант 2: С миллисекундами (правильный формат)
+# Option 2: With milliseconds (correct format)
 timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 # "2025-12-08T14:32:15.234Z"
 ```
@@ -1709,19 +1709,19 @@ timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '
 
 ```nginx
 # ISO 8601 format
-$time_iso8601  # Встроенная переменная
+$time_iso8601  # Built-in variable
 # "2025-12-08T14:32:15+00:00"
 
-# Для точного формата с миллисекундами нужен custom format
+# For precise format with milliseconds need custom format
 ```
 
 ---
 
 ## 3.5. Examples
 
-**Примеры правильно структурированных логов:**
+**Examples of properly structured logs:**
 
-### 3.5.1. Простой INFO лог
+### 3.5.1. Simple INFO log
 
 ```json
 {
@@ -1757,7 +1757,7 @@ $time_iso8601  # Встроенная переменная
 }
 ```
 
-### 3.5.3. Error лог
+### 3.5.3. Error log
 
 ```json
 {
@@ -1867,17 +1867,17 @@ $time_iso8601  # Встроенная переменная
 
 ---
 
-**Summary раздела 3:**
+**Section 3 Summary:**
 
-| Компонент | Требование |
+| Component | Requirement |
 |-----------|-----------|
-| **Формат** | JSON (NDJSON для файлов) |
-| **Timestamp** | ISO 8601 UTC с миллисекундами |
-| **Обязательные поля** | timestamp, level, service, message |
-| **Рекомендуемые поля** | request_id, trace_id, user_id |
-| **Дополнительные поля** | event_type, duration_ms, data, error_* |
+| **Format** | JSON (NDJSON for files) |
+| **Timestamp** | ISO 8601 UTC with milliseconds |
+| **Mandatory fields** | timestamp, level, service, message |
+| **Recommended fields** | request_id, trace_id, user_id |
+| **Additional fields** | event_type, duration_ms, data, error_* |
 
-Следующий раздел: **Log Levels** - детальная спецификация уровней логирования.
+Next Section: **Log Levels** - detailed specification of logging levels.
 
 
 ---
