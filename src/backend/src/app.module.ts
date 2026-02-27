@@ -19,6 +19,7 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 import { CrmModule } from './modules/crm/crm.module';
 import { AiModule } from './modules/ai/ai.module';
 import { MediaModule } from './modules/media/media.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -59,6 +60,7 @@ import googleMapsConfig from './config/google-maps.config';
     CrmModule,
     AiModule,
     MediaModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [
