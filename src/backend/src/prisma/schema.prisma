@@ -137,6 +137,7 @@ model User {
   aiRequestsLog         AiRequestLog[]
   eventsAsActor         EventLog[]  @relation("EventActor")
   crmStatusChanges      CrmStatusHistory[]
+  searchLogs            SearchLog[] @relation("SearchLogs")
 
   @@index([email])
   @@index([role])
@@ -283,6 +284,7 @@ model Warehouse {
   reviews               Review[]
   favorites             Favorite[]
   crmLeads              CrmLead[]
+  searchLogClicks       SearchLog[] @relation("SearchLogClicks")
 
   @@index([operatorId])
   @@index([status])
@@ -420,6 +422,7 @@ model Booking {
   warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
   box                   Box       @relation(fields: [boxId], references: [id], onDelete: Restrict)
   review                Review?
+  searchLogConversions  SearchLog[] @relation("SearchLogConversions")
 
   @@index([userId])
   @@index([warehouseId])
@@ -688,8 +691,50 @@ model EventLog {
 }
 
 // ================================================================
-// SUPPORTING DOMAIN (1 table)
+// SUPPORTING DOMAIN (2 tables)
 // ================================================================
+
+model SearchLog {
+  id                    Int       @id @default(autoincrement())
+  userId                String?   @map("user_id") @db.Uuid
+
+  // Search Query
+  queryText             String?   @map("query_text") @db.VarChar(500)
+  filters               Json?     @db.JsonB
+
+  // Search Context
+  emirate               String?   @db.VarChar(100)
+  boxSize               String?   @map("box_size") @db.VarChar(10)
+  maxPrice              Int?      @map("max_price") @db.Integer
+
+  // Results
+  resultsCount          Int       @map("results_count") @db.Integer
+  resultIds             Json?     @map("result_ids") @db.JsonB
+
+  // User Interaction
+  clickedWarehouseId    Int?      @map("clicked_warehouse_id")
+  clickedAt             DateTime? @map("clicked_at") @db.Timestamptz(6)
+  conversionBookingId   Int?      @map("conversion_booking_id")
+
+  // Session Tracking
+  sessionId             String?   @map("session_id") @db.VarChar(100)
+  ipAddress             String?   @map("ip_address") @db.VarChar(45)
+  userAgent             String?   @map("user_agent") @db.VarChar(500)
+
+  // Timestamps
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  user                  User?     @relation("SearchLogs", fields: [userId], references: [id], onDelete: SetNull)
+  clickedWarehouse      Warehouse? @relation("SearchLogClicks", fields: [clickedWarehouseId], references: [id], onDelete: SetNull)
+  conversionBooking     Booking?  @relation("SearchLogConversions", fields: [conversionBookingId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@index([clickedWarehouseId])
+  @@map("search_logs")
+}
 
 model GeoCache {
   id                    Int       @id @default(autoincrement())

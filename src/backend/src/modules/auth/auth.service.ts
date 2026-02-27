@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -15,6 +16,7 @@ import { LoginDto } from './dto/login.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from '@prisma/client';
+import { UserRegisteredEvent } from '../../common/events/user.events';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +24,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -60,6 +63,12 @@ export class AuthService {
         avatarUrl: true,
       },
     });
+
+    // Emit event
+    this.eventEmitter.emit(
+      'user.registered',
+      new UserRegisteredEvent(user.id, user.email, user.role),
+    );
 
     return {
       user,

@@ -1,5 +1,5 @@
 # CLAUDE.md — Self-Storage Aggregator: Development Phase
-# Version: 3.0 (Development)
+# Version: 3.1 (Development + AI Readiness)
 
 ## PROJECT OVERVIEW
 
@@ -26,8 +26,9 @@ MVP v1 — monolithic architecture, single deployment.
 | **Email** | SendGrid | Transactional emails |
 | **SMS** | Twilio + WhatsApp Business API | Notifications |
 | **Maps** | Google Maps API | Geocoding, display |
-| **Payments** | Stripe | Post-MVP (manual in MVP) |
+| **Payments** | Paddle | Merchant of Record, handles VAT |
 | **AI** | Anthropic Claude API | Box-finder only in MVP |
+| **Events** | @nestjs/event-emitter | Internal event bus for AI data pipeline |
 | **Frontend** | Next.js 14 (App Router) | SSR for public, CSR for auth |
 | **CSS** | Tailwind CSS 3 | Mobile-first |
 | **State** | React Query + Zustand | Server + client state |
@@ -50,6 +51,7 @@ When building any module, ALWAYS reference these docs (priority order):
 6. docs/security/Error_Handling_Fault_Tolerance_Specification.md    → Error patterns
 7. docs/security/Logging_Strategy_CANONICAL_Contract_v2.md          → Logging
 8. docs/security/API_Rate_Limiting_Throttling_Specification.md      → Rate limits
+9. DOC-109_AI_Readiness_Infrastructure_Specification.md             → Event Bus, Activity/Search Logging, RAG
 ```
 
 If any conflict between docs → higher number wins (Functional Spec > all).
@@ -58,7 +60,7 @@ If any conflict between docs → higher number wins (Functional Spec > all).
 
 ## DATABASE SCHEMA (MVP v1)
 
-### Tables (17 total)
+### Tables (18 MVP + 2 RAG + 1 Analytics)
 
 ```
 Users & Auth:
@@ -86,8 +88,15 @@ CRM:
 
 System:
   ai_requests_log          — AI API call logging
-  events_log               — System events audit trail
+  events_log               — System events audit trail (AI training data)
   geo_cache                — Geocoding results cache
+
+RAG (AI-ready, empty in MVP):
+  knowledge_chunks         — Vector embeddings for RAG search
+  ai_conversations         — AI chat history
+
+Analytics (AI training data):
+  search_logs              — Search queries, clicks, conversions
 ```
 
 ### Key Enums (EXACT — do not change)
@@ -225,7 +234,7 @@ Step 9: Favorites Module
   - GET /favorites
 ```
 
-### Phase 4: CRM + AI (Week 7-8)
+### Phase 4: CRM + AI + Event Infrastructure (Week 7-8)
 
 ```
 Step 10: CRM Module
@@ -241,31 +250,53 @@ Step 11: AI Box Finder
   - Graceful fallback if AI unavailable
   - Request logging to ai_requests_log
 
-Step 12: RAG Infrastructure (prepare, don't activate)
+Step 12: Event Bus + Activity Logging (DOC-109)
+  - Install @nestjs/event-emitter
+  - Create event classes (booking, warehouse, box, user, review, crm)
+  - Add event emits to ALL existing services:
+    * BookingsService → booking.created/confirmed/cancelled/completed/expired
+    * WarehousesService → warehouse.created/updated/status_changed
+    * BoxesService → box.created/price_changed
+    * ReviewsService → review.created
+    * CrmService → lead.created/status_changed
+    * AuthService → user.registered/login
+  - Create ActivityLogService → writes events_log
+  - Create ActivityLogListener → listens to all events, logs to DB
+  - Add search_logs table to Prisma schema
+  - Create SearchLogService → logs search queries + clicks + conversions
+  - Add search logging to WarehousesController (search endpoint)
+  - Add click tracking endpoint: POST /search-log/:id/click
+
+Step 13: RAG Infrastructure (prepare, don't activate)
   - Embedding service (utility class)
   - Knowledge chunk CRUD (internal, no API)
   - Vector similarity search function
-  - Warehouse data → embedding pipeline (background job)
+  - RagIndexListener → auto-index on warehouse.created/updated, review.created
+  - Batch reindex command (admin)
   - NOT exposed via API in MVP — only infrastructure ready
 ```
 
 ### Phase 5: Supporting (Week 9-10)
 
 ```
-Step 13: Media/Files Module
+Step 14: Media/Files Module
   - POST /operator/warehouses/:id/media (upload to S3)
   - DELETE /operator/media/:id
   - Image validation (size, format)
   - S3 presigned URLs
 
-Step 14: Notifications Module
+Step 15: Notifications Module
   - Email via SendGrid
   - SMS via Twilio
   - WhatsApp via Twilio Business API
   - Notification templates
-  - Events: booking_created, booking_confirmed, booking_cancelled
+  - NotificationListener → listens to Event Bus:
+    * booking.created → email to operator
+    * booking.confirmed → email + SMS to user
+    * booking.cancelled → email to both
+    * booking.expired → email to user
 
-Step 15: Health + Admin
+Step 16: Health + Admin
   - GET /health
   - Rate limiting (per IP, per user)
   - Request logging middleware
@@ -275,7 +306,7 @@ Step 15: Health + Admin
 ### Phase 6: Frontend (Week 11-14)
 
 ```
-Step 16: Next.js Setup
+Step 17: Next.js Setup
   - Project init (App Router)
   - Tailwind config
   - React Query provider
@@ -283,23 +314,23 @@ Step 16: Next.js Setup
   - Layout (header, footer, nav)
   - Google Maps setup
 
-Step 17: Public Pages
+Step 18: Public Pages
   - / (home + search)
   - /catalog (listing + map + filters)
   - /warehouse/[id] (detail page)
   - /about, /contact, /faq
 
-Step 18: Auth Pages
+Step 19: Auth Pages
   - /auth/login
   - /auth/register
   - /auth/forgot-password
 
-Step 19: User Pages
+Step 20: User Pages
   - /profile
   - /bookings + /bookings/[id]
   - /favorites
 
-Step 20: Operator Pages
+Step 21: Operator Pages
   - /operator/dashboard
   - /operator/warehouses + CRUD
   - /operator/bookings
@@ -317,11 +348,14 @@ src/
 ├── main.ts
 ├── common/
 │   ├── decorators/          # Custom decorators (@CurrentUser, @Roles)
+│   ├── events/              # Domain event classes (booking, warehouse, etc.)
 │   ├── filters/             # Exception filters
 │   ├── guards/              # JwtAuthGuard, RolesGuard
 │   ├── interceptors/        # Logging, Transform
+│   ├── listeners/           # Cross-cutting listeners (activity-log)
 │   ├── middleware/           # Cookie parser, Rate limit
 │   ├── pipes/               # Validation pipe config
+│   ├── services/            # Shared services (activity-log, search-log)
 │   └── utils/               # Helpers
 ├── config/
 │   ├── app.config.ts
@@ -359,6 +393,8 @@ src/
 │   │   ├── ai.service.ts          # Claude API integration
 │   │   ├── embedding.service.ts   # RAG: embedding generation
 │   │   ├── knowledge.service.ts   # RAG: chunk management
+│   │   ├── listeners/
+│   │   │   └── rag-index.listener.ts  # Auto-index on warehouse changes
 │   │   └── dto/
 │   ├── media/
 │   ├── notifications/
@@ -559,6 +595,12 @@ TWILIO_AUTH_TOKEN=your-token
 TWILIO_PHONE_NUMBER=+971...
 TWILIO_WHATSAPP_NUMBER=whatsapp:+971...
 
+# Paddle
+PADDLE_API_KEY=your-key
+PADDLE_WEBHOOK_SECRET=your-webhook-secret
+PADDLE_ENVIRONMENT=sandbox
+PADDLE_SELLER_ID=your-seller-id
+
 # Anthropic (AI)
 ANTHROPIC_API_KEY=your-key
 ANTHROPIC_MODEL=claude-sonnet-4-20250514
@@ -628,3 +670,7 @@ CREATE EXTENSION IF NOT EXISTS "vector";
 8. **Test after each module.** At minimum: service layer unit tests.
 9. **RAG tables exist but are unused in MVP.** Don't expose via API, only prepare infrastructure.
 10. **Commit after each module.** Clean git history.
+11. **Emit events for every state change.** Every service method that changes data MUST emit an event via EventEmitter2. Emit AFTER the DB transaction succeeds. See DOC-109.
+12. **Events are fire-and-forget.** Listener failures MUST NOT break the main flow. Always wrap listeners in try/catch.
+13. **Log user actions to events_log.** Every significant action (search, view, book, cancel) must be logged for future AI training.
+14. **Search queries go to search_logs.** Every warehouse search must log: query, filters, results, timing. Click tracking via separate endpoint.

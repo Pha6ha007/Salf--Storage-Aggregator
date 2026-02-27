@@ -4,17 +4,26 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { BookingStatus, BookingCancelledBy, UserRole } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BoxesService } from '../boxes/boxes.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { CancelBookingDto } from './dto/cancel-booking.dto';
+import {
+  BookingCreatedEvent,
+  BookingConfirmedEvent,
+  BookingCancelledEvent,
+  BookingCompletedEvent,
+  BookingExpiredEvent,
+} from '../../common/events/booking.events';
 
 @Injectable()
 export class BookingsService {
   constructor(
     private prisma: PrismaService,
     private boxesService: BoxesService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   /**
@@ -104,6 +113,19 @@ export class BookingsService {
 
       return newBooking;
     });
+
+    // Emit event
+    this.eventEmitter.emit(
+      'booking.created',
+      new BookingCreatedEvent(
+        booking.id,
+        userId,
+        warehouseId,
+        boxId,
+        priceTotal,
+        userId,
+      ),
+    );
 
     return booking;
   }
@@ -278,6 +300,17 @@ export class BookingsService {
       return updated;
     });
 
+    // Emit event
+    this.eventEmitter.emit(
+      'booking.confirmed',
+      new BookingConfirmedEvent(
+        id,
+        booking.userId,
+        booking.warehouseId,
+        operatorId,
+      ),
+    );
+
     return updatedBooking;
   }
 
@@ -321,6 +354,17 @@ export class BookingsService {
 
       return updated;
     });
+
+    // Emit event
+    this.eventEmitter.emit(
+      'booking.completed',
+      new BookingCompletedEvent(
+        id,
+        booking.userId,
+        booking.warehouseId,
+        operatorId,
+      ),
+    );
 
     return updatedBooking;
   }
@@ -408,6 +452,18 @@ export class BookingsService {
       return updated;
     });
 
+    // Emit event
+    this.eventEmitter.emit(
+      'booking.cancelled',
+      new BookingCancelledEvent(
+        id,
+        booking.userId,
+        booking.warehouseId,
+        cancelledBy,
+        cancelBookingDto.cancelReason,
+      ),
+    );
+
     return updatedBooking;
   }
 
@@ -447,6 +503,16 @@ export class BookingsService {
         // Release box: reserved → available
         await this.boxesService.releaseBox(booking.boxId, 'reserved');
       });
+
+      // Emit event
+      this.eventEmitter.emit(
+        'booking.expired',
+        new BookingExpiredEvent(
+          booking.id,
+          booking.userId,
+          booking.warehouseId,
+        ),
+      );
     }
 
     return { expired: expiredBookings.length };

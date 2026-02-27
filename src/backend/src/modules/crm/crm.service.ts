@@ -3,16 +3,21 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CrmLeadStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { CreateActivityDto } from './dto/create-activity.dto';
+import { LeadCreatedEvent, LeadStatusChangedEvent } from '../../common/events/crm.events';
 
 @Injectable()
 export class CrmService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   /**
    * Create a new lead
@@ -57,6 +62,18 @@ export class CrmService {
         reason: 'Lead created',
       },
     });
+
+    // Emit event
+    this.eventEmitter.emit(
+      'lead.created',
+      new LeadCreatedEvent(
+        lead.id,
+        lead.name,
+        lead.phone,
+        lead.email || undefined,
+        lead.source || undefined,
+      ),
+    );
 
     return lead;
   }
@@ -242,6 +259,20 @@ export class CrmService {
 
       return updated;
     });
+
+    // Emit event if status changed
+    if (updateLeadDto.status && updateLeadDto.status !== existingLead.status) {
+      this.eventEmitter.emit(
+        'lead.status_changed',
+        new LeadStatusChangedEvent(
+          id,
+          existingLead.status,
+          updateLeadDto.status,
+          statusChangeReason,
+          changedByUserId,
+        ),
+      );
+    }
 
     return updatedLead;
   }

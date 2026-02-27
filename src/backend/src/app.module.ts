@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { CommonModule } from './common/common.module';
 import { GoogleMapsModule } from './shared/google-maps/google-maps.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
@@ -35,8 +37,12 @@ import googleMapsConfig from './config/google-maps.config';
     }),
     // Schedule module for cron jobs
     ScheduleModule.forRoot(),
+    // Event emitter module for event-driven architecture
+    EventEmitterModule.forRoot(),
     // Global Prisma module
     PrismaModule,
+    // Global common module (activity logging, search logging)
+    CommonModule,
     // Global shared modules
     GoogleMapsModule,
     // Feature modules
