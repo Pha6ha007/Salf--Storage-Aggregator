@@ -1,0 +1,22 @@
+// Prisma Schema for Self-Storage Aggregator Platform (MVP v1)
+// Database: PostgreSQL 15 + PostGIS + pgvector
+// NOTE: Phase 1 Step 1 - Schema structure only. Full schema will be added in Step 2.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Placeholder model - full schema will be added in Phase 1, Step 2
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("users")
+}
