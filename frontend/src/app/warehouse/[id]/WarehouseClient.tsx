@@ -32,7 +32,7 @@ export function WarehouseClient() {
     queryFn: async () => {
       try {
         return await warehousesApi.getReviews(id);
-      } catch (error) {
+      } catch {
         // Reviews may require auth - return empty array if unauthorized
         return [];
       }
@@ -63,7 +63,7 @@ export function WarehouseClient() {
         <main className="flex-grow bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Warehouse Not Found</h1>
-            <p className="text-gray-600 mb-4">The warehouse you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-4">The warehouse you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/catalog" className="text-blue-600 hover:text-blue-800">
               Return to Catalog
             </Link>
@@ -74,7 +74,7 @@ export function WarehouseClient() {
     );
   }
 
-  const availableBoxes = boxes.filter((b: any) => b.status === 'available');
+  const availableBoxes = boxes.filter((b) => b.status === 'available');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -145,7 +145,7 @@ export function WarehouseClient() {
                         {Number(warehouse.rating).toFixed(1)}
                       </span>
                       <span className="text-sm text-gray-500 ml-1">
-                        ({warehouse.reviewCount} reviews)
+                        ({warehouse.totalReviews} reviews)
                       </span>
                     </div>
                   )}
@@ -195,7 +195,7 @@ export function WarehouseClient() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
                   Available Units
                 </h2>
-                <BoxList boxes={boxes} warehouseId={warehouse.id} />
+                <BoxList boxes={boxes} />
               </div>
 
               {/* Reviews */}
@@ -225,35 +225,35 @@ export function WarehouseClient() {
 
                 {warehouse.operator && (
                   <div className="space-y-3">
-                    {warehouse.operator.companyName && (
+                    {warehouse.operator.businessName && (
                       <div>
                         <p className="text-sm text-gray-500">Operator</p>
                         <p className="font-semibold text-gray-900">
-                          {warehouse.operator.companyName}
+                          {warehouse.operator.businessName}
                         </p>
                       </div>
                     )}
 
-                    {warehouse.contactEmail && (
+                    {warehouse.operator.contactEmail && (
                       <div>
                         <p className="text-sm text-gray-500">Email</p>
                         <a
-                          href={`mailto:${warehouse.contactEmail}`}
+                          href={`mailto:${warehouse.operator.contactEmail}`}
                           className="text-blue-600 hover:text-blue-800"
                         >
-                          {warehouse.contactEmail}
+                          {warehouse.operator.contactEmail}
                         </a>
                       </div>
                     )}
 
-                    {warehouse.contactPhone && (
+                    {warehouse.operator.contactPhone && (
                       <div>
                         <p className="text-sm text-gray-500">Phone</p>
                         <a
-                          href={`tel:${warehouse.contactPhone}`}
+                          href={`tel:${warehouse.operator.contactPhone}`}
                           className="text-blue-600 hover:text-blue-800"
                         >
-                          {warehouse.contactPhone}
+                          {warehouse.operator.contactPhone}
                         </a>
                       </div>
                     )}

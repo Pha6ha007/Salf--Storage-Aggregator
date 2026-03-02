@@ -21,7 +21,7 @@ export default function AboutPage() {
 
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-600 mb-8">
-              We are the UAE's leading platform for finding and comparing self-storage solutions.
+              We are the UAE&apos;s leading platform for finding and comparing self-storage solutions.
               Our mission is to make storage simple, transparent, and accessible to everyone.
             </p>
 
@@ -30,7 +30,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-gray-700 mb-6">
               StorageCompare.ae was founded to address a common challenge in the UAE: finding
-              reliable, affordable storage space. Whether you're moving homes, decluttering,
+              reliable, affordable storage space. Whether you&apos;re moving homes, decluttering,
               storing business inventory, or need temporary storage during renovations, we make
               it easy to find the perfect solution.
             </p>

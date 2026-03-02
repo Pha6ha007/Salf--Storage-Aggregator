@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from '@/components/Header';
@@ -27,8 +27,6 @@ export function CatalogClient() {
     features: [],
   });
 
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
-
   // Build search params for API
   const buildSearchParams = (): WarehouseSearchParams => {
     const params: WarehouseSearchParams = {
@@ -38,7 +36,6 @@ export function CatalogClient() {
       sortOrder: 'desc',
     };
 
-    if (searchQuery) params.search = searchQuery;
     if (filters.emirate) params.emirate = filters.emirate;
 
     return params;
@@ -65,11 +62,7 @@ export function CatalogClient() {
         {/* Search Bar */}
         <div className="bg-white border-b">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-            <SearchBar
-              defaultQuery={searchQuery}
-              defaultEmirate={filters.emirate}
-              defaultBoxSize={filters.boxSize}
-            />
+            <SearchBar variant="compact" />
           </div>
         </div>
 

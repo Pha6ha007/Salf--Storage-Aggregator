@@ -169,7 +169,7 @@ export default function OperatorWarehousesPage() {
                     <div>
                       <p className="text-xs text-text-secondary">Rating</p>
                       <p className="text-lg font-semibold text-text-primary">
-                        {warehouse.rating?.toFixed(1) || 'N/A'}
+                        {warehouse.rating ? Number(warehouse.rating).toFixed(1) : 'N/A'}
                       </p>
                     </div>
                   </div>

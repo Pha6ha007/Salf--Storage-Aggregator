@@ -33,7 +33,7 @@ export default function OperatorBookingsPage() {
   });
 
   const confirmMutation = useMutation({
-    mutationFn: operatorBookingsApi.confirm,
+    mutationFn: (id: number) => operatorBookingsApi.confirm(id),
     onSuccess: () => {
       toast.success('Booking confirmed successfully');
       queryClient.invalidateQueries({ queryKey: ['operatorBookings'] });

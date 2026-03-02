@@ -58,7 +58,7 @@ const registerSchema = z
         /^\+\d{10,15}$/,
         'Enter a valid phone number (e.g. +971501234567)'
       ),
-    role: z.enum(['user', 'operator']).default('user'),
+    role: z.enum(['user', 'operator']),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters')
@@ -71,12 +71,8 @@ const registerSchema = z
         'Must contain a special character'
       ),
     password_confirmation: z.string().min(1, 'Please confirm your password'),
-    agree_to_terms: z.literal(true, {
-      errorMap: () => ({ message: 'You must agree to the Terms of Service' }),
-    }),
-    agree_to_privacy: z.literal(true, {
-      errorMap: () => ({ message: 'You must agree to the Privacy Policy' }),
-    }),
+    agree_to_terms: z.boolean().refine(val => val === true, { message: 'You must agree to the Terms of Service' }),
+    agree_to_privacy: z.boolean().refine(val => val === true, { message: 'You must agree to the Privacy Policy' }),
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: 'Passwords do not match',
@@ -141,7 +137,7 @@ export default function RegisterPage() {
       } else if (errorCode === 'VALIDATION_ERROR' && errorDetails) {
         // Show first validation error
         const firstError = Object.values(errorDetails)[0];
-        setApiError(Array.isArray(firstError) ? firstError[0] : errorMessage);
+        setApiError((Array.isArray(firstError) ? firstError[0] : errorMessage) || 'Validation error occurred');
       } else {
         setApiError(errorMessage || 'An error occurred. Please try again.');
       }

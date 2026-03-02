@@ -29,6 +29,18 @@ export interface Warehouse {
     contactEmail: string | null;
     contactPhone: string | null;
   };
+
+  // Computed/aggregated fields (from backend)
+  total_boxes?: number;
+  available_boxes?: number;
+  occupied_boxes?: number;
+
+  // Feature flags (alternative representation of features)
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasParkingSpace?: boolean;
+  hasInsurance?: boolean;
 }
 
 export interface Box {

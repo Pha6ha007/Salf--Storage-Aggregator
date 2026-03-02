@@ -53,7 +53,7 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
     <div
       className={`${
         isHero
-          ? "w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-4"
+          ? "w-full max-w-4xl mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-2"
           : "flex items-center gap-2"
       }`}
     >
@@ -69,8 +69,8 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
           <Select value={emirate} onValueChange={setEmirate}>
             <SelectTrigger
               className={`${
-                isHero ? "h-12" : "h-10"
-              } border-border bg-white`}
+                isHero ? "h-12 rounded-xl" : "h-10"
+              } border-0 bg-surface focus:ring-2 focus:ring-primary-400/50 transition-shadow`}
             >
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-text-muted" />
@@ -92,8 +92,8 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
           <Select value={boxSize} onValueChange={setBoxSize}>
             <SelectTrigger
               className={`${
-                isHero ? "h-12" : "h-10"
-              } border-border bg-white`}
+                isHero ? "h-12 rounded-xl" : "h-10"
+              } border-0 bg-surface focus:ring-2 focus:ring-primary-400/50 transition-shadow`}
             >
               <div className="flex items-center gap-2">
                 <Package className="w-4 h-4 text-text-muted" />
@@ -114,8 +114,8 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
         <Button
           onClick={handleSearch}
           className={`${
-            isHero ? "h-12" : "h-10"
-          } bg-accent-500 hover:bg-accent-600 text-white font-semibold`}
+            isHero ? "h-12 rounded-xl" : "h-10"
+          } bg-accent-500 hover:bg-accent-600 hover:shadow-glow-accent active:scale-[0.98] text-white font-semibold transition-all duration-150`}
         >
           <Search className="w-4 h-4 mr-2" />
           Search

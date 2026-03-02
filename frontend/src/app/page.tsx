@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Search, Package, CheckCircle, MapPin, Sparkles } from "lucide-react";
 import { Header } from "@/components/Header";
@@ -6,6 +8,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { WarehouseCard } from "@/components/WarehouseCard";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useInView } from "@/hooks/useInView";
 
 // Mock data for featured warehouses
 const FEATURED_WAREHOUSES = [
@@ -93,16 +96,22 @@ const POPULAR_AREAS = [
 ];
 
 export default function Home() {
+  const [howItWorksRef, howItWorksInView] = useInView();
+  const [popularAreasRef, popularAreasInView] = useInView();
+  const [featuredRef, featuredInView] = useInView();
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white py-20 md:py-32">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-gradient-to-br from-primary-950 via-primary-800 to-primary-700 text-white py-20 md:py-32 overflow-hidden hero-pattern">
+          <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 via-transparent to-transparent animate-pulse-soft pointer-events-none" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight-hero leading-heading mb-6">
                 Find Storage in the UAE
               </h1>
               <p className="text-xl md:text-2xl text-primary-100 mb-8 max-w-3xl mx-auto">
@@ -129,7 +138,12 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section className="py-16 md:py-24 bg-white">
+        <section
+          ref={howItWorksRef}
+          className={`py-16 md:py-24 bg-white transition-all duration-700 ${
+            howItWorksInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-2xl md:text-3xl font-semibold text-text-primary">
@@ -185,7 +199,12 @@ export default function Home() {
         </section>
 
         {/* Popular Areas */}
-        <section className="py-16 md:py-24 bg-surface">
+        <section
+          ref={popularAreasRef}
+          className={`py-16 md:py-24 bg-surface transition-all duration-700 ${
+            popularAreasInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-2xl md:text-3xl font-semibold text-text-primary">
@@ -198,8 +217,8 @@ export default function Home() {
                   key={area.emirate}
                   href={`/catalog?emirate=${area.emirate}`}
                 >
-                  <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
-                    <MapPin className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+                  <Card className="p-6 text-center hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200 cursor-pointer border border-border hover:border-primary-200 group">
+                    <MapPin className="w-8 h-8 text-primary-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
                     <h3 className="font-semibold text-text-primary">
                       {area.name}
                     </h3>
@@ -214,7 +233,12 @@ export default function Home() {
         </section>
 
         {/* Featured Warehouses */}
-        <section className="py-16 md:py-24 bg-white">
+        <section
+          ref={featuredRef}
+          className={`py-16 md:py-24 bg-white transition-all duration-700 ${
+            featuredInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-2xl md:text-3xl font-semibold text-text-primary">
@@ -225,8 +249,18 @@ export default function Home() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {FEATURED_WAREHOUSES.map((warehouse) => (
-                <WarehouseCard key={warehouse.id} warehouse={warehouse} />
+              {FEATURED_WAREHOUSES.map((warehouse, i) => (
+                <div
+                  key={warehouse.id}
+                  className="animate-fade-in-up"
+                  style={{
+                    animationDelay: `${i * 60}ms`,
+                    animationFillMode: 'both',
+                    opacity: featuredInView ? 1 : 0,
+                  }}
+                >
+                  <WarehouseCard warehouse={warehouse} />
+                </div>
               ))}
             </div>
             <div className="text-center mt-8">

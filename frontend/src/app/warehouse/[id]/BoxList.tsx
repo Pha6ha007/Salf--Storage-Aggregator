@@ -3,10 +3,9 @@ import type { Box } from '@/types/warehouse';
 
 interface BoxListProps {
   boxes: Box[];
-  warehouseId: string;
 }
 
-export function BoxList({ boxes, warehouseId }: BoxListProps) {
+export function BoxList({ boxes }: BoxListProps) {
   const sortedBoxes = [...boxes].sort((a, b) => a.pricePerMonth - b.pricePerMonth);
 
   if (boxes.length === 0) {

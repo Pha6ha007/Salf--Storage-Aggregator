@@ -19,7 +19,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-xl text-gray-600">
-              Have questions? We'd love to hear from you.
+              Have questions? We&apos;d love to hear from you.
             </p>
           </div>
 

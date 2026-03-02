@@ -1,5 +1,5 @@
 import api from '../api';
-import type { User, UserResponse } from '@/types/auth';
+import type { UserResponse } from '@/types/auth';
 
 export interface UpdateProfileDto {
   name?: string;

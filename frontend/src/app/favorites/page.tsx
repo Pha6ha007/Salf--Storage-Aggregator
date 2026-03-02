@@ -24,11 +24,11 @@ export default function FavoritesPage() {
       await queryClient.cancelQueries({ queryKey: ['favorites'] });
       const previousFavorites = queryClient.getQueryData(['favorites', { page }]);
 
-      queryClient.setQueryData(['favorites', { page }], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueryData(['favorites', { page }], (old: unknown) => {
+        if (!old || typeof old !== 'object' || !('data' in old)) return old;
         return {
           ...old,
-          data: old.data.filter((fav: any) => fav.warehouse_id !== warehouseId),
+          data: (old.data as Array<{ warehouse_id: number }>).filter((fav) => fav.warehouse_id !== warehouseId),
         };
       });
 
