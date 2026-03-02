@@ -11,6 +11,7 @@ import { RagService } from './services/rag.service';
 import { WhatsAppController } from './controllers/whatsapp.controller';
 import { WebChatController } from './controllers/webchat.controller';
 import { ChatRateLimitGuard } from './guards/chat-rate-limit.guard';
+import { RagIndexListener } from './listeners/rag-index.listener';
 import { CrmModule } from '../crm/crm.module';
 
 @Module({
@@ -25,6 +26,8 @@ import { CrmModule } from '../crm/crm.module';
     LeadCaptureService,          // Fifth - depends on CRM
     WhatsAppService,             // Sixth - external API (Twilio)
     ConversationEngineService,   // Last - orchestrates all above
+    // Listeners
+    RagIndexListener,            // Auto-index warehouses on create/update
     // Guards
     ChatRateLimitGuard,          // Rate limiting guard
   ],
