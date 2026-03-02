@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as sgMail from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail';
 import { Twilio } from 'twilio';
 
 /**
@@ -27,12 +27,20 @@ export class NotificationService {
     // Initialize SendGrid
     const sendGridApiKey = this.configService.get<string>('SENDGRID_API_KEY');
     if (sendGridApiKey) {
-      sgMail.setApiKey(sendGridApiKey);
-      this.sendGridClient = sgMail;
-      this.fromEmail =
-        this.configService.get<string>('SENDGRID_FROM') ||
-        'noreply@storagecompare.ae';
-      this.logger.log('SendGrid client initialized');
+      try {
+        sgMail.setApiKey(sendGridApiKey);
+        this.sendGridClient = sgMail;
+        this.fromEmail =
+          this.configService.get<string>('SENDGRID_FROM') ||
+          'noreply@storagecompare.ae';
+        this.logger.log('SendGrid client initialized');
+      } catch (error) {
+        this.sendGridClient = null;
+        this.fromEmail = '';
+        this.logger.warn(
+          `SendGrid initialization failed: ${error.message} - email disabled`,
+        );
+      }
     } else {
       this.sendGridClient = null;
       this.fromEmail = '';
@@ -43,12 +51,21 @@ export class NotificationService {
     const twilioAccountSid = this.configService.get<string>('TWILIO_ACCOUNT_SID');
     const twilioAuthToken = this.configService.get<string>('TWILIO_AUTH_TOKEN');
     if (twilioAccountSid && twilioAuthToken) {
-      this.twilioClient = new Twilio(twilioAccountSid, twilioAuthToken);
-      this.fromPhone =
-        this.configService.get<string>('TWILIO_PHONE_NUMBER') || '';
-      this.fromWhatsApp =
-        this.configService.get<string>('TWILIO_WHATSAPP_NUMBER') || '';
-      this.logger.log('Twilio client initialized');
+      try {
+        this.twilioClient = new Twilio(twilioAccountSid, twilioAuthToken);
+        this.fromPhone =
+          this.configService.get<string>('TWILIO_PHONE_NUMBER') || '';
+        this.fromWhatsApp =
+          this.configService.get<string>('TWILIO_WHATSAPP_NUMBER') || '';
+        this.logger.log('Twilio client initialized');
+      } catch (error) {
+        this.twilioClient = null;
+        this.fromPhone = '';
+        this.fromWhatsApp = '';
+        this.logger.warn(
+          `Twilio initialization failed: ${error.message} - SMS/WhatsApp disabled`,
+        );
+      }
     } else {
       this.twilioClient = null;
       this.fromPhone = '';

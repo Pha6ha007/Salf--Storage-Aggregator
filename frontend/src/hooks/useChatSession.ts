@@ -47,6 +47,42 @@ export function useChatSession(): ChatState & ChatActions {
     setIsOpen(wasOpen);
   }, []);
 
+  // Define loadHistory before it's used in useEffect
+  const loadHistory = useCallback(async () => {
+    if (!sessionId) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await getChatHistory(sessionId);
+      setMessages(response.data.messages);
+
+      // Add greeting if no messages
+      if (response.data.messages.length === 0) {
+        const greetingMessage: ChatMessage = {
+          id: `greeting_${Date.now()}`,
+          role: 'assistant',
+          content: 'Hi! Looking for storage in the UAE? I can help you find the perfect warehouse!',
+          created_at: new Date().toISOString(),
+        };
+        setMessages([greetingMessage]);
+
+        // Default suggestions
+        setSuggestions([
+          'Find storage near me',
+          'What sizes do you have?',
+          'Show me prices',
+        ]);
+      }
+    } catch (err) {
+      console.error('Failed to load chat history:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load history');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [sessionId]);
+
   // Load chat history when session is ready
   useEffect(() => {
     if (sessionId && !hasLoadedHistory.current) {
@@ -102,41 +138,6 @@ export function useChatSession(): ChatState & ChatActions {
   const clearError = useCallback(() => {
     setError(null);
   }, []);
-
-  const loadHistory = useCallback(async () => {
-    if (!sessionId) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await getChatHistory(sessionId);
-      setMessages(response.data.messages);
-
-      // Add greeting if no messages
-      if (response.data.messages.length === 0) {
-        const greetingMessage: ChatMessage = {
-          id: `greeting_${Date.now()}`,
-          role: 'assistant',
-          content: 'Hi! Looking for storage in the UAE? I can help you find the perfect warehouse!',
-          created_at: new Date().toISOString(),
-        };
-        setMessages([greetingMessage]);
-
-        // Default suggestions
-        setSuggestions([
-          'Find storage near me',
-          'What sizes do you have?',
-          'Show me prices',
-        ]);
-      }
-    } catch (err) {
-      console.error('Failed to load chat history:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load history');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [sessionId]);
 
   const sendMessage = useCallback(
     async (message: string) => {

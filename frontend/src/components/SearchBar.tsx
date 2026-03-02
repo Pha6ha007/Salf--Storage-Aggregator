@@ -17,7 +17,7 @@ interface SearchBarProps {
 }
 
 const EMIRATES = [
-  { value: "", label: "All Emirates" },
+  { value: "all", label: "All Emirates" },
   { value: "dubai", label: "Dubai" },
   { value: "abu-dhabi", label: "Abu Dhabi" },
   { value: "sharjah", label: "Sharjah" },
@@ -28,7 +28,7 @@ const EMIRATES = [
 ];
 
 const BOX_SIZES = [
-  { value: "", label: "Any Size" },
+  { value: "any", label: "Any Size" },
   { value: "small", label: "Small (1-3m²)" },
   { value: "medium", label: "Medium (3-6m²)" },
   { value: "large", label: "Large (6-12m²)" },
@@ -37,13 +37,13 @@ const BOX_SIZES = [
 
 export function SearchBar({ variant = "hero" }: SearchBarProps) {
   const router = useRouter();
-  const [emirate, setEmirate] = useState("");
-  const [boxSize, setBoxSize] = useState("");
+  const [emirate, setEmirate] = useState("all");
+  const [boxSize, setBoxSize] = useState("any");
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (emirate) params.set("emirate", emirate);
-    if (boxSize) params.set("size", boxSize);
+    if (emirate && emirate !== "all") params.set("emirate", emirate);
+    if (boxSize && boxSize !== "any") params.set("size", boxSize);
     router.push(`/catalog?${params.toString()}`);
   };
 
@@ -79,7 +79,7 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
             </SelectTrigger>
             <SelectContent>
               {EMIRATES.map((e) => (
-                <SelectItem key={e.value || "all"} value={e.value}>
+                <SelectItem key={e.value} value={e.value}>
                   {e.label}
                 </SelectItem>
               ))}
@@ -102,7 +102,7 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
             </SelectTrigger>
             <SelectContent>
               {BOX_SIZES.map((s) => (
-                <SelectItem key={s.value || "any"} value={s.value}>
+                <SelectItem key={s.value} value={s.value}>
                   {s.label}
                 </SelectItem>
               ))}

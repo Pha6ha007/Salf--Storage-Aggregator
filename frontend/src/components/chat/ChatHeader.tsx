@@ -14,7 +14,7 @@ export function ChatHeader({
   isMinimized = false,
 }: ChatHeaderProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-t-lg flex items-center justify-between">
+    <div className="bg-gradient-to-r from-blue-600/95 to-blue-700/95 backdrop-blur-lg text-white px-4 py-3 rounded-t-2xl flex items-center justify-between">
       {/* Title and Status */}
       <div className="flex items-center space-x-3">
         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">

@@ -16,8 +16,13 @@ export class WhatsAppService {
       'whatsapp:+14155238886'; // Sandbox default
 
     if (accountSid && authToken) {
-      this.twilioClient = twilio.default(accountSid, authToken);
-      this.logger.log('Twilio WhatsApp client initialized');
+      try {
+        this.twilioClient = twilio.default(accountSid, authToken);
+        this.logger.log('Twilio WhatsApp client initialized');
+      } catch (error) {
+        this.logger.warn(`Twilio initialization failed: ${error.message} - WhatsApp disabled`);
+        this.twilioClient = null;
+      }
     } else {
       this.logger.warn('Twilio credentials not found - WhatsApp disabled');
       this.twilioClient = null;

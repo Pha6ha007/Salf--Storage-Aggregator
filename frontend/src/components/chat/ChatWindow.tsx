@@ -35,8 +35,8 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
   return (
     <div
       className={cn(
-        'fixed bottom-20 right-6 w-[380px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col transition-all duration-300 z-50',
-        isMinimized ? 'h-[60px]' : 'h-[600px]',
+        'fixed bottom-20 right-6 w-[400px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col transition-all duration-300 z-50 animate-scale-in',
+        isMinimized ? 'h-[60px]' : 'h-[550px]',
       )}
     >
       {/* Header */}
