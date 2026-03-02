@@ -24,17 +24,23 @@ export const warehousesApi = {
   list: async (params: WarehouseSearchParams): Promise<WarehouseListResponse> => {
     const queryParams = new URLSearchParams();
 
-    if (params.query) queryParams.append('query', params.query);
+    if (params.search) queryParams.append('search', params.search);
     if (params.emirate) queryParams.append('emirate', params.emirate);
-    if (params.minPrice) queryParams.append('minPrice', params.minPrice.toString());
-    if (params.maxPrice) queryParams.append('maxPrice', params.maxPrice.toString());
-    if (params.boxSize) queryParams.append('boxSize', params.boxSize);
+    if (params.district) queryParams.append('district', params.district);
+    if (params.hasClimateControl !== undefined) queryParams.append('hasClimateControl', params.hasClimateControl.toString());
+    if (params.has24x7Access !== undefined) queryParams.append('has24x7Access', params.has24x7Access.toString());
+    if (params.hasSecurityCameras !== undefined) queryParams.append('hasSecurityCameras', params.hasSecurityCameras.toString());
+    if (params.hasInsurance !== undefined) queryParams.append('hasInsurance', params.hasInsurance.toString());
+    if (params.hasParkingSpace !== undefined) queryParams.append('hasParkingSpace', params.hasParkingSpace.toString());
+    if (params.minRating) queryParams.append('minRating', params.minRating.toString());
     if (params.latitude) queryParams.append('latitude', params.latitude.toString());
     if (params.longitude) queryParams.append('longitude', params.longitude.toString());
-    if (params.radius) queryParams.append('radius', params.radius.toString());
-    if (params.sort) queryParams.append('sort', params.sort);
+    if (params.radiusKm) queryParams.append('radiusKm', params.radiusKm.toString());
+    if (params.status) queryParams.append('status', params.status);
+    if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());
-    if (params.offset) queryParams.append('offset', params.offset.toString());
+    if (params.sortBy) queryParams.append('sortBy', params.sortBy);
+    if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
 
     const response = await api.get<WarehouseListResponse>(
       `/warehouses?${queryParams.toString()}`

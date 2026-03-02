@@ -67,20 +67,19 @@ export function Header() {
 
           {/* Right Side - Desktop */}
           <div className="hidden md:flex items-center gap-3">
-            {user?.role === "operator" && (
-              <Link href="/operator/dashboard">
+            {user?.role === "operator" ? (
+              <Link href="/operator/dashboard" key="operator-dashboard">
                 <Button variant="ghost" className="text-primary-600">
                   Dashboard
                 </Button>
               </Link>
-            )}
-            {!isAuthenticated && (
-              <Link href="/operator/dashboard">
+            ) : !isAuthenticated ? (
+              <Link href="/operator/dashboard" key="operator-signup">
                 <Button variant="ghost" className="text-primary-600">
                   For Operators
                 </Button>
               </Link>
-            )}
+            ) : null}
 
             {isAuthenticated && user ? (
               <DropdownMenu>
@@ -166,24 +165,25 @@ export function Header() {
                     </Link>
                   ))}
                   <hr className="border-border" />
-                  {user?.role === "operator" && (
+                  {user?.role === "operator" ? (
                     <Link
                       href="/operator/dashboard"
+                      key="mobile-operator-dashboard"
                       className="text-base font-medium text-primary-600"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Dashboard
                     </Link>
-                  )}
-                  {!isAuthenticated && (
+                  ) : !isAuthenticated ? (
                     <Link
                       href="/operator/dashboard"
+                      key="mobile-operator-signup"
                       className="text-base font-medium text-primary-600"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       For Operators
                     </Link>
-                  )}
+                  ) : null}
                   {isAuthenticated && user ? (
                     <>
                       <Link

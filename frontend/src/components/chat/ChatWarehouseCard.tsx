@@ -41,7 +41,7 @@ export function ChatWarehouseCard({ warehouse }: ChatWarehouseCardProps) {
               <div className="flex items-center space-x-1">
                 <RatingStars rating={warehouse.rating} size="sm" />
                 <span className="text-xs text-gray-600">
-                  {warehouse.rating.toFixed(1)}
+                  {typeof warehouse.rating === 'number' ? warehouse.rating.toFixed(1) : parseFloat(warehouse.rating).toFixed(1)}
                 </span>
               </div>
             )}

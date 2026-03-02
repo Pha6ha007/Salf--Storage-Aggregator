@@ -36,11 +36,14 @@ api.interceptors.response.use(
 
     // If error is 401 and we haven't tried to refresh yet
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Skip refresh for auth endpoints themselves
+      // Skip refresh for auth endpoints, public endpoints that may return 401
       if (
         originalRequest.url?.includes('/auth/login') ||
         originalRequest.url?.includes('/auth/register') ||
-        originalRequest.url?.includes('/auth/refresh')
+        originalRequest.url?.includes('/auth/refresh') ||
+        originalRequest.url?.includes('/users/me') ||
+        originalRequest.url?.includes('/reviews') || // Reviews may require auth
+        originalRequest.url?.includes('/boxes')     // Boxes endpoint may require auth
       ) {
         return Promise.reject(error);
       }
@@ -76,14 +79,18 @@ api.interceptors.response.use(
         processQueue(refreshError as Error);
         isRefreshing = false;
 
-        // Redirect to login only in browser
+        // Don't auto-redirect to login - let the page handle 401 errors
+        // Only redirect if the original request was to a protected endpoint
         if (typeof window !== 'undefined') {
-          // Store the current path to redirect back after login
           const currentPath = window.location.pathname;
-          if (currentPath !== '/auth/login' && currentPath !== '/auth/register') {
+          const isProtectedPage =
+            currentPath.startsWith('/profile') ||
+            currentPath.startsWith('/bookings') ||
+            currentPath.startsWith('/favorites') ||
+            currentPath.startsWith('/operator');
+
+          if (isProtectedPage && currentPath !== '/auth/login' && currentPath !== '/auth/register') {
             window.location.href = `/auth/login?redirect=${encodeURIComponent(currentPath)}`;
-          } else {
-            window.location.href = '/auth/login';
           }
         }
 

@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 
 interface RatingStarsProps {
-  rating: number;
+  rating: number | string;
   reviewCount?: number;
   showCount?: boolean;
   size?: "sm" | "md" | "lg";
@@ -25,6 +25,9 @@ export function RatingStars({
     lg: "text-base",
   };
 
+  // Convert rating to number in case it comes as a string from API
+  const numericRating = typeof rating === 'number' ? rating : parseFloat(rating) || 0;
+
   return (
     <div className="flex items-center gap-1">
       <div className="flex items-center">
@@ -32,7 +35,7 @@ export function RatingStars({
           <Star
             key={star}
             className={`${sizeClasses[size]} ${
-              star <= Math.round(rating)
+              star <= Math.round(numericRating)
                 ? "fill-accent-500 text-accent-500"
                 : "fill-gray-200 text-gray-200"
             }`}
@@ -41,7 +44,7 @@ export function RatingStars({
       </div>
       {showCount && (
         <span className={`${textSizeClasses[size]} text-text-secondary ml-1`}>
-          {rating.toFixed(1)} ({reviewCount})
+          {numericRating.toFixed(1)} ({reviewCount})
         </span>
       )}
     </div>

@@ -33,15 +33,13 @@ export function CatalogClient() {
   const buildSearchParams = (): WarehouseSearchParams => {
     const params: WarehouseSearchParams = {
       limit: pageSize,
-      offset: currentPage * pageSize,
-      sort: 'rating',
+      page: currentPage + 1, // Backend uses 1-based page numbering
+      sortBy: 'rating',
+      sortOrder: 'desc',
     };
 
-    if (searchQuery) params.query = searchQuery;
+    if (searchQuery) params.search = searchQuery;
     if (filters.emirate) params.emirate = filters.emirate;
-    if (filters.boxSize) params.boxSize = filters.boxSize;
-    if (filters.minPrice) params.minPrice = parseFloat(filters.minPrice);
-    if (filters.maxPrice) params.maxPrice = parseFloat(filters.maxPrice);
 
     return params;
   };
@@ -57,7 +55,7 @@ export function CatalogClient() {
     setCurrentPage(0); // Reset to first page
   };
 
-  const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
+  const totalPages = data ? Math.ceil(data.meta.total / pageSize) : 0;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -84,7 +82,7 @@ export function CatalogClient() {
               </h1>
               {data && (
                 <p className="text-gray-600 mt-1">
-                  {data.total} {data.total === 1 ? 'facility' : 'facilities'} found
+                  {data.meta.total} {data.meta.total === 1 ? 'facility' : 'facilities'} found
                 </p>
               )}
             </div>

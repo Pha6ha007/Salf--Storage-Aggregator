@@ -13,7 +13,7 @@ interface WarehouseCardProps {
     name: string;
     emirate: string;
     district?: string;
-    rating?: number;
+    rating?: number | string;
     totalReviews?: number;
     minPrice?: number;
     verified?: boolean;
@@ -38,7 +38,7 @@ export function WarehouseCard({
     onFavoriteClick?.(warehouse.id);
   };
 
-  const photoUrl = warehouse.photoUrl || "/placeholder-warehouse.jpg";
+  const photoUrl = warehouse.photoUrl;
   const rating = warehouse.rating || 0;
   const reviewCount = warehouse.totalReviews || 0;
   const availableSizes = warehouse.availableSizes || ["S", "M", "L"];
@@ -47,12 +47,27 @@ export function WarehouseCard({
     <Link href={`/warehouse/${warehouse.id}`}>
       <Card className="overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border group">
         {/* Photo */}
-        <div className="relative w-full aspect-[4/3] bg-gray-200">
-          <img
-            src={photoUrl}
-            alt={warehouse.name}
-            className="w-full h-full object-cover"
-          />
+        <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-blue-50 to-blue-100">
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt={warehouse.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="text-center text-blue-300">
+                <svg
+                  className="w-16 h-16 mx-auto mb-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+                <p className="text-sm font-medium">No Image</p>
+              </div>
+            </div>
+          )}
           {/* Verified Badge */}
           {warehouse.verified && (
             <div className="absolute top-3 left-3">

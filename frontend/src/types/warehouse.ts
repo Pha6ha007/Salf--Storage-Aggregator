@@ -11,7 +11,7 @@ export interface Warehouse {
   latitude: number;
   longitude: number;
   status: WarehouseStatus;
-  rating: number | null;
+  rating: number | string | null;  // Can be string from backend
   totalReviews: number;
   features: string[] | null;
   operatingHours: Record<string, unknown> | null;
@@ -72,24 +72,33 @@ export interface Review {
 }
 
 export interface WarehouseSearchParams {
-  query?: string;
+  search?: string;
   emirate?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  boxSize?: string;
+  district?: string;
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasInsurance?: boolean;
+  hasParkingSpace?: boolean;
+  minRating?: number;
   latitude?: number;
   longitude?: number;
-  radius?: number;
-  sort?: 'rating' | 'price_asc' | 'price_desc' | 'distance';
+  radiusKm?: number;
+  status?: WarehouseStatus;
+  page?: number;
   limit?: number;
-  offset?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface WarehouseListResponse {
   data: Warehouse[];
-  total: number;
-  limit: number;
-  offset: number;
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }
 
 // Operator-specific types

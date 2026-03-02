@@ -28,7 +28,7 @@ export interface ChatWarehouse {
   name?: string;
   district?: string;
   price?: number;
-  rating?: number;
+  rating?: number | string;
   link?: string;
 }
 
