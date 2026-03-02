@@ -4,15 +4,23 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateBoxDto } from './dto/create-box.dto';
 import { UpdateBoxDto } from './dto/update-box.dto';
 import { FilterBoxesDto } from './dto/filter-boxes.dto';
+import {
+  BoxCreatedEvent,
+  BoxPriceChangedEvent,
+} from '../../common/events/box.events';
 
 @Injectable()
 export class BoxesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async create(warehouseId: number, operatorId: number, createBoxDto: CreateBoxDto) {
     // Verify warehouse exists and belongs to operator
@@ -68,6 +76,18 @@ export class BoxesService {
       },
     });
 
+    // Emit box.created event
+    this.eventEmitter.emit(
+      'box.created',
+      new BoxCreatedEvent(
+        box.id,
+        warehouseId,
+        box.size,
+        box.priceMonthly.toNumber(),
+        String(operatorId), // actorId
+      ),
+    );
+
     return box;
   }
 
@@ -85,6 +105,11 @@ export class BoxesService {
     if (box.warehouse.operatorId !== operatorId) {
       throw new ForbiddenException('You can only update boxes in your own warehouses');
     }
+
+    // Track price change for event emission
+    const priceChanged = updateBoxDto.priceMonthly !== undefined &&
+                        updateBoxDto.priceMonthly !== box.priceMonthly.toNumber();
+    const oldPrice = box.priceMonthly.toNumber();
 
     // If updating quantities, validate
     const newTotal = updateBoxDto.totalQuantity ?? box.totalQuantity;
@@ -138,6 +163,20 @@ export class BoxesService {
         hasShelf: updateBoxDto.hasShelf,
       },
     });
+
+    // Emit box.price_changed event if price changed
+    if (priceChanged && updateBoxDto.priceMonthly !== undefined) {
+      this.eventEmitter.emit(
+        'box.price_changed',
+        new BoxPriceChangedEvent(
+          updatedBox.id,
+          box.warehouseId,
+          oldPrice,
+          updateBoxDto.priceMonthly,
+          String(operatorId), // actorId
+        ),
+      );
+    }
 
     return updatedBox;
   }

@@ -5,16 +5,21 @@ import {
   ForbiddenException,
   ConflictException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { BookingStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { QueryReviewsDto } from './dto/query-reviews.dto';
 import { plainToInstance } from 'class-transformer';
 import { ReviewResponseDto, PaginatedReviewsResponseDto } from './dto/review-response.dto';
+import { ReviewCreatedEvent } from '../../common/events/review.events';
 
 @Injectable()
 export class ReviewsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   /**
    * Create a review for a warehouse
@@ -118,6 +123,19 @@ export class ReviewsService {
 
       return newReview;
     });
+
+    // Emit review.created event
+    this.eventEmitter.emit(
+      'review.created',
+      new ReviewCreatedEvent(
+        review.id,
+        userId,
+        warehouseId,
+        booking_id,
+        rating,
+        userId, // actorId
+      ),
+    );
 
     // Transform user data
     const reviewWithUser = {

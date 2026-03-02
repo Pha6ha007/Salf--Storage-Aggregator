@@ -4,18 +4,25 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { GoogleMapsService, GeocodeResult } from '../../shared/google-maps/google-maps.service';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { FilterWarehousesDto } from './dto/filter-warehouses.dto';
+import {
+  WarehouseCreatedEvent,
+  WarehouseUpdatedEvent,
+  WarehouseStatusChangedEvent,
+} from '../../common/events/warehouse.events';
 
 @Injectable()
 export class WarehousesService {
   constructor(
     private prisma: PrismaService,
     private googleMapsService: GoogleMapsService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(operatorId: number, createWarehouseDto: CreateWarehouseDto) {
@@ -58,6 +65,18 @@ export class WarehousesService {
     // Update PostGIS coordinates using raw SQL
     await this.updateWarehouseCoordinates(warehouse.id, geocodeResult.latitude, geocodeResult.longitude);
 
+    // Emit warehouse.created event
+    this.eventEmitter.emit(
+      'warehouse.created',
+      new WarehouseCreatedEvent(
+        warehouse.id,
+        operatorId,
+        warehouse.name,
+        warehouse.emirate,
+        String(operatorId), // actorId
+      ),
+    );
+
     return warehouse;
   }
 
@@ -74,6 +93,10 @@ export class WarehousesService {
     if (existing.operatorId !== operatorId) {
       throw new ForbiddenException('You can only update your own warehouses');
     }
+
+    // Track status change for event emission
+    const statusChanged = updateWarehouseDto.status && updateWarehouseDto.status !== existing.status;
+    const oldStatus = existing.status;
 
     // If address is being updated, re-geocode
     let geocodeResult: GeocodeResult | null = null;
@@ -117,6 +140,38 @@ export class WarehousesService {
     // Update PostGIS coordinates if address changed
     if (geocodeResult) {
       await this.updateWarehouseCoordinates(id, geocodeResult.latitude, geocodeResult.longitude);
+    }
+
+    // Emit warehouse.updated event
+    const changes: Record<string, any> = {};
+    Object.keys(updateWarehouseDto).forEach(key => {
+      if (updateWarehouseDto[key] !== undefined) {
+        changes[key] = updateWarehouseDto[key];
+      }
+    });
+
+    this.eventEmitter.emit(
+      'warehouse.updated',
+      new WarehouseUpdatedEvent(
+        warehouse.id,
+        operatorId,
+        changes,
+        String(operatorId), // actorId
+      ),
+    );
+
+    // Emit warehouse.status_changed event if status changed
+    if (statusChanged && updateWarehouseDto.status) {
+      this.eventEmitter.emit(
+        'warehouse.status_changed',
+        new WarehouseStatusChangedEvent(
+          warehouse.id,
+          operatorId,
+          oldStatus,
+          updateWarehouseDto.status,
+          String(operatorId), // actorId
+        ),
+      );
     }
 
     return warehouse;
