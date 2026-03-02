@@ -138,6 +138,7 @@ model User {
   eventsAsActor         EventLog[]  @relation("EventActor")
   crmStatusChanges      CrmStatusHistory[]
   searchLogs            SearchLog[] @relation("SearchLogs")
+  chatSessions          ChatSession[] @relation("ChatSessions")
 
   @@index([email])
   @@index([role])
@@ -520,6 +521,7 @@ model CrmLead {
   contacts              CrmContact[]
   activities            CrmActivity[]
   statusHistory         CrmStatusHistory[]
+  chatSessions          ChatSession[]
 
   @@index([status])
   @@index([warehouseId])
@@ -757,7 +759,57 @@ model GeoCache {
 }
 
 // ================================================================
-// RAG INFRASTRUCTURE (2 tables - Future AI Chat)
+// CHAT INFRASTRUCTURE (3 tables - WhatsApp + Web Chat)
+// ================================================================
+
+enum ChatChannel {
+  whatsapp
+  web
+}
+
+model ChatSession {
+  id                    String    @id @default(uuid()) @db.Uuid
+  channel               ChatChannel
+  userId                String?   @map("user_id") @db.Uuid
+
+  // Contact Information
+  phoneNumber           String?   @map("phone_number") @db.VarChar(20)
+  sessionToken          String?   @map("session_token") @db.VarChar(100)
+
+  // Context
+  language              String    @default("en") @db.VarChar(5)
+  pageContext           Json      @default("{}") @map("page_context") @db.JsonB
+
+  // Lead Capture
+  leadCaptured          Boolean   @default(false) @map("lead_captured")
+  leadId                Int?      @map("lead_id")
+
+  // Statistics
+  messageCount          Int       @default(0) @map("message_count") @db.Integer
+  lastMessageAt         DateTime? @map("last_message_at") @db.Timestamptz(6)
+
+  // Metadata
+  metadata              Json      @default("{}") @db.JsonB
+
+  // Timestamps
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  expiresAt             DateTime  @default(dbgenerated("(NOW() + INTERVAL '24 hours')")) @map("expires_at") @db.Timestamptz(6)
+
+  // Relations
+  user                  User?     @relation("ChatSessions", fields: [userId], references: [id], onDelete: SetNull)
+  lead                  CrmLead?  @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  conversations         AiConversation[]
+
+  @@index([phoneNumber])
+  @@index([userId])
+  @@index([sessionToken])
+  @@index([expiresAt])
+  @@map("chat_sessions")
+}
+
+// ================================================================
+// RAG INFRASTRUCTURE (2 tables - AI Knowledge Base)
 // ================================================================
 
 model KnowledgeChunk {
@@ -788,6 +840,12 @@ model AiConversation {
   userId                String?   @map("user_id") @db.Uuid
   sessionId             String    @map("session_id") @db.VarChar(100)
 
+  // Chat Integration (Step 22)
+  channel               String?   @db.VarChar(20)
+  chatSessionId         String?   @map("chat_session_id") @db.Uuid
+  intent                String?   @db.VarChar(50)
+  confidence            Float?    @db.Real
+
   // Message
   role                  String    @db.VarChar(20)
   content               String    @db.Text
@@ -795,11 +853,17 @@ model AiConversation {
   // AI Metadata
   tokensUsed            Int?      @map("tokens_used") @db.Integer
   model                 String?   @db.VarChar(50)
+  metadata              Json      @default("{}") @db.JsonB
 
   // Timestamps
   createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
+  // Relations
+  chatSession           ChatSession? @relation(fields: [chatSessionId], references: [id], onDelete: SetNull)
+
   @@index([sessionId])
   @@index([userId])
+  @@index([chatSessionId])
+  @@index([channel])
   @@map("ai_conversations")
 }

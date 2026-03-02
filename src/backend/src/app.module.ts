@@ -24,6 +24,7 @@ import { AiModule } from './modules/ai/ai.module';
 import { MediaModule } from './modules/media/media.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { HealthModule } from './modules/health/health.module';
+import { ChatModule } from './modules/chat/chat.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { RequestLoggingMiddleware } from './common/middleware/request-logging.middleware';
@@ -75,6 +76,7 @@ import googleMapsConfig from './config/google-maps.config';
     MediaModule,
     NotificationsModule,
     HealthModule,
+    ChatModule, // Step 22: WhatsApp + Web Chat
   ],
   controllers: [AppController],
   providers: [
