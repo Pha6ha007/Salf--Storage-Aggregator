@@ -58,6 +58,24 @@ If any conflict between docs → higher number wins (Functional Spec > all).
 
 ---
 
+## DESIGN SYSTEM
+
+Frontend design reference documents:
+
+```
+DESIGN_SYSTEM.md                     → Base design system (colors, typography, components)
+DESIGN_SYSTEM_ENHANCEMENTS.md        → Visual enhancements (animations, glassmorphism, shadows, transitions)
+```
+
+**Style Guide:** "Neighbor meets Bayut" — clean, trustworthy, mobile-first
+- Primary color: Trust Blue (#1A56DB)
+- Accent color: UAE Gold (#F59E0B)
+- Typography: Inter font family
+- Mobile-first responsive design
+- Tailwind CSS with custom theme
+
+---
+
 ## DATABASE SCHEMA (MVP v1)
 
 ### Tables (18 MVP + 2 RAG + 1 Analytics)
