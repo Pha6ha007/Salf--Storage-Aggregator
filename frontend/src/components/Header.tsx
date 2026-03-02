@@ -1,8 +1,25 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAuth } from '@/providers/auth-provider';
-import { useState } from 'react';
+import { useState } from "react";
+import Link from "next/link";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -11,220 +28,211 @@ export function Header() {
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
+  const navLinks = [
+    { href: "/catalog", label: "Find Storage" },
+    { href: "/about", label: "About" },
+    { href: "/faq", label: "FAQ" },
+    { href: "/contact", label: "Contact" },
+  ];
+
   return (
-    <header className="bg-white shadow-sm">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 justify-between items-center">
+    <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">
-                StorageCompare
-              </span>
-              <span className="ml-1 text-sm text-gray-500">.ae</span>
-            </Link>
-          </div>
+          <Link href="/" className="flex items-center">
+            <span className="text-xl font-bold text-primary-600">
+              StorageCompare.ae
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-6">
-            <Link
-              href="/catalog"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-            >
-              Find Storage
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-            >
-              Contact
-            </Link>
+          <nav className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-text-secondary hover:text-primary-600 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-            {/* Auth Links */}
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                {user?.role === 'operator' && (
-                  <Link
-                    href="/operator/dashboard"
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-                  >
-                    Dashboard
-                  </Link>
-                )}
-                <Link
-                  href="/profile"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-                >
-                  Profile
-                </Link>
-                <Link
-                  href="/bookings"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-                >
-                  My Bookings
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-                >
-                  Logout
-                </button>
-              </div>
+          {/* Right Side - Desktop */}
+          <div className="hidden md:flex items-center gap-3">
+            {user?.role === "operator" && (
+              <Link href="/operator/dashboard">
+                <Button variant="ghost" className="text-primary-600">
+                  Dashboard
+                </Button>
+              </Link>
+            )}
+            {!isAuthenticated && (
+              <Link href="/operator/dashboard">
+                <Button variant="ghost" className="text-primary-600">
+                  For Operators
+                </Button>
+              </Link>
+            )}
+
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 hover:opacity-80">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-primary-100 text-primary-700">
+                        {user.name?.charAt(0)?.toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/bookings">My Bookings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/favorites">Favorites</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link
-                  href="/auth/login"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-                >
-                  Login
+              <>
+                <Link href="/auth/login">
+                  <Button variant="ghost" className="text-text-primary">
+                    Login
+                  </Button>
                 </Link>
-                <Link
-                  href="/auth/register"
-                  className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium"
-                >
-                  Sign Up
+                <Link href="/auth/register">
+                  <Button className="bg-primary-600 hover:bg-primary-700">
+                    Sign Up
+                  </Button>
                 </Link>
-              </div>
+              </>
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? (
-                <svg
-                  className="block h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center gap-2">
+            {isAuthenticated && user ? (
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-primary-100 text-primary-700">
+                  {user.name?.charAt(0)?.toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+            ) : (
+              <Link href="/auth/login">
+                <Button
+                  size="sm"
+                  className="bg-primary-600 hover:bg-primary-700"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="block h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+                  Login
+                </Button>
+              </Link>
+            )}
 
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4">
-            <div className="space-y-1 pt-2">
-              <Link
-                href="/catalog"
-                className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Find Storage
-              </Link>
-              <Link
-                href="/about"
-                className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-
-              {/* Mobile Auth Links */}
-              {isAuthenticated ? (
-                <>
-                  {user?.role === 'operator' && (
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <SheetHeader>
+                  <SheetTitle>Menu</SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-6">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-base font-medium text-text-primary hover:text-primary-600"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  <hr className="border-border" />
+                  {user?.role === "operator" && (
                     <Link
                       href="/operator/dashboard"
-                      className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
+                      className="text-base font-medium text-primary-600"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Dashboard
                     </Link>
                   )}
-                  <Link
-                    href="/profile"
-                    className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="/bookings"
-                    className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    My Bookings
-                  </Link>
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      handleLogout();
-                    }}
-                    className="block w-full text-left text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/auth/login"
-                    className="block text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-base font-medium rounded-md"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/auth/register"
-                    className="block bg-blue-600 text-white hover:bg-blue-700 px-3 py-2 text-base font-medium rounded-md text-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
-            </div>
+                  {!isAuthenticated && (
+                    <Link
+                      href="/operator/dashboard"
+                      className="text-base font-medium text-primary-600"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      For Operators
+                    </Link>
+                  )}
+                  {isAuthenticated && user ? (
+                    <>
+                      <Link
+                        href="/profile"
+                        className="text-base font-medium text-text-primary hover:text-primary-600"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        My Profile
+                      </Link>
+                      <Link
+                        href="/bookings"
+                        className="text-base font-medium text-text-primary hover:text-primary-600"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        My Bookings
+                      </Link>
+                      <Link
+                        href="/favorites"
+                        className="text-base font-medium text-text-primary hover:text-primary-600"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Favorites
+                      </Link>
+                      <hr className="border-border" />
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="text-base font-medium text-red-600 text-left"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/auth/register"
+                      className="text-base font-medium text-primary-600"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Sign Up
+                    </Link>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
-        )}
-      </nav>
+        </div>
+      </div>
     </header>
   );
 }
