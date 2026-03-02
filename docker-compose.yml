@@ -1,55 +1,144 @@
-version: '3.8'
-
 services:
+  # PostgreSQL with PostGIS and pgvector extensions
   postgres:
     image: postgis/postgis:15-3.4
     container_name: storagecompare-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: storagecompare
-      POSTGRES_USER: storage
-      POSTGRES_PASSWORD: storage_dev_pass
+      POSTGRES_DB: ${POSTGRES_DB:-storagecompare}
+      POSTGRES_USER: ${POSTGRES_USER:-storage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-storage_dev_pass}
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init-extensions.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - storagecompare-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U storage -d storagecompare"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-storage} -d ${POSTGRES_DB:-storagecompare}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  # Redis for caching and sessions
   redis:
     image: redis:7-alpine
     container_name: storagecompare-redis
+    restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - storagecompare-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+    command: redis-server --appendonly yes
 
-  app:
+  # Backend API (NestJS)
+  backend:
     build:
       context: ./src/backend
-      dockerfile: ../../Dockerfile
-    container_name: storagecompare-app
-    ports:
-      - "3000:3000"
-    environment:
-      NODE_ENV: development
-      DATABASE_URL: postgresql://storage:storage_dev_pass@postgres:5432/storagecompare?schema=public
-      REDIS_URL: redis://redis:6379
+      dockerfile: Dockerfile
+    container_name: storagecompare-backend
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${BACKEND_PORT:-3001}
+
+      # Database
+      DATABASE_URL: postgresql://${POSTGRES_USER:-storage}:${POSTGRES_PASSWORD:-storage_dev_pass}@postgres:5432/${POSTGRES_DB:-storagecompare}?schema=public
+
+      # Redis
+      REDIS_URL: redis://redis:6379
+
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      JWT_ACCESS_EXPIRY: ${JWT_ACCESS_EXPIRY:-15m}
+      JWT_REFRESH_EXPIRY: ${JWT_REFRESH_EXPIRY:-7d}
+
+      # API
+      API_PREFIX: ${API_PREFIX:-api/v1}
+
+      # CORS
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+
+      # External Services (optional in development)
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY:-}
+      AWS_REGION: ${AWS_REGION:-me-south-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
+      SENDGRID_FROM: ${SENDGRID_FROM:-noreply@storagecompare.ae}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER:-}
+      TWILIO_WHATSAPP_NUMBER: ${TWILIO_WHATSAPP_NUMBER:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+    networks:
+      - storagecompare-network
     volumes:
-      - ./src/backend:/app
-      - /app/node_modules
-    command: npm run start:dev
+      - ./src/backend/uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/v1/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: sh -c "npx prisma migrate deploy && node dist/main"
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api/v1}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:-}
+    container_name: storagecompare-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api/v1}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:-}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - storagecompare-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  storagecompare-network:
+    driver: bridge
 
 volumes:
-  pgdata:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

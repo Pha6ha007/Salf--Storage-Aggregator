@@ -72,8 +72,8 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
                 isHero ? "h-12 rounded-xl" : "h-10"
               } border-0 bg-surface focus:ring-2 focus:ring-primary-400/50 transition-shadow`}
             >
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-text-muted" />
+              <div className="flex items-center gap-2 text-gray-700">
+                <MapPin className="w-4 h-4 text-gray-500" />
                 <SelectValue placeholder="Select Emirate" />
               </div>
             </SelectTrigger>
@@ -95,8 +95,8 @@ export function SearchBar({ variant = "hero" }: SearchBarProps) {
                 isHero ? "h-12 rounded-xl" : "h-10"
               } border-0 bg-surface focus:ring-2 focus:ring-primary-400/50 transition-shadow`}
             >
-              <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-text-muted" />
+              <div className="flex items-center gap-2 text-gray-700">
+                <Package className="w-4 h-4 text-gray-500" />
                 <SelectValue placeholder="Box Size" />
               </div>
             </SelectTrigger>
