@@ -93,6 +93,14 @@ export function Header() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
+                  {user.role === 'user' && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard">Dashboard</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
                   <DropdownMenuItem asChild>
                     <Link href="/profile">My Profile</Link>
                   </DropdownMenuItem>
@@ -186,6 +194,18 @@ export function Header() {
                   ) : null}
                   {isAuthenticated && user ? (
                     <>
+                      {user.role === 'user' && (
+                        <>
+                          <Link
+                            href="/dashboard"
+                            className="text-base font-medium text-primary-600"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Dashboard
+                          </Link>
+                          <hr className="border-border" />
+                        </>
+                      )}
                       <Link
                         href="/profile"
                         className="text-base font-medium text-text-primary hover:text-primary-600"

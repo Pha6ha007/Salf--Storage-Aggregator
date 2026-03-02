@@ -9,6 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
+  // Trust proxy (required for Railway/Vercel)
+  app.set('trust proxy', 1);
+
   // Global API prefix
   const apiPrefix = configService.get<string>('app.apiPrefix') || 'api/v1';
   app.setGlobalPrefix(apiPrefix);
@@ -29,12 +32,17 @@ async function bootstrap() {
   );
 
   // CORS configuration for storagecompare.ae
+  const frontendUrl = process.env.FRONTEND_URL || configService.get<string>('app.appUrl') || 'http://localhost:3000';
   const allowedOrigins = [
+    frontendUrl,
     'https://storagecompare.ae',
     'https://www.storagecompare.ae',
-    'https://api.storagecompare.ae',
-    configService.get<string>('app.appUrl') || 'http://localhost:3000',
+    'https://storagecompare.vercel.app', // Vercel deployment
+    'http://localhost:3000', // Local development
   ];
+
+  // In development, allow all localhost origins
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   app.enableCors({
     origin: (origin, callback) => {
@@ -43,9 +51,15 @@ async function bootstrap() {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+      // In development, allow localhost on any port
+      if (isDevelopment && origin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.warn(`CORS blocked origin: ${origin}`);
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -81,10 +95,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
 
-  const port = configService.get<number>('app.port') || 3000;
-  await app.listen(port);
+  // Railway assigns PORT dynamically
+  const port = process.env.PORT || configService.get<number>('app.port') || 3000;
+  await app.listen(port, '0.0.0.0'); // Listen on all interfaces for Railway
 
-  console.log(`🚀 Application is running on: http://localhost:${port}/${apiPrefix}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/${apiPrefix}/docs`);
+  const environment = process.env.NODE_ENV || 'development';
+  console.log(`🚀 Application is running on port ${port} (${environment})`);
+  console.log(`📚 Swagger documentation: /${apiPrefix}/docs`);
 }
 bootstrap();
