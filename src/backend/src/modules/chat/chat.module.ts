@@ -10,13 +10,14 @@ import { LeadCaptureService } from './services/lead-capture.service';
 import { RagService } from './services/rag.service';
 import { WhatsAppController } from './controllers/whatsapp.controller';
 import { WebChatController } from './controllers/webchat.controller';
+import { ChatAdminController } from './controllers/chat-admin.controller';
 import { ChatRateLimitGuard } from './guards/chat-rate-limit.guard';
 import { RagIndexListener } from './listeners/rag-index.listener';
 import { CrmModule } from '../crm/crm.module';
 
 @Module({
   imports: [PrismaModule, RedisModule, CrmModule],
-  controllers: [WhatsAppController, WebChatController],
+  controllers: [WhatsAppController, WebChatController, ChatAdminController],
   providers: [
     // Core services (order matters - dependencies)
     ChatSessionService,          // First - no dependencies

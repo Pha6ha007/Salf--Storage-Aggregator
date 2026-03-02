@@ -4,12 +4,12 @@
 // Status: CANONICAL - Aligned with full_database_specification_mvp_v1_CANONICAL.md
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
   extensions = [postgis, pg_trgm, vector]
 }
 
@@ -46,10 +46,10 @@ enum BookingCancelledBy {
 }
 
 enum BoxSize {
-  S   // 1-3m²
-  M   // 3-6m²
-  L   // 6-12m²
-  XL  // 12+m²
+  S // 1-3m²
+  M // 3-6m²
+  L // 6-12m²
+  XL // 12+m²
 }
 
 enum BoxStatus {
@@ -103,42 +103,42 @@ enum AiRequestStatus {
 // ================================================================
 
 model User {
-  id                    String    @id @default(uuid()) @db.Uuid
-  email                 String    @unique @db.VarChar(255)
-  passwordHash          String    @map("password_hash") @db.VarChar(255)
-  role                  UserRole  @default(user)
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         UserRole @default(user)
 
   // Profile
-  firstName             String?   @map("first_name") @db.VarChar(100)
-  lastName              String?   @map("last_name") @db.VarChar(100)
-  phone                 String?   @db.VarChar(20)
-  avatarUrl             String?   @map("avatar_url") @db.VarChar(500)
+  firstName String? @map("first_name") @db.VarChar(100)
+  lastName  String? @map("last_name") @db.VarChar(100)
+  phone     String? @db.VarChar(20)
+  avatarUrl String? @map("avatar_url") @db.VarChar(500)
 
   // Security
-  isActive              Boolean   @default(true) @map("is_active")
-  emailVerified         Boolean   @default(false) @map("email_verified")
-  emailVerifiedAt       DateTime? @map("email_verified_at") @db.Timestamptz(6)
-  passwordResetToken    String?   @map("password_reset_token") @db.VarChar(255)
-  passwordResetExpires  DateTime? @map("password_reset_expires") @db.Timestamptz(6)
-  lastLoginAt           DateTime? @map("last_login_at") @db.Timestamptz(6)
+  isActive             Boolean   @default(true) @map("is_active")
+  emailVerified        Boolean   @default(false) @map("email_verified")
+  emailVerifiedAt      DateTime? @map("email_verified_at") @db.Timestamptz(6)
+  passwordResetToken   String?   @map("password_reset_token") @db.VarChar(255)
+  passwordResetExpires DateTime? @map("password_reset_expires") @db.Timestamptz(6)
+  lastLoginAt          DateTime? @map("last_login_at") @db.Timestamptz(6)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt             DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   // Relations
-  operator              Operator?
-  bookings              Booking[]
-  reviews               Review[]
-  favorites             Favorite[]
-  refreshTokens         RefreshToken[]
-  crmLeads              CrmLead[]
-  aiRequestsLog         AiRequestLog[]
-  eventsAsActor         EventLog[]  @relation("EventActor")
-  crmStatusChanges      CrmStatusHistory[]
-  searchLogs            SearchLog[] @relation("SearchLogs")
-  chatSessions          ChatSession[] @relation("ChatSessions")
+  operator         Operator?
+  bookings         Booking[]
+  reviews          Review[]
+  favorites        Favorite[]
+  refreshTokens    RefreshToken[]
+  crmLeads         CrmLead[]
+  aiRequestsLog    AiRequestLog[]
+  eventsAsActor    EventLog[]         @relation("EventActor")
+  crmStatusChanges CrmStatusHistory[]
+  searchLogs       SearchLog[]        @relation("SearchLogs")
+  chatSessions     ChatSession[]      @relation("ChatSessions")
 
   @@index([email])
   @@index([role])
@@ -147,14 +147,14 @@ model User {
 }
 
 model Operator {
-  id                    Int       @id @default(autoincrement())
-  userId                String    @unique @map("user_id") @db.Uuid
+  id     Int    @id @default(autoincrement())
+  userId String @unique @map("user_id") @db.Uuid
 
   // Business Information
-  companyName           String    @map("company_name") @db.VarChar(255)
-  tradeLicenseNumber    String?   @map("trade_license_number") @db.VarChar(100)
-  taxRegistrationNumber String?   @map("tax_registration_number") @db.VarChar(100)
-  legalAddress          String?   @map("legal_address") @db.Text
+  companyName           String  @map("company_name") @db.VarChar(255)
+  tradeLicenseNumber    String? @map("trade_license_number") @db.VarChar(100)
+  taxRegistrationNumber String? @map("tax_registration_number") @db.VarChar(100)
+  legalAddress          String? @map("legal_address") @db.Text
 
   // Verification
   isVerified            Boolean   @default(false) @map("is_verified")
@@ -162,19 +162,19 @@ model Operator {
   verificationDocuments Json?     @map("verification_documents") @db.JsonB
 
   // Contact
-  businessPhone         String?   @map("business_phone") @db.VarChar(20)
-  businessEmail         String?   @map("business_email") @db.VarChar(255)
-  website               String?   @db.VarChar(500)
+  businessPhone String? @map("business_phone") @db.VarChar(20)
+  businessEmail String? @map("business_email") @db.VarChar(255)
+  website       String? @db.VarChar(500)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt             DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  warehouses            Warehouse[]
-  settings              OperatorSettings?
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouses Warehouse[]
+  settings   OperatorSettings?
 
   @@index([userId])
   @@index([isVerified])
@@ -183,48 +183,48 @@ model Operator {
 }
 
 model OperatorSettings {
-  id                    Int       @id @default(autoincrement())
-  operatorId            Int       @unique @map("operator_id")
+  id         Int @id @default(autoincrement())
+  operatorId Int @unique @map("operator_id")
 
   // Business Preferences
-  autoConfirmBookings   Boolean   @default(false) @map("auto_confirm_bookings")
-  depositPercentage     Decimal   @default(0) @map("deposit_percentage") @db.Decimal(5, 2)
-  cancellationPolicyDays Int?     @map("cancellation_policy_days") @db.Integer
+  autoConfirmBookings    Boolean @default(false) @map("auto_confirm_bookings")
+  depositPercentage      Decimal @default(0) @map("deposit_percentage") @db.Decimal(5, 2)
+  cancellationPolicyDays Int?    @map("cancellation_policy_days") @db.Integer
 
   // Notification Preferences
-  emailNotifications    Boolean   @default(true) @map("email_notifications")
-  smsNotifications      Boolean   @default(false) @map("sms_notifications")
-  whatsappNotifications Boolean   @default(false) @map("whatsapp_notifications")
+  emailNotifications    Boolean @default(true) @map("email_notifications")
+  smsNotifications      Boolean @default(false) @map("sms_notifications")
+  whatsappNotifications Boolean @default(false) @map("whatsapp_notifications")
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  operator              Operator  @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  operator Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
 
   @@index([operatorId])
   @@map("operator_settings")
 }
 
 model RefreshToken {
-  id                    Int       @id @default(autoincrement())
-  userId                String    @map("user_id") @db.Uuid
-  token                 String    @unique @db.VarChar(500)
+  id     Int    @id @default(autoincrement())
+  userId String @map("user_id") @db.Uuid
+  token  String @unique @db.VarChar(500)
 
   // Metadata
-  userAgent             String?   @map("user_agent") @db.VarChar(500)
-  ipAddress             String?   @map("ip_address") @db.VarChar(45)
+  userAgent String? @map("user_agent") @db.VarChar(500)
+  ipAddress String? @map("ip_address") @db.VarChar(45)
 
   // Lifecycle
-  expiresAt             DateTime  @map("expires_at") @db.Timestamptz(6)
-  revokedAt             DateTime? @map("revoked_at") @db.Timestamptz(6)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(6)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(6)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
@@ -237,55 +237,55 @@ model RefreshToken {
 // ================================================================
 
 model Warehouse {
-  id                    Int       @id @default(autoincrement())
-  operatorId            Int       @map("operator_id")
+  id         Int @id @default(autoincrement())
+  operatorId Int @map("operator_id")
 
   // Basic Information
-  name                  String    @db.VarChar(255)
-  description           String?   @db.Text
-  status                WarehouseStatus @default(draft)
+  name        String          @db.VarChar(255)
+  description String?         @db.Text
+  status      WarehouseStatus @default(draft)
 
   // Location (PostGIS)
-  address               String    @db.Text
-  emirate               String    @db.VarChar(100)
-  district              String?   @db.VarChar(100)
-  latitude              Float     @db.DoublePrecision
-  longitude             Float     @db.DoublePrecision
+  address   String  @db.Text
+  emirate   String  @db.VarChar(100)
+  district  String? @db.VarChar(100)
+  latitude  Float   @db.DoublePrecision
+  longitude Float   @db.DoublePrecision
   // Note: coordinates GEOGRAPHY(POINT, 4326) will be created via raw SQL migration
 
   // Features & Amenities
-  hasClimateControl     Boolean   @default(false) @map("has_climate_control")
-  has24x7Access         Boolean   @default(false) @map("has_24x7_access")
-  hasSecurityCameras    Boolean   @default(false) @map("has_security_cameras")
-  hasInsurance          Boolean   @default(false) @map("has_insurance")
-  hasParkingSpace       Boolean   @default(false) @map("has_parking_space")
+  hasClimateControl  Boolean @default(false) @map("has_climate_control")
+  has24x7Access      Boolean @default(false) @map("has_24x7_access")
+  hasSecurityCameras Boolean @default(false) @map("has_security_cameras")
+  hasInsurance       Boolean @default(false) @map("has_insurance")
+  hasParkingSpace    Boolean @default(false) @map("has_parking_space")
 
   // Business Information
-  workingHours          Json?     @map("working_hours") @db.JsonB
-  contactPhone          String?   @map("contact_phone") @db.VarChar(20)
-  contactEmail          String?   @map("contact_email") @db.VarChar(255)
+  workingHours Json?   @map("working_hours") @db.JsonB
+  contactPhone String? @map("contact_phone") @db.VarChar(20)
+  contactEmail String? @map("contact_email") @db.VarChar(255)
 
   // Computed/Cached Fields
-  rating                Decimal   @default(0) @db.Decimal(3, 2)
-  reviewCount           Int       @default(0) @map("review_count") @db.Integer
+  rating      Decimal @default(0) @db.Decimal(3, 2)
+  reviewCount Int     @default(0) @map("review_count") @db.Integer
 
   // Status
-  isActive              Boolean   @default(true) @map("is_active")
+  isActive Boolean @default(true) @map("is_active")
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt             DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   // Relations
-  operator              Operator  @relation(fields: [operatorId], references: [id], onDelete: Restrict)
-  boxes                 Box[]
-  media                 Media[]
-  bookings              Booking[]
-  reviews               Review[]
-  favorites             Favorite[]
-  crmLeads              CrmLead[]
-  searchLogClicks       SearchLog[] @relation("SearchLogClicks")
+  operator        Operator    @relation(fields: [operatorId], references: [id], onDelete: Restrict)
+  boxes           Box[]
+  media           Media[]
+  bookings        Booking[]
+  reviews         Review[]
+  favorites       Favorite[]
+  crmLeads        CrmLead[]
+  searchLogClicks SearchLog[] @relation("SearchLogClicks")
 
   @@index([operatorId])
   @@index([status])
@@ -297,44 +297,44 @@ model Warehouse {
 }
 
 model Box {
-  id                    Int       @id @default(autoincrement())
-  warehouseId           Int       @map("warehouse_id")
+  id          Int @id @default(autoincrement())
+  warehouseId Int @map("warehouse_id")
 
   // Identification
-  boxNumber             String    @map("box_number") @db.VarChar(50)
-  name                  String?   @db.VarChar(255)
-  description           String?   @db.Text
+  boxNumber   String  @map("box_number") @db.VarChar(50)
+  name        String? @db.VarChar(255)
+  description String? @db.Text
 
   // Size & Dimensions
-  size                  BoxSize
-  lengthMeters          Decimal?  @map("length_meters") @db.Decimal(5, 2)
-  widthMeters           Decimal?  @map("width_meters") @db.Decimal(5, 2)
-  heightMeters          Decimal?  @map("height_meters") @db.Decimal(5, 2)
-  areaSquareMeters      Decimal?  @map("area_square_meters") @db.Decimal(6, 2)
+  size             BoxSize
+  lengthMeters     Decimal? @map("length_meters") @db.Decimal(5, 2)
+  widthMeters      Decimal? @map("width_meters") @db.Decimal(5, 2)
+  heightMeters     Decimal? @map("height_meters") @db.Decimal(5, 2)
+  areaSquareMeters Decimal? @map("area_square_meters") @db.Decimal(6, 2)
 
   // Pricing
-  priceMonthly          Decimal   @map("price_monthly") @db.Decimal(10, 2)
+  priceMonthly Decimal @map("price_monthly") @db.Decimal(10, 2)
 
   // Availability & Quantity
-  totalQuantity         Int       @default(1) @map("total_quantity") @db.Integer
-  availableQuantity     Int       @default(1) @map("available_quantity") @db.Integer
-  reservedQuantity      Int       @default(0) @map("reserved_quantity") @db.Integer
-  occupiedQuantity      Int       @default(0) @map("occupied_quantity") @db.Integer
-  isAvailable           Boolean   @default(true) @map("is_available")
+  totalQuantity     Int     @default(1) @map("total_quantity") @db.Integer
+  availableQuantity Int     @default(1) @map("available_quantity") @db.Integer
+  reservedQuantity  Int     @default(0) @map("reserved_quantity") @db.Integer
+  occupiedQuantity  Int     @default(0) @map("occupied_quantity") @db.Integer
+  isAvailable       Boolean @default(true) @map("is_available")
 
   // Features
-  hasClimateControl     Boolean   @default(false) @map("has_climate_control")
-  hasElectricity        Boolean   @default(false) @map("has_electricity")
-  hasShelf              Boolean   @default(false) @map("has_shelf")
+  hasClimateControl Boolean @default(false) @map("has_climate_control")
+  hasElectricity    Boolean @default(false) @map("has_electricity")
+  hasShelf          Boolean @default(false) @map("has_shelf")
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt             DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   // Relations
-  warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
-  bookings              Booking[]
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  bookings  Booking[]
 
   @@unique([warehouseId, boxNumber])
   @@index([warehouseId])
@@ -345,27 +345,27 @@ model Box {
 }
 
 model Media {
-  id                    Int       @id @default(autoincrement())
-  warehouseId           Int       @map("warehouse_id")
+  id          Int @id @default(autoincrement())
+  warehouseId Int @map("warehouse_id")
 
   // File Information
-  fileType              MediaFileType @map("file_type")
-  fileUrl               String    @map("file_url") @db.VarChar(500)
-  fileName              String    @map("file_name") @db.VarChar(255)
-  fileSizeBytes         Int?      @map("file_size_bytes") @db.Integer
-  mimeType              String?   @map("mime_type") @db.VarChar(100)
+  fileType      MediaFileType @map("file_type")
+  fileUrl       String        @map("file_url") @db.VarChar(500)
+  fileName      String        @map("file_name") @db.VarChar(255)
+  fileSizeBytes Int?          @map("file_size_bytes") @db.Integer
+  mimeType      String?       @map("mime_type") @db.VarChar(100)
 
   // Display
-  isPrimary             Boolean   @default(false) @map("is_primary")
-  displayOrder          Int       @default(0) @map("display_order") @db.Integer
-  caption               String?   @db.VarChar(500)
+  isPrimary    Boolean @default(false) @map("is_primary")
+  displayOrder Int     @default(0) @map("display_order") @db.Integer
+  caption      String? @db.VarChar(500)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
 
   @@index([warehouseId])
   @@index([isPrimary])
@@ -378,52 +378,52 @@ model Media {
 // ================================================================
 
 model Booking {
-  id                    Int       @id @default(autoincrement())
-  userId                String    @map("user_id") @db.Uuid
-  warehouseId           Int       @map("warehouse_id")
-  boxId                 Int       @map("box_id")
+  id          Int    @id @default(autoincrement())
+  userId      String @map("user_id") @db.Uuid
+  warehouseId Int    @map("warehouse_id")
+  boxId       Int    @map("box_id")
 
   // Identification
-  bookingNumber         String    @unique @map("booking_number") @db.VarChar(50)
+  bookingNumber String @unique @map("booking_number") @db.VarChar(50)
 
   // Status & Lifecycle
-  status                BookingStatus @default(pending)
-  confirmedAt           DateTime? @map("confirmed_at") @db.Timestamptz(6)
-  startedAt             DateTime? @map("started_at") @db.Timestamptz(6)
-  completedAt           DateTime? @map("completed_at") @db.Timestamptz(6)
-  cancelledAt           DateTime? @map("cancelled_at") @db.Timestamptz(6)
-  cancelledBy           BookingCancelledBy? @map("cancelled_by")
-  cancelReason          String?   @map("cancel_reason") @db.Text
+  status       BookingStatus       @default(pending)
+  confirmedAt  DateTime?           @map("confirmed_at") @db.Timestamptz(6)
+  startedAt    DateTime?           @map("started_at") @db.Timestamptz(6)
+  completedAt  DateTime?           @map("completed_at") @db.Timestamptz(6)
+  cancelledAt  DateTime?           @map("cancelled_at") @db.Timestamptz(6)
+  cancelledBy  BookingCancelledBy? @map("cancelled_by")
+  cancelReason String?             @map("cancel_reason") @db.Text
 
   // Rental Period
-  startDate             DateTime  @map("start_date") @db.Date
-  endDate               DateTime  @map("end_date") @db.Date
-  durationMonths        Int       @map("duration_months") @db.Integer
+  startDate      DateTime @map("start_date") @db.Date
+  endDate        DateTime @map("end_date") @db.Date
+  durationMonths Int      @map("duration_months") @db.Integer
 
   // Pricing (Immutable Snapshot)
-  basePricePerMonth     Decimal   @map("base_price_per_month") @db.Decimal(10, 2)
-  discountPercentage    Decimal   @default(0) @map("discount_percentage") @db.Decimal(5, 2)
-  monthlyPrice          Decimal   @map("monthly_price") @db.Decimal(10, 2)
-  priceTotal            Decimal   @map("price_total") @db.Decimal(10, 2)
+  basePricePerMonth  Decimal @map("base_price_per_month") @db.Decimal(10, 2)
+  discountPercentage Decimal @default(0) @map("discount_percentage") @db.Decimal(5, 2)
+  monthlyPrice       Decimal @map("monthly_price") @db.Decimal(10, 2)
+  priceTotal         Decimal @map("price_total") @db.Decimal(10, 2)
 
   // Payment
-  paymentStatus         BookingPaymentStatus @default(pending) @map("payment_status")
-  paymentReceivedAt     DateTime? @map("payment_received_at") @db.Timestamptz(6)
+  paymentStatus     BookingPaymentStatus @default(pending) @map("payment_status")
+  paymentReceivedAt DateTime?            @map("payment_received_at") @db.Timestamptz(6)
 
   // Additional Information
-  notes                 String?   @db.Text
+  notes String? @db.Text
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt             DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Restrict)
-  warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
-  box                   Box       @relation(fields: [boxId], references: [id], onDelete: Restrict)
-  review                Review?
-  searchLogConversions  SearchLog[] @relation("SearchLogConversions")
+  user                 User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  warehouse            Warehouse   @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  box                  Box         @relation(fields: [boxId], references: [id], onDelete: Restrict)
+  review               Review?
+  searchLogConversions SearchLog[] @relation("SearchLogConversions")
 
   @@index([userId])
   @@index([warehouseId])
@@ -436,31 +436,31 @@ model Booking {
 }
 
 model Review {
-  id                    Int       @id @default(autoincrement())
-  userId                String    @map("user_id") @db.Uuid
-  warehouseId           Int       @map("warehouse_id")
-  bookingId             Int?      @unique @map("booking_id")
+  id          Int    @id @default(autoincrement())
+  userId      String @map("user_id") @db.Uuid
+  warehouseId Int    @map("warehouse_id")
+  bookingId   Int?   @unique @map("booking_id")
 
   // Review Content
-  rating                Int       @db.SmallInt
-  comment               String?   @db.Text
+  rating  Int     @db.SmallInt
+  comment String? @db.Text
 
   // Operator Response
-  operatorResponse      String?   @map("operator_response") @db.Text
-  respondedAt           DateTime? @map("responded_at") @db.Timestamptz(6)
+  operatorResponse String?   @map("operator_response") @db.Text
+  respondedAt      DateTime? @map("responded_at") @db.Timestamptz(6)
 
   // Moderation
-  verified              Boolean   @default(false)
-  isVisible             Boolean   @default(true) @map("is_visible")
+  verified  Boolean @default(false)
+  isVisible Boolean @default(true) @map("is_visible")
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
-  booking               Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  booking   Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
 
   @@unique([userId, warehouseId])
   @@index([warehouseId])
@@ -472,16 +472,16 @@ model Review {
 }
 
 model Favorite {
-  id                    Int       @id @default(autoincrement())
-  userId                String    @map("user_id") @db.Uuid
-  warehouseId           Int       @map("warehouse_id")
+  id          Int    @id @default(autoincrement())
+  userId      String @map("user_id") @db.Uuid
+  warehouseId Int    @map("warehouse_id")
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  warehouse             Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, warehouseId])
   @@index([userId])
@@ -494,34 +494,34 @@ model Favorite {
 // ================================================================
 
 model CrmLead {
-  id                    Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   // Lead Information
-  name                  String    @db.VarChar(255)
-  phone                 String    @db.VarChar(20)
-  email                 String?   @db.VarChar(255)
+  name  String  @db.VarChar(255)
+  phone String  @db.VarChar(20)
+  email String? @db.VarChar(255)
 
   // Status & Lifecycle
-  status                CrmLeadStatus @default(new)
-  isSpam                Boolean   @default(false) @map("is_spam")
+  status CrmLeadStatus @default(new)
+  isSpam Boolean       @default(false) @map("is_spam")
 
   // Context
-  warehouseId           Int?      @map("warehouse_id")
-  userId                String?   @map("user_id") @db.Uuid
-  source                String?   @db.VarChar(100)
-  notes                 String?   @db.Text
+  warehouseId Int?    @map("warehouse_id")
+  userId      String? @map("user_id") @db.Uuid
+  source      String? @db.VarChar(100)
+  notes       String? @db.Text
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  warehouse             Warehouse? @relation(fields: [warehouseId], references: [id], onDelete: SetNull)
-  user                  User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  contacts              CrmContact[]
-  activities            CrmActivity[]
-  statusHistory         CrmStatusHistory[]
-  chatSessions          ChatSession[]
+  warehouse     Warehouse?         @relation(fields: [warehouseId], references: [id], onDelete: SetNull)
+  user          User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contacts      CrmContact[]
+  activities    CrmActivity[]
+  statusHistory CrmStatusHistory[]
+  chatSessions  ChatSession[]
 
   @@index([status])
   @@index([warehouseId])
@@ -531,23 +531,23 @@ model CrmLead {
 }
 
 model CrmContact {
-  id                    Int       @id @default(autoincrement())
-  leadId                Int       @map("lead_id")
+  id     Int @id @default(autoincrement())
+  leadId Int @map("lead_id")
 
   // Contact Details
-  contactType           CrmContactType @map("contact_type")
-  initiatedBy           CrmInitiatedBy @map("initiated_by")
-  subject               String?   @db.VarChar(255)
-  message               String?   @db.Text
+  contactType CrmContactType @map("contact_type")
+  initiatedBy CrmInitiatedBy @map("initiated_by")
+  subject     String?        @db.VarChar(255)
+  message     String?        @db.Text
 
   // Metadata
-  durationSeconds       Int?      @map("duration_seconds") @db.Integer
+  durationSeconds Int? @map("duration_seconds") @db.Integer
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  lead                  CrmLead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead CrmLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@index([leadId])
   @@index([contactType])
@@ -555,26 +555,26 @@ model CrmContact {
 }
 
 model CrmActivity {
-  id                    Int       @id @default(autoincrement())
-  leadId                Int       @map("lead_id")
-  activityTypeId        Int?      @map("activity_type_id")
+  id             Int  @id @default(autoincrement())
+  leadId         Int  @map("lead_id")
+  activityTypeId Int? @map("activity_type_id")
 
   // Activity Details
-  title                 String    @db.VarChar(255)
-  description           String?   @db.Text
-  dueDate               DateTime? @map("due_date") @db.Timestamptz(6)
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  dueDate     DateTime? @map("due_date") @db.Timestamptz(6)
 
   // Status
-  completed             Boolean   @default(false)
-  completedAt           DateTime? @map("completed_at") @db.Timestamptz(6)
+  completed   Boolean   @default(false)
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
-  lead                  CrmLead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  activityType          CrmActivityType? @relation(fields: [activityTypeId], references: [id], onDelete: SetNull)
+  lead         CrmLead          @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  activityType CrmActivityType? @relation(fields: [activityTypeId], references: [id], onDelete: SetNull)
 
   @@index([leadId])
   @@index([activityTypeId])
@@ -584,39 +584,39 @@ model CrmActivity {
 }
 
 model CrmActivityType {
-  id                    Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   // Type Information
-  name                  String    @unique @db.VarChar(100)
-  description           String?   @db.VarChar(500)
-  icon                  String?   @db.VarChar(50)
-  color                 String?   @db.VarChar(50)
+  name        String  @unique @db.VarChar(100)
+  description String? @db.VarChar(500)
+  icon        String? @db.VarChar(50)
+  color       String? @db.VarChar(50)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  activities            CrmActivity[]
+  activities CrmActivity[]
 
   @@map("crm_activity_types")
 }
 
 model CrmStatusHistory {
-  id                    Int       @id @default(autoincrement())
-  leadId                Int       @map("lead_id")
+  id     Int @id @default(autoincrement())
+  leadId Int @map("lead_id")
 
   // Status Change
-  fromStatus            CrmLeadStatus? @map("from_status")
-  toStatus              CrmLeadStatus @map("to_status")
-  changedByUserId       String?   @map("changed_by_user_id") @db.Uuid
-  reason                String?   @db.Text
+  fromStatus      CrmLeadStatus? @map("from_status")
+  toStatus        CrmLeadStatus  @map("to_status")
+  changedByUserId String?        @map("changed_by_user_id") @db.Uuid
+  reason          String?        @db.Text
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  lead                  CrmLead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  changedByUser         User?     @relation(fields: [changedByUserId], references: [id], onDelete: SetNull)
+  lead          CrmLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  changedByUser User?   @relation(fields: [changedByUserId], references: [id], onDelete: SetNull)
 
   @@index([leadId])
   @@index([toStatus])
@@ -628,31 +628,31 @@ model CrmStatusHistory {
 // ================================================================
 
 model AiRequestLog {
-  id                    Int       @id @default(autoincrement())
-  userId                String?   @map("user_id") @db.Uuid
+  id     Int     @id @default(autoincrement())
+  userId String? @map("user_id") @db.Uuid
 
   // Request Information
-  requestType           String    @map("request_type") @db.VarChar(100)
-  inputText             String?   @map("input_text") @db.Text
-  outputText            String?   @map("output_text") @db.Text
+  requestType String  @map("request_type") @db.VarChar(100)
+  inputText   String? @map("input_text") @db.Text
+  outputText  String? @map("output_text") @db.Text
 
   // AI Model Details
-  model                 String?   @db.VarChar(100)
-  tokensUsed            Int?      @map("tokens_used") @db.Integer
+  model      String? @db.VarChar(100)
+  tokensUsed Int?    @map("tokens_used") @db.Integer
 
   // Status & Performance
-  status                AiRequestStatus
-  errorMessage          String?   @map("error_message") @db.Text
-  processingTimeMs      Int?      @map("processing_time_ms") @db.Integer
+  status           AiRequestStatus
+  errorMessage     String?         @map("error_message") @db.Text
+  processingTimeMs Int?            @map("processing_time_ms") @db.Integer
 
   // Metadata
-  metadata              Json?     @db.JsonB
+  metadata Json? @db.JsonB
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([requestType])
@@ -661,29 +661,29 @@ model AiRequestLog {
 }
 
 model EventLog {
-  id                    Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   // Event Information
-  eventName             String    @map("event_name") @db.VarChar(100)
-  entityType            String?   @map("entity_type") @db.VarChar(100)
-  entityId              String?   @map("entity_id") @db.VarChar(100)
+  eventName  String  @map("event_name") @db.VarChar(100)
+  entityType String? @map("entity_type") @db.VarChar(100)
+  entityId   String? @map("entity_id") @db.VarChar(100)
 
   // Actor & Context
-  actorId               String?   @map("actor_id") @db.Uuid
-  ipAddress             String?   @map("ip_address") @db.VarChar(45)
-  userAgent             String?   @map("user_agent") @db.VarChar(500)
+  actorId   String? @map("actor_id") @db.Uuid
+  ipAddress String? @map("ip_address") @db.VarChar(45)
+  userAgent String? @map("user_agent") @db.VarChar(500)
 
   // Request Tracking
-  requestId             String?   @map("request_id") @db.VarChar(100)
+  requestId String? @map("request_id") @db.VarChar(100)
 
   // Event Data
-  payload               Json?     @db.JsonB
+  payload Json? @db.JsonB
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  actor                 User?     @relation("EventActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actor User? @relation("EventActor", fields: [actorId], references: [id], onDelete: SetNull)
 
   @@index([eventName])
   @@index([actorId])
@@ -697,39 +697,39 @@ model EventLog {
 // ================================================================
 
 model SearchLog {
-  id                    Int       @id @default(autoincrement())
-  userId                String?   @map("user_id") @db.Uuid
+  id     Int     @id @default(autoincrement())
+  userId String? @map("user_id") @db.Uuid
 
   // Search Query
-  queryText             String?   @map("query_text") @db.VarChar(500)
-  filters               Json?     @db.JsonB
+  queryText String? @map("query_text") @db.VarChar(500)
+  filters   Json?   @db.JsonB
 
   // Search Context
-  emirate               String?   @db.VarChar(100)
-  boxSize               String?   @map("box_size") @db.VarChar(10)
-  maxPrice              Int?      @map("max_price") @db.Integer
+  emirate  String? @db.VarChar(100)
+  boxSize  String? @map("box_size") @db.VarChar(10)
+  maxPrice Int?    @map("max_price") @db.Integer
 
   // Results
-  resultsCount          Int       @map("results_count") @db.Integer
-  resultIds             Json?     @map("result_ids") @db.JsonB
+  resultsCount Int   @map("results_count") @db.Integer
+  resultIds    Json? @map("result_ids") @db.JsonB
 
   // User Interaction
-  clickedWarehouseId    Int?      @map("clicked_warehouse_id")
-  clickedAt             DateTime? @map("clicked_at") @db.Timestamptz(6)
-  conversionBookingId   Int?      @map("conversion_booking_id")
+  clickedWarehouseId  Int?      @map("clicked_warehouse_id")
+  clickedAt           DateTime? @map("clicked_at") @db.Timestamptz(6)
+  conversionBookingId Int?      @map("conversion_booking_id")
 
   // Session Tracking
-  sessionId             String?   @map("session_id") @db.VarChar(100)
-  ipAddress             String?   @map("ip_address") @db.VarChar(45)
-  userAgent             String?   @map("user_agent") @db.VarChar(500)
+  sessionId String? @map("session_id") @db.VarChar(100)
+  ipAddress String? @map("ip_address") @db.VarChar(45)
+  userAgent String? @map("user_agent") @db.VarChar(500)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User?     @relation("SearchLogs", fields: [userId], references: [id], onDelete: SetNull)
-  clickedWarehouse      Warehouse? @relation("SearchLogClicks", fields: [clickedWarehouseId], references: [id], onDelete: SetNull)
-  conversionBooking     Booking?  @relation("SearchLogConversions", fields: [conversionBookingId], references: [id], onDelete: SetNull)
+  user              User?      @relation("SearchLogs", fields: [userId], references: [id], onDelete: SetNull)
+  clickedWarehouse  Warehouse? @relation("SearchLogClicks", fields: [clickedWarehouseId], references: [id], onDelete: SetNull)
+  conversionBooking Booking?   @relation("SearchLogConversions", fields: [conversionBookingId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([sessionId])
@@ -739,20 +739,20 @@ model SearchLog {
 }
 
 model GeoCache {
-  id                    Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   // Query & Result
-  addressQuery          String    @unique @map("address_query") @db.VarChar(500)
-  latitude              Float     @db.DoublePrecision
-  longitude             Float     @db.DoublePrecision
-  formattedAddress      String?   @map("formatted_address") @db.Text
+  addressQuery     String  @unique @map("address_query") @db.VarChar(500)
+  latitude         Float   @db.DoublePrecision
+  longitude        Float   @db.DoublePrecision
+  formattedAddress String? @map("formatted_address") @db.Text
 
   // Metadata
-  provider              String?   @db.VarChar(50)
+  provider String? @db.VarChar(50)
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  expiresAt             DateTime? @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  expiresAt DateTime? @map("expires_at") @db.Timestamptz(6)
 
   @@index([addressQuery])
   @@map("geo_cache")
@@ -768,38 +768,38 @@ enum ChatChannel {
 }
 
 model ChatSession {
-  id                    String    @id @default(uuid()) @db.Uuid
-  channel               ChatChannel
-  userId                String?   @map("user_id") @db.Uuid
+  id      String      @id @default(uuid()) @db.Uuid
+  channel ChatChannel
+  userId  String?     @map("user_id") @db.Uuid
 
   // Contact Information
-  phoneNumber           String?   @map("phone_number") @db.VarChar(20)
-  sessionToken          String?   @map("session_token") @db.VarChar(100)
+  phoneNumber  String? @map("phone_number") @db.VarChar(20)
+  sessionToken String? @map("session_token") @db.VarChar(100)
 
   // Context
-  language              String    @default("en") @db.VarChar(5)
-  pageContext           Json      @default("{}") @map("page_context") @db.JsonB
+  language    String @default("en") @db.VarChar(5)
+  pageContext Json   @default("{}") @map("page_context") @db.JsonB
 
   // Lead Capture
-  leadCaptured          Boolean   @default(false) @map("lead_captured")
-  leadId                Int?      @map("lead_id")
+  leadCaptured Boolean @default(false) @map("lead_captured")
+  leadId       Int?    @map("lead_id")
 
   // Statistics
-  messageCount          Int       @default(0) @map("message_count") @db.Integer
-  lastMessageAt         DateTime? @map("last_message_at") @db.Timestamptz(6)
+  messageCount  Int       @default(0) @map("message_count") @db.Integer
+  lastMessageAt DateTime? @map("last_message_at") @db.Timestamptz(6)
 
   // Metadata
-  metadata              Json      @default("{}") @db.JsonB
+  metadata Json @default("{}") @db.JsonB
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  expiresAt             DateTime  @default(dbgenerated("(NOW() + INTERVAL '24 hours')")) @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  expiresAt DateTime @default(dbgenerated("(NOW() + INTERVAL '24 hours')")) @map("expires_at") @db.Timestamptz(6)
 
   // Relations
-  user                  User?     @relation("ChatSessions", fields: [userId], references: [id], onDelete: SetNull)
-  lead                  CrmLead?  @relation(fields: [leadId], references: [id], onDelete: SetNull)
-  conversations         AiConversation[]
+  user          User?            @relation("ChatSessions", fields: [userId], references: [id], onDelete: SetNull)
+  lead          CrmLead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  conversations AiConversation[]
 
   @@index([phoneNumber])
   @@index([userId])
@@ -813,22 +813,22 @@ model ChatSession {
 // ================================================================
 
 model KnowledgeChunk {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   // Source
-  sourceType            String    @map("source_type") @db.VarChar(50)
-  sourceId              String?   @map("source_id") @db.Uuid
+  sourceType String  @map("source_type") @db.VarChar(50)
+  sourceId   String? @map("source_id") @db.Uuid
 
   // Content
-  content               String    @db.Text
+  content String @db.Text
   // Note: embedding vector(1536) will be created via raw SQL migration
 
   // Metadata
-  metadata              Json      @default("{}") @db.JsonB
+  metadata Json @default("{}") @db.JsonB
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@index([sourceType])
   @@index([sourceId])
@@ -836,30 +836,30 @@ model KnowledgeChunk {
 }
 
 model AiConversation {
-  id                    String    @id @default(uuid()) @db.Uuid
-  userId                String?   @map("user_id") @db.Uuid
-  sessionId             String    @map("session_id") @db.VarChar(100)
+  id        String  @id @default(uuid()) @db.Uuid
+  userId    String? @map("user_id") @db.Uuid
+  sessionId String  @map("session_id") @db.VarChar(100)
 
   // Chat Integration (Step 22)
-  channel               String?   @db.VarChar(20)
-  chatSessionId         String?   @map("chat_session_id") @db.Uuid
-  intent                String?   @db.VarChar(50)
-  confidence            Float?    @db.Real
+  channel       String? @db.VarChar(20)
+  chatSessionId String? @map("chat_session_id") @db.Uuid
+  intent        String? @db.VarChar(50)
+  confidence    Float?  @db.Real
 
   // Message
-  role                  String    @db.VarChar(20)
-  content               String    @db.Text
+  role    String @db.VarChar(20)
+  content String @db.Text
 
   // AI Metadata
-  tokensUsed            Int?      @map("tokens_used") @db.Integer
-  model                 String?   @db.VarChar(50)
-  metadata              Json      @default("{}") @db.JsonB
+  tokensUsed Int?    @map("tokens_used") @db.Integer
+  model      String? @db.VarChar(50)
+  metadata   Json    @default("{}") @db.JsonB
 
   // Timestamps
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  chatSession           ChatSession? @relation(fields: [chatSessionId], references: [id], onDelete: SetNull)
+  chatSession ChatSession? @relation(fields: [chatSessionId], references: [id], onDelete: SetNull)
 
   @@index([sessionId])
   @@index([userId])
