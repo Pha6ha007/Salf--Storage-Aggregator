@@ -52,3 +52,25 @@ temp/
 # Docker volumes
 postgres_data/
 redis_data/
+
+# ── GSD baseline (auto-generated) ──
+.gsd/activity/
+.gsd/runtime/
+.gsd/worktrees/
+.gsd/auto.lock
+.gsd/metrics.json
+.gsd/completed-units.json
+.gsd/STATE.md
+.gsd/gsd.db
+.gsd/DISCUSSION-MANIFEST.json
+.gsd/milestones/**/*-CONTINUE.md
+.gsd/milestones/**/continue.md
+*.code-workspace
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+venv/
+target/
+vendor/
