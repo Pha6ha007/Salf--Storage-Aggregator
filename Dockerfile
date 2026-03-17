@@ -1,23 +1,27 @@
-# Development Dockerfile for Self-Storage Aggregator Platform
 FROM node:20-alpine
 
-# Set working directory
+# Install OS deps needed by some native modules
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # Copy package files
 COPY src/backend/package*.json ./
 
-# Install dependencies
-RUN npm install
+# Copy prisma schema BEFORE npm install so postinstall prisma generate works
+COPY src/backend/prisma ./prisma
 
-# Copy application code
+# Install dependencies (triggers prisma generate via postinstall)
+RUN npm install --production=false
+
+# Copy remaining application code
 COPY src/backend/ .
 
-# Generate Prisma Client
-RUN npx prisma generate
+# Build NestJS app
+RUN npm run build
 
 # Expose application port
 EXPOSE 3000
 
-# Start application in development mode
-CMD ["npm", "run", "start:dev"]
+# Run migrations then start
+CMD ["npm", "run", "deploy"]
