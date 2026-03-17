@@ -9,16 +9,18 @@ import { RatingStars } from "./RatingStars";
 
 interface WarehouseCardProps {
   warehouse: {
-    id: string;
+    id: string | number;
     name: string;
     emirate: string;
     district?: string | null;
     rating?: number | string | null;
     totalReviews?: number | null;
+    reviewCount?: number | null;
     minPrice?: number | null;
     verified?: boolean | null;
     availableSizes?: string[] | null;
     photoUrl?: string | null;
+    primaryPhoto?: string | null;
   };
   onFavoriteClick?: (id: string) => void;
   isFavorite?: boolean;
@@ -38,9 +40,9 @@ export function WarehouseCard({
     onFavoriteClick?.(warehouse.id);
   };
 
-  const photoUrl = warehouse.photoUrl;
+  const photoUrl = warehouse.photoUrl || warehouse.primaryPhoto;
   const rating = warehouse.rating || 0;
-  const reviewCount = warehouse.totalReviews || 0;
+  const reviewCount = warehouse.totalReviews ?? warehouse.reviewCount ?? 0;
   const availableSizes = warehouse.availableSizes || ["S", "M", "L"];
 
   return (

@@ -56,7 +56,7 @@ This milestone is complete only when all are true:
 - [x] **S01: Backend API Gaps + Contract Fix** `risk:high` `depends:[]`
   > After this: all 71 spec endpoints exist and return correct shapes; frontend API layer calls correct paths per spec; PostGIS extension status confirmed
 
-- [ ] **S02: Admin Module + Notifications** `risk:high` `depends:[S01]`
+- [x] **S02: Admin Module + Notifications** `risk:high` `depends:[S01]`
   > After this: admin can view/approve/reject operator registrations and warehouse listings via API; booking event triggers real email delivery confirmed in SendGrid logs
 
 - [ ] **S03: Public User Flow** `risk:high` `depends:[S01]`

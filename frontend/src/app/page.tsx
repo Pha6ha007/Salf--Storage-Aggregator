@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Package, CheckCircle, MapPin, Sparkles } from "lucide-react";
+import { Search, Package, CheckCircle, MapPin, Sparkles, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SearchBar } from "@/components/SearchBar";
@@ -9,96 +10,36 @@ import { WarehouseCard } from "@/components/WarehouseCard";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useInView } from "@/hooks/useInView";
-
-// Mock data for featured warehouses
-const FEATURED_WAREHOUSES = [
-  {
-    id: "1",
-    name: "Al Quoz Secure Storage",
-    emirate: "Dubai",
-    district: "Al Quoz",
-    rating: 4.8,
-    totalReviews: 124,
-    minPrice: 150,
-    verified: true,
-    availableSizes: ["S", "M", "L"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+1",
-  },
-  {
-    id: "2",
-    name: "Musaffah Industrial Storage",
-    emirate: "Abu Dhabi",
-    district: "Musaffah",
-    rating: 4.6,
-    totalReviews: 89,
-    minPrice: 200,
-    verified: true,
-    availableSizes: ["M", "L", "XL"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+2",
-  },
-  {
-    id: "3",
-    name: "Sharjah City Storage",
-    emirate: "Sharjah",
-    district: "Industrial Area",
-    rating: 4.5,
-    totalReviews: 67,
-    minPrice: 120,
-    verified: true,
-    availableSizes: ["S", "M"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+3",
-  },
-  {
-    id: "4",
-    name: "JLT Premium Storage",
-    emirate: "Dubai",
-    district: "JLT",
-    rating: 4.9,
-    totalReviews: 156,
-    minPrice: 250,
-    verified: true,
-    availableSizes: ["S", "M", "L"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+4",
-  },
-  {
-    id: "5",
-    name: "Dubai Marina Storage",
-    emirate: "Dubai",
-    district: "Marina",
-    rating: 4.7,
-    totalReviews: 98,
-    minPrice: 300,
-    verified: true,
-    availableSizes: ["S", "M"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+5",
-  },
-  {
-    id: "6",
-    name: "Ajman Budget Storage",
-    emirate: "Ajman",
-    district: "Industrial",
-    rating: 4.3,
-    totalReviews: 45,
-    minPrice: 100,
-    verified: false,
-    availableSizes: ["S", "M", "L"],
-    photoUrl: "https://placehold.co/600x400/1A56DB/white?text=Storage+6",
-  },
-];
+import { warehousesApi } from "@/lib/api/warehouses";
 
 const POPULAR_AREAS = [
-  { name: "Dubai", count: 127, emirate: "dubai" },
-  { name: "Abu Dhabi", count: 89, emirate: "abu-dhabi" },
-  { name: "Sharjah", count: 56, emirate: "sharjah" },
-  { name: "Ajman", count: 34, emirate: "ajman" },
-  { name: "Ras Al Khaimah", count: 23, emirate: "ras-al-khaimah" },
-  { name: "Fujairah", count: 18, emirate: "fujairah" },
+  { name: "Dubai", count: null, emirate: "Dubai" },
+  { name: "Abu Dhabi", count: null, emirate: "Abu Dhabi" },
+  { name: "Sharjah", count: null, emirate: "Sharjah" },
+  { name: "Ajman", count: null, emirate: "Ajman" },
+  { name: "Ras Al Khaimah", count: null, emirate: "Ras Al Khaimah" },
+  { name: "Fujairah", count: null, emirate: "Fujairah" },
 ];
 
 export default function Home() {
   const [howItWorksRef, howItWorksInView] = useInView();
   const [popularAreasRef, popularAreasInView] = useInView();
   const [featuredRef, featuredInView] = useInView();
+
+  const { data: featuredData, isLoading: loadingFeatured } = useQuery({
+    queryKey: ["warehouses-featured"],
+    queryFn: () =>
+      warehousesApi.list({
+        status: "active",
+        sortBy: "rating",
+        sortOrder: "desc",
+        limit: 6,
+        page: 1,
+      }),
+    staleTime: 5 * 60 * 1000, // 5 min — home page doesn't need real-time freshness
+  });
+
+  const featuredWarehouses = featuredData?.data ?? [];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -125,7 +66,11 @@ export default function Home() {
               <div className="mt-8 flex items-center justify-center gap-8 text-primary-100">
                 <div className="flex items-center gap-2">
                   <Package className="w-5 h-5" />
-                  <span>50+ warehouses</span>
+                  <span>
+                    {featuredData?.meta?.total
+                      ? `${featuredData.meta.total}+ warehouses`
+                      : "50+ warehouses"}
+                  </span>
                 </div>
                 <span>|</span>
                 <div className="flex items-center gap-2">
@@ -141,7 +86,7 @@ export default function Home() {
         <section
           ref={howItWorksRef}
           className={`py-16 md:py-24 bg-white transition-all duration-700 ${
-            howItWorksInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            howItWorksInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -154,42 +99,29 @@ export default function Home() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Step 1 */}
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-8 h-8 text-primary-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-text-primary mb-2">
-                  Search
-                </h3>
+                <h3 className="text-xl font-semibold text-text-primary mb-2">Search</h3>
                 <p className="text-text-secondary">
-                  Browse verified warehouses in your area with our advanced
-                  search filters
+                  Browse verified warehouses in your area with our advanced search filters
                 </p>
               </div>
-
-              {/* Step 2 */}
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Package className="w-8 h-8 text-primary-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-text-primary mb-2">
-                  Compare
-                </h3>
+                <h3 className="text-xl font-semibold text-text-primary mb-2">Compare</h3>
                 <p className="text-text-secondary">
-                  Compare prices, sizes, features and reviews to find the
-                  perfect fit
+                  Compare prices, sizes, features and reviews to find the perfect fit
                 </p>
               </div>
-
-              {/* Step 3 */}
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-8 h-8 text-primary-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-text-primary mb-2">
-                  Book
-                </h3>
+                <h3 className="text-xl font-semibold text-text-primary mb-2">Book</h3>
                 <p className="text-text-secondary">
                   Reserve your unit online and move in at your convenience
                 </p>
@@ -202,7 +134,7 @@ export default function Home() {
         <section
           ref={popularAreasRef}
           className={`py-16 md:py-24 bg-surface transition-all duration-700 ${
-            popularAreasInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            popularAreasInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -215,16 +147,11 @@ export default function Home() {
               {POPULAR_AREAS.map((area) => (
                 <Link
                   key={area.emirate}
-                  href={`/catalog?emirate=${area.emirate}`}
+                  href={`/catalog?emirate=${encodeURIComponent(area.emirate)}`}
                 >
                   <Card className="p-6 text-center hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200 cursor-pointer border border-border hover:border-primary-200 group">
                     <MapPin className="w-8 h-8 text-primary-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                    <h3 className="font-semibold text-text-primary">
-                      {area.name}
-                    </h3>
-                    <p className="text-sm text-text-secondary mt-1">
-                      {area.count} warehouses
-                    </p>
+                    <h3 className="font-semibold text-text-primary">{area.name}</h3>
                   </Card>
                 </Link>
               ))}
@@ -236,7 +163,7 @@ export default function Home() {
         <section
           ref={featuredRef}
           className={`py-16 md:py-24 bg-white transition-all duration-700 ${
-            featuredInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            featuredInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -248,31 +175,50 @@ export default function Home() {
                 Top-rated storage facilities across the UAE
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {FEATURED_WAREHOUSES.map((warehouse, i) => (
-                <div
-                  key={warehouse.id}
-                  className="animate-fade-in-up"
-                  style={{
-                    animationDelay: `${i * 60}ms`,
-                    animationFillMode: 'both',
-                    opacity: featuredInView ? 1 : 0,
-                  }}
-                >
-                  <WarehouseCard warehouse={warehouse} />
+
+            {loadingFeatured ? (
+              <div className="flex items-center justify-center py-16">
+                <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
+              </div>
+            ) : featuredWarehouses.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {featuredWarehouses.map((warehouse, i) => (
+                    <div
+                      key={warehouse.id}
+                      className="animate-fade-in-up"
+                      style={{
+                        animationDelay: `${i * 60}ms`,
+                        animationFillMode: "both",
+                        opacity: featuredInView ? 1 : 0,
+                      }}
+                    >
+                      <WarehouseCard warehouse={warehouse} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="text-center mt-8">
-              <Link href="/catalog">
-                <Button
-                  size="lg"
-                  className="bg-primary-600 hover:bg-primary-700"
-                >
-                  View All Warehouses
-                </Button>
-              </Link>
-            </div>
+                <div className="text-center mt-8">
+                  <Link href="/catalog">
+                    <Button size="lg" className="bg-primary-600 hover:bg-primary-700">
+                      View All Warehouses
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              /* No data yet — graceful placeholder */
+              <div className="text-center py-16">
+                <Package className="w-16 h-16 text-primary-200 mx-auto mb-4" />
+                <p className="text-text-secondary text-lg mb-4">
+                  No warehouses listed yet. Be the first operator!
+                </p>
+                <Link href="/auth/register">
+                  <Button size="lg" className="bg-primary-600 hover:bg-primary-700">
+                    List Your Warehouse
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </section>
 
@@ -284,14 +230,11 @@ export default function Home() {
               Not sure what size you need?
             </h2>
             <p className="text-xl text-accent-100 mb-8">
-              Our AI-powered box finder helps you determine the perfect storage
-              size based on your items
+              Our AI-powered box finder helps you determine the perfect storage size based on your
+              items
             </p>
             <Link href="/ai/box-finder">
-              <Button
-                size="lg"
-                className="bg-white text-accent-600 hover:bg-gray-100"
-              >
+              <Button size="lg" className="bg-white text-accent-600 hover:bg-gray-100">
                 Try AI Box Finder
               </Button>
             </Link>

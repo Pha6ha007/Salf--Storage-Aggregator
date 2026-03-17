@@ -364,6 +364,15 @@ export class WarehousesService {
               companyName: true,
             },
           },
+          media: {
+            where: { isPrimary: true },
+            select: { fileUrl: true },
+            take: 1,
+          },
+          boxes: {
+            where: { isAvailable: true, deletedAt: null },
+            select: { priceMonthly: true, size: true },
+          },
         },
         skip,
         take: limit,
@@ -372,8 +381,24 @@ export class WarehousesService {
       this.prisma.warehouse.count({ where }),
     ]);
 
+    // Compute minPrice and availableSizes for each warehouse
+    const data = warehouses.map((wh) => {
+      const { media, boxes, ...warehouseFields } = wh;
+      const prices = boxes.map((b) => Number(b.priceMonthly));
+      const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+      const availableSizes = [...new Set(boxes.map((b) => b.size))];
+      const primaryPhoto = media[0]?.fileUrl ?? null;
+      return {
+        ...warehouseFields,
+        minPrice,
+        availableSizes,
+        primaryPhoto,
+        totalReviews: warehouseFields.reviewCount,
+      };
+    });
+
     return {
-      data: warehouses,
+      data,
       meta: {
         total,
         page,

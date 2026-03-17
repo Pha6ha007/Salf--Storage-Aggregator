@@ -30,7 +30,10 @@ export interface Warehouse {
     contactPhone: string | null;
   };
 
-  // Computed/aggregated fields (from backend)
+  // Computed/aggregated fields (from backend list endpoint)
+  minPrice?: number | null;
+  availableSizes?: string[] | null;
+  primaryPhoto?: string | null;
   total_boxes?: number;
   available_boxes?: number;
   occupied_boxes?: number;
