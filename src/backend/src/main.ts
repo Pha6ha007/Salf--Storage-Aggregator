@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -19,6 +20,9 @@ async function bootstrap() {
 
   // Cookie parser for JWT authentication
   app.use(cookieParser());
+
+  // Global exception filter — logs all 500s with stack trace
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Global validation pipe
   app.useGlobalPipes(
