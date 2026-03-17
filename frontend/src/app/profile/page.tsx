@@ -17,8 +17,9 @@ import type { ApiErrorResponse } from '@/types/api-error';
 
 // Profile update schema
 const profileSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  phone: z.string().regex(/^\+\d{10,15}$/, 'Enter a valid phone number (e.g. +971501234567)'),
+  firstName: z.string().min(1, 'First name is required').max(100),
+  lastName: z.string().max(100).optional(),
+  phone: z.string().regex(/^\+\d{10,15}$/, 'Enter a valid phone number (e.g. +971501234567)').optional().or(z.literal('')),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -56,7 +57,8 @@ export default function ProfilePage() {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: user?.name || '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
       phone: user?.phone || '',
     },
   });
@@ -163,20 +165,31 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-text-primary">
-                Full Name
-              </label>
-              <Input
-                id="name"
-                type="text"
-                data-testid="profile-name-input"
-                {...registerProfile('name')}
-                className={profileErrors.name ? 'border-error-500' : ''}
-              />
-              {profileErrors.name && (
-                <p className="text-sm text-error-500">{profileErrors.name.message}</p>
-              )}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor="firstName" className="text-sm font-medium text-text-primary">
+                  First Name
+                </label>
+                <Input
+                  id="firstName"
+                  type="text"
+                  {...registerProfile('firstName')}
+                  className={profileErrors.firstName ? 'border-error-500' : ''}
+                />
+                {profileErrors.firstName && (
+                  <p className="text-sm text-error-500">{profileErrors.firstName.message}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="lastName" className="text-sm font-medium text-text-primary">
+                  Last Name
+                </label>
+                <Input
+                  id="lastName"
+                  type="text"
+                  {...registerProfile('lastName')}
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

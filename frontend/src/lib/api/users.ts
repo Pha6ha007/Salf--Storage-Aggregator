@@ -1,10 +1,11 @@
 import api from '../api';
-import type { UserResponse } from '@/types/auth';
+import type { User } from '@/types/auth';
 
 export interface UpdateProfileDto {
-  name?: string;
+  firstName?: string;
+  lastName?: string;
   phone?: string;
-  avatar?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface ChangePasswordDto {
@@ -31,17 +32,13 @@ export const usersApi = {
    * Get current user profile (already used in AuthProvider)
    * GET /api/v1/users/me
    */
-  getMe: async (): Promise<UserResponse> => {
-    const response = await api.get<UserResponse>('/users/me');
+  getMe: async (): Promise<User> => {
+    const response = await api.get<User>('/users/me');
     return response.data;
   },
 
-  /**
-   * Update user profile
-   * PUT /api/v1/users/me
-   */
-  updateProfile: async (data: UpdateProfileDto): Promise<UserResponse> => {
-    const response = await api.put<UserResponse>('/users/me', data);
+  updateProfile: async (data: UpdateProfileDto): Promise<User> => {
+    const response = await api.put<User>('/users/me', data);
     return response.data;
   },
 
