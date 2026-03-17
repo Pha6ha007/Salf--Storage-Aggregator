@@ -97,6 +97,9 @@ export interface WarehouseSearchParams {
   hasInsurance?: boolean;
   hasParkingSpace?: boolean;
   minRating?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  boxSize?: string;
   latitude?: number;
   longitude?: number;
   radiusKm?: number;

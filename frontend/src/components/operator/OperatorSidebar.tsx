@@ -33,9 +33,9 @@ const navItems = [
     label: 'Analytics',
   },
   {
-    href: '/operator/settings',
+    href: '/operator/profile',
     icon: Settings,
-    label: 'Settings',
+    label: 'Profile',
   },
 ];
 

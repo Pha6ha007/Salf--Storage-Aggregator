@@ -70,6 +70,9 @@ export const warehousesApi = {
     if (params.longitude) queryParams.append('longitude', params.longitude.toString());
     if (params.radiusKm) queryParams.append('radiusKm', params.radiusKm.toString());
     if (params.status) queryParams.append('status', params.status);
+    if (params.minPrice != null) queryParams.append('minPrice', params.minPrice.toString());
+    if (params.maxPrice != null) queryParams.append('maxPrice', params.maxPrice.toString());
+    if (params.boxSize) queryParams.append('boxSize', params.boxSize);
     if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());
     if (params.sortBy) queryParams.append('sortBy', params.sortBy);
