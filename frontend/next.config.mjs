@@ -1,32 +1,15 @@
 /** @type {import('next').NextConfig} */
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') ||
-  'https://salf-storage-aggregator-production.up.railway.app';
-
 const nextConfig = {
-  // Strict mode for better development experience
   reactStrictMode: true,
 
-  // Proxy all /api/v1/* requests to Railway backend
-  // This solves cross-domain cookie issue — cookies are now same-origin
-  async rewrites() {
-    return [
-      {
-        source: '/api/v1/:path*',
-        destination: `${BACKEND_URL}/api/v1/:path*`,
-      },
-    ];
-  },
-
-  // Image optimization
   images: {
     domains: [
       'storagecompare-media-production.s3.me-south-1.amazonaws.com',
-      'placehold.co', // For development/testing
+      'placehold.co',
     ],
     formats: ['image/avif', 'image/webp'],
   },
 
-  // Environment variables validation
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
