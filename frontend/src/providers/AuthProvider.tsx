@@ -31,8 +31,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     queryKey: ['currentUser'],
     queryFn: async () => {
       try {
-        const response = await authApi.getMe();
-        return response.data;
+        return await authApi.getMe();
       } catch {
         // If 401, user is not authenticated - this is expected
         return null;
@@ -54,8 +53,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const login = useCallback(
     async (data: LoginDto) => {
       const response = await authApi.login(data);
-      setUser(response.data.user);
-      // Invalidate and refetch user data
+      // Backend returns { user: {...} } directly — no wrapper
+      const user = (response as any).user ?? (response as any).data?.user ?? null;
+      setUser(user);
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
     [queryClient]
@@ -64,8 +64,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const register = useCallback(
     async (data: RegisterDto) => {
       const response = await authApi.register(data);
-      setUser(response.data.user);
-      // Invalidate and refetch user data
+      // Backend returns { user: {...} } directly — no wrapper
+      const user = (response as any).user ?? (response as any).data?.user ?? null;
+      setUser(user);
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
     [queryClient]

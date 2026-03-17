@@ -3,12 +3,19 @@
 export interface User {
   id: string;
   email: string;
-  name: string;
-  phone: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  name?: string;             // computed: firstName + lastName (may not be present)
+  phone?: string | null;
   role: 'user' | 'operator' | 'admin';
+  isActive?: boolean;
+  emailVerified?: boolean;
+  avatarUrl?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  // Legacy snake_case aliases (some components may use these)
   is_email_verified?: boolean;
-  is_phone_verified?: boolean;
-  created_at: string;
+  created_at?: string;
   updated_at?: string;
 }
 

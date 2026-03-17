@@ -4,8 +4,8 @@ import type {
   LoginDto,
   ResetPasswordDto,
   AuthResponse,
-  UserResponse,
   MessageResponse,
+  User,
 } from '@/types/auth';
 
 export const authApi = {
@@ -73,8 +73,8 @@ export const authApi = {
    * GET /api/v1/users/me
    * Requires auth_token cookie
    */
-  getMe: async (): Promise<UserResponse> => {
-    const response = await api.get<UserResponse>('/users/me');
+  getMe: async (): Promise<User> => {
+    const response = await api.get<User>('/users/me');
     return response.data;
   },
 };

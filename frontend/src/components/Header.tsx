@@ -87,7 +87,7 @@ export function Header() {
                   <button className="flex items-center gap-2 hover:opacity-80">
                     <Avatar className="w-8 h-8">
                       <AvatarFallback className="bg-primary-100 text-primary-700">
-                        {user.name?.charAt(0)?.toUpperCase() || "U"}
+                        {(user?.firstName ?? user?.name ?? "U").charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                   </button>
@@ -137,7 +137,7 @@ export function Header() {
             {isAuthenticated && user ? (
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-primary-100 text-primary-700">
-                  {user.name?.charAt(0)?.toUpperCase() || "U"}
+                  {(user?.firstName ?? user?.name ?? "U").charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
             ) : (
