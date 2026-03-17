@@ -173,18 +173,34 @@ export interface BoxFeatures {
 
 export interface CreateWarehouseDto {
   name: string;
-  description: string;
-  address: Address;
-  operating_hours: OperatingHours;
-  features: WarehouseFeatures;
+  description?: string;
+  address: string;
+  emirate: string;
+  district?: string;
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasInsurance?: boolean;
+  hasParkingSpace?: boolean;
+  workingHours?: Record<string, string>;
+  contactPhone?: string;
+  contactEmail?: string;
 }
 
 export interface UpdateWarehouseDto {
   name?: string;
   description?: string;
-  address?: Address;
-  operating_hours?: OperatingHours;
-  features?: WarehouseFeatures;
+  address?: string;
+  emirate?: string;
+  district?: string;
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasInsurance?: boolean;
+  hasParkingSpace?: boolean;
+  workingHours?: Record<string, string>;
+  contactPhone?: string;
+  contactEmail?: string;
   status?: WarehouseStatus;
 }
 
