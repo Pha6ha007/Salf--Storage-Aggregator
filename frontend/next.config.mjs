@@ -1,10 +1,21 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Note: 'standalone' output disabled — incompatible with Vercel API routes
-  // output: 'standalone',
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') ||
+  'https://salf-storage-aggregator-production.up.railway.app';
 
+const nextConfig = {
   // Strict mode for better development experience
   reactStrictMode: true,
+
+  // Proxy all /api/v1/* requests to Railway backend
+  // This solves cross-domain cookie issue — cookies are now same-origin
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${BACKEND_URL}/api/v1/:path*`,
+      },
+    ];
+  },
 
   // Image optimization
   images: {
