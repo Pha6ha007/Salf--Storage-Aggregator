@@ -143,7 +143,7 @@ export default function OperatorBookingsPage() {
                             <BookingStatusBadge status={booking.status} />
                           </div>
                           <p className="text-sm text-text-secondary">
-                            Booking #{booking.booking_number}
+                            Booking #{booking.booking_number || booking.id}
                           </p>
                         </div>
                       </div>
@@ -153,7 +153,7 @@ export default function OperatorBookingsPage() {
                           <User className="h-4 w-4 text-text-muted mt-0.5" />
                           <div>
                             <p className="font-medium text-text-primary">
-                              {booking.user.name}
+                              {`${booking.user?.firstName ?? ''} ${booking.user?.lastName ?? ''}`.trim() || 'Unknown'}
                             </p>
                             <p className="text-text-secondary">{booking.user.email}</p>
                             <p className="text-text-secondary">{booking.user.phone}</p>
@@ -163,23 +163,23 @@ export default function OperatorBookingsPage() {
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 text-sm text-text-secondary">
                             <Package className="h-4 w-4" />
-                            Box {booking.box.number} ({booking.box.size})
+                            Box {booking.box?.boxNumber} ({booking.box.size})
                           </div>
                           <div className="flex items-center gap-2 text-sm text-text-secondary">
                             <Calendar className="h-4 w-4" />
-                            {new Date(booking.start_date).toLocaleDateString()} —{' '}
-                            {new Date(booking.end_date).toLocaleDateString()}
+                            {new Date(booking.startDate).toLocaleDateString()} —{' '}
+                            {new Date(booking.endDate).toLocaleDateString()}
                           </div>
                         </div>
                       </div>
 
                       <div className="flex items-baseline gap-2 pt-2 border-t border-border">
                         <span className="text-sm text-text-secondary">
-                          {booking.price_per_month.toLocaleString()} AED/month
+                          {Number(booking.monthlyPrice || 0).toLocaleString()} AED/month
                         </span>
                         <span className="text-sm text-text-muted">·</span>
                         <span className="font-semibold text-primary-600">
-                          Total: {booking.total_price.toLocaleString()} AED
+                          Total: {Number(booking.priceTotal || 0).toLocaleString()} AED
                         </span>
                       </div>
                     </div>
@@ -217,7 +217,7 @@ export default function OperatorBookingsPage() {
               <Button
                 variant="outline"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={!data.pagination.has_previous}
+                disabled={page <= 1}
               >
                 Previous
               </Button>
@@ -227,7 +227,7 @@ export default function OperatorBookingsPage() {
               <Button
                 variant="outline"
                 onClick={() => setPage((p) => p + 1)}
-                disabled={!data.pagination.has_next}
+                disabled={!data.pagination || data.data.length < 12}
               >
                 Next
               </Button>
