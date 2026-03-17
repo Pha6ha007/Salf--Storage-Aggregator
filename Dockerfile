@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+# Cache bust to force fresh build
+ARG CACHE_BUST=1
+
 WORKDIR /app
 
 # Copy package files
