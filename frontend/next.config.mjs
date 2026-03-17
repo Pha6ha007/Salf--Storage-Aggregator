@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Output standalone for optimal Docker/Vercel deployment
-  output: 'standalone',
+  // Note: 'standalone' output disabled — incompatible with Vercel API routes
+  // output: 'standalone',
 
   // Strict mode for better development experience
   reactStrictMode: true,
