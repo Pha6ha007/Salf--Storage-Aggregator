@@ -4,8 +4,8 @@
   "outputDirectory": ".next",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://api-storagecompare.up.railway.app/api/:path*"
+      "source": "/api/v1/:path*",
+      "destination": "https://salf-storage-aggregator-production.up.railway.app/api/v1/:path*"
     }
   ],
   "headers": [
