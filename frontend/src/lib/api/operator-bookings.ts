@@ -5,7 +5,7 @@ interface BookingsQueryParams {
   status?: 'all' | BookingStatus;
   page?: number;
   per_page?: number;
-  warehouse_id?: string;
+  warehouse_id?: number;
 }
 
 interface Booking {
@@ -13,39 +13,37 @@ interface Booking {
   booking_number: string;
   status: BookingStatus;
   warehouse: {
-    id: string;
+    id: number;
     name: string;
   };
   box: {
-    id: string;
-    number: string;
+    id: number;
+    boxNumber: string;
     size: string;
   };
   user: {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phone: string;
   };
-  start_date: string;
-  end_date: string;
-  duration_months: number;
-  price_per_month: number;
-  total_price: number;
-  deposit?: number;
-  created_at: string;
-  updated_at: string;
+  startDate: string;
+  endDate: string;
+  durationMonths: number;
+  monthlyPrice: number;
+  priceTotal: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface BookingsListResponse {
   data: Booking[];
-  pagination: {
+  pagination?: {
     page: number;
     per_page: number;
     total: number;
     total_pages: number;
-    has_next: boolean;
-    has_previous: boolean;
   };
 }
 
@@ -62,7 +60,10 @@ interface RejectBookingDto {
 }
 
 export const operatorBookingsApi = {
-  // List bookings for operator's warehouses
+  /**
+   * List bookings for operator's warehouses
+   * GET /api/v1/operator/bookings
+   */
   list: async (params?: BookingsQueryParams): Promise<BookingsListResponse> => {
     const queryParams = new URLSearchParams();
     if (params?.status && params.status !== 'all') {
@@ -70,42 +71,66 @@ export const operatorBookingsApi = {
     }
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
-    if (params?.warehouse_id) queryParams.append('warehouse_id', params.warehouse_id);
+    if (params?.warehouse_id) queryParams.append('warehouse_id', params.warehouse_id.toString());
 
     const response = await api.get<BookingsListResponse>(
-      `/operators/me/bookings?${queryParams.toString()}`
+      `/operator/bookings?${queryParams.toString()}`
     );
     return response.data;
   },
 
-  // Get single booking
+  /**
+   * Get single booking (operator view)
+   * GET /api/v1/operator/bookings/:id
+   */
   getById: async (id: number): Promise<ApiResponse<Booking>> => {
-    const response = await api.get<ApiResponse<Booking>>(`/operators/bookings/${id}`);
+    const response = await api.get<ApiResponse<Booking>>(`/operator/bookings/${id}`);
     return response.data;
   },
 
-  // Confirm pending booking
+  /**
+   * Confirm pending booking
+   * POST /api/v1/operator/bookings/:id/confirm
+   */
   confirm: async (id: number, data?: ConfirmBookingDto): Promise<ApiResponse<Booking>> => {
-    const response = await api.patch<ApiResponse<Booking>>(
-      `/operators/bookings/${id}/confirm`,
+    const response = await api.post<ApiResponse<Booking>>(
+      `/operator/bookings/${id}/confirm`,
       data
     );
     return response.data;
   },
 
-  // Reject pending booking
+  /**
+   * Reject pending booking
+   * PUT /api/v1/operator/bookings/:id/reject
+   */
   reject: async (id: number, data?: RejectBookingDto): Promise<ApiResponse<Booking>> => {
-    const response = await api.patch<ApiResponse<Booking>>(
-      `/operators/bookings/${id}/reject`,
+    const response = await api.put<ApiResponse<Booking>>(
+      `/operator/bookings/${id}/reject`,
       data
     );
     return response.data;
   },
 
-  // Mark booking as completed
+  /**
+   * Mark booking as completed
+   * POST /api/v1/operator/bookings/:id/complete
+   */
   complete: async (id: number): Promise<ApiResponse<Booking>> => {
-    const response = await api.patch<ApiResponse<Booking>>(
-      `/operators/bookings/${id}/complete`
+    const response = await api.post<ApiResponse<Booking>>(
+      `/operator/bookings/${id}/complete`
+    );
+    return response.data;
+  },
+
+  /**
+   * Cancel booking (operator)
+   * POST /api/v1/operator/bookings/:id/cancel
+   */
+  cancel: async (id: number, reason?: string): Promise<ApiResponse<Booking>> => {
+    const response = await api.post<ApiResponse<Booking>>(
+      `/operator/bookings/${id}/cancel`,
+      { cancelReason: reason }
     );
     return response.data;
   },

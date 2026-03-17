@@ -55,6 +55,23 @@ export class WarehouseBoxesController {
   }
 }
 
+// Public endpoint - get single box by ID
+@ApiTags('boxes')
+@Controller('boxes')
+export class PublicBoxesController {
+  constructor(private readonly boxesService: BoxesService) {}
+
+  @Public()
+  @Get(':id')
+  @ApiOperation({ summary: 'Get box detail by ID (public)' })
+  @ApiParam({ name: 'id', description: 'Box ID' })
+  @ApiResponse({ status: 200, description: 'Box retrieved successfully', type: BoxResponseDto })
+  @ApiResponse({ status: 404, description: 'Box not found' })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.boxesService.findOne(id);
+  }
+}
+
 // Operator endpoints - manage boxes
 @ApiTags('operator/boxes')
 @Controller('operator')

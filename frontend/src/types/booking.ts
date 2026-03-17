@@ -101,3 +101,11 @@ export interface CancelBookingResponse {
   success: boolean;
   data: Booking;
 }
+
+export interface CreateBookingDto {
+  warehouseId: number;
+  boxId: number;
+  startDate: string;       // ISO date string e.g. "2026-04-01"
+  durationMonths: number;  // 1–24
+  notes?: string;
+}

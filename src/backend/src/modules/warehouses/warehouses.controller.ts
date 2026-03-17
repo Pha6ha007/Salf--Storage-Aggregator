@@ -32,7 +32,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { Public } from '../../common/decorators/public.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { UserRole } from '@prisma/client';
+import { UserRole, WarehouseStatus } from '@prisma/client';
 
 @ApiTags('warehouses')
 @Controller('warehouses')
@@ -182,5 +182,30 @@ export class OperatorWarehousesController {
     }
 
     return this.warehousesService.delete(id, operator.id);
+  }
+
+  @Patch(':id/status')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Change warehouse status (draft→pending_moderation, active↔inactive)' })
+  @ApiParam({ name: 'id', description: 'Warehouse ID' })
+  @ApiResponse({ status: 200, description: 'Warehouse status updated' })
+  @ApiResponse({ status: 400, description: 'Invalid status transition' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Not your warehouse' })
+  @ApiResponse({ status: 404, description: 'Warehouse not found' })
+  async changeStatus(
+    @CurrentUser() user: CurrentUserData,
+    @Param('id', ParseIntPipe) id: number,
+    @Body('status') status: WarehouseStatus,
+  ) {
+    const operator = await this.warehousesService['prisma'].operator.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!operator) {
+      throw new Error('Operator profile not found');
+    }
+
+    return this.warehousesService.changeStatus(id, operator.id, status);
   }
 }

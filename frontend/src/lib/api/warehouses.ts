@@ -10,17 +10,50 @@ import type {
   UpdateWarehouseDto,
   CreateBoxDto,
   UpdateBoxDto,
-  WarehousesQueryParams,
-  WarehousesListResponse,
-  BoxesListResponse,
 } from '@/types/warehouse';
 
 interface ApiResponse<T> {
   data: T;
 }
 
+interface WarehousesListResponse {
+  data: Warehouse[];
+  pagination: {
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+  summary?: {
+    total_warehouses: number;
+    active_warehouses: number;
+    total_monthly_revenue: number;
+  };
+}
+
+interface BoxesListResponse {
+  data: Box[];
+  pagination?: {
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+}
+
+interface WarehousesQueryParams {
+  page?: number;
+  per_page?: number;
+  status?: string;
+  search?: string;
+}
+
 export const warehousesApi = {
-  // Get list of warehouses with filters
+  // ── Public endpoints ────────────────────────────────────────────────────────
+
+  /**
+   * GET /api/v1/warehouses — search/list public catalog
+   */
   list: async (params: WarehouseSearchParams): Promise<WarehouseListResponse> => {
     const queryParams = new URLSearchParams();
 
@@ -48,120 +81,155 @@ export const warehousesApi = {
     return response.data;
   },
 
-  // Get single warehouse by ID
-  getById: async (id: string): Promise<Warehouse> => {
+  /**
+   * GET /api/v1/warehouses/:id — public warehouse detail
+   */
+  getById: async (id: string | number): Promise<Warehouse> => {
     const response = await api.get<Warehouse>(`/warehouses/${id}`);
     return response.data;
   },
 
-  // Get boxes for a warehouse
-  getBoxes: async (warehouseId: string): Promise<Box[]> => {
+  /**
+   * GET /api/v1/warehouses/:id/boxes — public box list for warehouse
+   */
+  getBoxes: async (warehouseId: string | number): Promise<Box[]> => {
     const response = await api.get<Box[]>(`/warehouses/${warehouseId}/boxes`);
     return response.data;
   },
 
-  // Get media for a warehouse
-  getMedia: async (warehouseId: string): Promise<Media[]> => {
+  /**
+   * GET /api/v1/warehouses/:id/media
+   */
+  getMedia: async (warehouseId: string | number): Promise<Media[]> => {
     const response = await api.get<Media[]>(`/warehouses/${warehouseId}/media`);
     return response.data;
   },
 
-  // Get reviews for a warehouse
-  getReviews: async (warehouseId: string): Promise<Review[]> => {
+  /**
+   * GET /api/v1/warehouses/:id/reviews
+   */
+  getReviews: async (warehouseId: string | number): Promise<Review[]> => {
     const response = await api.get<Review[]>(`/warehouses/${warehouseId}/reviews`);
     return response.data;
   },
 
-  // Operator: List own warehouses
+  // ── Operator endpoints (/operator/ prefix) ──────────────────────────────────
+
+  /**
+   * GET /api/v1/operator/warehouses — list own warehouses
+   */
   listOwn: async (params?: WarehousesQueryParams): Promise<WarehousesListResponse> => {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
+    if (params?.per_page) queryParams.append('limit', params.per_page.toString());
     if (params?.status) queryParams.append('status', params.status);
     if (params?.search) queryParams.append('search', params.search);
 
     const response = await api.get<WarehousesListResponse>(
-      `/operators/me/warehouses?${queryParams.toString()}`
+      `/operator/warehouses?${queryParams.toString()}`
     );
     return response.data;
   },
 
-  // Operator: Create warehouse
+  /**
+   * POST /api/v1/operator/warehouses — create warehouse
+   */
   create: async (data: CreateWarehouseDto): Promise<ApiResponse<Warehouse>> => {
-    const response = await api.post<ApiResponse<Warehouse>>('/operators/me/warehouses', data);
+    const response = await api.post<ApiResponse<Warehouse>>('/operator/warehouses', data);
     return response.data;
   },
 
-  // Operator: Update warehouse
-  update: async (id: string, data: UpdateWarehouseDto): Promise<ApiResponse<Warehouse>> => {
-    const response = await api.patch<ApiResponse<Warehouse>>(`/operators/warehouses/${id}`, data);
+  /**
+   * PATCH /api/v1/operator/warehouses/:id — update warehouse
+   */
+  update: async (id: string | number, data: UpdateWarehouseDto): Promise<ApiResponse<Warehouse>> => {
+    const response = await api.patch<ApiResponse<Warehouse>>(`/operator/warehouses/${id}`, data);
     return response.data;
   },
 
-  // Operator: Delete warehouse
-  delete: async (id: string): Promise<void> => {
-    await api.delete(`/operators/warehouses/${id}`);
+  /**
+   * DELETE /api/v1/operator/warehouses/:id — soft delete
+   */
+  delete: async (id: string | number): Promise<void> => {
+    await api.delete(`/operator/warehouses/${id}`);
   },
 
-  // Operator: Publish warehouse (draft → pending_moderation)
-  publish: async (id: string): Promise<ApiResponse<Warehouse>> => {
+  /**
+   * PATCH /api/v1/operator/warehouses/:id/status — change status
+   */
+  changeStatus: async (id: string | number, status: string): Promise<ApiResponse<Warehouse>> => {
     const response = await api.patch<ApiResponse<Warehouse>>(
-      `/operators/warehouses/${id}/publish`
+      `/operator/warehouses/${id}/status`,
+      { status }
     );
     return response.data;
   },
 
-  // Operator: Unpublish warehouse (active → inactive)
-  unpublish: async (id: string): Promise<ApiResponse<Warehouse>> => {
-    const response = await api.patch<ApiResponse<Warehouse>>(
-      `/operators/warehouses/${id}/unpublish`
-    );
-    return response.data;
+  /** @deprecated Use changeStatus with 'pending_moderation' */
+  publish: async (id: string | number): Promise<ApiResponse<Warehouse>> => {
+    return warehousesApi.changeStatus(id, 'pending_moderation');
+  },
+
+  /** @deprecated Use changeStatus with 'inactive' */
+  unpublish: async (id: string | number): Promise<ApiResponse<Warehouse>> => {
+    return warehousesApi.changeStatus(id, 'inactive');
   },
 };
 
 export const boxesApi = {
-  // Operator: List boxes for warehouse
-  list: async (warehouseId: string, page = 1, perPage = 50): Promise<BoxesListResponse> => {
+  /**
+   * GET /api/v1/operator/warehouses/:warehouseId/boxes — list boxes for warehouse (operator)
+   */
+  list: async (warehouseId: string | number, page = 1, perPage = 50): Promise<BoxesListResponse> => {
     const response = await api.get<BoxesListResponse>(
-      `/operators/warehouses/${warehouseId}/boxes?page=${page}&per_page=${perPage}`
+      `/operator/warehouses/${warehouseId}/boxes?page=${page}&per_page=${perPage}`
     );
     return response.data;
   },
 
-  // Operator: Get single box
-  getById: async (boxId: string): Promise<ApiResponse<Box>> => {
-    const response = await api.get<ApiResponse<Box>>(`/operators/boxes/${boxId}`);
+  /**
+   * GET /api/v1/operator/boxes/:id — get single box
+   */
+  getById: async (boxId: string | number): Promise<ApiResponse<Box>> => {
+    const response = await api.get<ApiResponse<Box>>(`/operator/boxes/${boxId}`);
     return response.data;
   },
 
-  // Operator: Create box
-  create: async (warehouseId: string, data: CreateBoxDto): Promise<ApiResponse<Box>> => {
+  /**
+   * POST /api/v1/operator/warehouses/:warehouseId/boxes — create box
+   */
+  create: async (warehouseId: string | number, data: CreateBoxDto): Promise<ApiResponse<Box>> => {
     const response = await api.post<ApiResponse<Box>>(
-      `/operators/warehouses/${warehouseId}/boxes`,
+      `/operator/warehouses/${warehouseId}/boxes`,
       data
     );
     return response.data;
   },
 
-  // Operator: Update box
-  update: async (boxId: string, data: UpdateBoxDto): Promise<ApiResponse<Box>> => {
-    const response = await api.patch<ApiResponse<Box>>(`/operators/boxes/${boxId}`, data);
+  /**
+   * PATCH /api/v1/operator/boxes/:id — update box
+   */
+  update: async (boxId: string | number, data: UpdateBoxDto): Promise<ApiResponse<Box>> => {
+    const response = await api.patch<ApiResponse<Box>>(`/operator/boxes/${boxId}`, data);
     return response.data;
   },
 
-  // Operator: Delete box
-  delete: async (boxId: string): Promise<void> => {
-    await api.delete(`/operators/boxes/${boxId}`);
+  /**
+   * DELETE /api/v1/operator/boxes/:id — delete box
+   */
+  delete: async (boxId: string | number): Promise<void> => {
+    await api.delete(`/operator/boxes/${boxId}`);
   },
 
-  // Operator: Bulk create boxes
+  /**
+   * POST /api/v1/operator/warehouses/:warehouseId/boxes/bulk — bulk create
+   */
   bulkCreate: async (
-    warehouseId: string,
+    warehouseId: string | number,
     boxes: CreateBoxDto[]
   ): Promise<ApiResponse<Box[]>> => {
     const response = await api.post<ApiResponse<Box[]>>(
-      `/operators/warehouses/${warehouseId}/boxes/bulk`,
+      `/operator/warehouses/${warehouseId}/boxes/bulk`,
       { boxes }
     );
     return response.data;

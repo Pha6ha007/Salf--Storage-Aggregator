@@ -5,12 +5,22 @@ import type {
   BookingsQueryParams,
   CancelBookingDto,
   CancelBookingResponse,
+  CreateBookingDto,
 } from '@/types/booking';
 
 export const bookingsApi = {
   /**
+   * Create a new booking
+   * POST /api/v1/bookings
+   */
+  create: async (data: CreateBookingDto): Promise<{ booking_number: string; id: number; status: string }> => {
+    const response = await api.post('/bookings', data);
+    return response.data;
+  },
+
+  /**
    * Get user's bookings list
-   * GET /api/v1/users/me/bookings
+   * GET /api/v1/bookings  (also accessible via /users/me/bookings alias)
    */
   list: async (params?: BookingsQueryParams): Promise<BookingsListResponse> => {
     const queryParams = new URLSearchParams();
@@ -24,26 +34,26 @@ export const bookingsApi = {
     if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
 
     const response = await api.get<BookingsListResponse>(
-      `/users/me/bookings?${queryParams.toString()}`
+      `/bookings?${queryParams.toString()}`
     );
     return response.data;
   },
 
   /**
    * Get booking details by ID
-   * GET /api/v1/users/me/bookings/{id}
+   * GET /api/v1/bookings/{id}
    */
   getById: async (id: number): Promise<BookingDetailResponse> => {
-    const response = await api.get<BookingDetailResponse>(`/users/me/bookings/${id}`);
+    const response = await api.get<BookingDetailResponse>(`/bookings/${id}`);
     return response.data;
   },
 
   /**
    * Cancel booking
-   * PATCH /api/v1/bookings/{id}/cancel
+   * POST /api/v1/bookings/{id}/cancel
    */
   cancel: async (id: number, data?: CancelBookingDto): Promise<CancelBookingResponse> => {
-    const response = await api.patch<CancelBookingResponse>(`/bookings/${id}/cancel`, data);
+    const response = await api.post<CancelBookingResponse>(`/bookings/${id}/cancel`, data);
     return response.data;
   },
 };

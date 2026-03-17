@@ -344,4 +344,101 @@ export class ReviewsService {
       excludeExtraneousValues: true,
     });
   }
+
+  /**
+   * Update a user's own review (rating + comment)
+   * Also recalculates warehouse average rating
+   */
+  async updateReview(userId: string, reviewId: number, rating?: number, comment?: string) {
+    const review = await this.prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+
+    if (review.userId !== userId) {
+      throw new ForbiddenException('You can only edit your own reviews');
+    }
+
+    const updatedReview = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.review.update({
+        where: { id: reviewId },
+        data: {
+          ...(rating !== undefined && { rating }),
+          ...(comment !== undefined && { comment }),
+        },
+        include: {
+          user: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+        },
+      });
+
+      // Recalculate warehouse average rating
+      const stats = await tx.review.aggregate({
+        where: { warehouseId: review.warehouseId, isVisible: true },
+        _avg: { rating: true },
+        _count: { id: true },
+      });
+      await tx.warehouse.update({
+        where: { id: review.warehouseId },
+        data: {
+          rating: stats._avg.rating ?? 0,
+          reviewCount: stats._count.id ?? 0,
+        },
+      });
+
+      return updated;
+    });
+
+    return {
+      id: updatedReview.id,
+      rating: updatedReview.rating,
+      comment: updatedReview.comment,
+      updated_at: updatedReview.updatedAt,
+    };
+  }
+
+  /**
+   * Delete a user's own review (hide via isVisible=false)
+   * Also recalculates warehouse average rating
+   */
+  async deleteReview(userId: string, reviewId: number) {
+    const review = await this.prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+
+    if (review.userId !== userId) {
+      throw new ForbiddenException('You can only delete your own reviews');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.review.update({
+        where: { id: reviewId },
+        data: { isVisible: false },
+      });
+
+      // Recalculate warehouse average rating (excluding this review now)
+      const stats = await tx.review.aggregate({
+        where: { warehouseId: review.warehouseId, isVisible: true },
+        _avg: { rating: true },
+        _count: { id: true },
+      });
+      await tx.warehouse.update({
+        where: { id: review.warehouseId },
+        data: {
+          rating: stats._avg.rating ?? 0,
+          reviewCount: stats._count.id ?? 0,
+        },
+      });
+    });
+
+    return { message: 'Review deleted successfully', review_id: reviewId };
+  }
 }

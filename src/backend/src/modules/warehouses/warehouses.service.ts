@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Prisma } from '@prisma/client';
+import { Prisma, WarehouseStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { GoogleMapsService, GeocodeResult } from '../../shared/google-maps/google-maps.service';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
@@ -459,6 +459,55 @@ export class WarehousesService {
         totalPages: Math.ceil(total / limit),
       },
     };
+  }
+
+  /**
+   * Change warehouse status (operator-allowed transitions)
+   * Operator: draft↔pending_moderation, active↔inactive
+   * Admin: any transition
+   */
+  async changeStatus(id: number, operatorId: number, newStatus: WarehouseStatus) {
+    const warehouse = await this.prisma.warehouse.findUnique({
+      where: { id },
+    });
+
+    if (!warehouse || warehouse.deletedAt) {
+      throw new NotFoundException('Warehouse not found');
+    }
+
+    if (warehouse.operatorId !== operatorId) {
+      throw new ForbiddenException('You can only change status of your own warehouses');
+    }
+
+    const currentStatus = warehouse.status;
+
+    // Operator-allowed transitions
+    const allowedTransitions: Partial<Record<WarehouseStatus, WarehouseStatus[]>> = {
+      draft: ['pending_moderation'],
+      pending_moderation: ['draft'],
+      active: ['inactive'],
+      inactive: ['active'],
+    };
+
+    const allowed = allowedTransitions[currentStatus] ?? [];
+    if (!allowed.includes(newStatus)) {
+      throw new BadRequestException(
+        `Cannot transition warehouse from "${currentStatus}" to "${newStatus}". Allowed: ${allowed.join(', ') || 'none'}`,
+      );
+    }
+
+    const updated = await this.prisma.warehouse.update({
+      where: { id },
+      data: { status: newStatus },
+    });
+
+    // Emit status_changed event
+    this.eventEmitter.emit(
+      'warehouse.status_changed',
+      { warehouseId: id, oldStatus: currentStatus, newStatus, operatorId },
+    );
+
+    return updated;
   }
 
   private async updateWarehouseCoordinates(warehouseId: number, latitude: number, longitude: number) {

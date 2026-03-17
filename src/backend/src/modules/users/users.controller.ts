@@ -3,6 +3,7 @@ import {
   Get,
   Patch,
   Delete,
+  Post,
   Body,
   Param,
   Query,
@@ -28,13 +29,19 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { UserRole } from '@prisma/client';
+import { BookingsService } from '../bookings/bookings.service';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @ApiTags('users')
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiCookieAuth('auth_token')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly bookingsService: BookingsService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get('me')
   @ApiOperation({ summary: 'Get current user profile' })
@@ -90,6 +97,51 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async deleteMyAccount(@CurrentUser() user: CurrentUserData) {
     return this.usersService.deleteAccount(user.id);
+  }
+
+  // ── Spec aliases: /users/me/bookings and /users/me/favorites ────────────────
+
+  @Get('me/bookings')
+  @ApiOperation({ summary: 'Get current user bookings (spec alias)' })
+  @ApiResponse({ status: 200, description: 'Bookings list' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getMyBookings(@CurrentUser() user: CurrentUserData) {
+    return this.bookingsService.findByUser(user.id);
+  }
+
+  @Get('me/favorites')
+  @ApiOperation({ summary: 'Get current user favorites (spec alias)' })
+  @ApiResponse({ status: 200, description: 'Favorites list' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getMyFavorites(
+    @CurrentUser() user: CurrentUserData,
+    @Query() queryDto: any,
+  ) {
+    return this.favoritesService.getUserFavorites(user.id, queryDto);
+  }
+
+  @Post('me/favorites')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Add to favorites (spec alias)' })
+  @ApiResponse({ status: 201, description: 'Added to favorites' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async addToFavorites(
+    @CurrentUser() user: CurrentUserData,
+    @Body('warehouse_id') warehouseId: number,
+  ) {
+    return this.favoritesService.addFavorite(user.id, warehouseId);
+  }
+
+  @Delete('me/favorites/:warehouseId')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Remove from favorites (spec alias)' })
+  @ApiResponse({ status: 200, description: 'Removed from favorites' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async removeFromFavorites(
+    @CurrentUser() user: CurrentUserData,
+    @Param('warehouseId') warehouseId: string,
+  ) {
+    return this.favoritesService.removeFavorite(user.id, parseInt(warehouseId, 10));
   }
 
   // Admin endpoints
