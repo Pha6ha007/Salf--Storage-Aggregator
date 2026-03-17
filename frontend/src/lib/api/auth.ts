@@ -49,11 +49,11 @@ export const authApi = {
 
   /**
    * Request password reset
-   * POST /api/v1/auth/password/reset-request
+   * POST /api/v1/auth/forgot-password
    * Always returns success (to prevent email enumeration)
    */
   forgotPassword: async (email: string): Promise<MessageResponse> => {
-    const response = await api.post<MessageResponse>('/auth/password/reset-request', {
+    const response = await api.post<MessageResponse>('/auth/forgot-password', {
       email,
     });
     return response.data;
@@ -61,10 +61,10 @@ export const authApi = {
 
   /**
    * Confirm password reset with token from email
-   * POST /api/v1/auth/password/reset-confirm
+   * POST /api/v1/auth/reset-password
    */
   resetPassword: async (data: ResetPasswordDto): Promise<MessageResponse> => {
-    const response = await api.post<MessageResponse>('/auth/password/reset-confirm', data);
+    const response = await api.post<MessageResponse>('/auth/reset-password', data);
     return response.data;
   },
 

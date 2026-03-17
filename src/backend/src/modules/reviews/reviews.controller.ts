@@ -2,6 +2,8 @@ import {
   Controller,
   Get,
   Post,
+  Put,
+  Delete,
   Body,
   Param,
   Query,
@@ -106,5 +108,45 @@ export class ReviewsController {
     @Body('response_text') responseText: string,
   ) {
     return this.reviewsService.addOperatorResponse(reviewId, user.id, responseText);
+  }
+
+  // User: update own review
+  @Put('reviews/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.user, UserRole.operator, UserRole.admin)
+  @ApiCookieAuth('auth_token')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update own review' })
+  @ApiParam({ name: 'id', description: 'Review ID', type: 'integer' })
+  @ApiResponse({ status: 200, description: 'Review updated successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - not your review' })
+  @ApiResponse({ status: 404, description: 'Review not found' })
+  async updateReview(
+    @CurrentUser() user: CurrentUserData,
+    @Param('id', ParseIntPipe) id: number,
+    @Body('rating') rating?: number,
+    @Body('comment') comment?: string,
+  ) {
+    return this.reviewsService.updateReview(user.id, id, rating, comment);
+  }
+
+  // User: delete own review
+  @Delete('reviews/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.user, UserRole.operator, UserRole.admin)
+  @ApiCookieAuth('auth_token')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Delete own review' })
+  @ApiParam({ name: 'id', description: 'Review ID', type: 'integer' })
+  @ApiResponse({ status: 200, description: 'Review deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - not your review' })
+  @ApiResponse({ status: 404, description: 'Review not found' })
+  async deleteReview(
+    @CurrentUser() user: CurrentUserData,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.reviewsService.deleteReview(user.id, id);
   }
 }

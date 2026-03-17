@@ -468,6 +468,61 @@ export class BookingsService {
   }
 
   /**
+   * Reject a booking (pending → cancelled by operator)
+   * Operator only — only pending bookings can be rejected
+   */
+  async reject(id: number, operatorId: number, reason?: string) {
+    const booking = await this.prisma.booking.findUnique({
+      where: { id },
+      include: { warehouse: true },
+    });
+
+    if (!booking || booking.deletedAt) {
+      throw new NotFoundException('Booking not found');
+    }
+
+    if (booking.warehouse.operatorId !== operatorId) {
+      throw new ForbiddenException('You can only reject bookings for your warehouses');
+    }
+
+    if (booking.status !== BookingStatus.pending) {
+      throw new BadRequestException(
+        `Cannot reject booking with status: ${booking.status}. Only pending bookings can be rejected.`,
+      );
+    }
+
+    const updatedBooking = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.booking.update({
+        where: { id },
+        data: {
+          status: BookingStatus.cancelled,
+          cancelledBy: BookingCancelledBy.operator,
+          cancelReason: reason ?? 'Rejected by operator',
+          cancelledAt: new Date(),
+        },
+      });
+
+      // Release reserved box quantity back to available
+      await this.boxesService.releaseBox(booking.boxId, 'reserved');
+
+      return updated;
+    });
+
+    this.eventEmitter.emit(
+      'booking.cancelled',
+      new BookingCancelledEvent(
+        id,
+        booking.userId,
+        booking.warehouseId,
+        BookingCancelledBy.operator,
+        reason ?? 'Rejected by operator',
+      ),
+    );
+
+    return updatedBooking;
+  }
+
+  /**
    * Auto-expire pending bookings after 24 hours
    * Called by cron job
    */

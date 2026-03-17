@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Body,
   Param,
   UseGuards,
@@ -245,5 +246,34 @@ export class OperatorBookingsController {
     }
 
     return this.bookingsService.cancel(id, cancelBookingDto, undefined, operator.id, user.role as UserRole);
+  }
+
+  @Put(':id/reject')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Reject a pending booking (pending → cancelled by operator)' })
+  @ApiParam({ name: 'id', description: 'Booking ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Booking rejected successfully',
+    type: BookingResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Cannot reject booking - only pending bookings can be rejected' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - not your warehouse or not operator' })
+  @ApiResponse({ status: 404, description: 'Booking not found' })
+  async reject(
+    @CurrentUser() user: CurrentUserData,
+    @Param('id', ParseIntPipe) id: number,
+    @Body('reason') reason?: string,
+  ) {
+    const operator = await this.bookingsService['prisma'].operator.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!operator) {
+      throw new Error('Operator profile not found');
+    }
+
+    return this.bookingsService.reject(id, operator.id, reason);
   }
 }

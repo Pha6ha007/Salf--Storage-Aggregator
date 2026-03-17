@@ -43,7 +43,7 @@ async function main() {
         phone: '+971500000000',
         role: 'admin',
         isActive: true,
-        isEmailVerified: true,
+        emailVerified: true,
       },
     });
 

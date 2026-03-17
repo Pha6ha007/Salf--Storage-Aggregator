@@ -5,45 +5,51 @@ import type {
   BookingsQueryParams,
   CancelBookingDto,
   CancelBookingResponse,
+  CreateBookingDto,
 } from '@/types/booking';
 
 export const bookingsApi = {
   /**
-   * Get user's bookings list
-   * GET /api/v1/users/me/bookings
+   * Create a new booking
+   * POST /api/v1/bookings
    */
-  list: async (params?: BookingsQueryParams): Promise<BookingsListResponse> => {
-    const queryParams = new URLSearchParams();
-
-    if (params?.status && params.status !== 'all') {
-      queryParams.append('status', params.status);
-    }
-    if (params?.sort) queryParams.append('sort', params.sort);
-    if (params?.order) queryParams.append('order', params.order);
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
-
-    const response = await api.get<BookingsListResponse>(
-      `/users/me/bookings?${queryParams.toString()}`
-    );
+  create: async (data: CreateBookingDto): Promise<{ booking_number: string; id: number; status: string }> => {
+    const response = await api.post('/bookings', data);
     return response.data;
   },
 
   /**
+   * Get user's bookings list
+   * GET /api/v1/bookings — returns array (no pagination in MVP)
+   */
+  list: async (params?: BookingsQueryParams): Promise<{ data: any[]; pagination: null }> => {
+    const queryParams = new URLSearchParams();
+    if (params?.status && params.status !== 'all') {
+      queryParams.append('status', params.status);
+    }
+
+    const response = await api.get<any>(`/bookings?${queryParams.toString()}`);
+    // Backend returns raw array or wrapped object
+    const raw = response.data;
+    const data = Array.isArray(raw) ? raw : (raw?.data ?? []);
+    return { data, pagination: null };
+  },
+
+  /**
    * Get booking details by ID
-   * GET /api/v1/users/me/bookings/{id}
+   * GET /api/v1/bookings/{id}
    */
   getById: async (id: number): Promise<BookingDetailResponse> => {
-    const response = await api.get<BookingDetailResponse>(`/users/me/bookings/${id}`);
+    const response = await api.get<BookingDetailResponse>(`/bookings/${id}`);
     return response.data;
   },
 
   /**
    * Cancel booking
-   * PATCH /api/v1/bookings/{id}/cancel
+   * POST /api/v1/bookings/{id}/cancel
    */
   cancel: async (id: number, data?: CancelBookingDto): Promise<CancelBookingResponse> => {
-    const response = await api.patch<CancelBookingResponse>(`/bookings/${id}/cancel`, data);
+    const response = await api.post<CancelBookingResponse>(`/bookings/${id}/cancel`, data);
     return response.data;
   },
 };

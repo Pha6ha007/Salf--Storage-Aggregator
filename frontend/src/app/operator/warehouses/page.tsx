@@ -50,7 +50,7 @@ export default function OperatorWarehousesPage() {
     },
   });
 
-  const handleDelete = (id: string, name: string) => {
+  const handleDelete = (id: number | string, name: string) => {
     if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
       deleteMutation.mutate(id);
     }
@@ -62,7 +62,7 @@ export default function OperatorWarehousesPage() {
         <div>
           <h1 className="text-3xl font-bold text-text-primary">My Warehouses</h1>
           <p className="mt-2 text-text-secondary">
-            {data?.pagination.total || 0} total warehouses
+            {data?.data.length || 0} warehouses
           </p>
         </div>
         <Link href="/operator/warehouses/new">
@@ -206,23 +206,22 @@ export default function OperatorWarehousesPage() {
             ))}
           </div>
 
-          {/* Pagination */}
-          {data.pagination.total_pages > 1 && (
+          {data.data.length > 0 && (
             <div className="flex justify-center gap-2 mt-6">
               <Button
                 variant="outline"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={!data.pagination.has_previous}
+                disabled={page <= 1}
               >
                 Previous
               </Button>
               <span className="flex items-center px-4 text-sm text-text-secondary">
-                Page {data.pagination.page} of {data.pagination.total_pages}
+                Page {page}
               </span>
               <Button
                 variant="outline"
                 onClick={() => setPage((p) => p + 1)}
-                disabled={!data.pagination.has_next}
+                disabled={!data.data.length || data.data.length < 12}
               >
                 Next
               </Button>

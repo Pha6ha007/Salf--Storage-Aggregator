@@ -30,7 +30,10 @@ export interface Warehouse {
     contactPhone: string | null;
   };
 
-  // Computed/aggregated fields (from backend)
+  // Computed/aggregated fields (from backend list endpoint)
+  minPrice?: number | null;
+  availableSizes?: string[] | null;
+  primaryPhoto?: string | null;
   total_boxes?: number;
   available_boxes?: number;
   occupied_boxes?: number;
@@ -48,7 +51,8 @@ export interface Box {
   warehouseId: string;
   boxNumber: string;
   size: string;
-  pricePerMonth: number;
+  pricePerMonth: number;   // alias — backend field is priceMonthly
+  priceMonthly?: number;   // direct backend camelCase field
   status: BoxStatus;
   features: string[] | null;
   createdAt: string;
@@ -170,18 +174,34 @@ export interface BoxFeatures {
 
 export interface CreateWarehouseDto {
   name: string;
-  description: string;
-  address: Address;
-  operating_hours: OperatingHours;
-  features: WarehouseFeatures;
+  description?: string;
+  address: string;
+  emirate: string;
+  district?: string;
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasInsurance?: boolean;
+  hasParkingSpace?: boolean;
+  workingHours?: Record<string, string>;
+  contactPhone?: string;
+  contactEmail?: string;
 }
 
 export interface UpdateWarehouseDto {
   name?: string;
   description?: string;
-  address?: Address;
-  operating_hours?: OperatingHours;
-  features?: WarehouseFeatures;
+  address?: string;
+  emirate?: string;
+  district?: string;
+  hasClimateControl?: boolean;
+  has24x7Access?: boolean;
+  hasSecurityCameras?: boolean;
+  hasInsurance?: boolean;
+  hasParkingSpace?: boolean;
+  workingHours?: Record<string, string>;
+  contactPhone?: string;
+  contactEmail?: string;
   status?: WarehouseStatus;
 }
 

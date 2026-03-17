@@ -79,7 +79,7 @@ export default function OperatorDashboardPage() {
     );
   }
 
-  const statsData = stats?.data;
+  const statsData = stats?.data ?? stats as any;
 
   const occupancyRate = statsData?.total_boxes
     ? Math.round((statsData.occupied_boxes / statsData.total_boxes) * 100)
