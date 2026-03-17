@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,17 +41,20 @@ type FormData = z.infer<typeof schema>;
 const inputCls = (hasErr: boolean) =>
   `w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition ${hasErr ? 'border-red-400 bg-red-50' : 'border-gray-200'}`;
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { register: registerUser, isAuthenticated } = useAuth();
   const [apiError, setApiError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const defaultRole = searchParams.get('type') === 'operator' ? 'operator' : 'user';
+
   const { register: reg, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { role: 'user', agree_to_terms: false, agree_to_privacy: false },
+    defaultValues: { role: defaultRole, agree_to_terms: false, agree_to_privacy: false },
   });
 
   if (isAuthenticated) { router.replace('/'); return null; }
@@ -289,5 +292,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-blue-600" /></div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

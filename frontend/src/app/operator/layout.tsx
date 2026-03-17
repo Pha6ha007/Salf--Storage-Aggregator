@@ -14,7 +14,7 @@ export default function OperatorLayout({
         <Header />
         <div className="flex flex-1">
           <OperatorSidebar />
-          <main className="flex-1 bg-surface p-6 md:p-8">{children}</main>
+          <main className="flex-1 bg-gray-50/50 p-6 md:p-8">{children}</main>
         </div>
         <Footer />
       </div>
