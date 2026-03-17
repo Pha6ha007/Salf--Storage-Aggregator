@@ -41,6 +41,8 @@ export function Header() {
     { href: "/contact", label: "Contact" },
   ];
 
+  const isOperatorOrAdmin = user?.role === "operator" || user?.role === "admin";
+
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-border/50 shadow-sm supports-[backdrop-filter]:bg-white/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,14 +69,14 @@ export function Header() {
 
           {/* Right Side - Desktop */}
           <div className="hidden md:flex items-center gap-3">
-            {user?.role === "operator" ? (
-              <Link href="/operator/dashboard" key="operator-dashboard">
+            {isOperatorOrAdmin ? (
+              <Link href="/operator/dashboard">
                 <Button variant="ghost" className="text-primary-600">
-                  Dashboard
+                  Operator Panel
                 </Button>
               </Link>
             ) : !isAuthenticated ? (
-              <Link href="/operator/dashboard" key="operator-signup">
+              <Link href="/operator/dashboard">
                 <Button variant="ghost" className="text-primary-600">
                   For Operators
                 </Button>
@@ -93,7 +95,26 @@ export function Header() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  {user.role === 'user' && (
+                  {user.role === "admin" && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin">Admin Panel</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/operator/dashboard">Operator Panel</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  {user.role === "operator" && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/operator/dashboard">Operator Panel</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  {user.role === "user" && (
                     <>
                       <DropdownMenuItem asChild>
                         <Link href="/dashboard">Dashboard</Link>
@@ -111,7 +132,7 @@ export function Header() {
                     <Link href="/favorites">Favorites</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -142,10 +163,7 @@ export function Header() {
               </Avatar>
             ) : (
               <Link href="/auth/login">
-                <Button
-                  size="sm"
-                  className="bg-primary-600 hover:bg-primary-700"
-                >
+                <Button size="sm" className="bg-primary-600 hover:bg-primary-700">
                   Login
                 </Button>
               </Link>
@@ -173,77 +191,50 @@ export function Header() {
                     </Link>
                   ))}
                   <hr className="border-border" />
-                  {user?.role === "operator" ? (
-                    <Link
-                      href="/operator/dashboard"
-                      key="mobile-operator-dashboard"
-                      className="text-base font-medium text-primary-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
+                  {user?.role === "admin" && (
+                    <>
+                      <Link href="/admin" className="text-base font-medium text-red-600" onClick={() => setMobileMenuOpen(false)}>
+                        Admin Panel
+                      </Link>
+                      <Link href="/operator/dashboard" className="text-base font-medium text-primary-600" onClick={() => setMobileMenuOpen(false)}>
+                        Operator Panel
+                      </Link>
+                    </>
+                  )}
+                  {user?.role === "operator" && (
+                    <Link href="/operator/dashboard" className="text-base font-medium text-primary-600" onClick={() => setMobileMenuOpen(false)}>
+                      Operator Panel
+                    </Link>
+                  )}
+                  {user?.role === "user" && (
+                    <Link href="/dashboard" className="text-base font-medium text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                       Dashboard
                     </Link>
-                  ) : !isAuthenticated ? (
-                    <Link
-                      href="/operator/dashboard"
-                      key="mobile-operator-signup"
-                      className="text-base font-medium text-primary-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
+                  )}
+                  {!isAuthenticated && (
+                    <Link href="/operator/dashboard" className="text-base font-medium text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                       For Operators
                     </Link>
-                  ) : null}
+                  )}
                   {isAuthenticated && user ? (
                     <>
-                      {user.role === 'user' && (
-                        <>
-                          <Link
-                            href="/dashboard"
-                            className="text-base font-medium text-primary-600"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Dashboard
-                          </Link>
-                          <hr className="border-border" />
-                        </>
-                      )}
-                      <Link
-                        href="/profile"
-                        className="text-base font-medium text-text-primary hover:text-primary-600"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                      <hr className="border-border" />
+                      <Link href="/profile" className="text-base font-medium text-text-primary hover:text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                         My Profile
                       </Link>
-                      <Link
-                        href="/bookings"
-                        className="text-base font-medium text-text-primary hover:text-primary-600"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                      <Link href="/bookings" className="text-base font-medium text-text-primary hover:text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                         My Bookings
                       </Link>
-                      <Link
-                        href="/favorites"
-                        className="text-base font-medium text-text-primary hover:text-primary-600"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                      <Link href="/favorites" className="text-base font-medium text-text-primary hover:text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                         Favorites
                       </Link>
                       <hr className="border-border" />
-                      <button
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          handleLogout();
-                        }}
-                        className="text-base font-medium text-red-600 text-left"
-                      >
+                      <button onClick={() => { setMobileMenuOpen(false); handleLogout(); }} className="text-base font-medium text-red-600 text-left">
                         Logout
                       </button>
                     </>
                   ) : (
-                    <Link
-                      href="/auth/register"
-                      className="text-base font-medium text-primary-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
+                    <Link href="/auth/register" className="text-base font-medium text-primary-600" onClick={() => setMobileMenuOpen(false)}>
                       Sign Up
                     </Link>
                   )}

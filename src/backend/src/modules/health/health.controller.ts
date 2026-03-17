@@ -238,6 +238,116 @@ export class HealthController {
       } else {
         results.push(`Warehouse already exists: ${existingWarehouse.name}`);
       }
+
+      // Create additional demo warehouses in other emirates
+      const demoWarehouses = [
+        {
+          name: 'Abu Dhabi Al Reem Island Storage',
+          description: 'Modern self-storage facility on Al Reem Island. Climate-controlled units, 24/7 CCTV, and flexible monthly contracts.',
+          address: 'Al Reem Island, Abu Dhabi, UAE',
+          emirate: 'Abu Dhabi',
+          district: 'Al Reem Island',
+          latitude: 24.5007,
+          longitude: 54.4073,
+          hasClimateControl: true,
+          has24x7Access: false,
+          hasSecurityCameras: true,
+          hasParkingSpace: true,
+          rating: 4.2,
+          boxes: [
+            { boxNumber: 'AD-S01', name: 'Small Unit', size: 'S', length: 1.5, width: 1.5, height: 2.4, area: 2.25, price: 279, qty: 12, avail: 10 },
+            { boxNumber: 'AD-M01', name: 'Medium Unit', size: 'M', length: 3.0, width: 3.0, height: 2.4, area: 9.0, price: 549, qty: 8, avail: 6 },
+            { boxNumber: 'AD-L01', name: 'Large Unit', size: 'L', length: 5.0, width: 5.0, height: 2.4, area: 25.0, price: 1199, qty: 4, avail: 2 },
+          ],
+        },
+        {
+          name: 'Sharjah Industrial Area Storage',
+          description: 'Affordable storage solutions in Sharjah Industrial Area. Large units ideal for business inventory and household goods.',
+          address: 'Industrial Area 1, Sharjah, UAE',
+          emirate: 'Sharjah',
+          district: 'Industrial Area',
+          latitude: 25.3463,
+          longitude: 55.4209,
+          hasClimateControl: false,
+          has24x7Access: true,
+          hasSecurityCameras: true,
+          hasParkingSpace: true,
+          rating: 3.9,
+          boxes: [
+            { boxNumber: 'SH-S01', name: 'Small Unit', size: 'S', length: 1.5, width: 1.5, height: 2.4, area: 2.25, price: 199, qty: 20, avail: 15 },
+            { boxNumber: 'SH-M01', name: 'Medium Unit', size: 'M', length: 3.0, width: 3.0, height: 2.4, area: 9.0, price: 399, qty: 15, avail: 10 },
+            { boxNumber: 'SH-XL01', name: 'XL Unit', size: 'XL', length: 8.0, width: 5.0, height: 3.0, area: 40.0, price: 1499, qty: 6, avail: 4 },
+          ],
+        },
+        {
+          name: 'Dubai JLT Premium Storage',
+          description: 'Premium storage in Jumeirah Lakes Towers. Climate-controlled, 24/7 access with valet service available.',
+          address: 'JLT Cluster T, Dubai, UAE',
+          emirate: 'Dubai',
+          district: 'Jumeirah Lakes Towers',
+          latitude: 25.0657,
+          longitude: 55.1414,
+          hasClimateControl: true,
+          has24x7Access: true,
+          hasSecurityCameras: true,
+          hasParkingSpace: false,
+          rating: 4.7,
+          boxes: [
+            { boxNumber: 'JLT-XS01', name: 'Extra Small Unit', size: 'XS', length: 1.0, width: 1.0, height: 2.4, area: 1.0, price: 199, qty: 15, avail: 8 },
+            { boxNumber: 'JLT-S01', name: 'Small Unit', size: 'S', length: 1.5, width: 1.5, height: 2.4, area: 2.25, price: 349, qty: 10, avail: 7 },
+            { boxNumber: 'JLT-M01', name: 'Medium Unit', size: 'M', length: 3.0, width: 3.0, height: 2.4, area: 9.0, price: 699, qty: 8, avail: 3 },
+          ],
+        },
+      ];
+
+      for (const demo of demoWarehouses) {
+        const exists = await this.prisma.warehouse.findFirst({ where: { name: demo.name } });
+        if (!exists) {
+          const wh = await this.prisma.warehouse.create({
+            data: {
+              operatorId: operator.id,
+              name: demo.name,
+              description: demo.description,
+              status: 'active',
+              address: demo.address,
+              emirate: demo.emirate,
+              district: demo.district,
+              latitude: demo.latitude,
+              longitude: demo.longitude,
+              hasClimateControl: demo.hasClimateControl,
+              has24x7Access: demo.has24x7Access,
+              hasSecurityCameras: demo.hasSecurityCameras,
+              hasInsurance: false,
+              hasParkingSpace: demo.hasParkingSpace,
+              contactPhone: '+97144001234',
+              contactEmail: operatorEmail,
+              rating: demo.rating,
+              reviewCount: Math.floor(Math.random() * 20) + 3,
+              isActive: true,
+            },
+          });
+          await this.prisma.box.createMany({
+            data: demo.boxes.map(b => ({
+              warehouseId: wh.id,
+              boxNumber: b.boxNumber,
+              name: b.name,
+              size: b.size as any,
+              lengthMeters: b.length,
+              widthMeters: b.width,
+              heightMeters: b.height,
+              areaSquareMeters: b.area,
+              priceMonthly: b.price,
+              totalQuantity: b.qty,
+              availableQuantity: b.avail,
+              isAvailable: true,
+              hasClimateControl: demo.hasClimateControl,
+            })),
+          });
+          results.push(`Demo warehouse created: ${demo.name}`);
+        } else {
+          results.push(`Demo warehouse exists: ${demo.name}`);
+        }
+      }
     }
 
     return {
