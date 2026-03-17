@@ -6,15 +6,11 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Public } from '../../common/decorators/public.decorator';
 import { UserRole } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 
 @ApiTags('Health')
 @Controller('health')
 export class HealthController {
-  constructor(
-    private readonly healthService: HealthService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly healthService: HealthService) {}
 
   @Public()
   @Get()
@@ -24,90 +20,11 @@ export class HealthController {
     return this.healthService.getHealth();
   }
 
-  // Temporary debug endpoint — remove after fix
-  @Public()
-  @Get('db-test')
-  async dbTest() {
-    try {
-      const result = await this.prisma.$queryRaw`SELECT 1 as ok`;
-      return { status: 'ok', result };
-    } catch (err: any) {
-      return { status: 'error', message: err.message, stack: err.stack };
-    }
-  }
-
-  @Public()
-  @Get('warehouse-test')
-  async warehouseTest() {
-    try {
-      const count = await this.prisma.warehouse.count();
-      return { status: 'ok', count };
-    } catch (err: any) {
-      return { status: 'error', message: err.message };
-    }
-  }
-
-  /**
-   * Detailed health check - admin only
-   * Returns detailed status including database, Redis, and S3 checks
-   */
   @Get('detailed')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.admin)
-  @ApiOperation({
-    summary: 'Detailed health check (Admin only)',
-    description: 'Returns detailed health status including database, Redis, and S3 connection checks',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Detailed health status',
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'string', enum: ['ok', 'error'], example: 'ok' },
-        timestamp: { type: 'string', format: 'date-time', example: '2026-02-27T10:00:00.000Z' },
-        uptime: { type: 'number', example: 123456.789 },
-        version: { type: 'string', example: '1.0.0' },
-        checks: {
-          type: 'object',
-          properties: {
-            database: {
-              type: 'object',
-              properties: {
-                status: { type: 'string', enum: ['ok', 'error'], example: 'ok' },
-                message: { type: 'string', example: 'Connection successful' },
-                responseTime: { type: 'number', example: 5, description: 'Response time in ms' },
-              },
-            },
-            redis: {
-              type: 'object',
-              properties: {
-                status: { type: 'string', enum: ['ok', 'error'], example: 'ok' },
-                message: { type: 'string', example: 'Connection successful' },
-                responseTime: { type: 'number', example: 2 },
-              },
-            },
-            s3: {
-              type: 'object',
-              properties: {
-                status: { type: 'string', enum: ['ok', 'error'], example: 'ok' },
-                message: { type: 'string', example: 'Connection successful' },
-                responseTime: { type: 'number', example: 50 },
-              },
-            },
-          },
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized - Authentication required',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - Admin role required',
-  })
+  @ApiOperation({ summary: 'Detailed health check (Admin only)' })
+  @ApiResponse({ status: 200, description: 'Detailed health status' })
   async getDetailedHealth(): Promise<DetailedHealthStatus> {
     return this.healthService.getDetailedHealth();
   }
