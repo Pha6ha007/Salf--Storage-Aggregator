@@ -8,37 +8,44 @@ import { useAuth } from "@/hooks/useAuth";
 // ─── Logo ────────────────────────────────────────────────────────────────────
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 select-none group">
+    <Link href="/" className="flex items-center gap-3 select-none group">
       {/* Icon mark */}
       <div
-        className="relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-transform group-hover:scale-105"
+        className="relative flex items-center justify-center w-9 h-9 rounded-xl shrink-0 transition-transform group-hover:scale-105"
         style={{
           background: "linear-gradient(145deg, #1A56DB, #1d4ed8)",
-          boxShadow: "0 2px 8px rgba(26,86,219,0.35)",
+          boxShadow: "0 3px 10px rgba(26,86,219,0.38)",
         }}
       >
-        <Package className="w-4 h-4 text-white" strokeWidth={2.2} />
+        <Package className="w-[18px] h-[18px] text-white" strokeWidth={2.2} />
         {/* Gold accent dot */}
         <span
-          className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border-2 border-white"
+          className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border-2 border-white"
           style={{ background: "#FBBF24" }}
         />
       </div>
 
       {/* Wordmark */}
       <div className="leading-none">
+        <div className="flex items-baseline gap-0.5">
+          <span
+            className="text-[19px] font-bold text-gray-900"
+            style={{ fontFamily: "'DM Serif Display', Georgia, serif", letterSpacing: "-0.025em" }}
+          >
+            Storage<span style={{ color: "#1A56DB" }}>Compare</span>
+          </span>
+          <span
+            className="text-[13px] font-bold"
+            style={{ color: "#1A56DB", letterSpacing: "-0.01em", fontFamily: "'DM Serif Display', Georgia, serif" }}
+          >
+            .ae
+          </span>
+        </div>
         <span
-          className="text-[17px] font-bold tracking-tight text-gray-900"
-          style={{ fontFamily: "'DM Serif Display', Georgia, serif", letterSpacing: "-0.02em" }}
-        >
-          Storage
-          <span style={{ color: "#1A56DB" }}>Compare</span>
-        </span>
-        <span
-          className="block text-[9px] font-semibold uppercase tracking-[0.18em] mt-0.5"
+          className="block text-[9px] font-semibold uppercase tracking-[0.2em] mt-0.5"
           style={{ color: "#94a3b8" }}
         >
-          .ae
+          UAE Storage Marketplace
         </span>
       </div>
     </Link>
