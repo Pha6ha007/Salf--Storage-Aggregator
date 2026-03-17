@@ -1,7 +1,18 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
+// Use Next.js API proxy in browser (same-origin, solves cross-domain cookie issue)
+// In SSR/server context, hit backend directly
+const getBaseURL = () => {
+  if (typeof window !== 'undefined') {
+    // Browser: use Next.js proxy route (same origin = cookies work)
+    return '/api/v1';
+  }
+  // Server-side: hit backend directly
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1',
+  baseURL: getBaseURL(),
   withCredentials: true, // Cookie-based auth
   headers: {
     'Content-Type': 'application/json',
