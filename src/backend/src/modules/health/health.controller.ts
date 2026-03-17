@@ -70,6 +70,20 @@ export class HealthController {
     });
     results.push(`Admin user: ${adminEmail} (password: Admin1234!)`);
 
+    // 1b. Create operator profile for admin user too (so they can access operator dashboard)
+    const adminOperator = await this.prisma.operator.findUnique({ where: { userId: adminUser.id } });
+    if (!adminOperator) {
+      await this.prisma.operator.create({
+        data: {
+          userId: adminUser.id,
+          companyName: 'StorageCompare Admin',
+          isVerified: true,
+          verifiedAt: new Date(),
+        },
+      });
+      results.push(`Operator profile created for admin@storagecompare.ae`);
+    }
+
     // 2. Create/update operator user
     const operatorEmail = 'operator@storagecompare.ae';
     const operatorPassword = await bcrypt.hash('Operator1234!', salt);
