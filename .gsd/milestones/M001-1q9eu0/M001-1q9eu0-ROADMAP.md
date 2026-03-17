@@ -53,7 +53,7 @@ This milestone is complete only when all are true:
 
 ## Slices
 
-- [ ] **S01: Backend API Gaps + Contract Fix** `risk:high` `depends:[]`
+- [x] **S01: Backend API Gaps + Contract Fix** `risk:high` `depends:[]`
   > After this: all 71 spec endpoints exist and return correct shapes; frontend API layer calls correct paths per spec; PostGIS extension status confirmed
 
 - [ ] **S02: Admin Module + Notifications** `risk:high` `depends:[S01]`

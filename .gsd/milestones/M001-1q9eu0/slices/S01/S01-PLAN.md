@@ -22,13 +22,13 @@
 
 ## Tasks
 
-- [ ] **T01: Operators Module (Backend)**
+- [x] **T01: Operators Module (Backend)**
   Build `src/backend/src/modules/operators/` — service, controller, module. Implements: POST /operators/register, GET /operators/me, PUT /operators/me, GET /operators/me/statistics. Register in app.module.ts.
 
-- [ ] **T02: Missing Backend Endpoints**
+- [x] **T02: Missing Backend Endpoints**
   Add to existing controllers: PUT /operator/bookings/:id/reject (BookingsController), PUT /reviews/:id + DELETE /reviews/:id (ReviewsController), PATCH /operator/warehouses/:id/status (WarehousesController), GET /boxes/:id public (BoxesController). Add /users/me/bookings and /users/me/favorites aliases to UsersController.
 
-- [ ] **T03: Frontend API Layer Alignment**
+- [x] **T03: Frontend API Layer Alignment**
   Audit and fix all files in `frontend/src/lib/api/` and `frontend/src/types/` to match the correct backend paths. Fix: auth endpoints (forgot-password/reset-password paths), bookings (POST create endpoint, cancel method), operator-bookings (all paths), warehouses operator paths.
 
 ## Files Likely Touched
