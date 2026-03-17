@@ -50,11 +50,15 @@ export interface Box {
   id: string;
   warehouseId: string;
   boxNumber: string;
+  name?: string;
   size: string;
   pricePerMonth: number;   // alias — backend field is priceMonthly
   priceMonthly?: number;   // direct backend camelCase field
   status: BoxStatus;
   features: string[] | null;
+  availableQuantity?: number;
+  totalQuantity?: number;
+  isAvailable?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

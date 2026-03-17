@@ -30,19 +30,19 @@ const warehouseSchema = z.object({
   emirate: z.string().min(2, 'Emirate is required').max(100),
   district: z.string().max(100).optional(),
   latitude: z
-    .number({ invalid_type_error: 'Enter a valid latitude' })
+    .number({ message: 'Enter a valid latitude' })
     .min(-90)
     .max(90),
   longitude: z
-    .number({ invalid_type_error: 'Enter a valid longitude' })
+    .number({ message: 'Enter a valid longitude' })
     .min(-180)
     .max(180),
   // Amenities
-  hasClimateControl: z.boolean().default(false),
-  has24x7Access: z.boolean().default(false),
-  hasSecurityCameras: z.boolean().default(false),
-  hasInsurance: z.boolean().default(false),
-  hasParkingSpace: z.boolean().default(false),
+  hasClimateControl: z.boolean().optional().default(false),
+  has24x7Access: z.boolean().optional().default(false),
+  hasSecurityCameras: z.boolean().optional().default(false),
+  hasInsurance: z.boolean().optional().default(false),
+  hasParkingSpace: z.boolean().optional().default(false),
   // Contact
   contactPhone: z.string().max(20).optional(),
   contactEmail: z.string().email('Invalid email').max(255).optional().or(z.literal('')),
@@ -80,11 +80,10 @@ export default function NewWarehousePage() {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
     formState: { errors },
   } = useForm<WarehouseFormData>({
-    resolver: zodResolver(warehouseSchema),
+    resolver: zodResolver(warehouseSchema) as any,
     defaultValues: {
       latitude: 25.2048,
       longitude: 55.2708,

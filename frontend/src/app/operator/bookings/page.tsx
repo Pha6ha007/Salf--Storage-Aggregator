@@ -212,7 +212,7 @@ export default function OperatorBookingsPage() {
           </div>
 
           {/* Pagination */}
-          {data.pagination.total_pages > 1 && (
+          {(data.pagination?.total_pages ?? 0) > 1 && (
             <div className="flex justify-center gap-2 mt-6">
               <Button
                 variant="outline"
@@ -222,7 +222,7 @@ export default function OperatorBookingsPage() {
                 Previous
               </Button>
               <span className="flex items-center px-4 text-sm text-text-secondary">
-                Page {data.pagination.page} of {data.pagination.total_pages}
+                Page {data.pagination?.page ?? 1} of {data.pagination?.total_pages ?? 1}
               </span>
               <Button
                 variant="outline"

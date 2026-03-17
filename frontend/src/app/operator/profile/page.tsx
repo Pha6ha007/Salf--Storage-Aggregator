@@ -19,7 +19,7 @@ const schema = z.object({
   website: z.string().url('Invalid URL').optional().or(z.literal('')),
 });
 
-type FormData = z.infer<typeof schema>;
+type ProfileFormData = z.infer<typeof schema>;
 
 export default function OperatorProfilePage() {
   const queryClient = useQueryClient();
@@ -36,7 +36,7 @@ export default function OperatorProfilePage() {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
-  } = useForm<FormData>({
+  } = useForm<ProfileFormData>({
     resolver: zodResolver(schema),
     values: profile ? {
       companyName: profile.companyName ?? '',
@@ -48,7 +48,7 @@ export default function OperatorProfilePage() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data: FormData) => operatorsApi.updateProfile(data),
+    mutationFn: (data: ProfileFormData) => operatorsApi.updateProfile(data),
     onSuccess: () => {
       toast.success('Profile updated');
       queryClient.invalidateQueries({ queryKey: ['operatorProfile'] });

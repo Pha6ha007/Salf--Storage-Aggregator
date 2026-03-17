@@ -67,7 +67,7 @@ function NewBookingContent() {
         startDate,
         durationMonths,
       }),
-    onSuccess: (result) => {
+    onSuccess: (_result) => {
       toast.success('Booking created successfully!');
       router.push('/bookings');
     },

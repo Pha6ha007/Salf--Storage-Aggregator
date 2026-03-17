@@ -37,7 +37,7 @@ export function WarehouseCard({
     e.preventDefault();
     e.stopPropagation();
     setLocalFavorite(!localFavorite);
-    onFavoriteClick?.(warehouse.id);
+    onFavoriteClick?.(String(warehouse.id));
   };
 
   const photoUrl = warehouse.photoUrl || warehouse.primaryPhoto;

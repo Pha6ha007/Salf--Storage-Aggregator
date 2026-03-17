@@ -29,11 +29,11 @@ const warehouseSchema = z.object({
   address: z.string().min(5, 'Full address is required'),
   emirate: z.string().min(2, 'Emirate is required').max(100),
   district: z.string().max(100).optional(),
-  hasClimateControl: z.boolean().default(false),
-  has24x7Access: z.boolean().default(false),
-  hasSecurityCameras: z.boolean().default(false),
-  hasInsurance: z.boolean().default(false),
-  hasParkingSpace: z.boolean().default(false),
+  hasClimateControl: z.boolean().optional().default(false),
+  has24x7Access: z.boolean().optional().default(false),
+  hasSecurityCameras: z.boolean().optional().default(false),
+  hasInsurance: z.boolean().optional().default(false),
+  hasParkingSpace: z.boolean().optional().default(false),
   contactPhone: z.string().max(20).optional(),
   contactEmail: z.string().email('Invalid email').max(255).optional().or(z.literal('')),
 });
@@ -72,7 +72,7 @@ export default function EditWarehousePage() {
     watch,
     formState: { errors, isDirty },
   } = useForm<WarehouseFormData>({
-    resolver: zodResolver(warehouseSchema),
+    resolver: zodResolver(warehouseSchema) as any,
   });
 
   // Populate form once warehouse data loads

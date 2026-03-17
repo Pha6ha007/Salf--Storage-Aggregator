@@ -37,11 +37,16 @@ export interface OperatorStats {
 
 export interface UpdateOperatorDto {
   company_name?: string;
+  companyName?: string;
   company_registration?: string;
   tax_registration?: string;
   contact_person?: string;
   contact_phone?: string;
+  contactPhone?: string;
   contact_email?: string;
+  contactEmail?: string;
+  description?: string;
+  website?: string;
 }
 
 export interface UpdateOperatorSettingsDto {

@@ -88,8 +88,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const refreshUser = useCallback(async () => {
     try {
       const response = await authApi.getMe();
-      setUser(response.data);
-      queryClient.setQueryData(['currentUser'], response.data);
+      const user = (response as any).data ?? response;
+      setUser(user);
+      queryClient.setQueryData(['currentUser'], user);
     } catch {
       setUser(null);
       queryClient.setQueryData(['currentUser'], null);

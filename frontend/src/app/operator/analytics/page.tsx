@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export default function OperatorAnalyticsPage() {
   const { data: stats, isLoading } = useQuery({
     queryKey: ['operatorStats'],
-    queryFn: () => operatorsApi.getStatistics(),
+    queryFn: () => operatorsApi.getStats(),
   });
 
   const s = (stats as any)?.data ?? stats ?? {};
