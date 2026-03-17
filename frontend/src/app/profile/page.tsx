@@ -27,19 +27,19 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 // Change password schema
 const passwordSchema = z
   .object({
-    current_password: z.string().min(1, 'Current password is required'),
-    new_password: z
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword: z
       .string()
       .min(8, 'Password must be at least 8 characters')
       .regex(/[A-Z]/, 'Must contain uppercase')
       .regex(/[a-z]/, 'Must contain lowercase')
       .regex(/[0-9]/, 'Must contain number')
       .regex(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/, 'Must contain special character'),
-    new_password_confirmation: z.string(),
+    newPasswordConfirmation: z.string(),
   })
-  .refine((data) => data.new_password === data.new_password_confirmation, {
+  .refine((data) => data.newPassword === data.newPasswordConfirmation, {
     message: 'Passwords do not match',
-    path: ['new_password_confirmation'],
+    path: ['newPasswordConfirmation'],
   });
 
 type PasswordFormData = z.infer<typeof passwordSchema>;
@@ -244,47 +244,47 @@ export default function ProfilePage() {
             )}
 
             <div className="space-y-2">
-              <label htmlFor="current_password" className="text-sm font-medium text-text-primary">
+              <label htmlFor="currentPassword" className="text-sm font-medium text-text-primary">
                 Current Password
               </label>
               <Input
-                id="current_password"
+                id="currentPassword"
                 type="password"
-                {...registerPassword('current_password')}
-                className={passwordErrors.current_password ? 'border-error-500' : ''}
+                {...registerPassword('currentPassword')}
+                className={passwordErrors.currentPassword ? 'border-error-500' : ''}
               />
-              {passwordErrors.current_password && (
-                <p className="text-sm text-error-500">{passwordErrors.current_password.message}</p>
+              {passwordErrors.currentPassword && (
+                <p className="text-sm text-error-500">{passwordErrors.currentPassword.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="new_password" className="text-sm font-medium text-text-primary">
+              <label htmlFor="newPassword" className="text-sm font-medium text-text-primary">
                 New Password
               </label>
               <Input
-                id="new_password"
+                id="newPassword"
                 type="password"
-                {...registerPassword('new_password')}
-                className={passwordErrors.new_password ? 'border-error-500' : ''}
+                {...registerPassword('newPassword')}
+                className={passwordErrors.newPassword ? 'border-error-500' : ''}
               />
-              {passwordErrors.new_password && (
-                <p className="text-sm text-error-500">{passwordErrors.new_password.message}</p>
+              {passwordErrors.newPassword && (
+                <p className="text-sm text-error-500">{passwordErrors.newPassword.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="new_password_confirmation" className="text-sm font-medium text-text-primary">
+              <label htmlFor="newPasswordConfirmation" className="text-sm font-medium text-text-primary">
                 Confirm New Password
               </label>
               <Input
-                id="new_password_confirmation"
+                id="newPasswordConfirmation"
                 type="password"
-                {...registerPassword('new_password_confirmation')}
-                className={passwordErrors.new_password_confirmation ? 'border-error-500' : ''}
+                {...registerPassword('newPasswordConfirmation')}
+                className={passwordErrors.newPasswordConfirmation ? 'border-error-500' : ''}
               />
-              {passwordErrors.new_password_confirmation && (
-                <p className="text-sm text-error-500">{passwordErrors.new_password_confirmation.message}</p>
+              {passwordErrors.newPasswordConfirmation && (
+                <p className="text-sm text-error-500">{passwordErrors.newPasswordConfirmation.message}</p>
               )}
             </div>
 

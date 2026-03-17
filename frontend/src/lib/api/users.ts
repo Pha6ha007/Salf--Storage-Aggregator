@@ -9,9 +9,9 @@ export interface UpdateProfileDto {
 }
 
 export interface ChangePasswordDto {
-  current_password: string;
-  new_password: string;
-  new_password_confirmation: string;
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
 }
 
 export interface DeleteAccountDto {
@@ -38,16 +38,16 @@ export const usersApi = {
   },
 
   updateProfile: async (data: UpdateProfileDto): Promise<User> => {
-    const response = await api.put<User>('/users/me', data);
+    const response = await api.patch<User>('/users/me', data);
     return response.data;
   },
 
   /**
    * Change password
-   * PUT /api/v1/users/me/password
+   * PATCH /api/v1/users/me/password
    */
   changePassword: async (data: ChangePasswordDto): Promise<MessageResponse> => {
-    const response = await api.put<MessageResponse>('/users/me/password', data);
+    const response = await api.patch<MessageResponse>('/users/me/password', data);
     return response.data;
   },
 
