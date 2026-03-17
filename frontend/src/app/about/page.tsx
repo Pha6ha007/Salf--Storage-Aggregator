@@ -43,7 +43,7 @@ export default function AboutPage() {
                   storage in the UAE was frustrating, opaque, and time-consuming.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  Whether you're an expat relocating between cities, a business owner running out of
+                  Whether you&apos;re an expat relocating between cities, a business owner running out of
                   space, or a homeowner mid-renovation — we make it simple to find the right unit at
                   the right price, booked in minutes.
                 </p>

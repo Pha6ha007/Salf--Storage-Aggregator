@@ -105,7 +105,7 @@ export default function RegisterPage() {
           <div>
             <h2 className="text-3xl font-bold text-white mb-2"
               style={{ fontFamily: "'DM Serif Display', Georgia, serif", letterSpacing: '-0.02em' }}>
-              Join the UAE's<br />
+              Join the UAE&apos;s<br />
               <span style={{ color: '#FBBF24', fontStyle: 'italic' }}>Storage Platform</span>
             </h2>
             <p className="text-sm" style={{ color: 'rgba(147,197,253,0.7)' }}>

@@ -63,7 +63,7 @@ export default function ContactPage() {
                         <CheckCircle2 className="w-8 h-8 text-green-600" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">Message Sent!</h3>
-                      <p className="text-gray-500 text-sm mb-5">Your email client should have opened. We'll respond within 1 business day.</p>
+                      <p className="text-gray-500 text-sm mb-5">Your email client should have opened. We&apos;ll respond within 1 business day.</p>
                       <button onClick={() => setSubmitted(false)} className="text-blue-600 text-sm hover:underline">Send another message</button>
                     </div>
                   ) : (

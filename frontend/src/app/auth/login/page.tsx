@@ -75,7 +75,7 @@ function LoginContent() {
         <div className="relative z-10">
           <h2 className="text-3xl font-bold text-white mb-2"
             style={{ fontFamily: "'DM Serif Display', Georgia, serif", letterSpacing: '-0.02em' }}>
-            UAE's #1 Storage<br />
+            UAE&apos;s #1 Storage<br />
             <span style={{ color: '#FBBF24', fontStyle: 'italic' }}>Marketplace</span>
           </h2>
           <p className="text-sm mb-8" style={{ color: 'rgba(147,197,253,0.7)' }}>
