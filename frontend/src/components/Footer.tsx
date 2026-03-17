@@ -7,7 +7,7 @@ export function Footer() {
   const footerLinks = {
     about: [
       { label: "About Us", href: "/about" },
-      { label: "How It Works", href: "/about#how-it-works" },
+      { label: "How It Works", href: "/how-it-works" },
       { label: "Contact Us", href: "/contact" },
     ],
     renters: [
