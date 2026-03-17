@@ -1,8 +1,5 @@
 FROM node:20-alpine
 
-# Install OS deps needed by some native modules
-RUN apk add --no-cache openssl
-
 WORKDIR /app
 
 # Copy package files
