@@ -20,6 +20,7 @@ import { BookingsModule } from './modules/bookings/bookings.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { OperatorsModule } from './modules/operators/operators.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { CrmModule } from './modules/crm/crm.module';
 import { AiModule } from './modules/ai/ai.module';
 import { MediaModule } from './modules/media/media.module';
@@ -73,6 +74,7 @@ import googleMapsConfig from './config/google-maps.config';
     ReviewsModule,
     FavoritesModule,
     OperatorsModule,
+    AdminModule,
     CrmModule,
     AiModule,
     MediaModule,
