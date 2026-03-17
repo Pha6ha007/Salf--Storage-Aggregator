@@ -42,8 +42,10 @@ async function bootstrap() {
     frontendUrl,
     'https://storagecompare.ae',
     'https://www.storagecompare.ae',
-    'https://storagecompare.vercel.app', // Vercel deployment
-    'http://localhost:3000', // Local development
+    'https://storagecompare.vercel.app',
+    'https://salf-storage-aggregator.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
   ];
 
   // In development, allow all localhost origins
@@ -58,6 +60,11 @@ async function bootstrap() {
 
       // In development, allow localhost on any port
       if (isDevelopment && origin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
+
+      // Allow any vercel.app preview deployment
+      if (origin.endsWith('.vercel.app')) {
         return callback(null, true);
       }
 
