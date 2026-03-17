@@ -19,7 +19,7 @@ export function Footer() {
     operators: [
       { label: "List Your Warehouse", href: "/operator/dashboard" },
       { label: "Operator Dashboard", href: "/operator/dashboard" },
-      { label: "Pricing", href: "/operator/pricing" },
+      { label: "Pricing", href: "/pricing" },
     ],
     legal: [
       { label: "Privacy Policy", href: "/privacy" },
