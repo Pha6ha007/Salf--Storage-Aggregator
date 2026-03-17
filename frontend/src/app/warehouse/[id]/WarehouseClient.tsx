@@ -225,35 +225,35 @@ export function WarehouseClient() {
 
                 {warehouse.operator && (
                   <div className="space-y-3">
-                    {warehouse.operator.businessName && (
+                    {(warehouse.operator.businessName || (warehouse.operator as any).companyName) && (
                       <div>
                         <p className="text-sm text-gray-500">Operator</p>
                         <p className="font-semibold text-gray-900">
-                          {warehouse.operator.businessName}
+                          {warehouse.operator.businessName || (warehouse.operator as any).companyName}
                         </p>
                       </div>
                     )}
 
-                    {warehouse.operator.contactEmail && (
+                    {(warehouse.operator.contactEmail || (warehouse.operator as any).businessEmail) && (
                       <div>
                         <p className="text-sm text-gray-500">Email</p>
                         <a
-                          href={`mailto:${warehouse.operator.contactEmail}`}
+                          href={`mailto:${warehouse.operator.contactEmail || (warehouse.operator as any).businessEmail}`}
                           className="text-blue-600 hover:text-blue-800"
                         >
-                          {warehouse.operator.contactEmail}
+                          {warehouse.operator.contactEmail || (warehouse.operator as any).businessEmail}
                         </a>
                       </div>
                     )}
 
-                    {warehouse.operator.contactPhone && (
+                    {(warehouse.operator.contactPhone || (warehouse.operator as any).businessPhone) && (
                       <div>
                         <p className="text-sm text-gray-500">Phone</p>
                         <a
-                          href={`tel:${warehouse.operator.contactPhone}`}
+                          href={`tel:${warehouse.operator.contactPhone || (warehouse.operator as any).businessPhone}`}
                           className="text-blue-600 hover:text-blue-800"
                         >
-                          {warehouse.operator.contactPhone}
+                          {warehouse.operator.contactPhone || (warehouse.operator as any).businessPhone}
                         </a>
                       </div>
                     )}
