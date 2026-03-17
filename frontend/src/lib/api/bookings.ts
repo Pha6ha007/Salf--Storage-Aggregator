@@ -20,23 +20,19 @@ export const bookingsApi = {
 
   /**
    * Get user's bookings list
-   * GET /api/v1/bookings  (also accessible via /users/me/bookings alias)
+   * GET /api/v1/bookings — returns array (no pagination in MVP)
    */
-  list: async (params?: BookingsQueryParams): Promise<BookingsListResponse> => {
+  list: async (params?: BookingsQueryParams): Promise<{ data: any[]; pagination: null }> => {
     const queryParams = new URLSearchParams();
-
     if (params?.status && params.status !== 'all') {
       queryParams.append('status', params.status);
     }
-    if (params?.sort) queryParams.append('sort', params.sort);
-    if (params?.order) queryParams.append('order', params.order);
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
 
-    const response = await api.get<BookingsListResponse>(
-      `/bookings?${queryParams.toString()}`
-    );
-    return response.data;
+    const response = await api.get<any>(`/bookings?${queryParams.toString()}`);
+    // Backend returns raw array or wrapped object
+    const raw = response.data;
+    const data = Array.isArray(raw) ? raw : (raw?.data ?? []);
+    return { data, pagination: null };
   },
 
   /**

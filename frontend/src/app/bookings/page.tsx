@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { Package, Calendar, MapPin } from 'lucide-react';
+import { Package, Calendar, MapPin, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { bookingsApi } from '@/lib/api/bookings';
 import { EmptyState } from '@/components/EmptyState';
 import { BookingStatusBadge } from '@/components/user/BookingStatusBadge';
@@ -16,49 +17,69 @@ const statusFilters = [
   { value: 'all', label: 'All' },
   { value: 'pending', label: 'Pending' },
   { value: 'confirmed', label: 'Confirmed' },
-  { value: 'active', label: 'Active' },
   { value: 'completed', label: 'Completed' },
   { value: 'cancelled', label: 'Cancelled' },
 ] as const;
 
-export default function BookingsPage() {
-  const [statusFilter, setStatusFilter] = useState<'all' | BookingStatus>('all');
-  const [page, setPage] = useState(1);
+type StatusFilter = 'all' | BookingStatus;
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['bookings', { status: statusFilter, page }],
-    queryFn: () => bookingsApi.list({ status: statusFilter, page, per_page: 12 }),
+export default function BookingsPage() {
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const queryClient = useQueryClient();
+
+  const { data: listData, isLoading, isError } = useQuery({
+    queryKey: ['bookings'],
+    queryFn: () => bookingsApi.list(),
   });
+
+  const cancelMutation = useMutation({
+    mutationFn: (id: number) => bookingsApi.cancel(id),
+    onSuccess: () => {
+      toast.success('Booking cancelled');
+      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: () => toast.error('Failed to cancel booking'),
+  });
+
+  const allBookings = listData?.data ?? [];
+
+  // Client-side status filter (backend doesn't paginate)
+  const filtered = useMemo(() => {
+    if (statusFilter === 'all') return allBookings;
+    return allBookings.filter((b: any) => b.status === statusFilter);
+  }, [allBookings, statusFilter]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-text-primary">My Bookings</h1>
         <p className="mt-2 text-text-secondary">
-          View and manage your storage bookings
+          {allBookings.length} total booking{allBookings.length !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* Status Filter Tabs */}
-      <Tabs value={statusFilter} onValueChange={(value) => setStatusFilter(value as typeof statusFilter)} data-testid="booking-status-filter">
+      <Tabs
+        value={statusFilter}
+        onValueChange={(v) => setStatusFilter(v as StatusFilter)}
+      >
         <TabsList>
-          {statusFilters.map((filter) => (
-            <TabsTrigger key={filter.value} value={filter.value}>
-              {filter.label}
+          {statusFilters.map((f) => (
+            <TabsTrigger key={f.value} value={f.value}>
+              {f.label}
             </TabsTrigger>
           ))}
         </TabsList>
       </Tabs>
 
-      {/* Loading State */}
+      {/* Loading */}
       {isLoading && (
-        <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-text-secondary">Loading bookings...</p>
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
         </div>
       )}
 
-      {/* Error State */}
+      {/* Error */}
       {isError && (
         <Card className="border-red-200">
           <CardContent className="pt-6">
@@ -67,93 +88,113 @@ export default function BookingsPage() {
         </Card>
       )}
 
-      {/* Empty State */}
-      {!isLoading && !isError && data?.data.length === 0 && (
+      {/* Empty */}
+      {!isLoading && !isError && filtered.length === 0 && (
         <EmptyState
           icon={Package}
-          title="No bookings yet"
-          description="Find the perfect storage space and make your first booking."
-          actionLabel="Browse Warehouses"
-          actionHref="/catalog"
+          title={statusFilter === 'all' ? 'No bookings yet' : `No ${statusFilter} bookings`}
+          description={
+            statusFilter === 'all'
+              ? 'Find the perfect storage space and make your first booking.'
+              : 'Try a different status filter.'
+          }
+          actionLabel={statusFilter === 'all' ? 'Browse Warehouses' : undefined}
+          actionHref={statusFilter === 'all' ? '/catalog' : undefined}
         />
       )}
 
       {/* Bookings List */}
-      {!isLoading && !isError && data && data.data.length > 0 && (
-        <>
-          <div className="grid gap-4" data-testid="bookings-list">
-            {data.data.map((booking) => (
-              <Card key={booking.id} className="hover:shadow-md transition-shadow" data-testid="booking-card">
-                <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="text-lg font-semibold text-text-primary">
-                            {booking.warehouse.name}
-                          </h3>
-                          <p className="text-sm text-text-secondary flex items-center gap-1 mt-1">
-                            <MapPin className="h-4 w-4" />
-                            {booking.warehouse.address.full_address}
+      {!isLoading && !isError && filtered.length > 0 && (
+        <div className="grid gap-4">
+          {filtered.map((booking: any) => (
+            <Card key={booking.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex-1 space-y-3">
+                    {/* Header */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h3 className="text-lg font-semibold text-text-primary">
+                          {booking.warehouse?.name ?? '—'}
+                        </h3>
+                        {(booking.warehouse?.address || booking.warehouse?.emirate) && (
+                          <p className="text-sm text-text-secondary flex items-center gap-1 mt-0.5">
+                            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                            {booking.warehouse?.address}
+                            {booking.warehouse?.emirate ? `, ${booking.warehouse.emirate}` : ''}
                           </p>
-                        </div>
-                        <BookingStatusBadge status={booking.status} />
+                        )}
                       </div>
-
-                      <div className="flex flex-wrap gap-4 text-sm text-text-secondary">
-                        <span className="flex items-center gap-1">
-                          <Package className="h-4 w-4" />
-                          Box {booking.box.number} ({booking.box.size})
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {new Date(booking.start_date).toLocaleDateString()} — {new Date(booking.end_date).toLocaleDateString()}
-                        </span>
-                      </div>
-
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-sm text-text-secondary">
-                          {booking.price_per_month.toLocaleString()} AED/month
-                        </span>
-                        <span className="text-sm text-text-muted">·</span>
-                        <span className="font-semibold text-primary-600">
-                          Total: {booking.total_price.toLocaleString()} AED
-                        </span>
-                      </div>
+                      <BookingStatusBadge status={booking.status} />
                     </div>
 
-                    <Link href={`/bookings/${booking.id}`}>
-                      <Button variant="outline">View Details</Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    {/* Details row */}
+                    <div className="flex flex-wrap gap-4 text-sm text-text-secondary">
+                      {booking.box && (
+                        <span className="flex items-center gap-1.5">
+                          <Package className="h-4 w-4" />
+                          Box {booking.box.boxNumber} · {booking.box.size}
+                        </span>
+                      )}
+                      {booking.startDate && (
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="h-4 w-4" />
+                          {new Date(booking.startDate).toLocaleDateString('en-AE', {
+                            day: 'numeric', month: 'short', year: 'numeric',
+                          })}
+                          {' — '}
+                          {new Date(booking.endDate).toLocaleDateString('en-AE', {
+                            day: 'numeric', month: 'short', year: 'numeric',
+                          })}
+                        </span>
+                      )}
+                    </div>
 
-          {/* Pagination */}
-          {data.pagination.total_pages > 1 && (
-            <div className="flex justify-center gap-2 mt-6">
-              <Button
-                variant="outline"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={!data.pagination.has_previous}
-              >
-                Previous
-              </Button>
-              <span className="flex items-center px-4 text-sm text-text-secondary">
-                Page {data.pagination.page} of {data.pagination.total_pages}
-              </span>
-              <Button
-                variant="outline"
-                onClick={() => setPage((p) => p + 1)}
-                disabled={!data.pagination.has_next}
-              >
-                Next
-              </Button>
-            </div>
-          )}
-        </>
+                    {/* Pricing */}
+                    <div className="flex items-baseline gap-2 text-sm">
+                      <span className="text-text-secondary">
+                        {Number(booking.monthlyPrice || 0).toLocaleString()} AED/month
+                      </span>
+                      <span className="text-text-muted">·</span>
+                      <span className="font-semibold text-primary-600">
+                        Total: {Number(booking.priceTotal || 0).toLocaleString()} AED
+                      </span>
+                    </div>
+
+                    {/* Booking ref */}
+                    <p className="text-xs text-text-muted">
+                      Ref: {booking.bookingNumber || `#${booking.id}`}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <Link href={`/bookings/${booking.id}`}>
+                      <Button variant="outline" size="sm">
+                        Details
+                      </Button>
+                    </Link>
+                    {booking.status === 'pending' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                        disabled={cancelMutation.isPending}
+                        onClick={() => {
+                          if (confirm('Cancel this booking?')) {
+                            cancelMutation.mutate(booking.id);
+                          }
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       )}
     </div>
   );

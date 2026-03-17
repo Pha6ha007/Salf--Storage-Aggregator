@@ -195,7 +195,7 @@ export function WarehouseClient() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
                   Available Units
                 </h2>
-                <BoxList boxes={boxes} />
+                <BoxList boxes={boxes} warehouseId={warehouse.id} />
               </div>
 
               {/* Reviews */}
