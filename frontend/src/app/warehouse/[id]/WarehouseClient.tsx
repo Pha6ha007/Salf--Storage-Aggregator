@@ -10,6 +10,7 @@ import { warehousesApi } from '@/lib/api/warehouses';
 import { PhotoGallery } from './PhotoGallery';
 import { BoxList } from './BoxList';
 import { ReviewList } from './ReviewList';
+import { WriteReviewForm } from './WriteReviewForm';
 import { Loader2 } from 'lucide-react';
 
 export function WarehouseClient() {
@@ -204,6 +205,7 @@ export function WarehouseClient() {
                   Customer Reviews
                 </h2>
                 <ReviewList reviews={reviews} />
+                <WriteReviewForm warehouseId={Number(id)} />
               </div>
 
               {/* Map */}
