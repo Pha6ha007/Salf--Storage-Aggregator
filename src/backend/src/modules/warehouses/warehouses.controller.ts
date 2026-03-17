@@ -71,7 +71,7 @@ export class WarehousesController {
 @ApiTags('operator/warehouses')
 @Controller('operator/warehouses')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.operator)
+@Roles(UserRole.operator, UserRole.admin)
 @ApiCookieAuth('auth_token')
 export class OperatorWarehousesController {
   constructor(private readonly warehousesService: WarehousesService) {}

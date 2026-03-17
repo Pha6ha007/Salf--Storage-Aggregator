@@ -110,7 +110,7 @@ export class BookingsController {
 @ApiTags('operator/bookings')
 @Controller('operator/bookings')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.operator)
+@Roles(UserRole.operator, UserRole.admin)
 @ApiCookieAuth('auth_token')
 export class OperatorBookingsController {
   constructor(private readonly bookingsService: BookingsService) {}

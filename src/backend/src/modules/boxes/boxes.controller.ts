@@ -76,7 +76,7 @@ export class PublicBoxesController {
 @ApiTags('operator/boxes')
 @Controller('operator')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.operator)
+@Roles(UserRole.operator, UserRole.admin)
 @ApiCookieAuth('auth_token')
 export class OperatorBoxesController {
   constructor(private readonly boxesService: BoxesService) {}
