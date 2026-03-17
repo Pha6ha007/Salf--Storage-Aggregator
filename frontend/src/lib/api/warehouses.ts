@@ -128,10 +128,24 @@ export const warehousesApi = {
     if (params?.status) queryParams.append('status', params.status);
     if (params?.search) queryParams.append('search', params.search);
 
-    const response = await api.get<WarehousesListResponse>(
+    const response = await api.get<any>(
       `/operator/warehouses?${queryParams.toString()}`
     );
-    return response.data;
+    const raw = response.data;
+    // Normalize: backend returns { data, meta } but frontend expects { data, pagination }
+    if (raw?.meta && !raw?.pagination) {
+      return {
+        data: raw.data ?? [],
+        pagination: {
+          page: raw.meta.page ?? 1,
+          per_page: raw.meta.limit ?? 20,
+          total: raw.meta.total ?? 0,
+          total_pages: raw.meta.totalPages ?? 0,
+        },
+        summary: raw.summary,
+      };
+    }
+    return raw;
   },
 
   /**

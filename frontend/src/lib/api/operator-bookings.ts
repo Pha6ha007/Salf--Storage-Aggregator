@@ -73,10 +73,15 @@ export const operatorBookingsApi = {
     if (params?.per_page) queryParams.append('per_page', params.per_page.toString());
     if (params?.warehouse_id) queryParams.append('warehouse_id', params.warehouse_id.toString());
 
-    const response = await api.get<BookingsListResponse>(
+    const response = await api.get<BookingsListResponse | Booking[]>(
       `/operator/bookings?${queryParams.toString()}`
     );
-    return response.data;
+    // Backend may return array directly or { data: [], pagination: {} }
+    const raw = response.data;
+    if (Array.isArray(raw)) {
+      return { data: raw, pagination: undefined };
+    }
+    return raw as BookingsListResponse;
   },
 
   /**
