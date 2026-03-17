@@ -31,7 +31,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { UserRole } from '@prisma/client';
 import { BookingsService } from '../bookings/bookings.service';
 import { FavoritesService } from '../favorites/favorites.service';
-
+import { QueryFavoritesDto } from '../favorites/dto/query-favorites.dto';
 @ApiTags('users')
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -115,7 +115,7 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getMyFavorites(
     @CurrentUser() user: CurrentUserData,
-    @Query() queryDto: any,
+    @Query() queryDto: QueryFavoritesDto,
   ) {
     return this.favoritesService.getUserFavorites(user.id, queryDto);
   }

@@ -114,7 +114,8 @@ export class FavoritesService {
    * Get user's favorite warehouses with pagination
    */
   async getUserFavorites(userId: string, queryDto: QueryFavoritesDto) {
-    const { page = 1, per_page = 10 } = queryDto;
+    const page = Math.max(1, parseInt(String(queryDto.page ?? 1), 10) || 1);
+    const per_page = Math.min(50, Math.max(1, parseInt(String(queryDto.per_page ?? 10), 10) || 10));
 
     // Build where clause
     const where = {
