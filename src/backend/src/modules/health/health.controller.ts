@@ -6,11 +6,15 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Public } from '../../common/decorators/public.decorator';
 import { UserRole } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @ApiTags('Health')
 @Controller('health')
 export class HealthController {
-  constructor(private readonly healthService: HealthService) {}
+  constructor(
+    private readonly healthService: HealthService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Public()
   @Get()
@@ -18,6 +22,29 @@ export class HealthController {
   @ApiResponse({ status: 200, description: 'Server is healthy' })
   getHealth(): HealthStatus {
     return this.healthService.getHealth();
+  }
+
+  // Temporary debug endpoint — remove after fix
+  @Public()
+  @Get('db-test')
+  async dbTest() {
+    try {
+      const result = await this.prisma.$queryRaw`SELECT 1 as ok`;
+      return { status: 'ok', result };
+    } catch (err: any) {
+      return { status: 'error', message: err.message, stack: err.stack };
+    }
+  }
+
+  @Public()
+  @Get('warehouse-test')
+  async warehouseTest() {
+    try {
+      const count = await this.prisma.warehouse.count();
+      return { status: 'ok', count };
+    } catch (err: any) {
+      return { status: 'error', message: err.message };
+    }
   }
 
   /**
