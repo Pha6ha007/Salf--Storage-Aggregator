@@ -226,7 +226,7 @@ export default function Home() {
         </section>
 
         {/* ─── FOR WHOM ─── */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-20 bg-gradient-to-b from-white to-blue-50/30">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <p className="text-amber-600 font-semibold text-sm uppercase tracking-widest mb-3">Who It&apos;s For</p>
@@ -236,14 +236,14 @@ export default function Home() {
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {FOR_WHOM.map(({ audience, pain, solution, cta, href, emoji }) => (
-                <div key={audience} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                <div key={audience} className="glass rounded-[20px] p-8 shadow-glass hover:shadow-glass-hover hover-lift flex flex-col">
                   <div className="text-4xl mb-5">{emoji}</div>
                   <h3 className="font-semibold text-xl text-gray-900 mb-3">{audience}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed mb-3">{pain}</p>
                   <p className="text-gray-800 text-sm font-medium leading-relaxed mb-6">{solution}</p>
                   <Link
                     href={href}
-                    className="mt-auto inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:gap-3 transition-all"
+                    className="mt-auto inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:gap-3 transition-all duration-300 ease-spring"
                   >
                     {cta} <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -298,7 +298,7 @@ export default function Home() {
         </section>
 
         {/* ─── POPULAR EMIRATES ─── */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-gradient-to-b from-blue-50/30 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-display text-3xl text-gray-900 text-center mb-10">Browse by Emirate</h2>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
@@ -306,7 +306,7 @@ export default function Home() {
                 <Link
                   key={e.name}
                   href={`/catalog?emirate=${encodeURIComponent(e.name)}`}
-                  className="bg-white rounded-xl p-4 text-center border border-gray-100 hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                  className="glass rounded-xl p-4 text-center shadow-glass hover:shadow-glass-hover hover-lift"
                 >
                   <div className="text-2xl mb-2">{e.emoji}</div>
                   <p className="text-xs font-medium text-gray-700">{e.name}</p>
@@ -333,9 +333,16 @@ export default function Home() {
             </div>
 
             {isLoading ? (
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="h-72 bg-gray-100 rounded-2xl animate-pulse" />
+                  <div key={i} className="glass rounded-[20px] shadow-glass overflow-hidden">
+                    <div className="aspect-[4/3] skeleton-shimmer" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-5 w-3/4 skeleton-shimmer" />
+                      <div className="h-4 w-1/2 skeleton-shimmer" />
+                      <div className="h-6 w-1/3 skeleton-shimmer" />
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : featuredWarehouses.length > 0 ? (
@@ -382,7 +389,7 @@ export default function Home() {
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {WHY_US.map(({ icon: Icon, title, desc }) => (
-                <div key={title} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div key={title} className="bg-white/5 border border-white/10 rounded-[20px] p-6 hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 ease-out cursor-default">
                   <div className="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center mb-4">
                     <Icon className="h-5 w-5 text-amber-400" />
                   </div>

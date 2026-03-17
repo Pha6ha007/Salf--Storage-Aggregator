@@ -7,16 +7,32 @@
     text-wrap: balance;
   }
 
-  /* Shimmer effect for skeleton loading */
+  /* Glass surface — карточки, модалы */
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .glass-elevated {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
+  /* Shimmer skeleton */
   .skeleton-shimmer {
     background: linear-gradient(
       90deg,
-      hsl(210 40% 96%) 0%,
-      hsl(210 40% 92%) 40%,
-      hsl(210 40% 96%) 80%
+      rgba(226, 232, 240, 0.4) 0%,
+      rgba(226, 232, 240, 0.15) 40%,
+      rgba(226, 232, 240, 0.4) 80%
     );
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite linear;
+    animation: shimmer 1.8s infinite linear;
+    border-radius: 12px;
   }
 
   /* Hero pattern overlay */
@@ -33,12 +49,30 @@
     pointer-events: none;
   }
 
+  /* Grain texture overlay */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.25;
+  }
+
   /* Gradient text */
   .text-gradient {
     background: linear-gradient(to right, #1A56DB, #3B82F6, #F59E0B);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Spring hover for cards */
+  .hover-lift {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
   }
 }
 
