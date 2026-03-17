@@ -1,19 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, MinLength, MaxLength, Matches, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, MaxLength, Matches, IsOptional, IsBoolean } from 'class-validator';
 
 export class RegisterDto {
-  @ApiProperty({
-    example: 'john.doe@example.com',
-    description: 'User email address',
-  })
+  @ApiProperty({ example: 'john.doe@example.com' })
   @IsEmail({}, { message: 'Invalid email format' })
   email: string;
 
-  @ApiProperty({
-    example: 'SecurePass123!',
-    description: 'Password (min 8 chars, must include uppercase, lowercase, number)',
-    minLength: 8,
-  })
+  @ApiProperty({ example: 'SecurePass123!' })
   @IsString()
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
@@ -21,33 +14,50 @@ export class RegisterDto {
   })
   password: string;
 
-  @ApiProperty({
-    example: 'John',
-    description: 'User first name',
-    required: false,
-  })
+  @IsOptional()
+  @IsString()
+  password_confirmation?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  name?: string;
+
+  @ApiProperty({ example: 'John', required: false })
   @IsOptional()
   @IsString()
   @MaxLength(100)
   firstName?: string;
 
-  @ApiProperty({
-    example: 'Doe',
-    description: 'User last name',
-    required: false,
-  })
+  @ApiProperty({ example: 'Doe', required: false })
   @IsOptional()
   @IsString()
   @MaxLength(100)
   lastName?: string;
 
-  @ApiProperty({
-    example: '+971501234567',
-    description: 'User phone number',
-    required: false,
-  })
+  @ApiProperty({ example: '+971501234567', required: false })
   @IsOptional()
   @IsString()
   @MaxLength(20)
   phone?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  agree_to_terms?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  agree_to_privacy?: boolean;
+
+  @IsOptional()
+  @IsString()
+  role?: string;
+
+  @IsOptional()
+  @IsString()
+  company_name?: string;
+
+  @IsOptional()
+  @IsString()
+  trade_license_number?: string;
 }

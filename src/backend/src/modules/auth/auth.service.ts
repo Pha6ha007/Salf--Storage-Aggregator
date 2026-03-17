@@ -28,7 +28,16 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto) {
-    const { email, password, firstName, lastName, phone } = registerDto;
+    const { email, password, phone } = registerDto;
+
+    // Support both `name` (frontend) and `firstName`/`lastName` (API)
+    let firstName = registerDto.firstName;
+    let lastName = registerDto.lastName;
+    if (!firstName && registerDto.name) {
+      const parts = registerDto.name.trim().split(' ');
+      firstName = parts[0];
+      lastName = parts.slice(1).join(' ') || undefined;
+    }
 
     // Check if user exists
     const existingUser = await this.prisma.user.findUnique({
