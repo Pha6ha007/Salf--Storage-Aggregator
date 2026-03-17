@@ -4,6 +4,7 @@ import { HealthService, HealthStatus, DetailedHealthStatus } from './health.serv
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { Public } from '../../common/decorators/public.decorator';
 import { UserRole } from '@prisma/client';
 
 @ApiTags('Health')
@@ -11,28 +12,10 @@ import { UserRole } from '@prisma/client';
 export class HealthController {
   constructor(private readonly healthService: HealthService) {}
 
-  /**
-   * Basic health check - public endpoint
-   * Returns basic server status, uptime, and version
-   */
+  @Public()
   @Get()
-  @ApiOperation({
-    summary: 'Basic health check',
-    description: 'Public endpoint that returns basic server status, uptime, and version',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Server is healthy',
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'string', enum: ['ok'], example: 'ok' },
-        timestamp: { type: 'string', format: 'date-time', example: '2026-02-27T10:00:00.000Z' },
-        uptime: { type: 'number', example: 123456.789, description: 'Server uptime in seconds' },
-        version: { type: 'string', example: '1.0.0' },
-      },
-    },
-  })
+  @ApiOperation({ summary: 'Basic health check', description: 'Public endpoint' })
+  @ApiResponse({ status: 200, description: 'Server is healthy' })
   getHealth(): HealthStatus {
     return this.healthService.getHealth();
   }
