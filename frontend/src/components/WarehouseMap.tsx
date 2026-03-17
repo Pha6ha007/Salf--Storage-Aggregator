@@ -24,9 +24,36 @@ export function WarehouseMap({ warehouses, height = '600px' }: WarehouseMapProps
     : { lat: 25.2048, lng: 55.2708 }; // Dubai default
 
   if (!apiKey) {
+    // Fallback: OpenStreetMap embed via iframe (no API key needed)
+    const firstWarehouse = warehouses[0];
+    const lat = firstWarehouse?.latitude ?? 25.2048;
+    const lng = firstWarehouse?.longitude ?? 55.2708;
+    const zoom = 15;
+    const osmUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&layer=mapnik&marker=${lat}%2C${lng}`;
+
     return (
-      <div className="flex items-center justify-center bg-gray-100" style={{ height }}>
-        <p className="text-gray-600">Google Maps API key not configured</p>
+      <div className="relative overflow-hidden rounded-xl border border-gray-100" style={{ height }}>
+        <iframe
+          src={osmUrl}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          loading="lazy"
+          title="Warehouse location map"
+        />
+        {/* Address overlay */}
+        {firstWarehouse && (
+          <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
+            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-100">
+              <svg className="w-3.5 h-3.5 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+              </svg>
+              <span className="text-xs font-medium text-gray-700 truncate">
+                {firstWarehouse.address ?? `${firstWarehouse.emirate}${firstWarehouse.district ? `, ${firstWarehouse.district}` : ''}`}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

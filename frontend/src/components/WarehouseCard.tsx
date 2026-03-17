@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MapPin, Heart, ShieldCheck } from "lucide-react";
+import { MapPin, Heart, ShieldCheck, Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RatingStars } from "./RatingStars";
@@ -60,17 +60,13 @@ export function WarehouseCard({
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center text-blue-300">
-                <svg
-                  className="w-16 h-16 mx-auto mb-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                </svg>
-                <p className="text-sm font-medium">No Image</p>
+            <div className="w-full h-full flex flex-col items-center justify-center"
+              style={{ background: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 50%,#e0f2fe 100%)' }}>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-2"
+                style={{ background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(4px)' }}>
+                <Building2 className="w-7 h-7 text-blue-400" />
               </div>
+              <p className="text-xs font-medium text-blue-400">No photo yet</p>
             </div>
           )}
           {/* Verified Badge */}

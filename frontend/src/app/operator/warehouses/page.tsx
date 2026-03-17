@@ -119,17 +119,56 @@ export default function OperatorWarehousesPage() {
 
       {/* Empty State */}
       {!isLoading && !isError && data?.data.length === 0 && (
-        <EmptyState
-          icon={Building2}
-          title={searchQuery ? 'No warehouses found' : 'No warehouses yet'}
-          description={
-            searchQuery
-              ? 'Try adjusting your search or filters'
-              : 'Create your first warehouse to start accepting bookings'
-          }
-          actionLabel="Add Warehouse"
-          actionHref="/operator/warehouses/new"
-        />
+        <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+          {searchQuery ? (
+            <>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+                style={{ background: 'linear-gradient(135deg,#f1f5f9,#e2e8f0)' }}>
+                <Building2 className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">No warehouses match &ldquo;{searchQuery}&rdquo;</h3>
+              <p className="text-sm text-gray-500">Try a different search term or clear the filter.</p>
+            </>
+          ) : (
+            <>
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-5"
+                style={{ background: 'linear-gradient(135deg,#eff6ff,#dbeafe)' }}>
+                <Building2 className="h-10 w-10 text-blue-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2"
+                style={{ fontFamily: "'DM Serif Display',Georgia,serif" }}>
+                Add your first warehouse
+              </h3>
+              <p className="text-sm text-gray-500 max-w-sm mb-6 leading-relaxed">
+                List your storage facility, add available units with pricing, and start receiving bookings from customers across UAE.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/operator/warehouses/new"
+                  className="inline-flex items-center gap-2 font-bold px-6 py-3 rounded-xl text-white transition-all hover:-translate-y-0.5"
+                  style={{ background: 'linear-gradient(145deg,#1d4ed8,#1A56DB)', boxShadow: '0 4px 14px rgba(26,86,219,0.25)' }}>
+                  <Plus className="h-4 w-4" /> Add Warehouse
+                </Link>
+                <Link href="/how-it-works"
+                  className="inline-flex items-center gap-2 text-sm font-medium px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
+                  How it works
+                </Link>
+              </div>
+              <div className="mt-8 grid grid-cols-3 gap-4 max-w-sm text-center">
+                {[
+                  { n: '01', label: 'Add warehouse details & photos' },
+                  { n: '02', label: 'Get verified within 24h' },
+                  { n: '03', label: 'Receive bookings from UAE customers' },
+                ].map(({ n, label }) => (
+                  <div key={n}>
+                    <div className="text-2xl font-bold text-gray-200 mb-1"
+                      style={{ fontFamily: "'DM Serif Display',Georgia,serif" }}>{n}</div>
+                    <p className="text-xs text-gray-400 leading-snug">{label}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       )}
 
       {/* Warehouses Grid */}

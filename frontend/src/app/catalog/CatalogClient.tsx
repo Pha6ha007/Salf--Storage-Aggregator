@@ -102,9 +102,23 @@ export function CatalogClient() {
               </div>
 
               {isLoading && (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
-                  <p className="mt-4 text-gray-600">Loading warehouses...</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="bg-white rounded-xl border border-gray-100 overflow-hidden animate-pulse"
+                      style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
+                      <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200" />
+                      <div className="p-4 space-y-3">
+                        <div className="h-5 bg-gray-100 rounded-lg w-3/4" />
+                        <div className="h-3 bg-gray-100 rounded w-1/2" />
+                        <div className="flex gap-2">
+                          <div className="h-5 w-8 bg-gray-100 rounded-full" />
+                          <div className="h-5 w-8 bg-gray-100 rounded-full" />
+                          <div className="h-5 w-8 bg-gray-100 rounded-full" />
+                        </div>
+                        <div className="h-6 bg-gray-100 rounded w-1/3" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 
