@@ -126,6 +126,10 @@ PADDLE_API_KEY=<your-paddle-key>
 PADDLE_WEBHOOK_SECRET=<your-paddle-webhook-secret>
 PADDLE_ENVIRONMENT=production
 PADDLE_SELLER_ID=<your-seller-id>
+
+# Sentry (error monitoring — strongly recommended in production)
+SENTRY_DSN=<your-sentry-dsn>
+APP_VERSION=1.0.0
 ```
 
 #### Generate Secure Secrets
@@ -382,29 +386,107 @@ Consider adding:
 
 ---
 
-## 🔐 Part 7: Security Checklist
+## 🔐 Part 7: Security
 
-### Pre-Deployment Security
+### Что уже реализовано в коде
 
-- [ ] All secrets in environment variables (not in code)
-- [ ] JWT_SECRET is strong (32+ characters)
-- [ ] CORS only allows your domains
-- [ ] Rate limiting enabled
-- [ ] Input validation on all endpoints
-- [ ] SQL injection protection (Prisma handles this)
-- [ ] XSS protection headers set
-- [ ] HTTPS enforced everywhere
+| Уровень | Защита |
+|---|---|
+| **HTTP заголовки** | Helmet: CSP, HSTS, X-Frame-Options, noSniff, Referrer-Policy |
+| **Аутентификация** | JWT в httpOnly cookies, sameSite:strict, refresh rotation |
+| **CORS** | Строгий allowlist, только конкретные домены |
+| **Rate limiting** | Глобально 100/мин, auth 5/мин, refresh 10/мин |
+| **Валидация** | ValidationPipe whitelist — лишние поля отрезаются |
+| **БД** | Prisma параметризованные запросы — SQL injection исключён |
+| **Ошибки** | 500-е не содержат stack trace в production |
+| **Swagger** | Отключён в production — API карта не публична |
+| **Seed** | Закрыт за admin role — не публичный эндпоинт |
+| **Sentry** | Мониторинг 500-х, cookies/passwords автоматически скрыты |
 
-### Post-Deployment Security
+### Обязательные шаги после деплоя
 
-- [ ] Change default admin password
-- [ ] Test authentication flows
-- [ ] Verify CORS policy
-- [ ] Test file upload limits
-- [ ] Check API rate limits
-- [ ] Review error messages (no stack traces in production)
-- [ ] Enable Vercel DDoS protection
-- [ ] Set up security headers in `vercel.json`
+#### 1. Включить GitHub Security Settings
+
+В репозитории → **Settings → Security**:
+- ☑ Secret scanning
+- ☑ Push protection (блокирует push если в коммите найден API ключ)
+- ☑ Dependabot alerts
+- ☑ Dependabot security updates
+
+#### 2. Настроить Sentry
+
+```bash
+# 1. Зарегистрироваться на sentry.io (бесплатно до 5000 ошибок/мес)
+# 2. Создать проект: Node.js → "storagecompare-backend"
+# 3. Скопировать DSN
+
+# Добавить в Railway Variables:
+SENTRY_DSN=https://your-key@sentry.io/your-project-id
+APP_VERSION=1.0.0
+```
+
+#### 3. Проверить security headers
+
+```bash
+# Должны присутствовать все заголовки
+curl -I https://api.storagecompare.ae/api/v1/health
+
+# Ожидаемые заголовки:
+# X-Content-Type-Options: nosniff
+# X-Frame-Options: DENY
+# Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+# X-DNS-Prefetch-Control: off
+# Referrer-Policy: strict-origin-when-cross-origin
+```
+
+#### 4. Убедиться что Swagger закрыт
+
+```bash
+# Должен вернуть 404 в production
+curl https://api.storagecompare.ae/api/v1/docs
+```
+
+#### 5. Сменить пароль admin
+
+После первого деплоя — зайти в приложение под admin и сменить пароль через профиль.
+
+#### 6. Сгенерировать сильный JWT_SECRET
+
+```bash
+# Минимум 32 символа
+openssl rand -base64 48
+```
+
+### Автоматическое сканирование CI/CD
+
+Workflow `security-scanning.yml` запускается при каждом PR и push в `main`:
+
+```
+CodeQL       — статический анализ кода (injection, XSS, path traversal)
+TruffleHog   — поиск реальных утечек API ключей в git history  
+npm audit    — CVE в production зависимостях (блокирует на high/critical)
+Pattern scan — regex поиск хардкода AWS/Anthropic/Twilio ключей
+─────────────────────────────────────────────────────────────────
+Security Gate — все checks должны пройти перед merge в main
+```
+
+**Dependabot** каждый понедельник создаёт PR с патчами безопасности.
+
+### Ротация ключей (раз в 90 дней)
+
+```bash
+# Список ключей для ротации:
+# - JWT_SECRET          → openssl rand -base64 48
+# - AWS_ACCESS_KEY_ID   → AWS Console → IAM → Create new key
+# - ANTHROPIC_API_KEY   → console.anthropic.com
+# - SENDGRID_API_KEY    → app.sendgrid.com
+# - TWILIO_AUTH_TOKEN   → console.twilio.com
+
+# После смены JWT_SECRET все активные сессии инвалидируются
+# (пользователи выйдут из системы — предупредить заранее)
+```
+
+Подробная инструкция по всем security инструментам → [SECURITY_SETUP.md](SECURITY_SETUP.md)
 
 ---
 

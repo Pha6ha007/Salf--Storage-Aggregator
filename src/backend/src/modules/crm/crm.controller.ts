@@ -31,12 +31,14 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import type { CurrentUserData } from '../../common/decorators/current-user.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 /**
  * CRM endpoints - Admin only
  * Manage leads, contacts, and activities
  */
 @ApiTags('crm')
+@Throttle({ default: { limit: 60, ttl: 60000 } }) // CRM: 60 req/min
 @Controller('crm/leads')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.admin)

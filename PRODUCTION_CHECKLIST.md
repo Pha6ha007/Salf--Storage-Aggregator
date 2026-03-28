@@ -4,19 +4,61 @@ Complete checklist before deploying to production.
 
 ## ✅ Security
 
-- [x] All secrets in environment variables (not hardcoded)
-- [x] Strong JWT_SECRET (32+ characters)
-- [x] CORS properly configured for production domains
-- [x] Rate limiting enabled on API endpoints
-- [x] Input validation on all endpoints (class-validator)
-- [x] SQL injection protection (Prisma ORM)
-- [x] XSS protection headers configured
-- [x] HTTPS enforced (Vercel/Railway handle this)
-- [x] Cookie security: httpOnly, secure, sameSite
-- [x] Trust proxy configured for Railway
-- [ ] **TODO**: Change default admin password after deployment
-- [ ] **TODO**: Review and test all authentication flows
-- [ ] **TODO**: Set up API key rotation schedule
+### Код и архитектура
+- [x] Все секреты в переменных окружения (не в коде)
+- [x] JWT_SECRET обязателен — приложение не стартует без него
+- [x] bcrypt(10) для хешей паролей
+- [x] CORS: строгий allowlist, никаких wildcard `*.vercel.app`
+- [x] Rate limiting на всех эндпоинтах (глобально + per-route)
+- [x] Input validation на всех эндпоинтах (class-validator, whitelist)
+- [x] SQL injection защита (Prisma параметризованные запросы)
+- [x] Cookies: httpOnly, secure, sameSite:strict (production)
+- [x] Refresh token scoped path `/api/v1/auth/refresh`
+- [x] passwordHash никогда не возвращается клиенту (Prisma select{})
+- [x] Trust proxy настроен для Railway (только 1 hop)
+
+### HTTP заголовки (Helmet)
+- [x] Content-Security-Policy (`default-src 'self'`)
+- [x] Strict-Transport-Security (HSTS, 1 год, preload)
+- [x] X-Frame-Options: DENY (защита от clickjacking)
+- [x] X-Content-Type-Options: nosniff
+- [x] Referrer-Policy: strict-origin-when-cross-origin
+- [x] X-Powered-By: скрыт (не раскрывает Express)
+
+### Swagger / API документация
+- [x] Swagger отключён в production (`NODE_ENV=production`)
+- [x] В development доступен только на localhost
+
+### Эндпоинты
+- [x] `/health/seed` закрыт за `@Roles(admin)` — не публичный
+- [x] Пароли не возвращаются в ответах API
+- [x] 500-ошибки: в production не содержат stack trace и query params
+
+### CI/CD — автоматическое сканирование
+- [x] CodeQL (статический анализ кода на injection, XSS, path traversal)
+- [x] TruffleHog (поиск утечек API ключей в git history)
+- [x] npm audit production deps (блокирует на high/critical)
+- [x] Pattern scan (regex поиск хардкод секретов)
+- [x] Dependabot (еженедельные PR с обновлениями зависимостей)
+- [x] Security gate: все checks должны пройти перед merge
+
+### Мониторинг
+- [x] Sentry интегрирован (instrument.ts + SentryModule)
+- [x] Sentry scrubbing: auth_token, password, cookies не отправляются
+- [ ] **TODO**: Добавить SENTRY_DSN в Railway переменные
+- [ ] **TODO**: Настроить Sentry алерты (email / Slack)
+
+### GitHub Security Settings (ручная настройка)
+- [ ] **TODO**: Включить Secret scanning в Settings → Security
+- [ ] **TODO**: Включить Push protection (блокирует коммит с ключами)
+- [ ] **TODO**: Включить Dependabot alerts
+- [ ] **TODO**: Включить CodeQL в Settings → Code security
+
+### Пост-деплой
+- [ ] **TODO**: Сменить пароль admin после первого деплоя
+- [ ] **TODO**: Проверить security headers: `curl -I https://api.storagecompare.ae/api/v1/health`
+- [ ] **TODO**: Убедиться что `/api/v1/docs` возвращает 404 в production
+- [ ] **TODO**: Настроить ротацию API ключей (раз в 90 дней)
 
 ## ✅ Backend (Railway)
 
@@ -137,23 +179,27 @@ Complete checklist before deploying to production.
 ## ✅ Monitoring & Logging
 
 - [x] Structured logging in backend
-- [x] Error logging with context
-- [x] Request/response logging
-- [x] Health check endpoint
-- [ ] **TODO**: Set up error tracking (Sentry recommended)
-- [ ] **TODO**: Set up uptime monitoring (UptimeRobot/Pingdom)
-- [ ] **TODO**: Configure log retention policy
-- [ ] **TODO**: Set up alerts for critical errors
+- [x] Error logging with context (method, path, statusCode, userId, responseTime)
+- [x] Request/response logging middleware
+- [x] Health check endpoint (`/api/v1/health` — public, `/api/v1/health/detailed` — admin only)
+- [x] Sentry error monitoring integrated (`src/instrument.ts`)
+- [x] Sentry captures all 500-errors with request context and userId
+- [x] Sensitive fields scrubbed before sending to Sentry (cookies, passwords)
+- [ ] **TODO**: Add `SENTRY_DSN` to Railway environment variables
+- [ ] **TODO**: Set up Sentry alert rules (email/Slack on new errors)
+- [ ] **TODO**: Set up uptime monitoring (UptimeRobot or Better Uptime)
+- [ ] **TODO**: Configure log retention policy on Railway
 
 ## ✅ Documentation
 
-- [x] README.md with project overview
+- [x] README.md with project overview and security section
 - [x] DEPLOYMENT.md with deployment steps
 - [x] DOCKER.md for local development
 - [x] CI-CD.md for GitHub Actions
 - [x] TESTING.md for test suite
-- [x] API documentation via Swagger
-- [x] Environment variables documented
+- [x] SECURITY_SETUP.md — security tools activation guide
+- [x] API documentation via Swagger (development only)
+- [x] Environment variables documented (.env.example, .env.production.example)
 - [ ] **TODO**: Create operator user guide
 - [ ] **TODO**: Create API usage examples
 

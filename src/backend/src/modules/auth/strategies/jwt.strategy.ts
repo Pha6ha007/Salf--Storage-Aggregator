@@ -17,6 +17,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService,
     private prisma: PrismaService,
   ) {
+    const jwtSecret = configService.get<string>('jwt.secret');
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET is not set. Cannot start application without a secure secret.');
+    }
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
@@ -24,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('jwt.secret') || 'your-secret-key-change-in-production',
+      secretOrKey: jwtSecret,
     });
   }
 

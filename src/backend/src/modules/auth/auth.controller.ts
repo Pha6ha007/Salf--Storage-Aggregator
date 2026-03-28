@@ -85,6 +85,7 @@ export class AuthController {
   }
 
   @Public()
+  @Throttle({ default: { limit: 10, ttl: 60000 } }) // 10 per minute — generous but bounded
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Refresh access token' })
@@ -165,26 +166,33 @@ export class AuthController {
     const isProduction = process.env.NODE_ENV === 'production';
 
     // Access token cookie (15 minutes)
+    // sameSite: 'strict' in production — cookie not sent on cross-site requests (CSRF protection)
+    // sameSite: 'lax'    in development — allows localhost cross-port requests
     res.cookie('auth_token', accessToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite: isProduction ? 'strict' : 'lax',
       maxAge: 15 * 60 * 1000, // 15 minutes
       path: '/',
     });
 
-    // Refresh token cookie (7 days)
+    // Refresh token cookie (7 days) — scoped to refresh endpoint only
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite: isProduction ? 'strict' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      path: '/',
+      path: '/api/v1/auth/refresh', // scoped: only sent on refresh calls
     });
   }
 
   private clearTokenCookies(res: Response) {
-    res.clearCookie('auth_token', { path: '/' });
-    res.clearCookie('refresh_token', { path: '/' });
+    const isProduction = process.env.NODE_ENV === 'production';
+    res.clearCookie('auth_token', { path: '/', httpOnly: true, secure: isProduction });
+    res.clearCookie('refresh_token', {
+      path: '/api/v1/auth/refresh',
+      httpOnly: true,
+      secure: isProduction,
+    });
   }
 }

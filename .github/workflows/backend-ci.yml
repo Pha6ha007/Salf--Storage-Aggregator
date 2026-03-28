@@ -154,11 +154,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: ./src/backend/package-lock.json
 
-      - name: Run npm audit
-        run: npm audit --audit-level=moderate
-        continue-on-error: true
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Check for vulnerabilities
-        run: npm audit fix --dry-run
-        continue-on-error: true
+      - name: Audit production dependencies (BLOCKS on high/critical)
+        # --omit=dev: only check runtime code, not build tools
+        # --audit-level=high: fail if high or critical found in prod deps
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Full audit report (informational)
+        # Shows dev dep vulnerabilities for awareness but does not block
+        run: npm audit || true

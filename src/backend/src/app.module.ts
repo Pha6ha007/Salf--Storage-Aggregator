@@ -5,6 +5,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { Reflector } from '@nestjs/core';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -40,6 +41,8 @@ import googleMapsConfig from './config/google-maps.config';
 
 @Module({
   imports: [
+    // Sentry — must be first module to capture all errors
+    SentryModule.forRoot(),
     // Global configuration module
     ConfigModule.forRoot({
       isGlobal: true,

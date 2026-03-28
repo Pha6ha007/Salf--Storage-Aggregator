@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HealthService, HealthStatus, DetailedHealthStatus } from './health.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -8,8 +8,6 @@ import { Public } from '../../common/decorators/public.decorator';
 import { UserRole } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-
-const SEED_SECRET = process.env.SEED_SECRET || 'storagecompare-seed-2026';
 
 @ApiTags('Health')
 @Controller('health')
@@ -38,15 +36,15 @@ export class HealthController {
 
   /**
    * Seed endpoint — creates test admin + operator users
-   * Protected by secret key query param
-   * GET /api/v1/health/seed?secret=storagecompare-seed-2026
+   * Protected by ADMIN role — only existing admins can trigger re-seed
+   * In a fresh deploy, use the SEED_SECRET env var via CLI script instead
+   *
+   * POST /api/v1/health/seed  (admin only, no credentials in response)
    */
-  @Public()
   @Get('seed')
-  async seed(@Query('secret') secret: string) {
-    if (secret !== SEED_SECRET) {
-      throw new UnauthorizedException('Invalid seed secret');
-    }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.admin)
+  async seed() {
 
     const results: string[] = [];
     const salt = await bcrypt.genSalt(10);
@@ -354,10 +352,8 @@ export class HealthController {
       status: 'ok',
       message: 'Seed completed',
       results,
-      credentials: {
-        admin: { email: 'admin@storagecompare.ae', password: 'Admin1234!' },
-        operator: { email: 'operator@storagecompare.ae', password: 'Operator1234!' },
-      },
+      // NOTE: credentials intentionally omitted from response for security.
+      // Check Railway/server logs or use the admin panel to verify created users.
     };
   }
 }

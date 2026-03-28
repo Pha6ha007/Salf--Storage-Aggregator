@@ -4,6 +4,7 @@
 
 [![Backend CI](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/backend-ci.yml)
 [![Frontend CI](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/frontend-ci.yml)
+[![Security Scanning](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/security-scanning.yml/badge.svg)](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/security-scanning.yml)
 [![Docker Build](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/docker-build.yml/badge.svg)](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/docker-build.yml)
 [![Deploy Staging](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/deploy-staging.yml/badge.svg)](https://github.com/Pha6ha007/Salf--Storage-Aggregator/actions/workflows/deploy-staging.yml)
 
@@ -144,6 +145,7 @@ See [DOCKER.md](DOCKER.md) for detailed Docker documentation.
 - [Database Specification](docs/core/full_database_specification_mvp_v1_CANONICAL.md)
 - [Docker Setup Guide](DOCKER.md)
 - [CI/CD Documentation](CI-CD.md)
+- [Security Setup Guide](SECURITY_SETUP.md)
 - [Design System](DESIGN_SYSTEM.md)
 
 ## 🧪 Testing
@@ -212,6 +214,92 @@ AWS_SECRET_ACCESS_KEY=your-secret
 ```
 
 See `.env.docker` for complete list of environment variables.
+
+## 🔐 Security
+
+### Архитектура безопасности
+
+StorageCompare реализует многоуровневую защиту на каждом слое стека.
+
+#### Аутентификация и авторизация
+- **JWT в httpOnly cookies** — токены недоступны из JavaScript, XSS не может их украсть
+- **Refresh token rotation** — при каждом обновлении старый токен отзывается
+- **Раздельные роли**: `user` / `operator` / `admin` — доступ строго по роли
+- **Глобальный JwtAuthGuard** — всё защищено по умолчанию, `@Public()` явно открывает
+- **sameSite: strict** в production — CSRF защита на уровне cookie
+- **JWT_SECRET обязателен** — приложение не стартует без него
+
+#### HTTP безопасность (Helmet)
+| Заголовок | Значение | Защита от |
+|---|---|---|
+| `Content-Security-Policy` | `default-src 'self'` | XSS, code injection |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` | Downgrade attacks |
+| `X-Frame-Options` | `DENY` | Clickjacking |
+| `X-Content-Type-Options` | `nosniff` | MIME sniffing |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Data leakage |
+| `X-Powered-By` | скрыт | Fingerprinting |
+
+#### Rate Limiting
+| Endpoint | Лимит |
+|---|---|
+| Глобально | 100 req / мин |
+| Login, Register, Forgot password | 5 req / мин |
+| Token refresh | 10 req / мин |
+| Поиск складов | 30 req / мин |
+| Admin, CRM | 60 req / мин |
+
+#### CORS
+Строгий allowlist — только конкретные домены, никаких wildcard:
+- `https://storagecompare.ae`
+- `https://www.storagecompare.ae`
+- `https://storagecompare.vercel.app`
+- `http://localhost:*` только в development
+
+#### Защита данных
+- **bcrypt(10)** для хешей паролей
+- **Prisma** — параметризованные запросы, SQL injection исключён
+- **ValidationPipe whitelist** — лишние поля в запросах отрезаются
+- **select{}** во всех Prisma запросах — passwordHash никогда не возвращается клиенту
+- **Swagger отключён в production** — карта API не доступна публично
+- Сообщения об ошибках 500 не содержат stack trace в production
+
+### Автоматическое сканирование (CI/CD)
+
+При каждом Pull Request и push в `main` запускается `security-scanning.yml`:
+
+```
+PR / push в main
+      ↓
+┌─────────────────────────────────────────────────────────┐
+│  CodeQL          — уязвимости в коде (injection, XSS)   │
+│  TruffleHog      — утечки API ключей в git history      │
+│  npm audit       — CVE в production зависимостях        │
+│  Pattern scan    — хардкод секретов regex'ом            │
+└─────────────────────────────────────────────────────────┘
+      ↓
+❌ Найдена проблема → PR заблокирован
+✅ Чисто → можно мерджить
+```
+
+**Dependabot** каждый понедельник создаёт PR с обновлёнными зависимостями.
+
+### Мониторинг ошибок (Sentry)
+
+Все 500-е ошибки в production автоматически отправляются в Sentry:
+- Полный стек с контекстом запроса
+- userId для оценки масштаба инцидента
+- Чувствительные поля автоматически скрыты (`auth_token`, `password`, `refresh_token`)
+
+Настройка: добавить `SENTRY_DSN` в переменные Railway. Подробнее → [SECURITY_SETUP.md](SECURITY_SETUP.md).
+
+### Известные accepted риски
+
+| Риск | Причина принятия |
+|---|---|
+| CVE в `@nestjs/cli`, `jest`, `prisma` CLI | Только devDependencies, не попадают в production bundle |
+| Swagger без auth в development | Намеренно — для удобства разработки, в production отключён |
+
+---
 
 ## 🤝 Contributing
 

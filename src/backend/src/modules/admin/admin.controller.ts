@@ -17,6 +17,7 @@ import {
   ApiBearerAuth,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { UserRole, WarehouseStatus } from '@prisma/client';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -62,6 +63,7 @@ class RejectWarehouseDto {
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.admin)
+@Throttle({ default: { limit: 60, ttl: 60000 } }) // Admin panel: 60 req/min
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
